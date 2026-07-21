@@ -75,6 +75,9 @@ class DiscoveryTests(TestCase):
     def test_fresh_growth_modes_or_query_and_one_page(self) -> None:
         cfg = config(); cfg["topic_groups"] = {"gaming": {"queries": ["Minecraft hardcore|Minecraft survival"]}}
         cfg["topic_quotas"] = {"gaming": 1, "wildcard_popular": 0}
+        cfg["core_queries"] = {"gaming": ["Minecraft hardcore|Minecraft survival"]}
+        cfg["rotating_queries_per_topic"] = {"gaming": 0}
+        cfg["search_core_query_groups_per_day"] = 1
         client = mock.Mock(); client.get.side_effect = [{"items": []}, {"items": []}]
         collect_search_ids(client, cfg, window())
         self.assertEqual(client.get.call_count, 2)
@@ -104,13 +107,30 @@ class DiscoveryTests(TestCase):
         self.assertNotEqual(first, second)
         self.assertGreater(len(first | second), 24)
 
+    def test_fixed_core_queries_run_every_day(self) -> None:
+        cfg = config()
+        for day in (20, 21, 22):
+            plan = plan_query_groups(cfg, datetime(2026, 7, day).date())
+            fixed = {(topic, query) for topic, group_name, query in plan if group_name.startswith("core_")}
+            expected = {(topic, query) for topic, queries in cfg["core_queries"].items() for query in queries}
+            self.assertEqual(fixed, expected)
+        gardening_core = "|".join(cfg["core_queries"]["gardening_farming"]).casefold()
+        gaming_core = "|".join(cfg["core_queries"]["gaming"]).casefold()
+        for phrase in ("vegetable garden", "growing vegetables", "growing tomatoes", "garden update", "garden harvest", "backyard garden", "gardening experiment", "homestead garden"):
+            self.assertIn(phrase, gardening_core)
+        for phrase in ("minecraft survival", "minecraft hardcore", "minecraft 100 days", "minecraft challenge", "minecraft mod", "minecraft funny moments", "trending game gameplay", "new game gameplay"):
+            self.assertIn(phrase, gaming_core)
+
     def test_search_sources_keep_mode_group_text_and_rank(self) -> None:
         cfg = config(); cfg["topic_groups"] = {"gaming": {"queries": ["Minecraft challenge|Minecraft but"]}}
         cfg["topic_quotas"] = {"gaming": 1, "wildcard_popular": 0}
+        cfg["core_queries"] = {"gaming": ["Minecraft challenge|Minecraft but"]}
+        cfg["rotating_queries_per_topic"] = {"gaming": 0}
+        cfg["search_core_query_groups_per_day"] = 1
         client = mock.Mock(); client.get.side_effect = [{"items": [{"id": {"videoId": "x"}}]}, {"items": [{"id": {"videoId": "x"}}]}]
         ids, sources, _ = collect_search_ids(client, cfg, window())
         self.assertEqual(ids, {"x"}); self.assertEqual(len(sources["x"]), 2)
-        self.assertTrue(any("search::fresh::gaming_01::1::Minecraft challenge|Minecraft but" == value for value in sources["x"]))
+        self.assertTrue(any("search::fresh::gaming_core_01::1::Minecraft challenge|Minecraft but" == value for value in sources["x"]))
 
     def test_popular_pagination_uses_next_page_token(self) -> None:
         client = mock.Mock(); client.get.side_effect = [{"items": [{"id": "a"}], "nextPageToken": "next"}, {"items": [{"id": "b"}]}]
@@ -161,6 +181,11 @@ class DiscoveryTests(TestCase):
 
 
 class AnalysisTests(TestCase):
+    def test_duration_and_relaxed_topic_thresholds(self) -> None:
+        cfg = config()
+        self.assertEqual((cfg["min_duration_seconds"], cfg["max_duration_seconds"]), (60, 2700))
+        self.assertEqual((cfg["topic_min_view_count"]["gardening_farming"], cfg["topic_min_views_per_hour"]["gardening_farming"]), (200, 20))
+        self.assertEqual((cfg["topic_min_view_count"]["experiments_challenges"], cfg["topic_min_views_per_hour"]["experiments_challenges"]), (300, 30))
     def test_interest_phrase_scoring_once(self) -> None:
         result = calculate_interest("I tested and I TESTED this benchmark comparison", "ai_model_testing", config())
         self.assertIn("i tested", result["interest_hits"])
@@ -249,7 +274,7 @@ class SelectionTests(TestCase):
         cfg = config()
         rows = [selection_row(i, "gaming", query_group="gaming_01", channel=f"c{i}", event=f"e{i}", score=100-i) for i in range(8)]
         selected = select_candidates(rows, cfg, 8)
-        self.assertLessEqual(Counter(row["contributing_query_group"] for row in selected)["gaming_01"], 4)
+        self.assertLessEqual(Counter(row["contributing_query_group"] for row in selected)["gaming_01"], 6)
 
     def test_popular_only_maximum(self) -> None:
         cfg = config()
@@ -266,7 +291,17 @@ class SelectionTests(TestCase):
     def test_topic_shortage_uses_global_backfill_without_breaking_limits(self) -> None:
         cfg = config(); rows = [selection_row(i, "gaming", query_group=f"g{i // 4}") for i in range(20)] + [selection_row(100+i, "tutorials", query_group=f"t{i // 4}") for i in range(10)]
         selected = select_candidates(rows, cfg, 30)
-        self.assertEqual(len(selected), 30); self.assertTrue(any(row["selection_reason"] == "global_backfill" for row in selected))
+        self.assertEqual(len(selected), 22)
+        counts = Counter(row["selection_topic"] for row in selected)
+        self.assertEqual(counts["gaming"], cfg["topic_max_counts"]["gaming"])
+        self.assertEqual(counts["tutorials"], cfg["topic_max_counts"]["tutorials"])
+
+    def test_gaming_never_exceeds_fourteen_during_backfill(self) -> None:
+        cfg = config()
+        rows = [selection_row(i, "gaming", query_group=f"g{i}") for i in range(30)]
+        rows += [selection_row(100 + i, "ai_model_testing", query_group=f"a{i}") for i in range(10)]
+        selected = select_candidates(rows, cfg, 40)
+        self.assertLessEqual(Counter(row["selection_topic"] for row in selected)["gaming"], 14)
 
     def test_csv_utf8_special_text_and_structured_sources(self) -> None:
         path = ROOT / "tests" / "_output.csv"; row = {field: "" for field in __import__("src.fetch_daily_candidates", fromlist=["CSV_FIELDS"]).CSV_FIELDS}

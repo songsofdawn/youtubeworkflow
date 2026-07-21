@@ -11,6 +11,7 @@ def select_candidates(candidates: list[dict[str, Any]], config: dict[str, Any], 
     channels: Counter[str] = Counter()
     events: Counter[str] = Counter()
     query_groups: Counter[str] = Counter()
+    topic_counts: Counter[str] = Counter()
     popular_only = 0
     max_channel = int(config["max_per_channel"])
     max_event = int(config["max_per_event"])
@@ -27,6 +28,8 @@ def select_candidates(candidates: list[dict[str, Any]], config: dict[str, Any], 
         if row["video_id"] in ids:
             return False
         target_topic = selection_topic or row["primary_topic"]
+        if topic_counts[target_topic] >= int(config["topic_max_counts"][target_topic]):
+            selection_stats["topic_limit"] += 1; return False
         if target_topic == "wildcard_popular" and sum(item["selection_topic"] == "wildcard_popular" for item in selected) >= wildcard_quota:
             selection_stats["wildcard_limit"] += 1; return False
         channel = row["channel_title"].casefold()
@@ -49,6 +52,7 @@ def select_candidates(candidates: list[dict[str, Any]], config: dict[str, Any], 
         ids.add(row["video_id"])
         channels[channel] += 1
         events[event] += 1
+        topic_counts[target_topic] += 1
         if query_group:
             query_groups[query_group] += 1
         if is_popular_only:

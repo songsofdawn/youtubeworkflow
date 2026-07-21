@@ -7,8 +7,8 @@
   "english_only": true,
   "safe_search": "moderate",
   "video_definition": "high",
-  "min_duration_seconds": 45,
-  "max_duration_seconds": 1800,
+  "min_duration_seconds": 60,
+  "max_duration_seconds": 2700,
   "min_age_hours_for_rate": 0.5,
   "popular_max_age_hours": 72,
   "popular_target": 2,
@@ -16,7 +16,7 @@
   "max_per_category": 8,
   "max_per_channel": 2,
   "max_per_event": 2,
-  "max_per_query_group": 4,
+  "max_per_query_group": 6,
   "min_search_share": 0.8,
   "exclude_shorts": true,
   "shorts_max_duration_seconds": 180,
@@ -41,6 +41,41 @@
     "political_commentary": 6,
     "experiments_challenges": 4,
     "wildcard_popular": 2
+  },
+  "topic_max_counts": {
+    "gardening_farming": 16,
+    "gaming": 14,
+    "ai_model_testing": 10,
+    "tutorials": 8,
+    "political_commentary": 8,
+    "experiments_challenges": 8,
+    "wildcard_popular": 2
+  },
+  "core_queries": {
+    "gardening_farming": [
+      "vegetable garden|growing vegetables",
+      "growing tomatoes|garden update",
+      "garden harvest|backyard garden",
+      "gardening experiment|homestead garden"
+    ],
+    "gaming": [
+      "Minecraft survival|Minecraft hardcore",
+      "Minecraft 100 days|Minecraft challenge",
+      "Minecraft mod|Minecraft funny moments",
+      "trending game gameplay|new game gameplay"
+    ],
+    "ai_model_testing": ["new AI model test|AI model benchmark", "I tested the new AI model|AI model comparison"],
+    "tutorials": ["AI tutorial|how to use AI", "Python automation|coding tutorial"],
+    "political_commentary": ["political commentary|political reaction", "news commentary|current events explained"],
+    "experiments_challenges": ["I tried this for 30 days|30 day experiment", "I built|I tested|what happens if"]
+  },
+  "rotating_queries_per_topic": {
+    "gardening_farming": 2,
+    "gaming": 1,
+    "ai_model_testing": 2,
+    "tutorials": 1,
+    "political_commentary": 1,
+    "experiments_challenges": 1
   },
   "priority_games": ["Minecraft", "Roblox", "Fortnite", "GTA Online", "Valorant", "Call of Duty", "Warzone"],
   "popular_category_titles": ["Film & Animation", "Autos & Vehicles", "Music", "Pets & Animals", "Sports", "Travel & Events", "Gaming", "People & Blogs", "Comedy", "Entertainment", "News & Politics", "Howto & Style", "Science & Technology", "Nonprofits & Activism"],
@@ -110,8 +145,8 @@
   "wildcard_interest_min": 12,
   "tutorial_preferred_duration_seconds": [240, 1200],
   "tutorial_localization_bonus": 10,
-  "topic_min_view_count": {"gardening_farming": 300, "gaming": 2000, "ai_model_testing": 500, "tutorials": 300, "political_commentary": 1000, "experiments_challenges": 1000, "wildcard_popular": 10000},
-  "topic_min_views_per_hour": {"gardening_farming": 30, "gaming": 200, "ai_model_testing": 50, "tutorials": 30, "political_commentary": 100, "experiments_challenges": 100, "wildcard_popular": 1000},
+  "topic_min_view_count": {"gardening_farming": 200, "gaming": 2000, "ai_model_testing": 500, "tutorials": 300, "political_commentary": 1000, "experiments_challenges": 300, "wildcard_popular": 10000},
+  "topic_min_views_per_hour": {"gardening_farming": 20, "gaming": 200, "ai_model_testing": 50, "tutorials": 30, "political_commentary": 100, "experiments_challenges": 30, "wildcard_popular": 1000},
   "final_score_weights": {"growth_score": 0.25, "interest_score_normalized": 0.20, "topic_relevance_normalized": 0.18, "engagement_score": 0.12, "freshness_score": 0.08, "localization_suitability_score": 0.08, "caption_score": 0.05, "source_diversity_score": 0.04},
   "penalties": {"copyright_low": 0, "copyright_medium": 3, "copyright_high": 10, "copyright_very_high": 30, "language_medium": 2, "language_low": 10, "event_duplicate": 3},
   "event_similarity": {"jaccard_threshold": 0.65, "sequence_threshold": 0.78, "stop_words": ["official", "reaction", "review", "trailer", "video", "new", "the", "a", "an", "to", "of", "and", "is", "in", "on", "with"]}

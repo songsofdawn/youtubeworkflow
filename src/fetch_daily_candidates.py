@@ -84,6 +84,9 @@ def load_config(path: Path) -> dict[str, Any]:
     limit = int(config["candidate_limit"])
     if limit < 1 or sum(int(value) for value in config["topic_quotas"].values()) != limit:
         raise ValueError("topic_quotas must sum to candidate_limit")
+    for topic, target in config["topic_quotas"].items():
+        if int(config["topic_max_counts"][topic]) < int(target):
+            raise ValueError(f"topic_max_counts.{topic} cannot be below its target quota")
     if abs(sum(float(value) for value in config["final_score_weights"].values()) - 1.0) > 0.0001:
         raise ValueError("final_score_weights must sum to 1.0")
     for key in ("max_per_channel", "max_per_event", "max_per_query_group", "popular_pages_per_feed"):
@@ -96,6 +99,10 @@ def load_config(path: Path) -> dict[str, Any]:
         raise ValueError("search_daily_budget + search_reserve_calls must be between 1 and the default 100-call hard limit")
     if planned >= daily_budget:
         raise ValueError("planned search requests must remain strictly below search_daily_budget")
+    core_count = sum(len(values) for values in config["core_queries"].values())
+    rotating_count = sum(int(value) for value in config["rotating_queries_per_topic"].values())
+    if core_count + rotating_count > int(config["search_core_query_groups_per_day"]):
+        raise ValueError("fixed core plus rotating queries exceed search_core_query_groups_per_day")
     ZoneInfo(str(config["timezone"]))
     return config
 
@@ -263,9 +270,13 @@ def collect_search_ids(client: YouTubeClient, config: dict[str, Any], window: Da
     stats = plan_stats if plan_stats is not None else {}
     stats.update({"configured_groups": total, "planned_groups": len(planned), "planned_requests": planned_requests, "executed_requests": 0, "resumed_requests": 0, "remaining_safe_budget": int(config["search_daily_budget"]) - len(completed)})
     LOGGER.info("Search plan: configured_groups=%d planned_groups=%d requests=%d daily_budget=%d reserve=%d", total, len(planned), planned_requests, int(config["search_daily_budget"]), int(config["search_reserve_calls"]))
-    LOGGER.info("Rotating query groups: %s", ", ".join(f"{topic}_{index:02d}" for topic, index, _ in planned))
-    for topic, query_index, query in planned:
-        query_group = f"{topic}_{query_index:02d}"
+    for topic in config["topic_quotas"]:
+        if topic == "wildcard_popular": continue
+        fixed_names = [group_name for planned_topic, group_name, _ in planned if planned_topic == topic and group_name.startswith("core_")]
+        rotating_names = [group_name for planned_topic, group_name, _ in planned if planned_topic == topic and group_name.startswith("tail_")]
+        LOGGER.info("Search topic %s: fixed_core=%s rotating=%s", topic, ",".join(fixed_names) or "none", ",".join(rotating_names) or "none")
+    for topic, group_name, query in planned:
+        query_group = f"{topic}_{group_name}"
         for mode, settings in config["search_modes"].items():
             request_key = f"{query_group}::{mode}"
             if request_key in completed:
@@ -294,41 +305,25 @@ def collect_search_ids(client: YouTubeClient, config: dict[str, Any], window: Da
     return ids, sources, topics
 
 
-def plan_query_groups(config: dict[str, Any], target_date: date) -> list[tuple[str, int, str]]:
+def plan_query_groups(config: dict[str, Any], target_date: date) -> list[tuple[str, str, str]]:
     modes = max(1, len(config["search_modes"]))
     budget_capacity = max(1, (int(config["search_daily_budget"]) - 1) // modes)
     capacity = min(int(config["search_core_query_groups_per_day"]), budget_capacity)
     topics = [topic for topic in config["topic_quotas"] if topic != "wildcard_popular"]
-    total_weight = sum(int(config["topic_quotas"][topic]) for topic in topics)
-    allocations = {
-        topic: min(
-            len(config["topic_groups"][topic]["queries"]),
-            max(1, int(capacity * int(config["topic_quotas"][topic]) / total_weight)),
-        )
-        for topic in topics
-    }
-    while sum(allocations.values()) > capacity:
-        reducible = [topic for topic in topics if allocations[topic] > 1]
-        if not reducible: break
-        topic = max(reducible, key=lambda value: allocations[value])
-        allocations[topic] -= 1
-    remaining = capacity - sum(allocations.values())
-    while remaining > 0:
-        changed = False
-        for topic in topics:
-            if allocations[topic] < len(config["topic_groups"][topic]["queries"]):
-                allocations[topic] += 1; remaining -= 1; changed = True
-                if remaining == 0: break
-        if not changed: break
-    planned: list[tuple[str, int, str]] = []
+    planned: list[tuple[str, str, str]] = []
+    for topic in topics:
+        for index, query in enumerate(config["core_queries"][topic], 1):
+            planned.append((topic, f"core_{index:02d}", query))
+    remaining = max(0, capacity - len(planned))
     rotation = target_date.toordinal()
     for topic in topics:
         queries = config["topic_groups"][topic]["queries"]
-        take = min(allocations[topic], len(queries))
+        take = min(int(config["rotating_queries_per_topic"].get(topic, 0)), len(queries), remaining)
         start = (rotation * max(1, take)) % len(queries)
         for offset in range(take):
             index = (start + offset) % len(queries)
-            planned.append((topic, index + 1, queries[index]))
+            planned.append((topic, f"tail_{index + 1:02d}", queries[index]))
+        remaining -= take
     return planned[:capacity]
 
 
@@ -457,15 +452,21 @@ def run(args: argparse.Namespace, project_root: Path) -> int:
     for mapping, target in ((popular_sources, sources), (search_sources, sources), (popular_topics, topics), (search_topics, topics)):
         for video_id, values in mapping.items(): target[video_id].update(values)
     LOGGER.info("Discovery: popular=%d search=%d overlap=%d merged=%d", len(popular), len(search_ids), len(set(popular) & search_ids), len(resources))
+    pre_topic_counts: Counter[str] = Counter()
+    for values in topics.values():
+        for topic in values: pre_topic_counts[topic] += 1
     filter_counts: Counter[str] = Counter(); raw_pool: list[dict[str, Any]] = []
     eligible = build_candidates(resources, sources, topics, id_to_title, config, window, filter_counts, raw_pool)
     selection_counts: Counter[str] = Counter(); selected = select_candidates(eligible, config, limit, selection_counts)
     csv_path = output_dir / f"{prefix}_localization_top50.csv"; json_path = output_dir / f"{prefix}_localization_top50.json"; html_path = output_dir / f"{prefix}_localization_top50.html"; raw_path = output_dir / f"{prefix}_raw_pool.json"; metrics_path = output_dir / f"{prefix}_metrics.json"
     write_csv(csv_path, selected); write_json(json_path, selected, config, window); write_html(html_path, selected, window); raw_path.write_text(json.dumps(raw_pool, ensure_ascii=False, indent=2), encoding="utf-8")
     topic_counts = Counter(row["selection_topic"] for row in selected)
-    metrics = {"generated_at": datetime.now(timezone.utc).isoformat(), "quota_exhausted": quota_exhausted, "search_plan": search_plan_stats, "checkpoint": str(checkpoint_path), "discovery": {"popular": len(popular), "search": len(search_ids), "overlap": len(set(popular) & search_ids), "merged": len(resources)}, "filters": dict(filter_counts), "selection": dict(selection_counts), "topics": dict(topic_counts), "eligible": len(eligible), "selected": len(selected)}
+    post_topic_counts = Counter(row["primary_topic"] for row in eligible)
+    metrics = {"generated_at": datetime.now(timezone.utc).isoformat(), "quota_exhausted": quota_exhausted, "search_plan": search_plan_stats, "checkpoint": str(checkpoint_path), "discovery": {"popular": len(popular), "search": len(search_ids), "overlap": len(set(popular) & search_ids), "merged": len(resources)}, "filters": dict(filter_counts), "selection": dict(selection_counts), "topic_funnel": {topic: {"before_filter": pre_topic_counts[topic], "after_filter": post_topic_counts[topic], "selected": topic_counts[topic], "target": int(config["topic_quotas"][topic]), "maximum": int(config["topic_max_counts"][topic])} for topic in config["topic_quotas"]}, "topics": dict(topic_counts), "eligible": len(eligible), "selected": len(selected)}
     metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
-    for topic, quota in config["topic_quotas"].items(): LOGGER.info("Topic %-24s %d/%d", topic, topic_counts[topic], quota)
+    for topic, quota in config["topic_quotas"].items():
+        LOGGER.info("Topic %-24s before=%d after=%d selected=%d target=%d max=%d", topic, pre_topic_counts[topic], post_topic_counts[topic], topic_counts[topic], quota, int(config["topic_max_counts"][topic]))
+    LOGGER.info("Skip counts: duration=%d heat=%d query_limit=%d topic_limit=%d channel_limit=%d", filter_counts["duration_out_of_range"], filter_counts["low_absolute_heat"], selection_counts["query_limit"], selection_counts["topic_limit"], selection_counts["channel_limit"])
     LOGGER.info("Filters: %s", dict(filter_counts)); LOGGER.info("Selection limits: %s", dict(selection_counts)); LOGGER.info("Eligible=%d selected=%d", len(eligible), len(selected))
     if len(selected) < limit: LOGGER.warning("Only %d of %d requested candidates satisfied hard diversity and quality limits", len(selected), limit)
     search_share = selection_counts["selected_with_search"] / len(selected) if selected else 0.0

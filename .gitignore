@@ -1,15 +1,98 @@
+# Secrets and local credentials
 .env
+.env.*
+!.env.example
 private/
+.secrets/
 cookies.txt
 *.cookies.txt
+*.cookie
+*.pem
+*.key
+
+# Python virtual environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Generated workflow data and runtime state
+candidates/
 downloads/
+logs/
 work/
 output/
-logs/
-.venv/
-__pycache__/
-*.pyc
-.pytest_cache/
-# 忽略可执行文件和工具目录
+audio/
+subtitles/
+download_archive.txt
+*.part
+*.ytdl
+*.log
+*.tmp
+*.temp
+
+# Bundled local tools and executable binaries
 tools/
 *.exe
+*.dll
+
+# Downloaded media and large generated assets
+*.mp4
+*.mkv
+*.webm
+*.mov
+*.avi
+*.wmv
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.flac
+*.ogg
+*.opus
+*.ts
+
+# Large archives and model files
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.bz2
+*.xz
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.ckpt
+
+# Build and package artifacts
+build/
+dist/
+site/
+*.egg-info/
+.eggs/
+node_modules/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/

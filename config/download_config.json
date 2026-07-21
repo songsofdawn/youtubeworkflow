@@ -1,0 +1,28 @@
+{
+  "max_height": 1080,
+  "format_selector": "bv*[height<=1080]+ba/b[height<=1080]/b",
+  "video_container": "mp4",
+  "subtitle_languages": ["en.*", "en"],
+  "download_chinese_subtitles": true,
+  "chinese_subtitle_languages": ["zh-Hans", "zh-CN", "zh-Hant", "zh-TW", "zh.*", "zh"],
+  "prefer_manual_subtitles": true,
+  "fallback_to_auto_subtitles": true,
+  "keep_vtt": true,
+  "create_srt": true,
+  "extract_audio": true,
+  "audio_sample_rate": 48000,
+  "audio_channels": 2,
+  "audio_codec": "pcm_s16le",
+  "use_cookies": true,
+  "cookies_path": "private/cookies.txt",
+  "retries": 10,
+  "fragment_retries": 10,
+  "retry_sleep_seconds": 2,
+  "continue_on_error": true,
+  "approved_rights_statuses": [
+    "APPROVED",
+    "OWNED",
+    "LICENSED",
+    "PERMISSION_GRANTED"
+  ]
+}
