@@ -1,0 +1,15 @@
+.env
+private/
+cookies.txt
+*.cookies.txt
+downloads/
+work/
+output/
+logs/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# 忽略可执行文件和工具目录
+tools/
+*.exe

@@ -1,0 +1,4 @@
+requests>=2.32,<3
+python-dotenv>=1.0,<2
+langdetect==1.0.9
+tzdata>=2025.2

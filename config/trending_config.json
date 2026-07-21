@@ -1,0 +1,118 @@
+{
+  "region_code": "US",
+  "timezone": "America/New_York",
+  "language": "en",
+  "candidate_limit": 50,
+  "strict_same_day": true,
+  "english_only": true,
+  "safe_search": "moderate",
+  "video_definition": "high",
+  "min_duration_seconds": 45,
+  "max_duration_seconds": 1800,
+  "min_age_hours_for_rate": 0.5,
+  "popular_max_age_hours": 72,
+  "popular_target": 2,
+  "popular_max": 5,
+  "max_per_category": 8,
+  "max_per_channel": 2,
+  "max_per_event": 2,
+  "max_per_query_group": 4,
+  "min_search_share": 0.8,
+  "exclude_shorts": true,
+  "shorts_max_duration_seconds": 180,
+  "popular_results_per_category": 50,
+  "popular_pages_per_feed": 2,
+  "include_region_wide_popular": true,
+  "request_timeout_seconds": 30,
+  "max_retries": 4,
+  "search_daily_budget": 60,
+  "search_reserve_calls": 20,
+  "search_core_query_groups_per_day": 24,
+  "search_results_per_query": 50,
+  "search_modes": {
+    "fresh": {"hours": 24, "order": "date"},
+    "growth": {"hours": 72, "order": "viewCount"}
+  },
+  "topic_quotas": {
+    "gardening_farming": 12,
+    "gaming": 12,
+    "ai_model_testing": 8,
+    "tutorials": 6,
+    "political_commentary": 6,
+    "experiments_challenges": 4,
+    "wildcard_popular": 2
+  },
+  "priority_games": ["Minecraft", "Roblox", "Fortnite", "GTA Online", "Valorant", "Call of Duty", "Warzone"],
+  "popular_category_titles": ["Film & Animation", "Autos & Vehicles", "Music", "Pets & Animals", "Sports", "Travel & Events", "Gaming", "People & Blogs", "Comedy", "Entertainment", "News & Politics", "Howto & Style", "Science & Technology", "Nonprofits & Activism"],
+  "category_to_topic": {
+    "Gaming": "gaming",
+    "Science & Technology": "ai_model_testing",
+    "Education": "tutorials",
+    "Howto & Style": "tutorials",
+    "News & Politics": "political_commentary"
+  },
+  "topic_groups": {
+    "gardening_farming": {"queries": [
+      "vegetable garden|growing vegetables|backyard garden", "how to grow tomatoes|growing tomatoes|tomato harvest", "how to grow potatoes|growing potatoes|potato harvest", "growing peppers|growing cucumbers|growing strawberries", "garden update|vegetable garden update|garden tour", "harvest results|garden harvest|farm harvest", "I tried growing|growing experiment|garden experiment", "30 days growing|100 days growing|before and after garden", "hydroponics|hydroponic garden|hydroponic experiment", "aquaponics|vertical farming|indoor farming", "greenhouse farming|greenhouse technology|high tunnel farming", "small farm|market garden|homestead garden", "modern agriculture technology|smart farming|precision agriculture", "farm equipment test|agricultural machinery|tractor technology", "drip irrigation|smart irrigation|irrigation system", "compost experiment|soil improvement|soil test garden", "organic fertilizer test|fertilizer experiment|plant nutrition", "garden pest control|plant disease treatment|natural pesticide", "raised bed garden|container gardening|small space gardening", "crop growing experiment|new farming method|farming innovation"
+    ]},
+    "gaming": {"queries": [
+      "Minecraft hardcore|Minecraft survival|Minecraft let's play", "Minecraft 100 days|Minecraft 200 days|Minecraft 1000 days", "Minecraft challenge|Minecraft but|Minecraft impossible", "Minecraft modded|Minecraft modpack|Minecraft mods", "Minecraft experiment|Minecraft myth testing|Minecraft secrets", "Minecraft funny moments|Minecraft trolling|Minecraft chaos", "Minecraft building challenge|Minecraft mega build|Minecraft transformation", "Minecraft update|Minecraft new feature|Minecraft snapshot", "Minecraft speedrun|Minecraft randomizer|Minecraft one block", "Minecraft multiplayer|Minecraft SMP|Minecraft server", "Roblox gameplay|Roblox challenge|Roblox funny moments", "Fortnite gameplay|Fortnite challenge|Fortnite update", "GTA Online gameplay|GTA challenge|GTA funny moments", "Valorant gameplay|Valorant challenge|Valorant funny moments", "Call of Duty gameplay|Warzone gameplay|Call of Duty challenge", "new game gameplay|new game first impressions|first time playing", "indie game gameplay|new indie game|hidden gem game", "horror game gameplay|scary game gameplay|horror game funny moments", "survival game gameplay|open world survival|survival game challenge", "game challenge|gaming experiment|game myth testing", "game review|honest game review|is this game worth it", "funny gameplay|gaming fails|unexpected gaming moments", "boss fight|hardest boss|game difficulty challenge", "new game update|game update reaction|new season gameplay"
+    ]},
+    "ai_model_testing": {"queries": [
+      "new AI model test|AI model benchmark|AI model comparison", "I tested the new AI model|testing new AI|new AI first look", "ChatGPT test|ChatGPT new feature|ChatGPT experiment", "Claude test|Claude new model|Claude coding test", "Gemini test|Gemini new model|Gemini benchmark", "AI model vs AI model|AI comparison|AI benchmark comparison", "AI coding agent test|coding agent benchmark|AI coding comparison", "AI agent workflow|AI agent experiment|autonomous agent test", "local AI model|run AI locally|local LLM test", "open source AI model|open source LLM|new open source AI", "AI image model test|AI image generator comparison|image model benchmark", "AI video model test|AI video generator comparison|video model benchmark", "multimodal AI test|vision model test|AI vision benchmark", "AI voice model test|AI speech model|voice cloning test", "AI tool review|new AI tool|AI tool comparison", "AI automation experiment|AI workflow test|AI productivity test", "robotics experiment|humanoid robot test|robot technology", "new technology test|future technology test|technology experiment"
+    ]},
+    "tutorials": {"queries": [
+      "AI tutorial|how to use AI|AI beginner tutorial", "ChatGPT tutorial|Claude tutorial|Gemini tutorial", "AI workflow tutorial|AI automation tutorial|AI productivity workflow", "build an AI agent|AI agent tutorial|coding agent tutorial", "Python automation|Python tutorial project|automate with Python", "coding tutorial|programming project tutorial|build an app tutorial", "useful software tutorial|new software tutorial|productivity software", "self hosted tutorial|home server tutorial|Docker tutorial", "video editing tutorial|DaVinci Resolve tutorial|CapCut tutorial", "Blender tutorial|3D modeling tutorial|animation tutorial", "3D printing tutorial|CAD tutorial|Fusion 360 tutorial", "home automation tutorial|smart home project|Raspberry Pi project", "GitHub tutorial|VS Code tutorial|developer tools tutorial", "data analysis tutorial|Excel automation|spreadsheet automation", "no code automation|workflow automation|automation project"
+    ]},
+    "political_commentary": {"queries": [
+      "political commentary|political reaction|political rant", "political satire|politics roast|political comedy", "news commentary|current events commentary|news reaction", "current events explained|politics explained|policy explained", "government policy reaction|policy criticism|government reaction", "election commentary|campaign reaction|election analysis", "Congress reaction|Congress commentary|Washington politics", "White House reaction|president reaction|administration commentary", "media reaction|media criticism|news media commentary", "political hypocrisy|political scandal commentary|politics controversy", "this is ridiculous politics|politics is getting ridiculous|political absurdity", "late night political monologue|political monologue|political humor", "political debate reaction|speech reaction|interview reaction", "economy commentary|tariff commentary|government spending commentary", "geopolitics explained|foreign policy commentary|international politics reaction"
+    ]},
+    "experiments_challenges": {"queries": [
+      "I tried this for 30 days|I tested this for 30 days|30 day experiment", "100 days challenge|I did this for 100 days|100 day experiment", "weird experiment|crazy experiment|unexpected experiment", "what happens if|I wanted to see what happens|unexpected result", "I built|I made|I invented", "ridiculous invention|weird invention|useless invention", "testing viral hacks|viral hack test|does this hack work", "internet challenge|funny challenge|impossible challenge", "DIY experiment|maker experiment|engineering challenge", "science experiment|home experiment|experiment gone wrong", "before and after project|project transformation|extreme makeover project", "I automated|I programmed|I built a robot"
+    ]}
+  },
+  "topic_keywords": {
+    "gardening_farming": ["garden", "grow", "growing", "harvest", "farm", "crop", "soil", "plant", "tomato", "potato", "pepper", "cucumber", "strawberry", "hydroponic", "aquaponic", "greenhouse", "irrigation", "compost", "fertilizer", "pest", "agriculture", "tractor"],
+    "gaming": ["minecraft", "roblox", "fortnite", "gta", "valorant", "call of duty", "warzone", "gameplay", "game", "boss fight", "speedrun", "modded", "smp"],
+    "ai_model_testing": ["ai model", "llm", "chatgpt", "claude", "gemini", "benchmark", "coding agent", "ai agent", "multimodal", "robotics", "artificial intelligence", "local ai", "open source ai"],
+    "tutorials": ["tutorial", "how to", "step by step", "beginner", "guide", "setup", "build", "from scratch", "python", "docker", "blender", "github", "vs code", "automation"],
+    "political_commentary": ["politic", "government", "policy", "election", "congress", "white house", "president", "campaign", "tariff", "geopolitic", "commentary", "satire", "administration"],
+    "experiments_challenges": ["i tried", "i tested", "i built", "i made", "i invented", "experiment", "challenge", "what happens if", "30 days", "100 days", "unexpected", "invention"]
+  },
+  "topic_interest_phrases": {
+    "gardening_farming": ["harvest", "yield", "experiment", "before and after", "30 days", "100 days", "new method", "mistake", "pest control", "soil test", "irrigation", "hydroponics", "greenhouse", "technology", "farm equipment", "comparison", "results", "update"],
+    "gaming": ["hardcore", "survival", "100 days", "challenge", "but", "modded", "experiment", "myth", "funny moments", "first time", "new update", "boss fight", "impossible", "speedrun", "randomizer", "reaction", "chaos", "trolling", "fails"],
+    "ai_model_testing": ["i tested", "benchmark", "comparison", "vs", "first look", "experiment", "coding", "agent", "local", "open source", "actually useful", "review", "new model", "workflow", "automation", "reasoning", "multimodal", "robotics"],
+    "tutorials": ["tutorial", "step by step", "beginner", "complete guide", "how to", "setup", "workflow", "build", "project", "from scratch", "tips", "mistakes", "automation", "explained"],
+    "political_commentary": ["commentary", "reaction", "rant", "satire", "roast", "ridiculous", "explained", "criticism", "hypocrisy", "controversy", "monologue", "breakdown", "what happened", "why this matters", "fact check"],
+    "experiments_challenges": ["i tried", "i tested", "i built", "i made", "i invented", "30 days", "100 days", "experiment", "challenge", "what happens if", "unexpected", "ridiculous", "weird", "failed", "gone wrong", "actually works", "before and after"]
+  },
+  "topic_penalty_phrases": {
+    "gardening_farming": ["garden ambience", "relaxing garden", "flower music", "garden asmr", "stock footage", "compilation", "slideshow", "landscape design only"],
+    "gaming": ["game soundtrack", "ost", "theme song", "cutscene movie", "all cutscenes", "no commentary", "afk", "ambience", "loading screen", "game music", "character edit", "short clip"],
+    "ai_model_testing": ["ai news slideshow", "ai generated music", "ai art compilation", "motivational ai", "faceless ai video", "make money fast", "passive income", "ai shorts compilation"],
+    "tutorials": ["course sale", "make money fast", "passive income", "advertisement"],
+    "political_commentary": ["full speech", "press conference", "official briefing", "full debate", "live news", "breaking news live", "tv broadcast", "campaign ad", "political advertisement", "unedited speech", "hearing full video"]
+  },
+  "interest_phrases": {
+    "strong": ["i tried", "i tested", "i built", "i made", "i invented", "100 days", "30 days", "what happens if", "before and after"],
+    "medium": ["experiment", "challenge", "benchmark", "comparison", "vs", "review", "reaction", "explained", "tutorial", "first time", "new method", "unexpected result", "funny moments", "mistakes"],
+    "normal": ["update", "tips", "guide", "setup", "workflow", "project", "results", "harvest", "fails", "rant", "roast", "breakdown"]
+  },
+  "interest_phrase_weights": {"strong": 6, "medium": 4, "normal": 2},
+  "topic_interest_bonus_per_hit": 1.5,
+  "hard_exclude_phrases": ["official trailer", "official teaser", "official mv", "music video", "lyrics video", "full movie", "movie recap", "full performance", "closing ceremony", "full speech", "press conference", "official briefing", "live news", "breaking news live", "sports broadcast", "match highlights", "soundtrack", "ost", "ambience", "reuploaded"],
+  "boring_penalty_phrases": ["compilation", "top 10", "slideshow", "no commentary", "relaxing music", "asmr", "stock footage", "promo", "advertisement", "course sale", "make money fast", "passive income"],
+  "boring_penalty_per_hit": 5,
+  "language_markers": ["hindi", "español", "spanish", "latino", "doblado", "português", "dublado", "русский", "한국어", "日本語", "中文", "français", "deutsch", "italiano"],
+  "blacklist_channels": [],
+  "topic_relevance_min": 10,
+  "wildcard_interest_min": 12,
+  "tutorial_preferred_duration_seconds": [240, 1200],
+  "tutorial_localization_bonus": 10,
+  "topic_min_view_count": {"gardening_farming": 300, "gaming": 2000, "ai_model_testing": 500, "tutorials": 300, "political_commentary": 1000, "experiments_challenges": 1000, "wildcard_popular": 10000},
+  "topic_min_views_per_hour": {"gardening_farming": 30, "gaming": 200, "ai_model_testing": 50, "tutorials": 30, "political_commentary": 100, "experiments_challenges": 100, "wildcard_popular": 1000},
+  "final_score_weights": {"growth_score": 0.25, "interest_score_normalized": 0.20, "topic_relevance_normalized": 0.18, "engagement_score": 0.12, "freshness_score": 0.08, "localization_suitability_score": 0.08, "caption_score": 0.05, "source_diversity_score": 0.04},
+  "penalties": {"copyright_low": 0, "copyright_medium": 3, "copyright_high": 10, "copyright_very_high": 30, "language_medium": 2, "language_low": 10, "event_duplicate": 3},
+  "event_similarity": {"jaccard_threshold": 0.65, "sequence_threshold": 0.78, "stop_words": ["official", "reaction", "review", "trailer", "video", "new", "the", "a", "an", "to", "of", "and", "is", "in", "on", "with"]}
+}
