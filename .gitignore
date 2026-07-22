@@ -12,6 +12,7 @@ cookies.txt
 
 # Python virtual environments and caches
 .venv/
+.venv_stage3/
 venv/
 env/
 __pycache__/
@@ -36,6 +37,8 @@ translation/
 stage3_manifest.json
 **/stage3/[0-9][0-9]_*.json
 **/stage3/[0-9][0-9]_*.txt
+**/stage3/asr/
+**/stage3/source_comparison.json
 download_archive.txt
 *.part
 *.ytdl
@@ -100,3 +103,5 @@ node_modules/
 Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+models/

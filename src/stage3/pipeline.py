@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -10,8 +12,8 @@ from .manifest import hash_config, sha256_file, utc_now, write_manifest
 from .models import RawCue, SubtitleSegment, TranslationSegment, WordEvent
 from .rolling_caption_cleaner import build_word_events
 from .sentence_segmenter import segment_sentences
-from .source_selector import assess_source, select_source
-from .subtitle_writer import read_srt, write_json, write_srt
+from .source_selector import asr_quality_score, assess_source, find_manual_source, find_youtube_source, select_source
+from .subtitle_writer import atomic_write_json, read_srt, write_json, write_srt
 from .timeline_builder import rebuild_timeline
 from .translation_qc import estimate_translation, p0_quality, qc_text, translation_quality
 from .translator_deepseek import DeepSeekTranslator, TranslationError, load_deepseek_settings
@@ -97,6 +99,20 @@ class Stage3Pipeline:
             "api_usage": {},
             "p0_qc": {},
             "p1_qc": {},
+            "asr_status": "NOT_RUN",
+            "asr_source_audio": "",
+            "asr_source_audio_hash": "",
+            "asr_model_path": "",
+            "asr_device": "",
+            "asr_compute_type": "",
+            "asr_language_probability": 0.0,
+            "asr_segment_count": 0,
+            "asr_word_count": 0,
+            "asr_processing_seconds": 0.0,
+            "asr_realtime_factor": 0.0,
+            "asr_qc": {},
+            "selected_english_source": "",
+            "selected_english_path": "",
             "errors": [],
         }
         if self.manifest_path.is_file():
@@ -105,6 +121,10 @@ class Stage3Pipeline:
                 "selected_source", "source_hash", "p0_status", "p1_status", "started_at",
                 "clean_english_path", "clean_chinese_path", "segment_count", "translation_count",
                 "api_model", "api_usage", "p0_qc", "p1_qc", "errors",
+                "asr_status", "asr_source_audio", "asr_source_audio_hash", "asr_model_path",
+                "asr_device", "asr_compute_type", "asr_language_probability", "asr_segment_count",
+                "asr_word_count", "asr_processing_seconds", "asr_realtime_factor", "asr_qc",
+                "selected_english_source", "selected_english_path",
             ):
                 self.manifest[key] = previous.get(key, self.manifest[key])
 
@@ -112,13 +132,13 @@ class Stage3Pipeline:
         self.manifest["finished_at"] = utc_now()
         write_manifest(self.video_dir, self.manifest)
 
-    def run_p0(self) -> dict[str, Any]:
-        source = select_source(self.video_dir, self.config.get("source_priority"))
+    def run_p0(self, source_override: Path | None = None) -> dict[str, Any]:
+        source = source_override or select_source(self.video_dir, self.config.get("source_priority"))
         if source is None:
             assessment = {"selected_source": "", "route": "NO_ENGLISH_SUBTITLE", "status": "NO_ENGLISH_SUBTITLE"}
             write_json(self.stage3_dir / "01_source_assessment.json", assessment)
             self.manifest["p0_status"] = "NO_ENGLISH_SUBTITLE"
-            self.manifest["errors"].append("No English subtitle found; ASR fallback is intentionally disabled")
+            self.manifest["errors"].append("No English subtitle found")
             self._finish()
             return assessment
         before_hash = sha256_file(source)
@@ -162,6 +182,135 @@ class Stage3Pipeline:
         self._finish()
         return report
 
+    def _atomic_copy(self, source: Path, destination: Path) -> Path:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+        try:
+            temporary.write_bytes(source.read_bytes())
+            os.replace(temporary, destination)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return destination
+
+    def _update_asr_manifest(self, result: dict[str, Any]) -> None:
+        if result.get("status") == "NO_AUDIO_SOURCE":
+            self.manifest["asr_status"] = "NO_AUDIO_SOURCE"
+            return
+        info, qc = result.get("info", {}), result.get("qc", {})
+        self.manifest.update(
+            asr_status=qc.get("status", result.get("status", "FAILED")),
+            asr_source_audio=info.get("audio_path", ""),
+            asr_source_audio_hash=sha256_file(info["audio_path"]) if info.get("audio_path") else "",
+            asr_model_path=info.get("model_path", ""),
+            asr_device=info.get("device", ""),
+            asr_compute_type=info.get("compute_type", ""),
+            asr_language_probability=info.get("language_probability", 0.0),
+            asr_segment_count=info.get("segment_count", 0),
+            asr_word_count=info.get("word_count", 0),
+            asr_processing_seconds=info.get("processing_seconds", 0.0),
+            asr_realtime_factor=info.get("realtime_factor", 0.0),
+            asr_qc=qc,
+        )
+
+    def run_p2(
+        self,
+        *,
+        subtitle_source: str = "auto",
+        max_seconds: float | None = None,
+        force: bool = False,
+    ) -> dict[str, Any]:
+        from .asr_faster_whisper import AsrError, run_faster_whisper_asr
+
+        mode = subtitle_source.casefold()
+        if mode not in {"auto", "manual", "youtube", "whisper"}:
+            raise ValueError(f"Unsupported subtitle source: {subtitle_source}")
+        manual_path, youtube_path = find_manual_source(self.video_dir), find_youtube_source(self.video_dir)
+        manual_assessment = assess_source(manual_path) if manual_path else None
+        youtube_assessment = assess_source(youtube_path) if youtube_path else None
+        manual_score = manual_assessment["quality_score"] if manual_assessment else None
+        youtube_score = youtube_assessment["quality_score"] if youtube_assessment else None
+        selected_kind = ""
+        selection_reason = ""
+        if mode == "manual":
+            if not manual_path:
+                raise FileNotFoundError("No manual English subtitle was found")
+            selected_kind, selection_reason = "manual", "User explicitly requested manual subtitles"
+        elif mode == "youtube":
+            if not youtube_path:
+                raise FileNotFoundError("No YouTube automatic English subtitle was found")
+            selected_kind, selection_reason = "youtube", "User explicitly requested YouTube subtitles"
+        elif mode == "whisper":
+            selected_kind, selection_reason = "whisper", "User explicitly requested local faster-whisper"
+        elif manual_path and float(manual_score or 0) >= 70:
+            selected_kind, selection_reason = "manual", "Manual subtitle quality score is at least 70"
+        elif youtube_path and float(youtube_score or 0) >= 65:
+            selected_kind, selection_reason = "youtube", "YouTube subtitle quality score is at least 65"
+        else:
+            selected_kind, selection_reason = "whisper", "No qualifying English subtitle; local ASR fallback selected"
+
+        whisper_score: float | None = None
+        asr_checkpoint_reused = False
+        if selected_kind == "whisper":
+            if not self.config.get("asr_enabled", True):
+                raise AsrError("Local ASR is disabled in stage3_config.json")
+            asr_result = run_faster_whisper_asr(
+                self.video_dir,
+                self.config,
+                Path(__file__).resolve().parents[2],
+                max_seconds=max_seconds,
+                force=force,
+            )
+            self._update_asr_manifest(asr_result)
+            asr_checkpoint_reused = bool(asr_result.get("skipped"))
+            if asr_result.get("status") == "NO_AUDIO_SOURCE":
+                comparison = {
+                    "candidate_sources": [kind for kind, value in (("manual", manual_path), ("youtube", youtube_path)) if value],
+                    "manual_score": manual_score,
+                    "youtube_score": youtube_score,
+                    "whisper_score": None,
+                    "selected_source": "",
+                    "selection_reason": "No audio source was found",
+                    "user_override": mode != "auto",
+                    "compared_at": utc_now(),
+                }
+                atomic_write_json(self.stage3_dir / "source_comparison.json", comparison)
+                self._finish()
+                return {"status": "NO_AUDIO_SOURCE", "source_comparison": comparison}
+            whisper_score = asr_quality_score(asr_result.get("qc"))
+            selected_path = self.subtitle_dir / "en.whisper.clean.srt"
+            self.manifest["errors"] = [
+                error for error in self.manifest.get("errors", []) if error != "No English subtitle found"
+            ]
+        else:
+            selected_source_path = manual_path if selected_kind == "manual" else youtube_path
+            self.run_p0(source_override=selected_source_path)
+            selected_path = self.subtitle_dir / "en.clean.srt"
+            existing_asr_qc = self.stage3_dir / "asr" / "asr_qc.json"
+            if existing_asr_qc.is_file():
+                whisper_score = asr_quality_score(json.loads(existing_asr_qc.read_text(encoding="utf-8")))
+
+        unified_path = self._atomic_copy(selected_path, self.subtitle_dir / "en.selected.srt")
+        comparison = {
+            "candidate_sources": [
+                {"source": "manual", "path": str(manual_path) if manual_path else "", "score": manual_score},
+                {"source": "youtube", "path": str(youtube_path) if youtube_path else "", "score": youtube_score},
+                {"source": "whisper", "path": str(self.subtitle_dir / "en.whisper.clean.srt"), "score": whisper_score},
+            ],
+            "manual_score": manual_score,
+            "youtube_score": youtube_score,
+            "whisper_score": whisper_score,
+            "selected_source": selected_kind,
+            "selected_path": str(unified_path),
+            "selection_reason": selection_reason,
+            "user_override": mode != "auto",
+            "asr_checkpoint_reused": asr_checkpoint_reused,
+            "compared_at": utc_now(),
+        }
+        atomic_write_json(self.stage3_dir / "source_comparison.json", comparison)
+        self.manifest.update(selected_english_source=selected_kind, selected_english_path=str(unified_path))
+        self._finish()
+        return {"status": "SOURCE_SELECTED", "source_comparison": comparison, "selected_path": str(unified_path)}
+
     def _load_glossary(self) -> dict[str, Any]:
         path = self.translation_dir / "glossary.json"
         if not path.is_file():
@@ -175,7 +324,8 @@ class Stage3Pipeline:
         force: bool = False,
         polish_all: bool = False,
     ) -> dict[str, Any]:
-        clean_path = self.subtitle_dir / "en.clean.srt"
+        selected_path = self.subtitle_dir / "en.selected.srt"
+        clean_path = selected_path if selected_path.is_file() else self.subtitle_dir / "en.clean.srt"
         if not clean_path.is_file():
             raise FileNotFoundError("subtitles/en.clean.srt does not exist; clean the English subtitles before translating")
         source = read_srt(clean_path)

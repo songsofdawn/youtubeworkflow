@@ -20,9 +20,10 @@ class TranslationError(RuntimeError):
 def load_deepseek_settings() -> dict[str, str]:
     try:
         from dotenv import load_dotenv
-    except ImportError as exc:
-        raise TranslationError("Missing dependency: install requirements_stage3.txt") from exc
-    load_dotenv(PROJECT_ROOT / ".env", override=False)
+    except ImportError:
+        load_dotenv = None
+    if load_dotenv is not None:
+        load_dotenv(PROJECT_ROOT / ".env", override=False)
     return {
         "api_key": os.environ.get("DEEPSEEK_API_KEY", ""),
         "base_url": os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),

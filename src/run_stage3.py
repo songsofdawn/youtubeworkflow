@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from pathlib import Path
 
@@ -16,8 +17,10 @@ from src.stage3.pipeline import Stage3Pipeline
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run Stage 3 English reconstruction and contextual Chinese translation.")
     parser.add_argument("--video-dir", required=True, type=Path)
-    parser.add_argument("--steps", default="clean,translate", help="Comma-separated actions: clean, translate")
+    parser.add_argument("--steps", default="clean,translate", help="Comma-separated actions: clean, asr/select, translate")
     parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "config" / "stage3_config.json")
+    parser.add_argument("--subtitle-source", choices=("auto", "manual", "youtube", "whisper"), default="auto")
+    parser.add_argument("--asr-max-seconds", type=float, help="Only transcribe the first N seconds without modifying the source audio")
     parser.add_argument("--resume", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--polish-all", action="store_true")
@@ -32,7 +35,10 @@ def load_config(path: Path) -> dict:
         "source_priority", "sentence_gap_seconds", "min_segment_duration", "max_segment_duration",
         "minimum_gap_ms", "english_max_chars_per_line", "chinese_max_chars_per_line", "max_lines",
         "translation_batch_size", "context_before", "context_after", "temperature", "max_retries",
-        "chinese_chars_per_second", "tts_warning_ratio", "tts_rewrite_ratio",
+        "chinese_chars_per_second", "tts_warning_ratio", "tts_rewrite_ratio", "asr_enabled",
+        "asr_model_path", "asr_device", "asr_compute_type", "asr_language", "asr_beam_size",
+        "asr_vad_filter", "asr_word_timestamps", "asr_condition_on_previous_text",
+        "asr_min_silence_duration_ms", "asr_speech_pad_ms", "asr_temperature", "asr_log_progress",
     }
     missing = sorted(required - config.keys())
     if missing:
@@ -60,9 +66,19 @@ def run_video_actions(
     if "clean" in steps:
         cleaning = pipeline.run_p0()
         result["english_subtitle_cleaning"] = cleaning
-        if cleaning.get("status") == "NO_ENGLISH_SUBTITLE":
+        if cleaning.get("status") == "NO_ENGLISH_SUBTITLE" and "select" not in steps:
             result["status"] = "SKIPPED_NO_ENGLISH_SUBTITLE"
             result["chinese_translation"] = {"status": "SKIPPED", "reason": "No English subtitle was found"}
+            return result
+    if "select" in steps:
+        selection = pipeline.run_p2(
+            subtitle_source=args.subtitle_source,
+            max_seconds=args.asr_max_seconds,
+            force=args.force or not args.resume,
+        )
+        result["english_source_selection"] = selection
+        if selection.get("status") == "NO_AUDIO_SOURCE":
+            result["status"] = "SKIPPED_NO_AUDIO_SOURCE"
             return result
     if "translate" in steps:
         result["chinese_translation"] = pipeline.run_p1(
@@ -74,12 +90,16 @@ def run_video_actions(
 
 
 def main(argv: list[str] | None = None) -> int:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
     args = parse_args(argv)
     video_dir = args.video_dir if args.video_dir.is_absolute() else PROJECT_ROOT / args.video_dir
     try:
         config = load_config(args.config)
         requested_steps = [item.strip().casefold() for item in args.steps.split(",") if item.strip()]
-        aliases = {"clean": "clean", "translate": "translate", "p0": "clean", "p1": "translate"}
+        aliases = {
+            "clean": "clean", "translate": "translate", "asr": "select", "select": "select",
+            "p0": "clean", "p1": "translate", "p2": "select",
+        }
         invalid = sorted(set(requested_steps) - aliases.keys())
         if invalid:
             raise ValueError(f"Unknown actions: {invalid}")

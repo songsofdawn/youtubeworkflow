@@ -1,6 +1,7 @@
 @echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
+set "PYTHONUTF8=1"
 
 set "STAGE3_PYTHON=.venv\Scripts\python.exe"
 
@@ -43,13 +44,15 @@ echo 3. Translate cleaned English subtitles to Chinese ^(paid API, resume enable
 echo 4. Clean English subtitles, then translate to Chinese ^(paid API, resume enabled^)
 echo 5. Translate and polish every Chinese subtitle ^(paid API^)
 echo 6. Translate everything again from scratch ^(paid API, ignores checkpoints^)
-set /p "STAGE3_CHOICE=Choose 1-6: "
+echo 7. Test local GPU speech recognition on the first 30 seconds
+set /p "STAGE3_CHOICE=Choose 1-7: "
 if "%STAGE3_CHOICE%"=="1" set "RUN_MODE=clean"
 if "%STAGE3_CHOICE%"=="2" set "RUN_MODE=check"
 if "%STAGE3_CHOICE%"=="3" set "RUN_MODE=translate"
 if "%STAGE3_CHOICE%"=="4" set "RUN_MODE=full"
 if "%STAGE3_CHOICE%"=="5" set "RUN_MODE=polish"
 if "%STAGE3_CHOICE%"=="6" set "RUN_MODE=retranslate"
+if "%STAGE3_CHOICE%"=="7" set "RUN_MODE=asr30"
 
 :select_mode
 set "RUN_ARGS="
@@ -72,12 +75,30 @@ if /I "%RUN_MODE%"=="retranslate" (
   set "RUN_ARGS=--steps translate --force --allow-paid-api"
   set "PAID_MODE=1"
 )
+if /I "%RUN_MODE%"=="asr30" (
+  set "STAGE3_PYTHON=.venv_stage3\Scripts\python.exe"
+  set "RUN_ARGS=--steps asr --subtitle-source whisper --asr-max-seconds 30 --force"
+)
 
 if not defined RUN_ARGS (
   echo [ERROR] Invalid mode: %RUN_MODE%
-  echo Valid modes: clean, check, translate, full, polish, retranslate
+  echo Valid modes: clean, check, translate, full, polish, retranslate, asr30
   pause
   exit /b 1
+)
+
+if /I "%RUN_MODE%"=="asr30" (
+  if not exist "%STAGE3_PYTHON%" (
+    echo [ERROR] Missing .venv_stage3\Scripts\python.exe
+    pause
+    exit /b 1
+  )
+  "%STAGE3_PYTHON%" -c "import faster_whisper, ctranslate2" >nul 2>&1
+  if errorlevel 1 (
+    echo [ERROR] Missing local speech recognition dependencies in .venv_stage3.
+    pause
+    exit /b 1
+  )
 )
 
 if not "%PAID_MODE%"=="1" goto paid_mode_checked

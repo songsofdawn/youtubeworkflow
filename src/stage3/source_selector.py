@@ -9,6 +9,8 @@ from .youtube_vtt_parser import normalize_for_compare, parse_youtube_vtt
 
 
 DEFAULT_PRIORITY = ["en.manual.vtt", "en.manual.srt", "en.auto.vtt", "en.auto.srt"]
+MANUAL_PRIORITY = ["en.manual.vtt", "en.manual.srt"]
+YOUTUBE_PRIORITY = ["en.auto.vtt", "en.auto.srt"]
 
 
 def select_source(video_dir: Path | str, priority: list[str] | None = None) -> Path | None:
@@ -18,6 +20,29 @@ def select_source(video_dir: Path | str, priority: list[str] | None = None) -> P
         if path.is_file() and path.stat().st_size > 0:
             return path
     return None
+
+
+def find_manual_source(video_dir: Path | str) -> Path | None:
+    return select_source(video_dir, MANUAL_PRIORITY)
+
+
+def find_youtube_source(video_dir: Path | str) -> Path | None:
+    return select_source(video_dir, YOUTUBE_PRIORITY)
+
+
+def asr_quality_score(report: dict[str, Any] | None) -> float | None:
+    if not report or not int(report.get("segment_count", 0)):
+        return None
+    score = 100.0
+    score -= int(report.get("empty_segments", 0)) * 5
+    score -= int(report.get("invalid_timestamps", 0)) * 10
+    score -= int(report.get("overlaps", 0)) * 8
+    score -= int(report.get("adjacent_duplicates", 0)) * 5
+    score -= min(20.0, float(report.get("word_timestamp_missing_rate", 0.0)) * 20)
+    probability = float(report.get("average_word_probability", 0.0) or 0.0)
+    if probability:
+        score -= max(0.0, 0.7 - probability) * 30
+    return round(max(0.0, score), 2)
 
 
 def assess_source(path: Path) -> dict[str, Any]:

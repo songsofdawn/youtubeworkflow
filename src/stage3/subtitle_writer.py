@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import uuid
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -64,6 +66,37 @@ def write_json(path: Path | str, value: Any) -> Path:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return destination
+
+
+def atomic_write_json(path: Path | str, value: Any) -> Path:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+    try:
+        temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        os.replace(temporary, destination)
+    finally:
+        temporary.unlink(missing_ok=True)
+    return destination
+
+
+def atomic_write_srt(
+    path: Path | str,
+    segments: Iterable[SubtitleSegment | TranslationSegment],
+    *,
+    translated: bool = False,
+    width: int = 42,
+    max_lines: int = 2,
+) -> Path:
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+    try:
+        write_srt(temporary, segments, translated=translated, width=width, max_lines=max_lines)
+        os.replace(temporary, destination)
+    finally:
+        temporary.unlink(missing_ok=True)
     return destination
 
 

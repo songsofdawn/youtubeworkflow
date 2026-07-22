@@ -24,5 +24,18 @@
   "tts_warning_ratio": 1.15,
   "tts_rewrite_ratio": 1.25,
   "input_price_per_million": null,
-  "output_price_per_million": null
+  "output_price_per_million": null,
+  "asr_enabled": true,
+  "asr_model_path": "models/faster-whisper-large-v3",
+  "asr_device": "cuda",
+  "asr_compute_type": "float16",
+  "asr_language": "en",
+  "asr_beam_size": 5,
+  "asr_vad_filter": true,
+  "asr_word_timestamps": true,
+  "asr_condition_on_previous_text": false,
+  "asr_min_silence_duration_ms": 500,
+  "asr_speech_pad_ms": 200,
+  "asr_temperature": 0.0,
+  "asr_log_progress": true
 }
