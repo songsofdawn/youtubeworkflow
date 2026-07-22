@@ -254,6 +254,8 @@ Video task directory:
 | 5 | 重新翻译并润色全部中文字幕 | 是 |
 | 6 | 忽略翻译断点，从头重新翻译 | 是 |
 | 7 | 使用本地 GPU 识别每个任务的前 30 秒 | 否 |
+| 8 | 自动评估并选择英文字幕；现有字幕低分时完整运行 Whisper | 否 |
+| 9 | 自动评估并选择英文字幕；必要时运行 Whisper，然后翻译中文 | 是 |
 
 所有付费操作都会显示提示，并且只有输入 `YES` 才会开始调用 DeepSeek API。
 
@@ -267,7 +269,16 @@ run_stage3.bat "downloads\candidates\2026-07-21" full
 run_stage3.bat "downloads\candidates\2026-07-21" polish
 run_stage3.bat "downloads\candidates\2026-07-21" retranslate
 run_stage3.bat "单个视频任务目录" asr30
+run_stage3.bat "视频任务目录或日期目录" autoselect
+run_stage3.bat "视频任务目录或日期目录" autotranslate
 ```
+
+推荐的一键入口：
+
+- 只需要最终英文字幕：选择 `8`；
+- 需要最终英文字幕并继续翻译中文：选择 `9`，然后输入 `YES` 确认付费调用。
+
+选项 `8` 实际执行 `--steps select --subtitle-source auto`。选项 `9` 先执行同一个自动选源命令；成功后显示选源摘要，再要求输入 `YES`，最后执行 `--steps translate --allow-paid-api`。两者都使用 `.venv_stage3`，不会先错误执行一次独立英文清洗；选源流程会自行清洗最终选中的人工字幕或 YouTube 字幕。
 
 ## 本地 GPU 英文语音识别
 

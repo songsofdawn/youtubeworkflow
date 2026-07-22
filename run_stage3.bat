@@ -1,23 +1,12 @@
 @echo off
 setlocal EnableExtensions
+chcp 65001 >nul
 cd /d "%~dp0"
 set "PYTHONUTF8=1"
 
 set "STAGE3_PYTHON=.venv\Scripts\python.exe"
-
-if not exist "%STAGE3_PYTHON%" (
-  echo [ERROR] Missing .venv\Scripts\python.exe
-  pause
-  exit /b 1
-)
 if not exist "config\stage3_config.json" (
   echo [ERROR] Missing config\stage3_config.json
-  pause
-  exit /b 1
-)
-"%STAGE3_PYTHON%" -c "import openai, dotenv" >nul 2>&1
-if errorlevel 1 (
-  echo [ERROR] Missing Stage 3 dependencies. Run: .venv\Scripts\python.exe -m pip install -r requirements_stage3.txt
   pause
   exit /b 1
 )
@@ -40,12 +29,14 @@ if defined RUN_MODE goto select_mode
 
 echo 1. Clean and rebuild English subtitles
 echo 2. Check translation settings and batch count ^(no API charge^)
-echo 3. Translate cleaned English subtitles to Chinese ^(paid API, resume enabled^)
+echo 3. Translate the selected English subtitles to Chinese ^(paid API, resume enabled^)
 echo 4. Clean English subtitles, then translate to Chinese ^(paid API, resume enabled^)
 echo 5. Translate and polish every Chinese subtitle ^(paid API^)
 echo 6. Translate everything again from scratch ^(paid API, ignores checkpoints^)
-echo 7. Test local GPU speech recognition on the first 30 seconds
-set /p "STAGE3_CHOICE=Choose 1-7: "
+echo 7. Test local GPU speech recognition on the first 30 seconds ^(no translation API^)
+echo 8. Automatically select English subtitles; use full Whisper only when needed ^(no translation API^)
+echo 9. Automatically select English subtitles, then translate to Chinese ^(paid API^)
+set /p "STAGE3_CHOICE=Choose 1-9: "
 if "%STAGE3_CHOICE%"=="1" set "RUN_MODE=clean"
 if "%STAGE3_CHOICE%"=="2" set "RUN_MODE=check"
 if "%STAGE3_CHOICE%"=="3" set "RUN_MODE=translate"
@@ -53,10 +44,14 @@ if "%STAGE3_CHOICE%"=="4" set "RUN_MODE=full"
 if "%STAGE3_CHOICE%"=="5" set "RUN_MODE=polish"
 if "%STAGE3_CHOICE%"=="6" set "RUN_MODE=retranslate"
 if "%STAGE3_CHOICE%"=="7" set "RUN_MODE=asr30"
+if "%STAGE3_CHOICE%"=="8" set "RUN_MODE=autoselect"
+if "%STAGE3_CHOICE%"=="9" set "RUN_MODE=autotranslate"
 
 :select_mode
 set "RUN_ARGS="
 set "PAID_MODE=0"
+set "NEEDS_WHISPER=0"
+set "TRANSLATE_AFTER_SELECT=0"
 if /I "%RUN_MODE%"=="clean" set "RUN_ARGS=--steps clean --resume"
 if /I "%RUN_MODE%"=="check" set "RUN_ARGS=--steps translate --resume"
 if /I "%RUN_MODE%"=="translate" (
@@ -78,31 +73,64 @@ if /I "%RUN_MODE%"=="retranslate" (
 if /I "%RUN_MODE%"=="asr30" (
   set "STAGE3_PYTHON=.venv_stage3\Scripts\python.exe"
   set "RUN_ARGS=--steps asr --subtitle-source whisper --asr-max-seconds 30 --force"
+  set "NEEDS_WHISPER=1"
+)
+if /I "%RUN_MODE%"=="autoselect" (
+  set "STAGE3_PYTHON=.venv_stage3\Scripts\python.exe"
+  set "RUN_ARGS=--steps select --subtitle-source auto --resume"
+  set "NEEDS_WHISPER=1"
+)
+if /I "%RUN_MODE%"=="autotranslate" (
+  set "STAGE3_PYTHON=.venv_stage3\Scripts\python.exe"
+  set "RUN_ARGS=--steps select --subtitle-source auto --resume"
+  set "PAID_MODE=1"
+  set "NEEDS_WHISPER=1"
+  set "TRANSLATE_AFTER_SELECT=1"
 )
 
 if not defined RUN_ARGS (
   echo [ERROR] Invalid mode: %RUN_MODE%
-  echo Valid modes: clean, check, translate, full, polish, retranslate, asr30
+  echo Valid modes: clean, check, translate, full, polish, retranslate, asr30, autoselect, autotranslate
   pause
   exit /b 1
 )
 
-if /I "%RUN_MODE%"=="asr30" (
-  if not exist "%STAGE3_PYTHON%" (
-    echo [ERROR] Missing .venv_stage3\Scripts\python.exe
-    pause
-    exit /b 1
-  )
+if not exist "%STAGE3_PYTHON%" (
+  echo [ERROR] Missing Python environment: %STAGE3_PYTHON%
+  pause
+  exit /b 1
+)
+
+if "%NEEDS_WHISPER%"=="1" (
   "%STAGE3_PYTHON%" -c "import faster_whisper, ctranslate2" >nul 2>&1
   if errorlevel 1 (
     echo [ERROR] Missing local speech recognition dependencies in .venv_stage3.
     pause
     exit /b 1
   )
+ ) else (
+  "%STAGE3_PYTHON%" -c "import openai, dotenv" >nul 2>&1
+  if errorlevel 1 (
+    echo [ERROR] Missing Stage 3 dependencies. Run: .venv\Scripts\python.exe -m pip install -r requirements_stage3.txt
+    pause
+    exit /b 1
+  )
 )
 
+if not "%TRANSLATE_AFTER_SELECT%"=="1" goto auto_selection_finished
+echo [INFO] Video directory: %VIDEO_DIR%
+echo [INFO] Automatically evaluating English subtitle sources...
+"%STAGE3_PYTHON%" src\run_stage3.py --video-dir "%VIDEO_DIR%" %RUN_ARGS%
+if errorlevel 1 (
+  echo [ERROR] Automatic English subtitle selection failed. Translation was not started.
+  pause
+  exit /b 1
+)
+set "RUN_ARGS=--steps translate --resume --allow-paid-api"
+
+:auto_selection_finished
 if not "%PAID_MODE%"=="1" goto paid_mode_checked
-"%STAGE3_PYTHON%" -c "from src.stage3.translator_deepseek import load_deepseek_settings; raise SystemExit(0 if load_deepseek_settings()['api_key'] else 1)" >nul 2>&1
+"%STAGE3_PYTHON%" -c "import openai, dotenv; from src.stage3.translator_deepseek import load_deepseek_settings; raise SystemExit(0 if load_deepseek_settings()['api_key'] else 1)" >nul 2>&1
 if errorlevel 1 (
   echo [ERROR] DEEPSEEK_API_KEY is missing. Add it to the project .env file.
   pause

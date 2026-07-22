@@ -33,6 +33,7 @@ def load_config(path: Path) -> dict:
     config = json.loads(resolved.read_text(encoding="utf-8"))
     required = {
         "source_priority", "sentence_gap_seconds", "min_segment_duration", "max_segment_duration",
+        "manual_subtitle_quality_threshold", "youtube_subtitle_quality_threshold",
         "minimum_gap_ms", "english_max_chars_per_line", "chinese_max_chars_per_line", "max_lines",
         "translation_batch_size", "context_before", "context_after", "temperature", "max_retries",
         "chinese_chars_per_second", "tts_warning_ratio", "tts_rewrite_ratio", "asr_enabled",
@@ -43,6 +44,13 @@ def load_config(path: Path) -> dict:
     missing = sorted(required - config.keys())
     if missing:
         raise ValueError(f"stage3 config missing keys: {missing}")
+    for key in ("manual_subtitle_quality_threshold", "youtube_subtitle_quality_threshold"):
+        try:
+            threshold = float(config[key])
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"stage3 config value must be numeric: {key}") from exc
+        if not 0 <= threshold <= 100:
+            raise ValueError(f"stage3 config value must be between 0 and 100: {key}")
     return config
 
 
@@ -53,6 +61,50 @@ def discover_video_dirs(input_dir: Path) -> list[Path]:
         return [resolved]
     tasks = sorted({manifest.parent.resolve() for manifest in resolved.rglob("download_manifest.json")})
     return tasks
+
+
+def _source_candidate(comparison: dict[str, object], source: str) -> dict[str, object]:
+    candidates = comparison.get("candidate_sources", [])
+    if isinstance(candidates, list):
+        for candidate in candidates:
+            if isinstance(candidate, dict) and candidate.get("source") == source:
+                return candidate
+    return {}
+
+
+def _display_score(value: object) -> str:
+    if value is None or value == "":
+        return "无"
+    try:
+        return f"{float(value):.2f}"
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def print_source_selection_summary(video_dir: Path, selection: dict[str, object]) -> None:
+    comparison = selection.get("source_comparison", {})
+    if not isinstance(comparison, dict):
+        return
+    manual = _source_candidate(comparison, "manual")
+    youtube = _source_candidate(comparison, "youtube")
+    source_labels = {"manual": "人工字幕", "youtube": "YouTube 字幕", "whisper": "Whisper"}
+    selected_source = str(comparison.get("selected_source") or "")
+    selected_path = str(comparison.get("selected_path") or selection.get("selected_path") or "")
+    print("\n========== 英文字幕选择结果 ==========", flush=True)
+    print(f"人工字幕路径：{manual.get('path') or '未找到'}", flush=True)
+    print(f"人工字幕评分：{_display_score(manual.get('score', comparison.get('manual_score')))}", flush=True)
+    print(f"YouTube 字幕路径：{youtube.get('path') or '未找到'}", flush=True)
+    print(f"YouTube 字幕评分：{_display_score(youtube.get('score', comparison.get('youtube_score')))}", flush=True)
+    whisper_state = "是" if comparison.get("whisper_started") else "否"
+    if comparison.get("asr_checkpoint_reused"):
+        whisper_state = "否（复用现有检查点）"
+    print(f"是否启动 Whisper：{whisper_state}", flush=True)
+    print(f"Whisper 评分：{_display_score(comparison.get('whisper_score'))}", flush=True)
+    print(f"最终字幕来源：{source_labels.get(selected_source, '未选择')}", flush=True)
+    print(f"选择原因：{comparison.get('selection_reason') or '无'}", flush=True)
+    print(f"en.selected.srt 路径：{selected_path or '未生成'}", flush=True)
+    print(f"source_comparison.json 路径：{video_dir / 'stage3' / 'source_comparison.json'}", flush=True)
+    print("======================================\n", flush=True)
 
 
 def run_video_actions(
@@ -77,6 +129,7 @@ def run_video_actions(
             force=args.force or not args.resume,
         )
         result["english_source_selection"] = selection
+        print_source_selection_summary(video_dir, selection)
         if selection.get("status") == "NO_AUDIO_SOURCE":
             result["status"] = "SKIPPED_NO_AUDIO_SOURCE"
             return result

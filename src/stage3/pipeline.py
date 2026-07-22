@@ -229,26 +229,35 @@ class Stage3Pipeline:
         youtube_assessment = assess_source(youtube_path) if youtube_path else None
         manual_score = manual_assessment["quality_score"] if manual_assessment else None
         youtube_score = youtube_assessment["quality_score"] if youtube_assessment else None
+        manual_threshold = float(self.config["manual_subtitle_quality_threshold"])
+        youtube_threshold = float(self.config["youtube_subtitle_quality_threshold"])
         selected_kind = ""
         selection_reason = ""
         if mode == "manual":
             if not manual_path:
                 raise FileNotFoundError("No manual English subtitle was found")
-            selected_kind, selection_reason = "manual", "User explicitly requested manual subtitles"
+            selected_kind, selection_reason = "manual", "用户明确指定使用人工英文字幕"
         elif mode == "youtube":
             if not youtube_path:
                 raise FileNotFoundError("No YouTube automatic English subtitle was found")
-            selected_kind, selection_reason = "youtube", "User explicitly requested YouTube subtitles"
+            selected_kind, selection_reason = "youtube", "用户明确指定使用 YouTube 英文字幕"
         elif mode == "whisper":
-            selected_kind, selection_reason = "whisper", "User explicitly requested local faster-whisper"
-        elif manual_path and float(manual_score or 0) >= 70:
-            selected_kind, selection_reason = "manual", "Manual subtitle quality score is at least 70"
-        elif youtube_path and float(youtube_score or 0) >= 65:
-            selected_kind, selection_reason = "youtube", "YouTube subtitle quality score is at least 65"
+            selected_kind, selection_reason = "whisper", "用户明确指定使用本地 Whisper"
+        elif manual_path and float(manual_score or 0) >= manual_threshold:
+            selected_kind = "manual"
+            selection_reason = f"人工字幕评分 {float(manual_score):.2f} 达到阈值 {manual_threshold:g}"
+        elif youtube_path and float(youtube_score or 0) >= youtube_threshold:
+            selected_kind = "youtube"
+            selection_reason = f"YouTube 字幕评分 {float(youtube_score):.2f} 达到阈值 {youtube_threshold:g}"
         else:
-            selected_kind, selection_reason = "whisper", "No qualifying English subtitle; local ASR fallback selected"
+            selected_kind = "whisper"
+            selection_reason = (
+                f"人工字幕未达到 {manual_threshold:g} 且 YouTube 字幕未达到 "
+                f"{youtube_threshold:g}，回退到本地 Whisper"
+            )
 
         whisper_score: float | None = None
+        whisper_started = False
         asr_checkpoint_reused = False
         if selected_kind == "whisper":
             if not self.config.get("asr_enabled", True):
@@ -262,15 +271,25 @@ class Stage3Pipeline:
             )
             self._update_asr_manifest(asr_result)
             asr_checkpoint_reused = bool(asr_result.get("skipped"))
+            whisper_started = asr_result.get("status") != "NO_AUDIO_SOURCE" and not asr_checkpoint_reused
             if asr_result.get("status") == "NO_AUDIO_SOURCE":
                 comparison = {
-                    "candidate_sources": [kind for kind, value in (("manual", manual_path), ("youtube", youtube_path)) if value],
+                    "candidate_sources": [
+                        {"source": "manual", "path": str(manual_path) if manual_path else "", "score": manual_score},
+                        {"source": "youtube", "path": str(youtube_path) if youtube_path else "", "score": youtube_score},
+                        {"source": "whisper", "path": str(self.subtitle_dir / "en.whisper.clean.srt"), "score": None},
+                    ],
                     "manual_score": manual_score,
                     "youtube_score": youtube_score,
                     "whisper_score": None,
                     "selected_source": "",
-                    "selection_reason": "No audio source was found",
+                    "selected_path": "",
+                    "selection_reason": "现有英文字幕均未达标，但没有找到可供 Whisper 识别的音频或视频",
+                    "manual_subtitle_quality_threshold": manual_threshold,
+                    "youtube_subtitle_quality_threshold": youtube_threshold,
+                    "whisper_started": whisper_started,
                     "user_override": mode != "auto",
+                    "asr_checkpoint_reused": False,
                     "compared_at": utc_now(),
                 }
                 atomic_write_json(self.stage3_dir / "source_comparison.json", comparison)
@@ -302,6 +321,9 @@ class Stage3Pipeline:
             "selected_source": selected_kind,
             "selected_path": str(unified_path),
             "selection_reason": selection_reason,
+            "manual_subtitle_quality_threshold": manual_threshold,
+            "youtube_subtitle_quality_threshold": youtube_threshold,
+            "whisper_started": whisper_started,
             "user_override": mode != "auto",
             "asr_checkpoint_reused": asr_checkpoint_reused,
             "compared_at": utc_now(),
