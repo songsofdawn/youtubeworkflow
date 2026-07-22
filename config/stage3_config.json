@@ -1,0 +1,28 @@
+{
+  "source_priority": [
+    "en.manual.vtt",
+    "en.manual.srt",
+    "en.auto.vtt",
+    "en.auto.srt"
+  ],
+  "sentence_gap_seconds": 0.6,
+  "min_segment_duration": 0.8,
+  "max_segment_duration": 7.0,
+  "minimum_gap_ms": 20,
+  "english_max_chars_per_line": 42,
+  "chinese_max_chars_per_line": 20,
+  "max_lines": 2,
+  "english_max_cps": 20,
+  "chinese_max_cps": 12,
+  "translation_batch_size": 24,
+  "context_before": 3,
+  "context_after": 2,
+  "temperature": 0.2,
+  "max_retries": 3,
+  "retry_delays_seconds": [2, 4, 8],
+  "chinese_chars_per_second": 4.5,
+  "tts_warning_ratio": 1.15,
+  "tts_rewrite_ratio": 1.25,
+  "input_price_per_million": null,
+  "output_price_per_million": null
+}

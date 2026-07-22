@@ -32,6 +32,10 @@ work/
 output/
 audio/
 subtitles/
+translation/
+stage3_manifest.json
+**/stage3/[0-9][0-9]_*.json
+**/stage3/[0-9][0-9]_*.txt
 download_archive.txt
 *.part
 *.ytdl

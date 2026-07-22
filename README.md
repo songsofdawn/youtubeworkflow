@@ -1,6 +1,6 @@
 # YouTube Workflow
 
-本项目包含两个彼此隔离的阶段：阶段一发现候选视频并生成人工审核清单；阶段二只下载已通过版权审核的候选，或下载用户明确确认拥有使用权的单个 URL。阶段二不会修改阶段一生成的 JSON 或 CSV。
+本项目覆盖候选视频发现、版权审核、视频下载、英文滚动字幕清洗和 DeepSeek 中文翻译。下载流程不会修改候选发现流程生成的 JSON 或 CSV；字幕本地化流程也不会覆盖 YouTube 原始字幕。
 
 ## 阶段一：候选发现与审核
 
@@ -74,6 +74,44 @@ run_stage2_download_selected.bat
 ```
 
 下载设置见 `config\download_config.json`，默认最高 1080p、重试 10 次、保留 `.part` 以支持断点续传。
+
+## 英文字幕清洗与 DeepSeek 中文翻译
+
+安装依赖：
+
+```bat
+.venv\Scripts\python.exe -m pip install -r requirements_stage3.txt
+```
+
+在本地 `.env` 中配置以下变量。`.env` 已被 Git 忽略，不要把真实密钥写入源码或提交到仓库：
+
+```dotenv
+DEEPSEEK_API_KEY=
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-v4-flash
+```
+
+可把单个视频任务目录或包含多个视频的日期目录拖到 `run_stage3.bat`，也可双击 BAT 后输入目录。菜单提供以下操作：
+
+1. 清洗并重建英文字幕；
+2. 检查翻译配置和预计批次数，不调用 API；
+3. 翻译已经清洗的英文字幕，支持断点续跑；
+4. 先清洗英文字幕，再翻译成中文；
+5. 翻译并润色全部中文字幕；
+6. 忽略 checkpoint，从头重新翻译。
+
+命令行也可以直接指定操作：
+
+```bat
+run_stage3.bat "downloads\candidates\2026-07-21" clean
+run_stage3.bat "downloads\candidates\2026-07-21" check
+run_stage3.bat "downloads\candidates\2026-07-21" translate
+run_stage3.bat "downloads\candidates\2026-07-21" full
+run_stage3.bat "downloads\candidates\2026-07-21" polish
+run_stage3.bat "downloads\candidates\2026-07-21" retranslate
+```
+
+所有付费操作都要求再次输入 `YES`。日期目录会自动发现其下的全部视频任务；单个视频失败不会中断其他视频，没有英文字幕的任务会被跳过。最终推荐使用 `subtitles\en.clean.srt` 和 `subtitles\zh.clean.srt`。翻译用量、检查结果和断点文件分别保存在 `translation\api_usage.json`、`translation\subtitle_qc.json` 和 `translation\checkpoints\`。
 
 ## 测试
 

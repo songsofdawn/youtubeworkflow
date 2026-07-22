@@ -1,0 +1,13 @@
+WEBVTT
+
+NOTE generated fixture
+ignored
+
+00:00:00.000 --> 00:00:01.000
+<c>Hello</c>
+
+00:00:00.010 --> 00:00:01.200
+<00:00:00.100><c>Hello</c> <00:00:00.500><c>world</c>
+
+00:00:01.200 --> 00:00:02.000
+world &amp; friends.
