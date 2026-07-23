@@ -23,6 +23,9 @@ class Stage3EntrypointTests(TestCase):
         )
         self.assertIn('set "TRANSLATE_AFTER_SELECT=1"', content)
         self.assertIn('set "RUN_ARGS=--steps translate --resume --allow-paid-api"', content)
+        self.assertIn('set "SELECTION_EXIT_CODE=%ERRORLEVEL%"', content)
+        self.assertIn("Paid confirmation will still be shown", content)
+        self.assertNotIn("Translation was not started", content)
         self.assertGreaterEqual(content.count('set "STAGE3_PYTHON=.venv_stage3\\Scripts\\python.exe"'), 3)
         self.assertIn('set "PAID_MODE=1"', content)
 

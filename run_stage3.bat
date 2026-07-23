@@ -138,10 +138,10 @@ if not "%TRANSLATE_AFTER_SELECT%"=="1" goto auto_selection_finished
 echo [INFO] Video directory: %VIDEO_DIR%
 echo [INFO] Automatically evaluating English subtitle sources...
 "%STAGE3_PYTHON%" src\run_stage3.py --video-dir "%VIDEO_DIR%" %RUN_ARGS%
-if errorlevel 1 (
-  echo [ERROR] Automatic English subtitle selection failed. Translation was not started.
-  pause
-  exit /b 1
+set "SELECTION_EXIT_CODE=%ERRORLEVEL%"
+if not "%SELECTION_EXIT_CODE%"=="0" (
+  echo [WARNING] Some videos could not produce a usable English subtitle.
+  echo [WARNING] Paid confirmation will still be shown, and ready videos can continue translating.
 )
 set "RUN_ARGS=--steps translate --resume --allow-paid-api"
 
