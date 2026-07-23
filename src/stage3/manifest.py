@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .subtitle_writer import write_json
+from .subtitle_writer import atomic_write_json
 
 
 def utc_now() -> str:
@@ -27,4 +27,4 @@ def hash_config(config: dict[str, Any]) -> str:
 
 
 def write_manifest(video_dir: Path | str, manifest: dict[str, Any]) -> Path:
-    return write_json(Path(video_dir) / "stage3_manifest.json", manifest)
+    return atomic_write_json(Path(video_dir) / "stage3_manifest.json", manifest)

@@ -3,12 +3,18 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+import hashlib
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase, mock
 
 from src.stage3.models import SubtitleSegment
-from src.stage3.translator_deepseek import DeepSeekTranslator, build_messages, load_deepseek_settings
+from src.stage3.translator_deepseek import (
+    PROMPT_VERSION,
+    DeepSeekTranslator,
+    build_messages,
+    load_deepseek_settings,
+)
 
 
 CONFIG = {
@@ -69,9 +75,26 @@ class TranslatorTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             checkpoint = Path(directory) / "checkpoints" / "batch_0001.json"
             checkpoint.parent.mkdir()
-            checkpoint.write_text(json.dumps({"status": "success", "segment_ids": [1], "translations": {"1": "一"}}), encoding="utf-8")
             client = mock.Mock()
             item = SubtitleSegment(1, 0, 1, "one")
-            result = DeepSeekTranslator(CONFIG, directory, client=client).translate_batch(1, [item], [item], {}, {})
+            source_payload = [{"id": 1, "start": 0, "end": 1, "text": "one"}]
+            with mock.patch.dict(os.environ, {"DEEPSEEK_MODEL": "checkpoint-model"}, clear=False):
+                checkpoint.write_text(
+                    json.dumps(
+                        {
+                            "status": "success",
+                            "segment_ids": [1],
+                            "translations": {"1": "一"},
+                            "source_hash": hashlib.sha256(
+                                json.dumps(source_payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+                            ).hexdigest(),
+                            "prompt_version": PROMPT_VERSION,
+                            "glossary_hash": hashlib.sha256(b"{}").hexdigest(),
+                            "model": "checkpoint-model",
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                result = DeepSeekTranslator(CONFIG, directory, client=client).translate_batch(1, [item], [item], {}, {})
             self.assertEqual(result, {1: "一"})
             client.chat.completions.create.assert_not_called()

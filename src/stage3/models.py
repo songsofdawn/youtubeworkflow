@@ -11,6 +11,12 @@ class WordEvent:
     end: float
     first_seen_at: float
     source_cue_id: int
+    probability: float | None = None
+    source_segment_id: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.source_segment_id is None:
+            self.source_segment_id = self.source_cue_id
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -39,6 +45,14 @@ class SubtitleSegment:
     words: list[WordEvent] = field(default_factory=list)
     confidence: float | None = None
     warnings: list[str] = field(default_factory=list)
+    source: str = ""
+    source_segment_ids: list[int] = field(default_factory=list)
+    qc_flags: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not self.source_segment_ids:
+            self.source_segment_ids = list(self.source_cue_ids)
 
     @property
     def duration(self) -> float:
@@ -59,6 +73,8 @@ class TranslationSegment:
     qc_flags: list[str] = field(default_factory=list)
     estimated_tts_duration: float = 0.0
     duration_ratio: float = 0.0
+    repaired: bool = False
+    manually_reviewed: bool = False
 
     @property
     def source_duration(self) -> float:

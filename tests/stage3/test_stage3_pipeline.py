@@ -16,6 +16,17 @@ ROOT = Path(__file__).resolve().parents[2]
 CONFIG = load_config(ROOT / "config" / "stage3_config.json")
 
 
+def prepare_selected(video: Path, content: str) -> Path:
+    subtitles = video / "subtitles"
+    subtitles.mkdir(parents=True, exist_ok=True)
+    selected = subtitles / "en.selected.srt"
+    selected.write_text(content, encoding="utf-8")
+    selection = video / "stage3" / "selection"
+    selection.mkdir(parents=True, exist_ok=True)
+    (selection / "selection_report.json").write_text("{}", encoding="utf-8")
+    return selected
+
+
 class Stage3PipelineTests(TestCase):
     def test_batch_directory_discovers_downloaded_video_tasks(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -33,9 +44,7 @@ class Stage3PipelineTests(TestCase):
             for task in (first, second):
                 (task / "subtitles").mkdir(parents=True)
                 (task / "download_manifest.json").write_text("{}", encoding="utf-8")
-            (first / "subtitles" / "en.clean.srt").write_text(
-                "1\n00:00:00,000 --> 00:00:01,000\nHello.\n", encoding="utf-8"
-            )
+            prepare_selected(first, "1\n00:00:00,000 --> 00:00:01,000\nHello.\n")
             output, errors = io.StringIO(), io.StringIO()
             with redirect_stdout(output), redirect_stderr(errors):
                 exit_code = main(["--video-dir", str(root), "--steps", "translate"])
@@ -52,7 +61,7 @@ class Stage3PipelineTests(TestCase):
                 exit_code = main(["--video-dir", str(task.parent), "--steps", "clean,translate"])
             self.assertEqual(exit_code, 0)
             manifest = json.loads((task / "stage3_manifest.json").read_text(encoding="utf-8"))
-            self.assertEqual(manifest["p0_status"], "NO_ENGLISH_SUBTITLE")
+            self.assertEqual(manifest["p0_status"], "NO_YOUTUBE_ENGLISH_SOURCE")
 
     def test_p0_writes_outputs_qc_and_preserves_source_hash(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -72,18 +81,33 @@ class Stage3PipelineTests(TestCase):
             video = Path(directory); (video / "subtitles").mkdir()
             (video / "subtitles" / "zh.auto.srt").write_text("中文", encoding="utf-8")
             report = Stage3Pipeline(video, CONFIG).run_p0()
-            self.assertEqual(report["status"], "NO_ENGLISH_SUBTITLE")
+            self.assertEqual(report["status"], "NO_YOUTUBE_ENGLISH_SOURCE")
 
     def test_p1_without_paid_flag_is_dry_run_and_does_not_create_chinese_srt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             video = Path(directory); subtitles = video / "subtitles"; subtitles.mkdir()
-            (subtitles / "en.clean.srt").write_text("1\n00:00:00,000 --> 00:00:01,000\nHello.\n", encoding="utf-8")
+            prepare_selected(video, "1\n00:00:00,000 --> 00:00:01,000\nHello.\n")
             report = Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=False)
             self.assertEqual(report["status"], "DRY_RUN")
             self.assertFalse(report["api_called"])
+            self.assertFalse(report["paid_api_enabled"])
             self.assertFalse((subtitles / "zh.clean.srt").exists())
             glossary = json.loads((video / "translation" / "glossary.json").read_text(encoding="utf-8"))
             self.assertEqual(glossary["fixed_terms"]["Roblox"], "Roblox")
+
+    def test_manifest_snapshots_all_original_english_subtitle_candidates(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            video = Path(directory)
+            subtitles = video / "subtitles"
+            subtitles.mkdir()
+            for name in ("en.manual.srt", "en.auto.vtt"):
+                (subtitles / name).write_text("original", encoding="utf-8")
+            pipeline = Stage3Pipeline(video, CONFIG)
+            hashes = pipeline.manifest["original_subtitle_hashes"]
+            self.assertEqual(set(hashes), {
+                str(subtitles / "en.manual.srt"),
+                str(subtitles / "en.auto.vtt"),
+            })
 
     def test_mocked_paid_run_writes_both_srts_and_polishes_only_failed_qc(self) -> None:
         calls: list[tuple[str, list[int]]] = []
@@ -103,16 +127,15 @@ class Stage3PipelineTests(TestCase):
 
         with tempfile.TemporaryDirectory() as directory, mock.patch.dict("os.environ", {"DEEPSEEK_API_KEY": "unit-secret"}, clear=False), mock.patch("src.stage3.pipeline.DeepSeekTranslator", FakeTranslator):
             video = Path(directory); subtitles = video / "subtitles"; subtitles.mkdir()
-            (subtitles / "en.clean.srt").write_text(
+            prepare_selected(video,
                 "1\n00:00:00,000 --> 00:00:02,000\nHello.\n\n2\n00:00:02,100 --> 00:00:04,100\nThis is long.\n",
-                encoding="utf-8",
             )
             report = Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True)
             self.assertEqual(report["status"], "QC_PASSED")
             self.assertEqual(calls, [("raw", [1, 2]), ("polished", [2])])
             self.assertTrue((subtitles / "zh.raw.srt").is_file())
             self.assertTrue((subtitles / "zh.clean.srt").is_file())
-            english = (subtitles / "en.clean.srt").read_text(encoding="utf-8")
+            english = (subtitles / "en.selected.srt").read_text(encoding="utf-8")
             chinese = (subtitles / "zh.clean.srt").read_text(encoding="utf-8")
             self.assertEqual([line for line in english.splitlines() if "-->" in line], [line for line in chinese.splitlines() if "-->" in line])
             self.assertNotIn("unit-secret", "".join(path.read_text(encoding="utf-8") for path in video.rglob("*.json")))
@@ -129,6 +152,6 @@ class Stage3PipelineTests(TestCase):
 
         with tempfile.TemporaryDirectory() as directory, mock.patch.dict("os.environ", {"DEEPSEEK_API_KEY": "unit-secret"}, clear=False), mock.patch("src.stage3.pipeline.DeepSeekTranslator", FakeTranslator):
             video = Path(directory); subtitles = video / "subtitles"; subtitles.mkdir()
-            (subtitles / "en.clean.srt").write_text("1\n00:00:00,000 --> 00:00:02,000\nHello.\n", encoding="utf-8")
+            prepare_selected(video, "1\n00:00:00,000 --> 00:00:02,000\nHello.\n")
             Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True, polish_all=True)
             self.assertEqual(calls, [("raw", [1]), ("polished", [1])])

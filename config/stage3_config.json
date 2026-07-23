@@ -1,43 +1,69 @@
 {
-  "source_priority": [
-    "en.manual.vtt",
-    "en.manual.srt",
-    "en.auto.vtt",
-    "en.auto.srt"
-  ],
-  "manual_subtitle_quality_threshold": 70,
-  "youtube_subtitle_quality_threshold": 65,
-  "sentence_gap_seconds": 0.6,
-  "min_segment_duration": 0.8,
-  "max_segment_duration": 7.0,
-  "minimum_gap_ms": 20,
-  "english_max_chars_per_line": 42,
-  "chinese_max_chars_per_line": 20,
-  "max_lines": 2,
-  "english_max_cps": 20,
-  "chinese_max_cps": 12,
-  "translation_batch_size": 24,
-  "context_before": 3,
-  "context_after": 2,
-  "temperature": 0.2,
-  "max_retries": 3,
-  "retry_delays_seconds": [2, 4, 8],
-  "chinese_chars_per_second": 4.5,
-  "tts_warning_ratio": 1.15,
-  "tts_rewrite_ratio": 1.25,
-  "input_price_per_million": null,
-  "output_price_per_million": null,
-  "asr_enabled": true,
-  "asr_model_path": "models/faster-whisper-large-v3",
-  "asr_device": "cuda",
-  "asr_compute_type": "float16",
-  "asr_language": "en",
-  "asr_beam_size": 5,
-  "asr_vad_filter": true,
-  "asr_word_timestamps": true,
-  "asr_condition_on_previous_text": false,
-  "asr_min_silence_duration_ms": 500,
-  "asr_speech_pad_ms": 200,
-  "asr_temperature": 0.0,
-  "asr_log_progress": true
+  "youtube": {
+    "source_priority": [
+      "en.manual.vtt",
+      "en.manual.srt",
+      "en.auto.vtt",
+      "en.auto.srt"
+    ],
+    "rolling_context_cues": 3,
+    "fuzzy_matching_enabled": true
+  },
+  "subtitle": {
+    "sentence_gap_seconds": 0.6,
+    "min_segment_duration": 0.8,
+    "max_segment_duration": 7.0,
+    "hard_max_segment_duration": 8.0,
+    "minimum_gap_ms": 20,
+    "english_max_chars_per_line": 42,
+    "chinese_max_chars_per_line": 20,
+    "max_lines": 2,
+    "english_max_cps": 20,
+    "chinese_max_cps": 12
+  },
+  "asr": {
+    "enabled": true,
+    "model_path": "models/faster-whisper-large-v3",
+    "device": "cuda",
+    "compute_type": "float16",
+    "language": "en",
+    "beam_size": 5,
+    "vad_filter": true,
+    "word_timestamps": true,
+    "condition_on_previous_text": false,
+    "temperature": 0.0,
+    "min_silence_duration_ms": 500,
+    "speech_pad_ms": 200,
+    "log_progress": true
+  },
+  "scoring": {
+    "weights": {
+      "structure": 0.15,
+      "timeline": 0.2,
+      "coverage": 0.2,
+      "stability": 0.15,
+      "readability": 0.1,
+      "source_confidence": 0.2
+    },
+    "minimum_acceptable_score": 70,
+    "selection_margin": 6,
+    "minimum_speech_coverage": 0.65
+  },
+  "translation": {
+    "batch_size": 24,
+    "context_before": 3,
+    "context_after": 2,
+    "temperature": 0.2,
+    "max_retries": 3,
+    "retry_delays_seconds": [
+      2,
+      4,
+      8
+    ],
+    "chinese_chars_per_second": 4.5,
+    "tts_warning_ratio": 1.15,
+    "tts_rewrite_ratio": 1.25,
+    "input_price_per_million": null,
+    "output_price_per_million": null
+  }
 }

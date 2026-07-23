@@ -3,14 +3,17 @@ from __future__ import annotations
 import json
 import os
 import time
+import hashlib
 from pathlib import Path
 from typing import Any, Callable
 
 from .models import SubtitleSegment
-from .subtitle_writer import write_json
+from .manifest import utc_now
+from .subtitle_writer import atomic_write_json
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROMPT_VERSION = "stage3-translation-v2"
 
 
 class TranslationError(RuntimeError):
@@ -117,12 +120,21 @@ class DeepSeekTranslator:
         suffix = "" if pass_name == "raw" else f"_{pass_name}"
         return self.checkpoint_dir / f"batch_{batch_id:04d}{suffix}.json"
 
-    def _load_completed(self, path: Path, expected_ids: list[int], force: bool) -> dict[int, str] | None:
+    def _load_completed(
+        self,
+        path: Path,
+        expected_ids: list[int],
+        force: bool,
+        metadata: dict[str, str],
+    ) -> dict[int, str] | None:
         if force or not path.is_file():
             return None
         payload = json.loads(path.read_text(encoding="utf-8"))
         if payload.get("status") != "success" or payload.get("segment_ids") != expected_ids:
             return None
+        for key, value in metadata.items():
+            if payload.get(key) != value:
+                return None
         usage = payload.get("usage", {})
         for key in self.usage:
             self.usage[key] += int(usage.get(key, 0) or 0)
@@ -162,7 +174,21 @@ class DeepSeekTranslator:
     ) -> dict[int, str]:
         checkpoint = self._checkpoint_path(batch_id, pass_name)
         expected = [item.id for item in targets]
-        completed = self._load_completed(checkpoint, expected, force)
+        source_payload = [
+            {"id": item.id, "start": item.start, "end": item.end, "text": item.text}
+            for item in all_segments
+        ]
+        checkpoint_metadata = {
+            "source_hash": hashlib.sha256(
+                json.dumps(source_payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+            ).hexdigest(),
+            "prompt_version": PROMPT_VERSION,
+            "glossary_hash": hashlib.sha256(
+                json.dumps(glossary, ensure_ascii=False, sort_keys=True).encode("utf-8")
+            ).hexdigest(),
+            "model": self.settings["model"],
+        }
+        completed = self._load_completed(checkpoint, expected, force, checkpoint_metadata)
         if completed is not None:
             return completed
         result: dict[int, str] = {}
@@ -191,7 +217,7 @@ class DeepSeekTranslator:
                 received, usage, raw = self._request(
                     build_messages(pending, before, after, glossary, metadata, polish=pass_name == "polished")
                 )
-                write_json(response_file, json.loads(raw))
+                atomic_write_json(response_file, json.loads(raw))
                 for key in expected:
                     if key in received and received[key]:
                         result[key] = received[key]
@@ -208,18 +234,19 @@ class DeepSeekTranslator:
                     break
                 self.sleeper(float(delays[min(attempts - 1, len(delays) - 1)]))
         status = "success" if not pending else "failed"
-        write_json(
+        atomic_write_json(
             checkpoint,
             {
                 "batch_id": batch_id,
                 "segment_ids": expected,
+                **checkpoint_metadata,
                 "status": status,
                 "attempts": attempts,
-                "model": self.settings["model"],
                 "usage": batch_usage,
-                "response_file": str(response_file),
+                "response_path": str(response_file),
                 "error": "" if status == "success" else last_error,
                 "translations": {str(key): value for key, value in result.items()},
+                "completed_at": utc_now() if status == "success" else "",
             },
         )
         if pending:

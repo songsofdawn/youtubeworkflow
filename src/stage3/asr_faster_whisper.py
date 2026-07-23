@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .asr_qc import assess_asr_quality
+from .artifact_migration import migrate_legacy_artifacts
 from .cuda_runtime import configure_cuda_runtime
 from .manifest import hash_config, sha256_file, utc_now
 from .models import SubtitleSegment, WordEvent
@@ -107,7 +108,7 @@ def _words_from_segment(segment: Any, segment_id: int) -> tuple[list[dict[str, A
                 }
             )
             if text and start is not None and end is not None and end > start:
-                events.append(WordEvent(text, start, end, start, segment_id))
+                events.append(WordEvent(text, start, end, start, segment_id, probability, segment_id))
         if events:
             return raw_words, events
 
@@ -128,7 +129,7 @@ def _words_from_segment(segment: Any, segment_id: int) -> tuple[list[dict[str, A
                 "timestamps_approximated": True,
             }
         )
-        events.append(WordEvent(token, word_start, word_end, word_start, segment_id))
+        events.append(WordEvent(token, word_start, word_end, word_start, segment_id, None, segment_id))
     return raw_words, events
 
 
@@ -195,12 +196,15 @@ def run_faster_whisper_asr(
     model_factory: Callable[[Path, dict[str, Any]], tuple[Any, dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     root = Path(video_dir).resolve()
-    asr_dir = root / "stage3" / "asr"
+    migrate_legacy_artifacts(root)
+    asr_dir = root / "stage3" / "whisper"
+    legacy_asr_dir = root / "stage3" / "asr"
     checkpoint_path = asr_dir / "asr_checkpoint.json"
     audio_path = select_audio_source(root)
     if audio_path is None:
         result = {"status": "NO_AUDIO_SOURCE", "completed": False, "error": "No audio or video source was found"}
         atomic_write_json(checkpoint_path, result)
+        atomic_write_json(legacy_asr_dir / "asr_checkpoint.json", result)
         return result
 
     model_path = resolve_local_model(config, project_root)
@@ -211,7 +215,7 @@ def run_faster_whisper_asr(
         checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         if _checkpoint_is_reusable(checkpoint, audio_hash, model_id, config_hash):
             info = json.loads((asr_dir / "asr_info.json").read_text(encoding="utf-8"))
-            qc = json.loads((asr_dir / "asr_qc.json").read_text(encoding="utf-8"))
+            qc = json.loads((asr_dir / "qc.json").read_text(encoding="utf-8"))
             return {"status": "ASR_COMPLETED", "completed": True, "skipped": True, "info": info, "qc": qc}
 
     started_at = utc_now()
@@ -297,18 +301,23 @@ def run_faster_whisper_asr(
         }
         outputs = [
             atomic_write_json(asr_dir / "asr_info.json", info),
-            atomic_write_json(asr_dir / "asr_raw_segments.json", raw_segments),
-            atomic_write_json(asr_dir / "asr_words.json", raw_words),
+            atomic_write_json(asr_dir / "raw_segments.json", raw_segments),
+            atomic_write_json(asr_dir / "words.json", raw_words),
             atomic_write_srt(root / "subtitles" / "en.whisper.raw.srt", raw_srt_segments, width=int(config["english_max_chars_per_line"]), max_lines=int(config["max_lines"])),
-            atomic_write_json(asr_dir / "asr_clean_segments.json", [item.to_dict() for item in clean_segments]),
+            atomic_write_json(asr_dir / "clean_segments.json", [item.to_dict() for item in clean_segments]),
             atomic_write_srt(root / "subtitles" / "en.whisper.clean.srt", clean_segments, width=int(config["english_max_chars_per_line"]), max_lines=int(config["max_lines"])),
-            atomic_write_json(asr_dir / "asr_qc.json", qc),
+            atomic_write_json(asr_dir / "qc.json", qc),
         ]
-        qc_text_path = asr_dir / "asr_qc.txt"
+        qc_text_path = asr_dir / "qc.txt"
         temporary_qc = qc_text_path.with_name(f".{qc_text_path.name}.tmp")
         temporary_qc.write_text(qc_text(qc), encoding="utf-8")
         temporary_qc.replace(qc_text_path)
         outputs.append(qc_text_path)
+        atomic_write_json(legacy_asr_dir / "asr_info.json", info)
+        atomic_write_json(legacy_asr_dir / "asr_raw_segments.json", raw_segments)
+        atomic_write_json(legacy_asr_dir / "asr_words.json", raw_words)
+        atomic_write_json(legacy_asr_dir / "asr_clean_segments.json", [item.to_dict() for item in clean_segments])
+        atomic_write_json(legacy_asr_dir / "asr_qc.json", qc)
         if sha256_file(audio_path) != before_hash:
             raise AsrError("SOURCE_AUDIO_HASH_CHANGED")
         checkpoint.update(
@@ -319,8 +328,10 @@ def run_faster_whisper_asr(
             finished_at=finished_at,
         )
         atomic_write_json(checkpoint_path, checkpoint)
+        atomic_write_json(legacy_asr_dir / "asr_checkpoint.json", checkpoint)
         return {"status": "ASR_COMPLETED", "completed": True, "skipped": False, "info": info, "qc": qc}
     except Exception as exc:
         checkpoint.update(status="FAILED", completed=False, error=str(exc), finished_at=utc_now())
         atomic_write_json(checkpoint_path, checkpoint)
+        atomic_write_json(legacy_asr_dir / "asr_checkpoint.json", checkpoint)
         raise

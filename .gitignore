@@ -38,6 +38,13 @@ stage3_manifest.json
 **/stage3/[0-9][0-9]_*.json
 **/stage3/[0-9][0-9]_*.txt
 **/stage3/asr/
+**/stage3/youtube/
+**/stage3/whisper/
+**/stage3/selection/
+**/stage3/translation/
+**/stage3/review/
+**/stage3/stage3_review.html
+**/stage3/migrations.json
 **/stage3/source_comparison.json
 download_archive.txt
 *.part

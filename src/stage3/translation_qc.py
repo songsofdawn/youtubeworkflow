@@ -50,6 +50,7 @@ def estimate_translation(segment: TranslationSegment, config: dict) -> None:
     segment.duration_ratio = round(segment.estimated_tts_duration / max(0.05, segment.source_duration), 3)
     if segment.duration_ratio > float(config["tts_rewrite_ratio"]):
         segment.qc_flags.append("TTS_TOO_LONG")
+        segment.qc_flags.append("TOO_LONG_FOR_DURATION")
     elif segment.duration_ratio > float(config["tts_warning_ratio"]):
         segment.qc_flags.append("TTS_LENGTH_WARNING")
     if not segment.translation.strip():
@@ -71,8 +72,19 @@ def translation_quality(source: list[SubtitleSegment], translations: list[Transl
         for source_item, translated in zip(source, translations)
         if source_item.id == translated.id
     )
+    illegal_controls = [
+        item.id for item in translations
+        if re.search(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", item.translation)
+    ]
+    punctuation = [
+        item.id for item in translations
+        if re.search(r"([，。！？])\1{1,}", item.translation)
+    ]
     flags = Counter(flag for item in translations for flag in item.qc_flags)
-    passed = not missing and not extra and not empty and overlaps == 0 and changed_timeline == 0
+    passed = (
+        not missing and not extra and not empty and overlaps == 0
+        and changed_timeline == 0 and not illegal_controls
+    )
     return {
         "status": "QC_PASSED" if passed else "REVIEW_REQUIRED",
         "english_ids": len(source_ids),
@@ -83,6 +95,8 @@ def translation_quality(source: list[SubtitleSegment], translations: list[Transl
         "adjacent_duplicate_ids": duplicates,
         "timeline_overlaps": overlaps,
         "timeline_changed": changed_timeline,
+        "illegal_control_character_ids": illegal_controls,
+        "unnatural_punctuation_ids": punctuation,
         "qc_flag_counts": dict(flags),
     }
 

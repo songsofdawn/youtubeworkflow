@@ -38,6 +38,12 @@ def assess_asr_quality(
         for left, right in zip(clean_segments, clean_segments[1:])
     )
     high_no_speech = sum(float(item.get("no_speech_prob") or 0.0) > 0.6 for item in raw_segments)
+    log_probabilities = [
+        float(item["avg_logprob"]) for item in raw_segments if item.get("avg_logprob") is not None
+    ]
+    no_speech_probabilities = [
+        float(item["no_speech_prob"]) for item in raw_segments if item.get("no_speech_prob") is not None
+    ]
     probabilities = [float(item["probability"]) for item in words if item.get("probability") is not None]
     average_probability = sum(probabilities) / len(probabilities) if probabilities else 0.0
     low_confidence_words = sum(value < 0.5 for value in probabilities)
@@ -61,6 +67,12 @@ def assess_asr_quality(
         "over_8_seconds": long,
         "over_max_cps": fast,
         "high_no_speech_segments": high_no_speech,
+        "average_log_probability": round(
+            sum(log_probabilities) / len(log_probabilities), 6
+        ) if log_probabilities else None,
+        "average_no_speech_probability": round(
+            sum(no_speech_probabilities) / len(no_speech_probabilities), 6
+        ) if no_speech_probabilities else None,
         "average_word_probability": round(average_probability, 6),
         "low_confidence_words": low_confidence_words,
         "word_timestamp_missing_rate": round(missing_word_times / max(1, len(words)), 6),

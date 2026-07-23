@@ -254,8 +254,10 @@ Video task directory:
 | 5 | 重新翻译并润色全部中文字幕 | 是 |
 | 6 | 忽略翻译断点，从头重新翻译 | 是 |
 | 7 | 使用本地 GPU 识别每个任务的前 30 秒 | 否 |
-| 8 | 自动评估并选择英文字幕；现有字幕低分时完整运行 Whisper | 否 |
-| 9 | 自动评估并选择英文字幕；必要时运行 Whisper，然后翻译中文 | 是 |
+| 8 | 完整生成 YouTube/Whisper 双源英文字幕，评分并选择 | 否 |
+| 9 | 完成双源英文评分选择，然后翻译中文 | 是 |
+| 10 | 导出人工审核 TSV 和只读 HTML | 否 |
+| 11 | 导入编辑后的审核 TSV，生成 `zh.reviewed.srt` | 否 |
 
 所有付费操作都会显示提示，并且只有输入 `YES` 才会开始调用 DeepSeek API。
 
@@ -271,6 +273,8 @@ run_stage3.bat "downloads\candidates\2026-07-21" retranslate
 run_stage3.bat "单个视频任务目录" asr30
 run_stage3.bat "视频任务目录或日期目录" autoselect
 run_stage3.bat "视频任务目录或日期目录" autotranslate
+run_stage3.bat "视频任务目录" reviewexport
+run_stage3.bat "视频任务目录" reviewimport "stage3\review\review_export.tsv"
 ```
 
 推荐的一键入口：
@@ -278,7 +282,7 @@ run_stage3.bat "视频任务目录或日期目录" autotranslate
 - 只需要最终英文字幕：选择 `8`；
 - 需要最终英文字幕并继续翻译中文：选择 `9`，然后输入 `YES` 确认付费调用。
 
-选项 `8` 实际执行 `--steps select --subtitle-source auto`。选项 `9` 先执行同一个自动选源命令；成功后显示选源摘要，再要求输入 `YES`，最后执行 `--steps translate --allow-paid-api`。两者都使用 `.venv_stage3`，不会先错误执行一次独立英文清洗；选源流程会自行清洗最终选中的人工字幕或 YouTube 字幕。
+选项 `8` 实际执行 `--steps select --subtitle-source auto`，选择步骤会确保 YouTube 和 Whisper 两套 clean 字幕都已准备。选项 `9` 先执行同一个双源准备与选择命令；成功后显示摘要，再要求输入 `YES`，最后执行 `--steps translate --allow-paid-api`。两者都使用 `.venv_stage3`。
 
 ## 本地 GPU 英文语音识别
 
@@ -318,21 +322,22 @@ run_stage3.bat "视频任务目录或日期目录" autotranslate
 
 当前恢复粒度是“一个视频任务”，不是伪装的音频分块断点。
 
-### 自动选择字幕来源
+### 同时准备双源并自动选择
 
 ```bat
 .venv_stage3\Scripts\python.exe src\run_stage3.py ^
   --video-dir "视频任务目录或日期目录" ^
-  --steps asr ^
+  --steps prepare ^
   --subtitle-source auto
 ```
 
-自动选择顺序：
+`prepare` 等价于：
 
-1. 人工英文字幕评分达到 70：使用人工字幕；
-2. 否则，YouTube 英文字幕评分达到 65：使用 YouTube 字幕；
-3. 两者都不满足：运行本地 `faster-whisper`；
-4. 最终结果统一写入 `subtitles\en.selected.srt`。
+```text
+youtube,whisper,select
+```
+
+当前版本会生成 YouTube clean 和 Whisper clean 两套完整英文字幕，再分别计算结构、时间轴、语音覆盖、稳定性、可读性和来源置信度六项分数。只有一套通过时选择该套；两套均通过且分差至少为 6 时选择高分来源；分差不足 6 时只对人工 YouTube 字幕提供优先规则，两个自动来源接近时进入 `REVIEW_REQUIRED`，不会静默启动付费翻译。
 
 也可以强制指定：
 
@@ -362,45 +367,68 @@ run_stage3.bat "视频任务目录或日期目录" autotranslate
 1. 使用 `.venv_stage3` 完成本地英文识别；
 2. 再运行 `run_stage3.bat`，输入同一任务目录并选择 `3`。
 
-翻译程序会优先读取 `subtitles\en.selected.srt`。只有第二步会调用 DeepSeek API。
+翻译程序只允许读取 `subtitles\en.selected.srt`。缺少该文件时会返回 `EN_SELECTED_SUBTITLE_NOT_FOUND`，不会退回 raw、VTT 或旧版 `en.clean.srt`。只有第二步显式使用 `--allow-paid-api` 才会调用 DeepSeek API。
+
+### 人工审核
+
+先导出：
+
+```bat
+.venv_stage3\Scripts\python.exe src\run_stage3.py ^
+  --video-dir "视频任务目录" ^
+  --steps review-export
+```
+
+修改 `stage3\review\review_export.tsv` 的 `reviewed_translation` 列后导入：
+
+```bat
+.venv_stage3\Scripts\python.exe src\run_stage3.py ^
+  --video-dir "视频任务目录" ^
+  --steps review-import ^
+  --review-file "stage3\review\review_export.tsv"
+```
+
+导出不会生成 `zh.reviewed.srt`。导入会验证 ID、英文、时间轴和空译文；已有 reviewed 文件默认拒绝覆盖，只有显式添加 `--overwrite-reviewed` 才允许。
 
 ## 字幕与报告文件
 
 单个任务的重要输出如下：
 
 ```text
-subtitles\en.auto.raw.srt          YouTube 原始英文字幕备份
-subtitles\en.clean.srt             已清洗的 YouTube/人工英文字幕
+subtitles\en.youtube.raw.srt       YouTube 解析调试字幕
+subtitles\en.youtube.clean.srt     清洗后的 YouTube/人工英文字幕
 subtitles\en.whisper.raw.srt       本地模型的原始识别片段
 subtitles\en.whisper.clean.srt     重新断句和修复时间轴后的识别字幕
 subtitles\en.selected.srt          最终选中的统一英文输入
 subtitles\zh.raw.srt               DeepSeek 原始翻译结果
 subtitles\zh.clean.srt             最终推荐使用的中文字幕
-stage3\source_comparison.json      字幕源评分、最终选择和选择原因
-stage3\asr\asr_info.json          模型、GPU、语言、耗时和音频哈希
-stage3\asr\asr_raw_segments.json  原始识别片段
-stage3\asr\asr_words.json         词级时间戳和置信度
-stage3\asr\asr_clean_segments.json 重建后的字幕片段
-stage3\asr\asr_qc.json            机器可读质量报告
-stage3\asr\asr_qc.txt             人工可读质量报告
-stage3\asr\asr_checkpoint.json    任务级成功检查点
-translation\api_usage.json         DeepSeek 使用量
-translation\subtitle_qc.json       中文翻译质量检查
-translation\checkpoints\           翻译批次断点
-stage3_manifest.json                整体处理状态
+subtitles\zh.reviewed.srt          显式人工导入后的字幕
+stage3\youtube\                    YouTube 清洗中间件、QC 与 checkpoint
+stage3\whisper\                    ASR 信息、词时间戳、QC 与 checkpoint
+stage3\selection\scoring.json      双源六维评分
+stage3\selection\comparison.json   分数和一致度比较
+stage3\selection\selection_report.json 最终选择、哈希和审核状态
+stage3\translation\               翻译 JSON、QC、用量和批次断点
+stage3\review\review_export.tsv    人工审核工作表
+stage3\review\review_import_report.json 审核导入报告
+stage3\stage3_review.html          只读筛选审核页面
+stage3\migrations.json             旧文件迁移来源、目标、时间和哈希
+stage3_manifest.json              整体处理状态
 ```
 
-识别质量检查包含空段、非法时间、倒序、重叠、过短/过长、字符速度、低置信度词、词时间缺失、覆盖率、重复短语和结尾截断等指标。
+旧版 `en.clean.srt`、`stage3\asr\` 和任务根部 `translation\` 不会被删除；缺少新命名时会原子复制并写入迁移记录。
 
 ## 常见问题
 
-### 提示 `subtitles/en.clean.srt does not exist`
+### 提示 `EN_SELECTED_SUBTITLE_NOT_FOUND`
 
-翻译前还没有可用的英文字幕。任选一种处理方式：
+翻译前还没有完成双源评分与选择。先运行：
 
-- 重新运行 BAT 并选择 `1`；
-- 需要直接清洗并翻译时选择 `4`；
-- 没有可靠英文字幕时，先运行本地 GPU 识别，再选择 `3` 翻译。
+```bat
+.venv_stage3\Scripts\python.exe src\run_stage3.py --video-dir "视频任务目录" --steps prepare --subtitle-source auto
+```
+
+或双击 BAT 并选择 `8`。生成 `en.selected.srt` 后再选择 `3` 翻译。
 
 ### 提示缺少 `.venv_stage3`
 
@@ -435,7 +463,7 @@ models\faster-whisper-large-v3\vocabulary.json
 
 ### 质量报告通过但存在字符速度警告
 
-字符速度属于可读性提示。空段、非法时间、倒序、重叠和重复等核心问题为零时，报告仍可通过。可以打开 `stage3\asr\asr_qc.txt` 查看具体字幕编号。
+字符速度属于可读性提示。空段、非法时间、倒序、重叠和重复等核心问题为零时，报告仍可通过。可以打开 `stage3\whisper\qc.txt` 查看具体字幕编号。
 
 ## 运行测试
 
