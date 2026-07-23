@@ -35,8 +35,8 @@ echo 4. Clean English subtitles, then translate to Chinese ^(paid API, resume en
 echo 5. Translate and polish every Chinese subtitle ^(paid API^)
 echo 6. Translate everything again from scratch ^(paid API, ignores checkpoints^)
 echo 7. Test local GPU speech recognition on the first 30 seconds ^(no translation API^)
-echo 8. Build both YouTube and Whisper English subtitles, score, and select ^(no translation API^)
-echo 9. Build and select both English sources, then translate to Chinese ^(paid API^)
+echo 8. Build both English sources and select automatically ^(no translation API, resume enabled^)
+echo 9. Automatically select English subtitles, then translate to Chinese ^(paid API, resume enabled^)
 echo 10. Export TSV and read-only HTML for human review
 echo 11. Import the edited review TSV and create zh.reviewed.srt
 set /p "STAGE3_CHOICE=Choose 1-11: "

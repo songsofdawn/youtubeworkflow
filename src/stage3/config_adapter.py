@@ -56,6 +56,17 @@ def normalize_stage3_config(raw: dict[str, Any]) -> dict[str, Any]:
         minimum_acceptable_score=float(scoring["minimum_acceptable_score"]),
         selection_margin=float(scoring["selection_margin"]),
         minimum_speech_coverage=float(scoring["minimum_speech_coverage"]),
+        automatic_tiebreak=deepcopy(
+            scoring.get(
+                "automatic_tiebreak",
+                {
+                    "coverage_score_margin": 3,
+                    "maximum_uncovered_speech_gap_margin_seconds": 3,
+                    "preferred_source_on_exact_tie": "whisper",
+                    "select_below_minimum_when_hard_checks_pass": True,
+                },
+            )
+        ),
         manual_subtitle_quality_threshold=float(scoring["minimum_acceptable_score"]),
         youtube_subtitle_quality_threshold=float(scoring["minimum_acceptable_score"]),
         translation_batch_size=int(translation["batch_size"]),
@@ -116,6 +127,15 @@ def _sections_from_legacy(legacy: dict[str, Any]) -> dict[str, Any]:
             "minimum_acceptable_score": legacy.get("minimum_acceptable_score", 70),
             "selection_margin": legacy.get("selection_margin", 6),
             "minimum_speech_coverage": legacy.get("minimum_speech_coverage", 0.65),
+            "automatic_tiebreak": legacy.get(
+                "automatic_tiebreak",
+                {
+                    "coverage_score_margin": 3,
+                    "maximum_uncovered_speech_gap_margin_seconds": 3,
+                    "preferred_source_on_exact_tie": "whisper",
+                    "select_below_minimum_when_hard_checks_pass": True,
+                },
+            ),
         },
         "translation": {
             "batch_size": legacy["translation_batch_size"],

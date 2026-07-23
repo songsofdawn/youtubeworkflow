@@ -47,7 +47,13 @@
     },
     "minimum_acceptable_score": 70,
     "selection_margin": 6,
-    "minimum_speech_coverage": 0.65
+    "minimum_speech_coverage": 0.65,
+    "automatic_tiebreak": {
+      "coverage_score_margin": 3,
+      "maximum_uncovered_speech_gap_margin_seconds": 3,
+      "preferred_source_on_exact_tie": "whisper",
+      "select_below_minimum_when_hard_checks_pass": true
+    }
   },
   "translation": {
     "batch_size": 24,

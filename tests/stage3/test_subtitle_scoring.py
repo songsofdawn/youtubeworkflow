@@ -90,19 +90,49 @@ class SubtitleScoringTests(TestCase):
             self.assertGreater(value, 0)
             self.assertLess(value, 100)
 
-    def test_selector_margin_and_manual_tie_rules(self) -> None:
-        youtube = {"path": "youtube.srt", "final_score": 80, "hard_fail": False, "source_type": "auto", "flags": []}
-        whisper = {"path": "whisper.srt", "final_score": 78, "hard_fail": False, "source_type": "model", "flags": []}
+    def test_selector_close_scores_use_automatic_coverage_tiebreak(self) -> None:
+        youtube = {
+            "path": "youtube.srt", "final_score": 80, "hard_fail": False,
+            "source_type": "auto", "flags": [],
+            "scores": {
+                "coverage": {
+                    "normalized_score": 95,
+                    "raw_values": {"maximum_uncovered_speech_seconds": 2},
+                },
+                "timeline": {"normalized_score": 90},
+                "readability": {"normalized_score": 70},
+            },
+        }
+        whisper = {
+            "path": "whisper.srt", "final_score": 81, "hard_fail": False,
+            "source_type": "model", "flags": [],
+            "scores": {
+                "coverage": {
+                    "normalized_score": 86,
+                    "raw_values": {"maximum_uncovered_speech_seconds": 7},
+                },
+                "timeline": {"normalized_score": 95},
+                "readability": {"normalized_score": 80},
+            },
+        }
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             youtube["path"] = str(root / "youtube.srt")
             whisper["path"] = str(root / "whisper.srt")
             Path(youtube["path"]).write_text(SRT, encoding="utf-8")
             Path(whisper["path"]).write_text(SRT, encoding="utf-8")
-            decision = choose_source(youtube, whisper, mode="auto", minimum_score=70, margin=6)
-            self.assertTrue(decision["review_required"])
+            decision = choose_source(
+                youtube, whisper, mode="auto", minimum_score=70, margin=6,
+                automatic_tiebreak=CONFIG["automatic_tiebreak"],
+            )
+            self.assertFalse(decision["review_required"])
+            self.assertEqual(decision["selected_source"], "youtube")
+            self.assertIn("AUTO_TIEBREAK_COVERAGE", decision["warnings"])
             youtube["source_type"] = "manual"
-            decision = choose_source(youtube, whisper, mode="auto", minimum_score=70, margin=6)
+            decision = choose_source(
+                youtube, whisper, mode="auto", minimum_score=70, margin=6,
+                automatic_tiebreak=CONFIG["automatic_tiebreak"],
+            )
             self.assertEqual(decision["selected_source"], "youtube")
 
     def test_selector_single_source_margin_low_score_and_override(self) -> None:
@@ -129,12 +159,39 @@ class SubtitleScoringTests(TestCase):
             )
             youtube["final_score"] = 60
             whisper["final_score"] = 65
-            self.assertTrue(
-                choose_source(youtube, whisper, mode="auto", minimum_score=70, margin=6)["review_required"]
+            below_minimum = choose_source(
+                youtube, whisper, mode="auto", minimum_score=70, margin=6,
+                automatic_tiebreak=CONFIG["automatic_tiebreak"],
             )
+            self.assertFalse(below_minimum["review_required"])
+            self.assertEqual(below_minimum["selected_source"], "whisper")
+            self.assertIn("AUTO_SELECTED_BELOW_MINIMUM", below_minimum["warnings"])
             override = choose_source(youtube, whisper, mode="whisper", minimum_score=70, margin=6)
             self.assertEqual(override["selected_source"], "whisper")
-            self.assertTrue(override["review_required"])
+            self.assertFalse(override["review_required"])
+
+    def test_selector_stops_only_when_every_source_hard_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            youtube_path = root / "youtube.srt"
+            whisper_path = root / "whisper.srt"
+            youtube_path.write_text(SRT, encoding="utf-8")
+            whisper_path.write_text(SRT, encoding="utf-8")
+            youtube = {
+                "path": str(youtube_path), "final_score": 40,
+                "hard_fail": True, "source_type": "auto", "flags": [],
+            }
+            whisper = {
+                "path": str(whisper_path), "final_score": 50,
+                "hard_fail": True, "source_type": "model", "flags": [],
+            }
+            decision = choose_source(
+                youtube, whisper, mode="auto", minimum_score=70, margin=6,
+                automatic_tiebreak=CONFIG["automatic_tiebreak"],
+            )
+            self.assertEqual(decision["selected_source"], "")
+            self.assertTrue(decision["selection_failed"])
+            self.assertFalse(decision["review_required"])
 
     def test_selected_output_is_atomic_and_hash_traced(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

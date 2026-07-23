@@ -7,6 +7,12 @@ import sys
 from pathlib import Path
 
 
+for stream in (sys.stdout, sys.stderr):
+    reconfigure = getattr(stream, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8", errors="replace")
+
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -88,7 +94,7 @@ def print_source_selection_summary(video_dir: Path, selection: dict[str, object]
     print(f"Whisper 六维总分：{_display_score(whisper.get('final_score'))}", flush=True)
     print(f"双源一致度：{_display_score(comparison.get('agreement_score'))}", flush=True)
     print(f"最终字幕来源：{labels.get(selected_source, '未自动选择')}", flush=True)
-    print(f"是否需要人工选择：{'是' if comparison.get('review_required') else '否'}", flush=True)
+    print(f"是否自动选择成功：{'是' if selected_source else '否'}", flush=True)
     print(f"选择原因：{comparison.get('selection_reason') or '无'}", flush=True)
     print(f"en.selected.srt 路径：{comparison.get('selected_output_path') or '未生成'}", flush=True)
     print(f"selection_report.json 路径：{video_dir / 'stage3' / 'selection' / 'selection_report.json'}", flush=True)
@@ -153,12 +159,12 @@ def run_video_actions(
         )
         result["english_source_selection"] = selection
         print_source_selection_summary(video_dir, selection)
-        if selection["status"] in {"NO_AUDIO_SOURCE", "REVIEW_REQUIRED"}:
-            result["status"] = f"SKIPPED_{selection['status']}"
+        if selection["status"] in {"NO_AUDIO_SOURCE", "FAILED_NO_USABLE_SUBTITLE_SOURCE"}:
+            result["status"] = f"FAILED_{selection['status']}"
             if "translate" in steps:
                 result["chinese_translation"] = {
                     "status": "SKIPPED",
-                    "reason": "English subtitle selection requires review",
+                    "reason": "No subtitle source passed the hard safety checks",
                 }
                 return result
     if "translate" in steps:

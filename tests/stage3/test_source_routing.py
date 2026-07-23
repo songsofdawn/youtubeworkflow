@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import tempfile
 from pathlib import Path
 from unittest import TestCase, mock
@@ -85,7 +87,8 @@ class SourceRoutingTests(TestCase):
             (video / "subtitles").mkdir()
             result = Stage3Pipeline(video, config()).run_p2(subtitle_source="auto")
             self.assertEqual(result["status"], "NO_AUDIO_SOURCE")
-            self.assertTrue(result["selection_report"]["review_required"])
+            self.assertFalse(result["selection_report"]["review_required"])
+            self.assertTrue(result["selection_report"]["selection_failed"])
             self.assertFalse((video / "subtitles" / "en.selected.srt").exists())
 
     def test_user_override_keeps_scoring_report(self) -> None:
@@ -103,6 +106,28 @@ class SourceRoutingTests(TestCase):
             self.assertEqual(report["selected_source"], "whisper")
             self.assertTrue(report["user_override"])
             self.assertIn("scores", report["youtube"])
+
+    def test_selection_checkpoint_skips_rescoring_completed_video(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            video = Path(directory)
+            subtitles = video / "subtitles"
+            subtitles.mkdir()
+            (subtitles / "en.auto.vtt").write_text(VTT, encoding="utf-8")
+            with mock.patch(
+                "src.stage3.asr_faster_whisper.run_faster_whisper_asr",
+                side_effect=fake_asr(subtitles),
+            ):
+                first = Stage3Pipeline(video, config()).run_p2(subtitle_source="auto")
+            self.assertFalse(first["selection_checkpoint_reused"])
+            with mock.patch(
+                "src.stage3.asr_faster_whisper.run_faster_whisper_asr",
+                side_effect=fake_asr(subtitles),
+            ), mock.patch(
+                "src.stage3.pipeline.score_subtitle",
+                side_effect=AssertionError("selection should have resumed"),
+            ):
+                second = Stage3Pipeline(video, config()).run_p2(subtitle_source="auto")
+            self.assertTrue(second["selection_checkpoint_reused"])
 
     def test_translation_requires_selected_subtitle(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -124,6 +149,18 @@ class SourceRoutingTests(TestCase):
             selected.write_text("1\n00:00:00,000 --> 00:00:01,000\nSelected.\n", encoding="utf-8")
             selection_dir = video / "stage3" / "selection"
             selection_dir.mkdir(parents=True)
-            (selection_dir / "selection_report.json").write_text("{}", encoding="utf-8")
+            digest = hashlib.sha256(selected.read_bytes()).hexdigest()
+            (selection_dir / "selection_report.json").write_text(
+                json.dumps(
+                    {
+                        "selected_source": "youtube",
+                        "selected_input_path": str(selected),
+                        "selected_output_path": str(selected),
+                        "selected_source_hash": digest,
+                        "selected_output_hash": digest,
+                    }
+                ),
+                encoding="utf-8",
+            )
             report = Stage3Pipeline(video, config()).run_p1()
             self.assertEqual(Path(report["input"]), selected)

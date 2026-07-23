@@ -20,6 +20,7 @@ from .translation_qc import qc_text
 
 
 LOGGER = logging.getLogger(__name__)
+ASR_PIPELINE_VERSION = "stage3-faster-whisper-v2"
 REQUIRED_MODEL_FILES = ("config.json", "model.bin", "tokenizer.json", "vocabulary.json")
 AUDIO_PRIORITY = (
     Path("audio/source_audio.wav"),
@@ -176,13 +177,24 @@ def _asr_config(config: dict[str, Any], max_seconds: float | None) -> dict[str, 
 
 
 def _checkpoint_is_reusable(checkpoint: dict[str, Any], audio_hash: str, model_id: str, config_hash: str) -> bool:
-    return bool(
+    output_paths = checkpoint.get("output_paths", [])
+    base_matches = bool(
         checkpoint.get("completed")
         and checkpoint.get("status") == "ASR_COMPLETED"
         and checkpoint.get("source_audio_hash") == audio_hash
         and checkpoint.get("model_identifier") == model_id
         and checkpoint.get("config_hash") == config_hash
-        and all(Path(path).is_file() for path in checkpoint.get("output_paths", []))
+        and output_paths
+        and all(Path(path).is_file() for path in output_paths)
+    )
+    if not base_matches:
+        return False
+    if checkpoint.get("pipeline_version") not in {None, ASR_PIPELINE_VERSION}:
+        return False
+    output_hashes = checkpoint.get("output_hashes") or {}
+    return not output_hashes or all(
+        output_hashes.get(path) == sha256_file(path)
+        for path in output_paths
     )
 
 
@@ -214,6 +226,12 @@ def run_faster_whisper_asr(
     if not force and checkpoint_path.is_file():
         checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         if _checkpoint_is_reusable(checkpoint, audio_hash, model_id, config_hash):
+            checkpoint["pipeline_version"] = ASR_PIPELINE_VERSION
+            checkpoint["output_hashes"] = {
+                path: sha256_file(path) for path in checkpoint.get("output_paths", [])
+            }
+            atomic_write_json(checkpoint_path, checkpoint)
+            atomic_write_json(legacy_asr_dir / "asr_checkpoint.json", checkpoint)
             info = json.loads((asr_dir / "asr_info.json").read_text(encoding="utf-8"))
             qc = json.loads((asr_dir / "qc.json").read_text(encoding="utf-8"))
             return {"status": "ASR_COMPLETED", "completed": True, "skipped": True, "info": info, "qc": qc}
@@ -223,6 +241,7 @@ def run_faster_whisper_asr(
         "source_audio_hash": audio_hash,
         "model_identifier": model_id,
         "config_hash": config_hash,
+        "pipeline_version": ASR_PIPELINE_VERSION,
         "status": "RUNNING",
         "completed": False,
         "segment_count": 0,
@@ -325,6 +344,7 @@ def run_faster_whisper_asr(
             completed=True,
             segment_count=len(raw_segments),
             output_paths=[str(path) for path in outputs],
+            output_hashes={str(path): sha256_file(path) for path in outputs},
             finished_at=finished_at,
         )
         atomic_write_json(checkpoint_path, checkpoint)

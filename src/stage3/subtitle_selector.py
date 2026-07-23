@@ -8,13 +8,118 @@ from .manifest import sha256_file, utc_now
 from .subtitle_writer import atomic_write_json, read_srt
 
 
-def _usable(report: dict[str, Any] | None, minimum: float) -> bool:
+SELECTION_POLICY_VERSION = "stage3-auto-selection-v2"
+
+
+def _hard_safe(report: dict[str, Any] | None) -> bool:
     return bool(
         report
         and Path(str(report.get("path", ""))).is_file()
         and not report.get("hard_fail")
-        and float(report.get("final_score", 0.0)) >= minimum
     )
+
+
+def _usable(report: dict[str, Any] | None, minimum: float) -> bool:
+    return _hard_safe(report) and float(report.get("final_score", 0.0)) >= minimum
+
+
+def _dimension_score(report: dict[str, Any], name: str) -> float:
+    return float(((report.get("scores") or {}).get(name) or {}).get("normalized_score", 0.0) or 0.0)
+
+
+def _maximum_uncovered_speech(report: dict[str, Any]) -> float:
+    coverage = ((report.get("scores") or {}).get("coverage") or {}).get("raw_values") or {}
+    return float(coverage.get("maximum_uncovered_speech_seconds", float("inf")) or 0.0)
+
+
+def _automatic_close_score_tiebreak(
+    youtube: dict[str, Any],
+    whisper: dict[str, Any],
+    *,
+    difference: float,
+    margin: float,
+    options: dict[str, Any],
+) -> dict[str, Any]:
+    if str(youtube.get("source_type")) == "manual":
+        return {
+            "selected_source": "youtube",
+            "selection_reason": f"两套字幕分差 {difference:.2f} 小于 {margin:g}，自动优先人工 YouTube 字幕",
+            "user_override": False,
+            "review_required": False,
+            "warnings": ["AUTO_TIEBREAK_MANUAL_YOUTUBE"],
+        }
+
+    coverage_margin = float(options.get("coverage_score_margin", 3))
+    youtube_coverage = _dimension_score(youtube, "coverage")
+    whisper_coverage = _dimension_score(whisper, "coverage")
+    coverage_difference = abs(youtube_coverage - whisper_coverage)
+    if coverage_difference >= coverage_margin:
+        selected = "youtube" if youtube_coverage > whisper_coverage else "whisper"
+        return {
+            "selected_source": selected,
+            "selection_reason": (
+                f"两套总分仅差 {difference:.2f}；{selected} 语音覆盖分高出 "
+                f"{coverage_difference:.2f}，达到自动决胜差值 {coverage_margin:g}"
+            ),
+            "user_override": False,
+            "review_required": False,
+            "warnings": ["AUTO_TIEBREAK_COVERAGE"],
+        }
+
+    gap_margin = float(options.get("maximum_uncovered_speech_gap_margin_seconds", 3))
+    youtube_gap = _maximum_uncovered_speech(youtube)
+    whisper_gap = _maximum_uncovered_speech(whisper)
+    gap_difference = abs(youtube_gap - whisper_gap)
+    if gap_difference >= gap_margin:
+        selected = "youtube" if youtube_gap < whisper_gap else "whisper"
+        return {
+            "selected_source": selected,
+            "selection_reason": (
+                f"两套总分和覆盖分接近；{selected} 最长无字幕语音缺口少 "
+                f"{gap_difference:.2f} 秒，达到自动决胜差值 {gap_margin:g} 秒"
+            ),
+            "user_override": False,
+            "review_required": False,
+            "warnings": ["AUTO_TIEBREAK_UNCOVERED_GAP"],
+        }
+
+    for dimension, label in (("timeline", "时间轴"), ("readability", "可读性")):
+        youtube_value = _dimension_score(youtube, dimension)
+        whisper_value = _dimension_score(whisper, dimension)
+        if abs(youtube_value - whisper_value) > 1e-9:
+            selected = "youtube" if youtube_value > whisper_value else "whisper"
+            return {
+                "selected_source": selected,
+                "selection_reason": (
+                    f"两套总分、覆盖和缺口均接近；自动选择{label}分更高的 {selected}"
+                ),
+                "user_override": False,
+                "review_required": False,
+                "warnings": [f"AUTO_TIEBREAK_{dimension.upper()}"],
+            }
+
+    youtube_score = float(youtube.get("final_score", 0.0))
+    whisper_score = float(whisper.get("final_score", 0.0))
+    if abs(youtube_score - whisper_score) > 1e-9:
+        selected = "youtube" if youtube_score > whisper_score else "whisper"
+        return {
+            "selected_source": selected,
+            "selection_reason": f"全部决胜指标接近，自动选择总分高出 {difference:.2f} 的 {selected}",
+            "user_override": False,
+            "review_required": False,
+            "warnings": ["AUTO_TIEBREAK_FINAL_SCORE"],
+        }
+
+    preferred = str(options.get("preferred_source_on_exact_tie", "whisper")).casefold()
+    if preferred not in {"youtube", "whisper"}:
+        preferred = "whisper"
+    return {
+        "selected_source": preferred,
+        "selection_reason": f"全部指标完全相同，按配置自动选择 {preferred}",
+        "user_override": False,
+        "review_required": False,
+        "warnings": ["AUTO_TIEBREAK_EXACT_TIE"],
+    }
 
 
 def choose_source(
@@ -24,6 +129,7 @@ def choose_source(
     mode: str,
     minimum_score: float,
     margin: float,
+    automatic_tiebreak: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     mode = mode.casefold()
     if mode not in {"auto", "youtube", "whisper", "manual"}:
@@ -43,10 +149,11 @@ def choose_source(
             "selected_source": requested,
             "selection_reason": f"用户显式指定 {requested}，评分警告仍保留",
             "user_override": True,
-            "review_required": bool(warnings),
+            "review_required": False,
             "warnings": list(dict.fromkeys(warnings)),
         }
 
+    options = automatic_tiebreak or {}
     youtube_usable = _usable(youtube, minimum_score)
     whisper_usable = _usable(whisper, minimum_score)
     if youtube_usable and not whisper_usable:
@@ -78,27 +185,44 @@ def choose_source(
                 "review_required": False,
                 "warnings": [],
             }
-        if str(youtube.get("source_type")) == "manual":
-            return {
-                "selected_source": "youtube",
-                "selection_reason": f"两套字幕分差 {difference:.2f} 小于 {margin:g}，优先人工 YouTube 字幕",
-                "user_override": False,
-                "review_required": False,
-                "warnings": ["SCORES_WITHIN_MARGIN_MANUAL_PREFERRED"],
-            }
+        return _automatic_close_score_tiebreak(
+            youtube,
+            whisper,
+            difference=difference,
+            margin=margin,
+            options=options,
+        )
+
+    safe_reports = {
+        name: report
+        for name, report in reports.items()
+        if _hard_safe(report)
+    }
+    if safe_reports and bool(options.get("select_below_minimum_when_hard_checks_pass", True)):
+        selected = max(
+            safe_reports,
+            key=lambda name: (
+                float(safe_reports[name].get("final_score", 0.0)),
+                name == str(options.get("preferred_source_on_exact_tie", "whisper")).casefold(),
+            ),
+        )
         return {
-            "selected_source": "",
-            "selection_reason": f"两套自动字幕分差 {difference:.2f} 小于 {margin:g}，需要人工选择",
+            "selected_source": selected,
+            "selection_reason": (
+                f"没有字幕达到最低分 {minimum_score:g}，但硬性检查通过；"
+                f"自动选择总分较高的 {selected}"
+            ),
             "user_override": False,
-            "review_required": True,
-            "warnings": ["SCORES_WITHIN_MARGIN"],
+            "review_required": False,
+            "warnings": ["AUTO_SELECTED_BELOW_MINIMUM"],
         }
     return {
         "selected_source": "",
-        "selection_reason": f"没有字幕源同时通过硬性检查且达到最低分 {minimum_score:g}",
+        "selection_reason": "没有任何字幕源通过硬性结构、时间轴和覆盖检查，自动流程停止",
         "user_override": False,
-        "review_required": True,
-        "warnings": ["NO_ACCEPTABLE_SUBTITLE_SOURCE"],
+        "review_required": False,
+        "selection_failed": True,
+        "warnings": ["NO_HARD_SAFE_SUBTITLE_SOURCE"],
     }
 
 
@@ -127,6 +251,8 @@ def write_selection_outputs(
             raise RuntimeError("Selected subtitle verification failed")
         selected_source_hash = sha256_file(selected_input)
         selected_output_hash = sha256_file(selected_output)
+    else:
+        selected_output.unlink(missing_ok=True)
 
     scoring = {
         "youtube": youtube,
@@ -160,6 +286,8 @@ def write_selection_outputs(
         "selection_reason": decision["selection_reason"],
         "user_override": bool(decision.get("user_override")),
         "review_required": bool(decision.get("review_required")),
+        "selection_failed": bool(decision.get("selection_failed")),
+        "selection_policy_version": SELECTION_POLICY_VERSION,
         "warnings": list(decision.get("warnings", [])),
         "selected_at": utc_now(),
     }

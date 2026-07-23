@@ -21,9 +21,21 @@ def prepare_selected(video: Path, content: str) -> Path:
     subtitles.mkdir(parents=True, exist_ok=True)
     selected = subtitles / "en.selected.srt"
     selected.write_text(content, encoding="utf-8")
+    digest = hashlib.sha256(selected.read_bytes()).hexdigest()
     selection = video / "stage3" / "selection"
     selection.mkdir(parents=True, exist_ok=True)
-    (selection / "selection_report.json").write_text("{}", encoding="utf-8")
+    (selection / "selection_report.json").write_text(
+        json.dumps(
+            {
+                "selected_source": "youtube",
+                "selected_input_path": str(selected),
+                "selected_output_path": str(selected),
+                "selected_source_hash": digest,
+                "selected_output_hash": digest,
+            }
+        ),
+        encoding="utf-8",
+    )
     return selected
 
 
@@ -59,7 +71,7 @@ class Stage3PipelineTests(TestCase):
             (task / "download_manifest.json").write_text("{}", encoding="utf-8")
             with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
                 exit_code = main(["--video-dir", str(task.parent), "--steps", "clean,translate"])
-            self.assertEqual(exit_code, 0)
+            self.assertEqual(exit_code, 1)
             manifest = json.loads((task / "stage3_manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["p0_status"], "NO_YOUTUBE_ENGLISH_SOURCE")
 
@@ -75,6 +87,25 @@ class Stage3PipelineTests(TestCase):
             self.assertTrue((subtitles / "en.clean.srt").is_file())
             self.assertTrue((video / "stage3" / "05_p0_qc.json").is_file())
             self.assertEqual(report["overlaps"], 0)
+
+    def test_p0_checkpoint_reuses_valid_outputs_and_repairs_tampered_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            video = Path(directory)
+            subtitles = video / "subtitles"
+            subtitles.mkdir()
+            (subtitles / "en.auto.vtt").write_text(
+                "WEBVTT\n\n00:00:00.000 --> 00:00:02.000\nHello world.\n",
+                encoding="utf-8",
+            )
+            first = Stage3Pipeline(video, CONFIG).run_p0()
+            self.assertNotIn("skipped", first)
+            second = Stage3Pipeline(video, CONFIG).run_p0()
+            self.assertTrue(second["skipped"])
+            clean = subtitles / "en.youtube.clean.srt"
+            clean.write_text("tampered", encoding="utf-8")
+            repaired = Stage3Pipeline(video, CONFIG).run_p0()
+            self.assertFalse(repaired.get("skipped", False))
+            self.assertNotEqual(clean.read_text(encoding="utf-8"), "tampered")
 
     def test_missing_english_source_is_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -155,3 +186,30 @@ class Stage3PipelineTests(TestCase):
             prepare_selected(video, "1\n00:00:00,000 --> 00:00:02,000\nHello.\n")
             Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True, polish_all=True)
             self.assertEqual(calls, [("raw", [1]), ("polished", [1])])
+
+    def test_completed_translation_stage_skips_all_translator_work(self) -> None:
+        calls: list[str] = []
+
+        class FakeTranslator:
+            def __init__(self, *args, **kwargs):
+                calls.append("init")
+            def translate_all(self, targets, all_segments, glossary, metadata, *, pass_name, force):
+                calls.append(pass_name)
+                return {item.id: "你好" for item in targets}
+            def usage_report(self):
+                return {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2}
+
+        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(
+            "os.environ", {"DEEPSEEK_API_KEY": "unit-secret"}, clear=False
+        ), mock.patch("src.stage3.pipeline.DeepSeekTranslator", FakeTranslator):
+            video = Path(directory)
+            prepare_selected(
+                video,
+                "1\n00:00:00,000 --> 00:00:02,000\nHello.\n",
+            )
+            first = Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True)
+            self.assertEqual(first["status"], "QC_PASSED")
+            calls_after_first = list(calls)
+            second = Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True)
+            self.assertTrue(second["checkpoint_reused"])
+            self.assertEqual(calls, calls_after_first)

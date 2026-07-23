@@ -150,6 +150,22 @@ class FasterWhisperTests(TestCase):
             self.assertTrue(result["skipped"])
             self.assertEqual(factory.call_count, 1)
 
+    def test_tampered_asr_output_invalidates_checkpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "audio").mkdir()
+            (root / "audio/source_audio.wav").write_bytes(b"audio")
+            cfg = config()
+            cfg["asr_model_path"] = str(make_model(root))
+            factory = mock.Mock(return_value=(FakeModel(), {}))
+            run_faster_whisper_asr(root, cfg, ROOT, model_factory=factory)
+            (root / "subtitles/en.whisper.clean.srt").write_text(
+                "tampered", encoding="utf-8"
+            )
+            result = run_faster_whisper_asr(root, cfg, ROOT, model_factory=factory)
+            self.assertFalse(result["skipped"])
+            self.assertEqual(factory.call_count, 2)
+
     def test_force_reruns_successful_checkpoint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); (root / "audio").mkdir(); (root / "audio/source_audio.wav").write_bytes(b"audio")

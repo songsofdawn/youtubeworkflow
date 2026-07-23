@@ -8,12 +8,13 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .models import SubtitleSegment
-from .manifest import utc_now
+from .manifest import hash_config, sha256_file, utc_now
 from .subtitle_writer import atomic_write_json
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PROMPT_VERSION = "stage3-translation-v2"
+TRANSLATION_CHECKPOINT_VERSION = "stage3-translation-checkpoint-v2"
 
 
 class TranslationError(RuntimeError):
@@ -125,21 +126,60 @@ class DeepSeekTranslator:
         path: Path,
         expected_ids: list[int],
         force: bool,
-        metadata: dict[str, str],
+        metadata: dict[str, Any],
     ) -> dict[int, str] | None:
         if force or not path.is_file():
             return None
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
         if payload.get("status") != "success" or payload.get("segment_ids") != expected_ids:
             return None
+        changed = False
         for key, value in metadata.items():
-            if payload.get(key) != value:
+            if key not in payload and key in {"translation_config_hash", "checkpoint_version"}:
+                payload[key] = value
+                changed = True
+            elif payload.get(key) != value:
                 return None
+        translations = payload.get("translations", {})
+        if set(map(int, translations)) != set(expected_ids):
+            return None
+        result = {
+            int(key): str(value)
+            for key, value in translations.items()
+            if str(value).strip()
+        }
+        if set(result) != set(expected_ids):
+            return None
+        translations_hash = hashlib.sha256(
+            json.dumps(
+                {str(key): value for key, value in sorted(result.items())},
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        if payload.get("translations_hash") not in {None, translations_hash}:
+            return None
+        if payload.get("translations_hash") is None:
+            payload["translations_hash"] = translations_hash
+            changed = True
+        response_path = Path(str(payload.get("response_path") or ""))
+        if payload.get("response_path") and response_path.is_file():
+            response_hash = sha256_file(response_path)
+            if payload.get("response_hash") not in {None, response_hash}:
+                return None
+            if payload.get("response_hash") is None:
+                payload["response_hash"] = response_hash
+                changed = True
+        if changed:
+            atomic_write_json(path, payload)
         usage = payload.get("usage", {})
         for key in self.usage:
             self.usage[key] += int(usage.get(key, 0) or 0)
-        translations = payload.get("translations", {})
-        return {int(key): str(value) for key, value in translations.items()}
+        return result
 
     def _request(self, messages: list[dict[str, str]]) -> tuple[dict[int, str], dict[str, int], str]:
         response = self.client.chat.completions.create(
@@ -187,6 +227,19 @@ class DeepSeekTranslator:
                 json.dumps(glossary, ensure_ascii=False, sort_keys=True).encode("utf-8")
             ).hexdigest(),
             "model": self.settings["model"],
+            "translation_config_hash": hash_config(
+                {
+                    key: self.config.get(key)
+                    for key in (
+                        "temperature",
+                        "context_before",
+                        "context_after",
+                        "translation_batch_size",
+                    )
+                }
+                | {"pass_name": pass_name}
+            ),
+            "checkpoint_version": TRANSLATION_CHECKPOINT_VERSION,
         }
         completed = self._load_completed(checkpoint, expected, force, checkpoint_metadata)
         if completed is not None:
@@ -194,8 +247,19 @@ class DeepSeekTranslator:
         result: dict[int, str] = {}
         batch_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
         if not force and checkpoint.is_file():
-            previous = json.loads(checkpoint.read_text(encoding="utf-8"))
-            if previous.get("segment_ids") == expected:
+            try:
+                previous = json.loads(checkpoint.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                previous = {}
+            metadata_matches = all(
+                previous.get(key) == value
+                or (
+                    key in {"translation_config_hash", "checkpoint_version"}
+                    and key not in previous
+                )
+                for key, value in checkpoint_metadata.items()
+            )
+            if previous.get("segment_ids") == expected and metadata_matches:
                 result = {int(key): str(value) for key, value in previous.get("translations", {}).items() if str(value).strip()}
                 for key in batch_usage:
                     batch_usage[key] = int(previous.get("usage", {}).get(key, 0) or 0)
@@ -225,6 +289,38 @@ class DeepSeekTranslator:
                 for key in self.usage:
                     self.usage[key] += usage[key]
                     batch_usage[key] += usage[key]
+                atomic_write_json(
+                    checkpoint,
+                    {
+                        "batch_id": batch_id,
+                        "segment_ids": expected,
+                        **checkpoint_metadata,
+                        "status": "running" if pending else "success",
+                        "attempts": attempts,
+                        "usage": batch_usage,
+                        "response_path": str(response_file),
+                        "response_hash": sha256_file(response_file),
+                        "error": (
+                            f"Missing IDs: {[item.id for item in pending]}"
+                            if pending else ""
+                        ),
+                        "translations": {
+                            str(key): value for key, value in result.items()
+                        },
+                        "translations_hash": hashlib.sha256(
+                            json.dumps(
+                                {
+                                    str(key): value
+                                    for key, value in sorted(result.items())
+                                },
+                                ensure_ascii=False,
+                                sort_keys=True,
+                                separators=(",", ":"),
+                            ).encode("utf-8")
+                        ).hexdigest(),
+                        "completed_at": utc_now() if not pending else "",
+                    },
+                )
                 if pending:
                     last_error = f"Missing IDs: {[item.id for item in pending]}"
                     raise TranslationError(last_error)
@@ -244,8 +340,17 @@ class DeepSeekTranslator:
                 "attempts": attempts,
                 "usage": batch_usage,
                 "response_path": str(response_file),
+                "response_hash": sha256_file(response_file) if response_file.is_file() else "",
                 "error": "" if status == "success" else last_error,
                 "translations": {str(key): value for key, value in result.items()},
+                "translations_hash": hashlib.sha256(
+                    json.dumps(
+                        {str(key): value for key, value in sorted(result.items())},
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
                 "completed_at": utc_now() if status == "success" else "",
             },
         )

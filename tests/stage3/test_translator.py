@@ -8,6 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase, mock
 
+from src.stage3.manifest import hash_config
 from src.stage3.models import SubtitleSegment
 from src.stage3.translator_deepseek import (
     PROMPT_VERSION,
@@ -98,3 +99,69 @@ class TranslatorTests(TestCase):
                 result = DeepSeekTranslator(CONFIG, directory, client=client).translate_batch(1, [item], [item], {}, {})
             self.assertEqual(result, {1: "一"})
             client.chat.completions.create.assert_not_called()
+
+    def test_partial_checkpoint_resumes_only_missing_ids_after_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            checkpoint = work / "checkpoints" / "batch_0001.json"
+            checkpoint.parent.mkdir()
+            items = [
+                SubtitleSegment(1, 0, 1, "one"),
+                SubtitleSegment(2, 1, 2, "two"),
+            ]
+            source_payload = [
+                {"id": item.id, "start": item.start, "end": item.end, "text": item.text}
+                for item in items
+            ]
+            client = mock.Mock()
+            client.chat.completions.create.return_value = response(
+                [{"id": 2, "translation": "二"}]
+            )
+            with mock.patch.dict(
+                os.environ, {"DEEPSEEK_MODEL": "checkpoint-model"}, clear=False
+            ):
+                checkpoint.write_text(
+                    json.dumps(
+                        {
+                            "status": "running",
+                            "segment_ids": [1, 2],
+                            "translations": {"1": "一"},
+                            "usage": {
+                                "prompt_tokens": 10,
+                                "completion_tokens": 5,
+                                "total_tokens": 15,
+                            },
+                            "source_hash": hashlib.sha256(
+                                json.dumps(
+                                    source_payload,
+                                    ensure_ascii=False,
+                                    sort_keys=True,
+                                ).encode("utf-8")
+                            ).hexdigest(),
+                            "prompt_version": PROMPT_VERSION,
+                            "glossary_hash": hashlib.sha256(b"{}").hexdigest(),
+                            "model": "checkpoint-model",
+                            "translation_config_hash": hash_config(
+                                {
+                                    key: CONFIG.get(key)
+                                    for key in (
+                                        "temperature",
+                                        "context_before",
+                                        "context_after",
+                                        "translation_batch_size",
+                                    )
+                                }
+                                | {"pass_name": "raw"}
+                            ),
+                            "checkpoint_version": "stage3-translation-checkpoint-v2",
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                result = DeepSeekTranslator(
+                    CONFIG, work, client=client, sleeper=lambda _: None
+                ).translate_batch(1, items, items, {}, {})
+            self.assertEqual(result, {1: "一", 2: "二"})
+            prompt = client.chat.completions.create.call_args.kwargs["messages"][1]["content"]
+            self.assertIn('"id": 2', prompt)
+            self.assertNotIn('"id": 1, "start"', prompt)
