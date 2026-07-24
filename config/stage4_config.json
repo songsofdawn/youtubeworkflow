@@ -1,0 +1,54 @@
+{
+  "input": {
+    "english_subtitle": "subtitles/en.selected.srt",
+    "chinese_priority": [
+      "subtitles/zh.reviewed.srt",
+      "subtitles/zh.clean.srt"
+    ],
+    "chinese_auto_candidates": [
+      "subtitles/zh.clean.srt",
+      "subtitles/zh.raw.srt",
+      "subtitles/zh.auto.srt",
+      "subtitles/zh.youtube.clean.srt"
+    ],
+    "subtitle_time_tolerance_ms": 20,
+    "auto_select_max_chinese_chars_per_line": 26,
+    "auto_select_max_chinese_cps": 12
+  },
+  "subtitle_style": {
+    "chinese_font": "Microsoft YaHei",
+    "english_font": "Arial",
+    "fallback_font": "Arial Unicode MS",
+    "chinese_font_size_1080p": 38,
+    "english_font_size_1080p": 28,
+    "chinese_min_font_size_1080p": 32,
+    "english_min_font_size_1080p": 23,
+    "chinese_bold": false,
+    "max_line_width_ratio": 0.88,
+    "outline_1080p": 2.2,
+    "shadow_1080p": 0.6,
+    "margin_v_1080p": 75,
+    "margin_lr_1080p": 80,
+    "primary_color": "&H00FFFFFF",
+    "outline_color": "&H00000000",
+    "shadow_color": "&H80000000",
+    "alignment": 2,
+    "max_english_lines": 2,
+    "max_chinese_lines": 2,
+    "max_combined_lines": 4
+  },
+  "render": {
+    "default_mode": "softsub",
+    "video_encoder": "auto",
+    "nvenc_preset": "p6",
+    "nvenc_cq": 19,
+    "x264_preset": "medium",
+    "x264_crf": 18,
+    "aac_bitrate": "192k",
+    "duration_tolerance_seconds": 0.5,
+    "preserve_metadata": true,
+    "preserve_chapters": true,
+    "preserve_all_audio_tracks": true,
+    "preserve_existing_subtitle_tracks": true
+  }
+}

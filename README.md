@@ -539,3 +539,56 @@ git ls-files .env models downloads .venv .venv_stage3
 ```
 
 最后一条命令应当没有输出。不要使用 `git add -f` 强制添加被忽略的私密文件或大文件。
+
+## 阶段四：原声双语字幕成片
+
+阶段四只读取阶段三选定的 `subtitles\en.selected.srt`。存在
+`zh.reviewed.srt` 时始终使用人工审核版；不存在时，会对配置中的
+`zh.clean.srt`、`zh.raw.srt` 和其他候选执行严格 ID/时间轴校验，再按中文
+占比、英文泄漏、阅读速度、超长行、重复标点及阶段三翻译 QC 自动选择得分
+最高的字幕。选择依据写入
+`stage4\subtitles\chinese_selection_report.json`。自动选择通过全部 QC 后
+可以直接完成，不再仅因缺少人工审核而标记 `REVIEW_REQUIRED`；如需强制人工
+审核，增加 `--require-reviewed`。
+
+它不会生成中文 TTS，也不会替换或修改原始音频。双语字幕默认使用协调的
+1080p 字号比例（中文 38、英文 28），长句和三至四行片段会在配置的最小字号
+范围内自动缩小，中文始终略大于英文。
+
+常用命令：
+
+```bat
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode ass
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode softsub
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode hardsub
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both --dry-run
+```
+
+也可以将视频任务目录拖到 `run_stage4.bat`。默认推荐软字幕 MKV：视频流和
+全部音频流直接复制，并增加可开关、默认开启的 `English / 中文` ASS 字幕轨。
+硬字幕 MP4 会重新编码视频；源音频兼容 MP4 时直接复制，否则转为 AAC 并在
+Manifest 中记录 `AUDIO_TRANSCODE_REQUIRED`。使用 `--require-audio-copy`
+可禁止该回退。
+
+阶段四输出全部位于任务目录的 `stage4\` 下，包括双语 ASS、软/硬字幕视频、
+媒体探测、字幕与渲染 QC、FFmpeg 日志和 `stage4_manifest.json`。所有正式
+成片先写临时文件，通过探测与 QC 后再原子替换，原视频及原字幕不会被覆盖。
+
+### 一键发布阶段四代码到 GitHub
+
+双击：
+
+```text
+publish_stage4_to_github.bat
+```
+
+脚本会依次运行全部离线测试、Python 语法检查和 Git whitespace 检查，只暂存
+阶段四源码、配置、测试、README 与 BAT 白名单，创建提交并把当前分支推送到
+`origin`。它不会暂存 `downloads`、`.env`、`private`、模型、工具、日志、
+成片或其他运行数据；如果运行前已经存在暂存区改动，脚本会停止，避免把其他
+工作混入提交。只检查而不提交、推送可运行：
+
+```bat
+publish_stage4_to_github.bat --check
+```
