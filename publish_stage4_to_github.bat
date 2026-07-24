@@ -6,7 +6,7 @@ cd /d "%~dp0"
 set "CHECK_ONLY=0"
 if /I "%~1"=="--check" set "CHECK_ONLY=1"
 set "PYTHON_EXE=.venv\Scripts\python.exe"
-set "COMMIT_MESSAGE=feat: add automatic bilingual subtitle rendering"
+set "COMMIT_MESSAGE=fix: support stage4 date batch rendering"
 
 where git >nul 2>&1
 if errorlevel 1 (

@@ -29,7 +29,9 @@ def hash_json(value: Any) -> str:
 def atomic_write_text(path: Path | str, value: str, *, encoding: str = "utf-8") -> Path:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_name(f".{destination.stem}.{uuid.uuid4().hex}.tmp{destination.suffix}")
+    # Keep the temporary basename short. Download task directories contain the
+    # full video title and can otherwise cross the legacy Windows MAX_PATH limit.
+    temporary = destination.with_name(f".tmp-{uuid.uuid4().hex[:8]}{destination.suffix}")
     try:
         temporary.write_text(value, encoding=encoding)
         os.replace(temporary, destination)

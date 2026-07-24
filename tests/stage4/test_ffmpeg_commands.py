@@ -15,6 +15,7 @@ from src.stage4.ffmpeg_runner import (
     FFmpegRunner,
     resolve_video_encoder,
     select_audio_mode,
+    temporary_output_path,
 )
 from src.stage4.models import Stage4Error
 
@@ -63,6 +64,12 @@ class FFmpegCommandTests(unittest.TestCase):
         self.assertIn(r"\:", value)
         self.assertIn(r"\[", value)
         self.assertIn(r"\'", value)
+
+    def test_temporary_video_name_stays_short_for_long_task_paths(self) -> None:
+        destination = Path("very-long-task") / "final_bilingual_hardsub.mp4"
+        temporary = temporary_output_path(destination)
+        self.assertEqual(temporary.suffix, ".mp4")
+        self.assertLessEqual(len(temporary.name), 24)
 
     def test_mp4_incompatible_audio_falls_back_to_aac(self) -> None:
         mode, transcoded, warnings = select_audio_mode(

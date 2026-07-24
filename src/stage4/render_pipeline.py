@@ -262,6 +262,12 @@ class Stage4Pipeline:
                     self.config.get("input", {}).get("subtitle_time_tolerance_ms", 20)
                 ),
                 video_duration=float(source_probe.get("duration") or 0),
+                video_duration_tolerance_seconds=float(
+                    self.config.get("input", {}).get(
+                        "subtitle_video_end_tolerance_seconds",
+                        1.0,
+                    )
+                ),
             )
             atomic_write_json(paths["subtitles"] / "subtitle_report.json", validation.report)
             if not validation.passed:

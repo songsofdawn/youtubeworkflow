@@ -12,6 +12,7 @@
       "subtitles/zh.youtube.clean.srt"
     ],
     "subtitle_time_tolerance_ms": 20,
+    "subtitle_video_end_tolerance_seconds": 1.0,
     "auto_select_max_chinese_chars_per_line": 26,
     "auto_select_max_chinese_cps": 12
   },

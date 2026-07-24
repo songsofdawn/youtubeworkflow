@@ -21,9 +21,9 @@ if not exist "%FFPROBE_EXE%" (
 )
 
 set "VIDEO_DIR=%~1"
-if not defined VIDEO_DIR set /p "VIDEO_DIR=Video task directory: "
+if not defined VIDEO_DIR set /p "VIDEO_DIR=Video task or date batch directory: "
 if not exist "%VIDEO_DIR%\" (
-  echo [ERROR] Video task directory not found: %VIDEO_DIR%
+  echo [ERROR] Video task or batch directory not found: %VIDEO_DIR%
   goto :failed
 )
 
@@ -57,13 +57,15 @@ if /I "%MODE%"=="dry-run" (
 if errorlevel 1 goto :failed
 echo.
 echo Stage 4 completed.
-echo Output directory: %VIDEO_DIR%\stage4
+echo Single-task outputs: each video task's stage4\video directory
+echo Batch summary: %VIDEO_DIR%\stage4\batch_summary.json
 goto :done
 
 :failed
 echo.
 echo Stage 4 failed.
-echo FFmpeg log: %VIDEO_DIR%\stage4\logs\ffmpeg_commands.log
+echo See each video task's stage4\logs\ffmpeg_commands.log.
+echo Batch report: %VIDEO_DIR%\stage4\batch_summary.json
 
 :done
 pause

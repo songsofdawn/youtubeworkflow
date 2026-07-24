@@ -551,6 +551,14 @@ git ls-files .env models downloads .venv .venv_stage3
 可以直接完成，不再仅因缺少人工审核而标记 `REVIEW_REQUIRED`；如需强制人工
 审核，增加 `--require-reviewed`。
 
+`--video-dir` 既可传入单个视频任务目录，也可直接传入日期/批次目录。批次
+模式会递归发现所有含 `download_manifest.json` 的视频任务，逐个生成成片。
+缺少 `en.selected.srt`、缺少中文字幕或中英字幕结构不一致的未就绪任务会
+记录为 `SKIPPED_NOT_READY`，不会阻断其他任务；真正的渲染或 QC 错误仍会
+令批次返回失败。汇总写入日期目录的 `stage4\batch_summary.json`，Dry-run
+汇总写入 `stage4\batch_dry_run_summary.json`。视频结尾允许字幕最多超出
+1 秒，以兼容 YouTube 常见的容器时长舍入误差，超过范围仍会拒绝生成。
+
 它不会生成中文 TTS，也不会替换或修改原始音频。双语字幕默认使用协调的
 1080p 字号比例（中文 38、英文 28），长句和三至四行片段会在配置的最小字号
 范围内自动缩小，中文始终略大于英文。
@@ -563,10 +571,12 @@ git ls-files .env models downloads .venv .venv_stage3
 .venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode hardsub
 .venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both
 .venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both --dry-run
+.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "downloads\candidates\2026-07-21" --mode hardsub
 ```
 
-也可以将视频任务目录拖到 `run_stage4.bat`。默认推荐软字幕 MKV：视频流和
-全部音频流直接复制，并增加可开关、默认开启的 `English / 中文` ASS 字幕轨。
+也可以将单个视频任务目录或整个日期目录拖到 `run_stage4.bat`。默认推荐软
+字幕 MKV：视频流和全部音频流直接复制，并增加可开关、默认开启的
+`English / 中文` ASS 字幕轨。
 硬字幕 MP4 会重新编码视频；源音频兼容 MP4 时直接复制，否则转为 AAC 并在
 Manifest 中记录 `AUDIO_TRANSCODE_REQUIRED`。使用 `--require-audio-copy`
 可禁止该回退。

@@ -98,9 +98,23 @@ class SubtitleValidatorTests(unittest.TestCase):
             result = validate_subtitles(left, right, video_duration=2.5)
             self.assertIn("2", result.report["invalid_timestamp_ids"])
 
+    def test_small_video_end_overshoot_can_use_explicit_tolerance(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            left, right = self.write_pair(Path(temporary))
+            result = validate_subtitles(
+                left,
+                right,
+                video_duration=1.4,
+                video_duration_tolerance_seconds=1.0,
+            )
+            self.assertTrue(result.passed)
+            self.assertEqual(
+                result.report["video_duration_tolerance_seconds"],
+                1.0,
+            )
+
     def test_illegal_control_character_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             left, right = self.write_pair(Path(temporary), chinese=ZH.replace("你好", "你\x00好"))
             result = validate_subtitles(left, right)
             self.assertEqual(result.report["illegal_control_ids"], ["1"])
-

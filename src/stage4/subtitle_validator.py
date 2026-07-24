@@ -74,7 +74,11 @@ def parse_srt_strict(path: Path | str) -> tuple[list[SubtitleCue], dict[str, Any
     return cues, diagnostics
 
 
-def _timeline_errors(cues: list[SubtitleCue], duration: float | None) -> list[str]:
+def _timeline_errors(
+    cues: list[SubtitleCue],
+    duration: float | None,
+    duration_tolerance: float,
+) -> list[str]:
     invalid: list[str] = []
     previous_start = -1.0
     previous_end = -1.0
@@ -84,7 +88,10 @@ def _timeline_errors(cues: list[SubtitleCue], duration: float | None) -> list[st
             or cue.end <= cue.start
             or cue.start < previous_start
             or cue.end < previous_end
-            or (duration is not None and cue.end > duration + 0.001)
+            or (
+                duration is not None
+                and cue.end > duration + max(0.0, duration_tolerance)
+            )
         ):
             invalid.append(cue.identifier)
         previous_start = cue.start
@@ -98,6 +105,7 @@ def validate_subtitles(
     *,
     tolerance_ms: int = 20,
     video_duration: float | None = None,
+    video_duration_tolerance_seconds: float = 0.001,
 ) -> SubtitleValidation:
     english_source = Path(english_path)
     chinese_source = Path(chinese_path)
@@ -126,8 +134,16 @@ def validate_subtitles(
 
     empty_english = sorted(cue.identifier for cue in english if not cue.text.strip())
     empty_chinese = sorted(cue.identifier for cue in chinese if not cue.text.strip())
-    invalid_english = _timeline_errors(english, video_duration)
-    invalid_chinese = _timeline_errors(chinese, video_duration)
+    invalid_english = _timeline_errors(
+        english,
+        video_duration,
+        video_duration_tolerance_seconds,
+    )
+    invalid_chinese = _timeline_errors(
+        chinese,
+        video_duration,
+        video_duration_tolerance_seconds,
+    )
     malformed = bool(
         english_diagnostics["malformed_blocks"]
         or chinese_diagnostics["malformed_blocks"]
@@ -180,6 +196,7 @@ def validate_subtitles(
         ),
         "subtitle_time_tolerance_ms": tolerance_ms,
         "video_duration": video_duration,
+        "video_duration_tolerance_seconds": video_duration_tolerance_seconds,
         "id_sets_match": not ids_failed,
         "timeline_matches": not timeline_failed,
         "validation_status": status,

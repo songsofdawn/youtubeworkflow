@@ -301,4 +301,7 @@ class FFmpegRunner:
 
 def temporary_output_path(destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    return destination.with_name(f".{destination.stem}.{os.getpid()}.tmp{destination.suffix}")
+    # The final filename is descriptive, while the temporary filename must stay
+    # short enough for long Windows task directories.
+    kind = "softsub" if "softsub" in destination.stem.casefold() else "hardsub"
+    return destination.with_name(f".{kind}-{os.getpid()}.tmp{destination.suffix}")
