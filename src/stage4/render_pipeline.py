@@ -33,6 +33,7 @@ from .stage4_manifest import (
     sha256_file,
     utc_now,
 )
+from .subtitle_recovery import clip_recovered_pair_to_video_duration
 from .subtitle_validator import validate_subtitles
 
 
@@ -209,9 +210,21 @@ class Stage4Pipeline:
                 require_reviewed=options.require_reviewed,
             )
             source_hash = sha256_file(resolved.source_video)
+            source_probe = probe_media(self.ffprobe_path, resolved.source_video)
+            if (
+                resolved.chinese_selection_report.get("selection_mode")
+                == "auto_recovered_aligned_bilingual"
+            ):
+                adjustment = clip_recovered_pair_to_video_duration(
+                    resolved.english_subtitle,
+                    resolved.chinese_subtitle,
+                    float(source_probe.get("duration") or 0),
+                )
+                resolved.chinese_selection_report[
+                    "video_duration_adjustment"
+                ] = adjustment
             english_hash = sha256_file(resolved.english_subtitle)
             chinese_hash = sha256_file(resolved.chinese_subtitle)
-            source_probe = probe_media(self.ffprobe_path, resolved.source_video)
             atomic_write_json(paths["qc"] / "media_probe_before.json", source_probe)
             chinese_selection_report_path = (
                 paths["subtitles"] / "chinese_selection_report.json"
@@ -226,6 +239,11 @@ class Stage4Pipeline:
                     f"{resolved.chinese_subtitle.name}:"
                     f"{resolved.chinese_subtitle_selection_score:.3f}"
                 )
+            if (
+                resolved.chinese_selection_report.get("selection_mode")
+                == "auto_recovered_aligned_bilingual"
+            ):
+                warnings.append("AUTO_RECOVERED_ALIGNED_BILINGUAL_SUBTITLES")
 
             manifest.update(
                 {
@@ -394,7 +412,7 @@ class Stage4Pipeline:
                 build_hardsub_command(
                     self.ffmpeg_path,
                     resolved.source_video,
-                    ass_path,
+                    Path(ass_path.name),
                     hard_path,
                     video_encoder=selected_encoder,
                     audio_mode=audio_mode,
@@ -410,6 +428,7 @@ class Stage4Pipeline:
             plan.update(
                 {
                     "inputs": resolved.to_dict(),
+                    "ffmpeg_working_directory": str(paths["subtitles"]),
                     "video_encoder": selected_encoder,
                     "audio_mode": audio_mode,
                     "warnings": warnings,
@@ -447,7 +466,10 @@ class Stage4Pipeline:
                     warnings=warnings,
                 )
 
-            runner = FFmpegRunner(paths["logs"] / "ffmpeg_commands.log", cwd=self.project_root)
+            runner = FFmpegRunner(
+                paths["logs"] / "ffmpeg_commands.log",
+                cwd=paths["subtitles"],
+            )
             duration_tolerance = float(render_config.get("duration_tolerance_seconds", 0.5))
             ass_hash = sha256_file(ass_path)
             soft_fingerprint = hash_json(
@@ -588,7 +610,7 @@ class Stage4Pipeline:
                     command_builder=lambda output: build_hardsub_command(
                         self.ffmpeg_path,
                         resolved.source_video,
-                        ass_path,
+                        Path(ass_path.name),
                         output,
                         video_encoder=selected_encoder,
                         audio_mode=audio_mode,

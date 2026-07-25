@@ -11,6 +11,20 @@
       "subtitles/zh.auto.srt",
       "subtitles/zh.youtube.clean.srt"
     ],
+    "english_recovery_candidates": [
+      "subtitles/en.manual.vtt",
+      "subtitles/en.auto.vtt",
+      "subtitles/en.manual.srt",
+      "subtitles/en.auto.srt"
+    ],
+    "chinese_recovery_candidates": [
+      "subtitles/zh.manual.vtt",
+      "subtitles/zh.auto.vtt",
+      "subtitles/zh.manual.srt",
+      "subtitles/zh.auto.srt"
+    ],
+    "auto_recover_min_pair_ratio": 0.85,
+    "auto_recover_min_cjk_ratio": 0.5,
     "subtitle_time_tolerance_ms": 20,
     "subtitle_video_end_tolerance_seconds": 1.0,
     "auto_select_max_chinese_chars_per_line": 26,

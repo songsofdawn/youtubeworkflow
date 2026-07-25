@@ -137,6 +137,30 @@ class Stage4PipelineTests(unittest.TestCase):
     @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
     @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
     @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())
+    def test_hardsub_filter_uses_safe_relative_ass_path_for_apostrophe_task(
+        self,
+        _probe: mock.Mock,
+        _encoder: mock.Mock,
+        _version: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            pipeline, task, _, _ = self.prepare(Path(temporary))
+            renamed = task.rename(task.with_name("task's title"))
+            result = pipeline.run(
+                renamed,
+                PipelineOptions(mode="hardsub", dry_run=True),
+            )
+            command = result.plan["commands"]["hardsub"]
+            filter_value = command[command.index("-vf") + 1]
+            self.assertEqual(filter_value, "ass=filename='bilingual.ass'")
+            self.assertEqual(
+                result.plan["ffmpeg_working_directory"],
+                str(renamed / "stage4" / "subtitles"),
+            )
+
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())
     def test_dry_run_does_not_overwrite_successful_manifest(
         self, _probe: mock.Mock, _encoder: mock.Mock, _version: mock.Mock
     ) -> None:

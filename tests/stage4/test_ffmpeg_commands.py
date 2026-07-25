@@ -65,6 +65,9 @@ class FFmpegCommandTests(unittest.TestCase):
         self.assertIn(r"\[", value)
         self.assertIn(r"\'", value)
 
+    def test_relative_filter_path_is_not_resolved_into_task_title(self) -> None:
+        self.assertEqual(escape_filter_path("bilingual.ass"), "bilingual.ass")
+
     def test_temporary_video_name_stays_short_for_long_task_paths(self) -> None:
         destination = Path("very-long-task") / "final_bilingual_hardsub.mp4"
         temporary = temporary_output_path(destination)

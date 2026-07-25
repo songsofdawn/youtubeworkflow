@@ -542,22 +542,27 @@ git ls-files .env models downloads .venv .venv_stage3
 
 ## 阶段四：原声双语字幕成片
 
-阶段四只读取阶段三选定的 `subtitles\en.selected.srt`。存在
+阶段四优先读取阶段三选定的 `subtitles\en.selected.srt`。存在
 `zh.reviewed.srt` 时始终使用人工审核版；不存在时，会对配置中的
 `zh.clean.srt`、`zh.raw.srt` 和其他候选执行严格 ID/时间轴校验，再按中文
 占比、英文泄漏、阅读速度、超长行、重复标点及阶段三翻译 QC 自动选择得分
-最高的字幕。选择依据写入
+最高的字幕。如果阶段三精确配对不可用，但任务中存在独立的中英文
+VTT/SRT，阶段四会离线重新清洗并按时间重对齐，只有配对覆盖率至少 85%、
+中文字符占比至少 50% 才使用，生成
+`stage4\subtitles\en.recovered.srt` 和 `zh.recovered.srt`。该恢复不调用
+翻译 API，也不覆盖原字幕。选择依据写入
 `stage4\subtitles\chinese_selection_report.json`。自动选择通过全部 QC 后
 可以直接完成，不再仅因缺少人工审核而标记 `REVIEW_REQUIRED`；如需强制人工
 审核，增加 `--require-reviewed`。
 
 `--video-dir` 既可传入单个视频任务目录，也可直接传入日期/批次目录。批次
 模式会递归发现所有含 `download_manifest.json` 的视频任务，逐个生成成片。
-缺少 `en.selected.srt`、缺少中文字幕或中英字幕结构不一致的未就绪任务会
-记录为 `SKIPPED_NOT_READY`，不会阻断其他任务；真正的渲染或 QC 错误仍会
-令批次返回失败。汇总写入日期目录的 `stage4\batch_summary.json`，Dry-run
-汇总写入 `stage4\batch_dry_run_summary.json`。视频结尾允许字幕最多超出
-1 秒，以兼容 YouTube 常见的容器时长舍入误差，超过范围仍会拒绝生成。
+缺少可恢复英文或完全没有中文字幕的未就绪任务会记录为
+`SKIPPED_NOT_READY`，不会阻断其他任务；真正的渲染或 QC 错误仍会令批次
+返回失败。汇总写入日期目录的 `stage4\batch_summary.json`，Dry-run 汇总
+写入 `stage4\batch_dry_run_summary.json`。自动恢复字幕超出视频结尾时会
+安全裁剪到真实时长。硬字幕滤镜始终从字幕工作目录读取相对 ASS 路径，任务名
+含撇号、逗号、Emoji 或长标题也不会破坏 FFmpeg 路径解析。
 
 它不会生成中文 TTS，也不会替换或修改原始音频。双语字幕默认使用协调的
 1080p 字号比例（中文 38、英文 28），长句和三至四行片段会在配置的最小字号

@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .models import ResolvedInputs, Stage4Error
+from .subtitle_recovery import recover_aligned_bilingual_subtitles
 from .subtitle_selector import select_best_chinese_subtitle
 
 
@@ -37,6 +38,17 @@ def _configured_task_path(video_dir: Path, value: str) -> Path:
     return candidate.resolve()
 
 
+def _recovered_subtitle_inputs(
+    video_dir: Path,
+    input_config: dict[str, Any],
+) -> tuple[Path, Path, bool, bool, float | None, str, dict[str, Any]]:
+    english, chinese, score, reason, report = recover_aligned_bilingual_subtitles(
+        video_dir,
+        input_config,
+    )
+    return english, chinese, False, True, score, reason, report
+
+
 def resolve_subtitle_inputs(
     video_dir: Path,
     config: dict[str, Any],
@@ -49,10 +61,16 @@ def resolve_subtitle_inputs(
         str(input_config.get("english_subtitle", "subtitles/en.selected.srt")),
     )
     if not english.is_file():
-        raise Stage4Error(
+        missing_english = Stage4Error(
             "EN_SELECTED_SUBTITLE_NOT_FOUND",
             f"找不到阶段三选定的英文字幕：{english}。请先完成阶段三字幕选择。",
         )
+        if not require_reviewed:
+            try:
+                return _recovered_subtitle_inputs(video_dir, input_config)
+            except Stage4Error as recovery_error:
+                missing_english.details["automatic_recovery"] = recovery_error.to_dict()
+        raise missing_english
 
     priorities = input_config.get(
         "chinese_priority",
@@ -83,13 +101,25 @@ def resolve_subtitle_inputs(
             f"严格模式要求人工审核字幕，但文件不存在：{reviewed}",
         )
     candidates = input_config.get("chinese_auto_candidates", priorities)
-    selected, score, reason, report = select_best_chinese_subtitle(
-        video_dir,
-        english,
-        candidates,
-        tolerance_ms=int(input_config.get("subtitle_time_tolerance_ms", 20)),
-        config=input_config,
-    )
+    try:
+        selected, score, reason, report = select_best_chinese_subtitle(
+            video_dir,
+            english,
+            candidates,
+            tolerance_ms=int(input_config.get("subtitle_time_tolerance_ms", 20)),
+            config=input_config,
+        )
+    except Stage4Error as selection_error:
+        if selection_error.code not in {
+            "CHINESE_SUBTITLE_NOT_FOUND",
+            "NO_VALID_CHINESE_SUBTITLE",
+        }:
+            raise
+        try:
+            return _recovered_subtitle_inputs(video_dir, input_config)
+        except Stage4Error as recovery_error:
+            selection_error.details["automatic_recovery"] = recovery_error.to_dict()
+            raise selection_error
     return english, selected, False, True, score, reason, report
 
 

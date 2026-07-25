@@ -20,6 +20,22 @@ CONFIG = {
 }
 ENGLISH_SRT = "1\n00:00:00,000 --> 00:00:01,000\nHello world.\n"
 CHINESE_SRT = "1\n00:00:00,000 --> 00:00:01,000\n你好，世界。\n"
+RECOVERY_ENGLISH_SRT = """1
+00:00:00,000 --> 00:00:01,000
+Hello world.
+
+2
+00:00:01,500 --> 00:00:02,500
+Second sentence.
+"""
+RECOVERY_CHINESE_SRT = """1
+00:00:00,050 --> 00:00:00,950
+你好，世界。
+
+2
+00:00:01,550 --> 00:00:02,450
+第二句话。
+"""
 
 
 class InputResolverTests(unittest.TestCase):
@@ -144,6 +160,41 @@ class InputResolverTests(unittest.TestCase):
             self.assertFalse(rejected["eligible"])
             self.assertEqual(rejected["rejection_reason"], "SUBTITLE_TIMELINE_MISMATCH")
             self.assertIn("download_manifest", result.source_video_reason)
+
+    def test_mismatched_sources_are_recovered_from_independent_auto_tracks(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            subtitles = root / "subtitles"
+            (subtitles / "zh.clean.srt").write_text(
+                RECOVERY_CHINESE_SRT,
+                encoding="utf-8",
+            )
+            (subtitles / "en.auto.srt").write_text(
+                RECOVERY_ENGLISH_SRT,
+                encoding="utf-8",
+            )
+            (subtitles / "zh.auto.srt").write_text(
+                RECOVERY_CHINESE_SRT,
+                encoding="utf-8",
+            )
+            config = {
+                "input": {
+                    **CONFIG["input"],
+                    "english_recovery_candidates": ["subtitles/en.auto.srt"],
+                    "chinese_recovery_candidates": ["subtitles/zh.auto.srt"],
+                    "auto_recover_min_pair_ratio": 0.85,
+                    "auto_recover_min_cjk_ratio": 0.5,
+                }
+            }
+            result = resolve_inputs(root, config)
+            self.assertEqual(result.english_subtitle.name, "en.recovered.srt")
+            self.assertEqual(result.chinese_subtitle.name, "zh.recovered.srt")
+            self.assertEqual(
+                result.chinese_selection_report["selection_mode"],
+                "auto_recovered_aligned_bilingual",
+            )
+            self.assertEqual(result.chinese_selection_report["pair_ratio"], 1.0)
 
     def test_ambiguous_directory_scan_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

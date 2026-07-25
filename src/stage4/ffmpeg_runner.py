@@ -32,7 +32,8 @@ def readable_command(command: Iterable[str | Path]) -> str:
 
 
 def escape_filter_path(path: Path | str) -> str:
-    value = Path(path).resolve().as_posix()
+    source = Path(path)
+    value = (source.resolve() if source.is_absolute() else source).as_posix()
     value = value.replace("\\", r"\\")
     value = value.replace(":", r"\:")
     value = value.replace("'", r"\'")
