@@ -8,7 +8,30 @@ from typing import Any, Iterable
 from .models import SubtitleCue
 
 
-ASS_GENERATOR_VERSION = "1.2"
+ASS_GENERATOR_VERSION = "1.3"
+VERTICAL_ASS_GENERATOR_VERSION = "1.2"
+
+
+def orientation_font_multiplier(width: int, height: int) -> float:
+    """Keep portrait text stable and enlarge landscape text by aspect ratio."""
+    if width <= height:
+        return 1.0
+    aspect_ratio = width / max(1, height)
+    if aspect_ratio >= 2.0:
+        return 1.75
+    if aspect_ratio >= 16 / 9:
+        return 1.6
+    return 1.5
+
+
+def ass_generator_version(width: int, height: int) -> str:
+    # Portrait output is byte-for-byte compatible with v1.2, so its existing
+    # checkpoint remains reusable. Landscape output must be rebuilt once.
+    return (
+        ASS_GENERATOR_VERSION
+        if orientation_font_multiplier(width, height) > 1.0
+        else VERTICAL_ASS_GENERATOR_VERSION
+    )
 
 
 def escape_ass_text(value: str) -> str:
@@ -34,20 +57,50 @@ def _round_scaled(value: float, scale: float, *, minimum: float = 1.0) -> float:
 
 def scaled_style(style: dict[str, Any], width: int, height: int) -> dict[str, Any]:
     scale = max(0.1, height / 1080.0)
+    font_multiplier = orientation_font_multiplier(width, height)
     return {
         **style,
         "play_res_x": int(width),
         "play_res_y": int(height),
-        "chinese_font_size": int(round(float(style.get("chinese_font_size_1080p", 48)) * scale)),
-        "english_font_size": int(round(float(style.get("english_font_size_1080p", 34)) * scale)),
+        "orientation_font_multiplier": font_multiplier,
+        "chinese_font_size": int(
+            round(
+                float(style.get("chinese_font_size_1080p", 48))
+                * scale
+                * font_multiplier
+            )
+        ),
+        "english_font_size": int(
+            round(
+                float(style.get("english_font_size_1080p", 34))
+                * scale
+                * font_multiplier
+            )
+        ),
         "chinese_min_font_size": int(
-            round(float(style.get("chinese_min_font_size_1080p", 34)) * scale)
+            round(
+                float(style.get("chinese_min_font_size_1080p", 34))
+                * scale
+                * font_multiplier
+            )
         ),
         "english_min_font_size": int(
-            round(float(style.get("english_min_font_size_1080p", 25)) * scale)
+            round(
+                float(style.get("english_min_font_size_1080p", 25))
+                * scale
+                * font_multiplier
+            )
         ),
-        "outline": _round_scaled(float(style.get("outline_1080p", 2.5)), scale, minimum=0.1),
-        "shadow": _round_scaled(float(style.get("shadow_1080p", 0.8)), scale, minimum=0.0),
+        "outline": _round_scaled(
+            float(style.get("outline_1080p", 2.5)),
+            scale * font_multiplier,
+            minimum=0.1,
+        ),
+        "shadow": _round_scaled(
+            float(style.get("shadow_1080p", 0.8)),
+            scale * font_multiplier,
+            minimum=0.0,
+        ),
         "margin_v": int(round(float(style.get("margin_v_1080p", 75)) * scale)),
         "margin_lr": int(round(float(style.get("margin_lr_1080p", 80)) * scale)),
     }

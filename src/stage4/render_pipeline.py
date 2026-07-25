@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .bilingual_ass import (
-    ASS_GENERATOR_VERSION,
+    ass_generator_version,
     build_bilingual_ass,
     resolve_fonts,
 )
@@ -452,6 +452,10 @@ class Stage4Pipeline:
 
             style_hash = hash_json(self.config.get("subtitle_style", {}))
             config_hash = hash_json(self.config)
+            generator_version = ass_generator_version(
+                int(source_probe["display_width"]),
+                int(source_probe["display_height"]),
+            )
             ass_fingerprint = hash_json(
                 {
                     "english": english_hash,
@@ -461,7 +465,7 @@ class Stage4Pipeline:
                         source_probe["display_width"],
                         source_probe["display_height"],
                     ],
-                    "generator": ASS_GENERATOR_VERSION,
+                    "generator": generator_version,
                 }
             )
             ass_path = paths["subtitles"] / "bilingual.ass"
@@ -494,7 +498,7 @@ class Stage4Pipeline:
             plan["ass"] = {
                 "path": str(ass_path),
                 "reused": ass_reused,
-                "generator_version": ASS_GENERATOR_VERSION,
+                "generator_version": generator_version,
                 "scaled_style": scaled_style,
             }
             manifest.update(

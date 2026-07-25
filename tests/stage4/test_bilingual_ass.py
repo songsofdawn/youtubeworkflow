@@ -4,8 +4,10 @@ import unittest
 
 from src.stage4.bilingual_ass import (
     adaptive_font_size,
+    ass_generator_version,
     build_bilingual_ass,
     escape_ass_text,
+    orientation_font_multiplier,
     resolve_fonts,
     scaled_style,
 )
@@ -34,7 +36,7 @@ STYLE = {
 
 class BilingualAssTests(unittest.TestCase):
     def test_default_style_uses_large_readable_bilingual_sizes(self) -> None:
-        scaled = scaled_style({}, 1920, 1080)
+        scaled = scaled_style({}, 608, 1080)
         self.assertEqual(scaled["chinese_font_size"], 48)
         self.assertEqual(scaled["english_font_size"], 34)
         self.assertEqual(scaled["chinese_min_font_size"], 34)
@@ -71,21 +73,36 @@ class BilingualAssTests(unittest.TestCase):
 
     def test_720p_style_scales(self) -> None:
         scaled = scaled_style(STYLE, 1280, 720)
-        self.assertEqual(scaled["chinese_font_size"], 28)
-        self.assertEqual(scaled["english_font_size"], 20)
+        self.assertEqual(scaled["chinese_font_size"], 45)
+        self.assertEqual(scaled["english_font_size"], 32)
         self.assertEqual(scaled["play_res_x"], 1280)
+        self.assertEqual(scaled["orientation_font_multiplier"], 1.6)
 
     def test_1080p_style_is_reference_size(self) -> None:
         scaled = scaled_style(STYLE, 1920, 1080)
-        self.assertEqual(scaled["chinese_font_size"], 42)
-        self.assertEqual(scaled["english_font_size"], 30)
+        self.assertEqual(scaled["chinese_font_size"], 67)
+        self.assertEqual(scaled["english_font_size"], 48)
         self.assertEqual(scaled["margin_v"], 75)
 
     def test_4k_style_scales(self) -> None:
         scaled = scaled_style(STYLE, 3840, 2160)
-        self.assertEqual(scaled["chinese_font_size"], 84)
-        self.assertEqual(scaled["english_font_size"], 60)
-        self.assertEqual(scaled["outline"], 5.0)
+        self.assertEqual(scaled["chinese_font_size"], 134)
+        self.assertEqual(scaled["english_font_size"], 96)
+        self.assertEqual(scaled["outline"], 8.0)
+
+    def test_portrait_style_keeps_existing_font_size(self) -> None:
+        scaled = scaled_style(STYLE, 608, 1080)
+        self.assertEqual(scaled["chinese_font_size"], 42)
+        self.assertEqual(scaled["english_font_size"], 30)
+        self.assertEqual(scaled["outline"], 2.5)
+        self.assertEqual(scaled["orientation_font_multiplier"], 1.0)
+        self.assertEqual(ass_generator_version(608, 1080), "1.2")
+
+    def test_landscape_multiplier_tracks_aspect_ratio(self) -> None:
+        self.assertEqual(orientation_font_multiplier(1440, 1080), 1.5)
+        self.assertEqual(orientation_font_multiplier(1920, 1080), 1.6)
+        self.assertEqual(orientation_font_multiplier(2560, 1080), 1.75)
+        self.assertEqual(ass_generator_version(1920, 1080), "1.3")
 
     def test_layout_overflow_is_reported_without_deleting_text(self) -> None:
         english = [SubtitleCue("7", 0, 1, "a\nb\nc", ("a", "b", "c"))]
