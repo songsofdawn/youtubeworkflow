@@ -130,8 +130,19 @@ def _print_result(result: Any, *, dry_run: bool) -> None:
     print(f"阶段四状态：{result.status}")
     label = "Dry-run 报告" if dry_run else "Manifest"
     print(f"{label}：{result.manifest_path}")
+    for name in ("softsub", "hardsub"):
+        outcome = result.plan.get(name)
+        if isinstance(outcome, dict):
+            action = "复用已有成片" if outcome.get("reused") else "本次新生成"
+            print(f"{name}：{action}")
     for name, command in result.plan.get("commands", {}).items():
-        print(f"{name} FFmpeg：{readable_command(command)}")
+        outcome = result.plan.get(name, {})
+        label = (
+            "FFmpeg 计划（已复用，未执行）"
+            if isinstance(outcome, dict) and outcome.get("reused")
+            else "FFmpeg"
+        )
+        print(f"{name} {label}：{readable_command(command)}")
     if result.warnings:
         print("警告：" + "；".join(str(item) for item in result.warnings))
 
@@ -144,6 +155,7 @@ def run_batch(
 ) -> tuple[int, Path, dict[str, Any]]:
     records: list[dict[str, Any]] = []
     succeeded = skipped = failed = 0
+    reused_outputs = generated_outputs = 0
     for index, task_dir in enumerate(video_dirs, 1):
         print(
             f"\n[{index}/{len(video_dirs)}] 处理视频：{task_dir.name}",
@@ -197,15 +209,37 @@ def run_batch(
             continue
 
         succeeded += 1
+        output_actions = {
+            name: ("reused" if outcome.get("reused") else "generated")
+            for name in ("softsub", "hardsub")
+            if isinstance((outcome := result.plan.get(name)), dict)
+        }
+        reused_outputs += sum(action == "reused" for action in output_actions.values())
+        generated_outputs += sum(
+            action == "generated" for action in output_actions.values()
+        )
         records.append(
             {
                 "video_dir": str(task_dir),
                 "status": result.status,
                 "manifest_path": str(result.manifest_path),
                 "warnings": result.warnings,
+                "output_actions": output_actions,
             }
         )
-        print(f"完成：{result.status}", flush=True)
+        reused_names = [
+            name for name, action in output_actions.items() if action == "reused"
+        ]
+        generated_names = [
+            name for name, action in output_actions.items() if action == "generated"
+        ]
+        details: list[str] = []
+        if reused_names:
+            details.append("复用已有成片：" + "/".join(reused_names))
+        if generated_names:
+            details.append("本次新生成：" + "/".join(generated_names))
+        suffix = f"（{'；'.join(details)}）" if details else ""
+        print(f"完成：{result.status}{suffix}", flush=True)
 
     summary = {
         "input_directory": str(input_dir),
@@ -215,6 +249,8 @@ def run_batch(
         "succeeded": succeeded,
         "skipped": skipped,
         "failed": failed,
+        "reused_outputs": reused_outputs,
+        "generated_outputs": generated_outputs,
     }
     report = {"summary": summary, "videos": records}
     batch_root = input_dir / "stage4"
@@ -226,7 +262,8 @@ def run_batch(
     print(
         "\n批次汇总："
         f"总计 {len(video_dirs)}，成功 {succeeded}，"
-        f"跳过 {skipped}，失败 {failed}",
+        f"跳过 {skipped}，失败 {failed}，"
+        f"复用成片 {reused_outputs}，新生成成片 {generated_outputs}",
         flush=True,
     )
     print(f"批次报告：{report_path}", flush=True)

@@ -37,6 +37,94 @@ from .subtitle_recovery import clip_recovered_pair_to_video_duration
 from .subtitle_validator import validate_subtitles
 
 
+OUTPUT_FINGERPRINT_VERSION = "stage4-output-v2"
+
+
+def _softsub_render_dependencies(render_config: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
+        "preserve_existing_subtitle_tracks": bool(
+            render_config.get("preserve_existing_subtitle_tracks", True)
+        ),
+        "preserve_metadata": bool(render_config.get("preserve_metadata", True)),
+        "preserve_chapters": bool(render_config.get("preserve_chapters", True)),
+    }
+
+
+def _hardsub_render_dependencies(
+    render_config: dict[str, Any],
+    *,
+    video_encoder: str,
+    audio_mode: str,
+) -> dict[str, Any]:
+    dependencies: dict[str, Any] = {
+        "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
+        "video_encoder": video_encoder,
+        "audio_mode": audio_mode,
+        "movflags": "+faststart",
+    }
+    if video_encoder == "h264_nvenc":
+        dependencies.update(
+            {
+                "nvenc_preset": str(render_config.get("nvenc_preset", "p6")),
+                "nvenc_cq": str(render_config.get("nvenc_cq", 19)),
+            }
+        )
+    elif video_encoder == "libx264":
+        dependencies.update(
+            {
+                "x264_preset": str(render_config.get("x264_preset", "medium")),
+                "x264_crf": str(render_config.get("x264_crf", 18)),
+            }
+        )
+    if audio_mode != "copy":
+        dependencies["aac_bitrate"] = str(render_config.get("aac_bitrate", "192k"))
+    return dependencies
+
+
+def _output_fingerprint(
+    kind: str,
+    *,
+    source_hash: str,
+    ass_hash: str,
+    render_dependencies: dict[str, Any],
+) -> str:
+    return hash_json(
+        {
+            "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
+            "source": source_hash,
+            "ass": ass_hash,
+            "render_dependencies": render_dependencies,
+            "kind": kind,
+        }
+    )
+
+
+def _legacy_output_fingerprint(
+    kind: str,
+    *,
+    source_hash: str,
+    ass_hash: str,
+    config_hash: str,
+    video_encoder: str = "",
+    audio_mode: str = "",
+) -> str:
+    payload = {
+        "source": source_hash,
+        "ass": ass_hash,
+        "config": config_hash,
+        "kind": kind,
+    }
+    if kind == "hardsub":
+        payload.update(
+            {
+                "encoder": video_encoder,
+                "audio_mode": audio_mode,
+            }
+        )
+    return hash_json(payload)
+
+
 class Stage4Pipeline:
     def __init__(
         self,
@@ -111,6 +199,7 @@ class Stage4Pipeline:
         force: bool,
         resume: bool,
         checkpoint: dict[str, Any] | None,
+        checkpoint_verified: bool,
         source_probe: dict[str, Any],
         duration_tolerance: float,
         audio_transcoded: bool,
@@ -120,10 +209,13 @@ class Stage4Pipeline:
         if (
             resume
             and not force
-            and output_matches_checkpoint(
-                checkpoint,
-                fingerprint=fingerprint,
-                output_path=destination,
+            and (
+                checkpoint_verified
+                or output_matches_checkpoint(
+                    checkpoint,
+                    fingerprint=fingerprint,
+                    output_path=destination,
+                )
             )
         ):
             output_probe, report = self._probe_and_qc(
@@ -180,6 +272,37 @@ class Stage4Pipeline:
             "completed_at": utc_now(),
         }
         return output_probe, report, new_checkpoint, False
+
+    @staticmethod
+    def _checkpoint_for_resume(
+        checkpoint: dict[str, Any] | None,
+        *,
+        current_fingerprint: str,
+        legacy_fingerprint: str,
+        output_path: Path,
+    ) -> tuple[dict[str, Any] | None, bool, bool]:
+        if output_matches_checkpoint(
+            checkpoint,
+            fingerprint=current_fingerprint,
+            output_path=output_path,
+        ):
+            return checkpoint, True, False
+        if legacy_fingerprint and output_matches_checkpoint(
+            checkpoint,
+            fingerprint=legacy_fingerprint,
+            output_path=output_path,
+        ):
+            migrated = dict(checkpoint or {})
+            migrated.update(
+                {
+                    "fingerprint": current_fingerprint,
+                    "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
+                    "migrated_from_fingerprint": legacy_fingerprint,
+                    "migrated_at": utc_now(),
+                }
+            )
+            return migrated, True, True
+        return checkpoint, False, False
 
     def run(
         self,
@@ -472,34 +595,152 @@ class Stage4Pipeline:
             )
             duration_tolerance = float(render_config.get("duration_tolerance_seconds", 0.5))
             ass_hash = sha256_file(ass_path)
-            soft_fingerprint = hash_json(
-                {
-                    "source": source_hash,
-                    "ass": ass_hash,
-                    "config": config_hash,
-                    "kind": "softsub",
-                }
+            soft_render_dependencies = _softsub_render_dependencies(render_config)
+            soft_render_config_hash = hash_json(soft_render_dependencies)
+            soft_fingerprint = _output_fingerprint(
+                "softsub",
+                source_hash=source_hash,
+                ass_hash=ass_hash,
+                render_dependencies=soft_render_dependencies,
             )
+            hard_render_dependencies: dict[str, Any] = {}
+            hard_render_config_hash = ""
             hard_fingerprint = (
-                hash_json(
-                    {
-                        "source": source_hash,
-                        "ass": ass_hash,
-                        "config": config_hash,
-                        "encoder": selected_encoder,
-                        "audio_mode": audio_mode,
-                        "kind": "hardsub",
-                    }
+                _output_fingerprint(
+                    "hardsub",
+                    source_hash=source_hash,
+                    ass_hash=ass_hash,
+                    render_dependencies=(
+                        hard_render_dependencies := _hardsub_render_dependencies(
+                            render_config,
+                            video_encoder=selected_encoder,
+                            audio_mode=audio_mode,
+                        )
+                    ),
                 )
                 if selected_encoder
                 else ""
             )
-            soft_checkpoint = manifest["checkpoints"].get("softsub")
-            soft_is_current = output_matches_checkpoint(
-                soft_checkpoint,
-                fingerprint=soft_fingerprint,
-                output_path=soft_path,
+            if hard_render_dependencies:
+                hard_render_config_hash = hash_json(hard_render_dependencies)
+            previous_config_hash = str(previous.get("config_hash") or "")
+            soft_legacy_fingerprint = (
+                _legacy_output_fingerprint(
+                    "softsub",
+                    source_hash=source_hash,
+                    ass_hash=ass_hash,
+                    config_hash=previous_config_hash,
+                )
+                if previous_config_hash
+                else ""
             )
+            soft_resume_allowed = (
+                not self._render_requested(options.mode, "softsub")
+                or (
+                    options.resume
+                    and not (options.force or options.force_softsub)
+                )
+            )
+            soft_checkpoint, soft_is_current, soft_checkpoint_migrated = (
+                self._checkpoint_for_resume(
+                    manifest["checkpoints"].get("softsub"),
+                    current_fingerprint=soft_fingerprint,
+                    legacy_fingerprint=soft_legacy_fingerprint,
+                    output_path=soft_path,
+                )
+                if soft_resume_allowed
+                else (manifest["checkpoints"].get("softsub"), False, False)
+            )
+            if soft_checkpoint_migrated:
+                manifest["checkpoints"]["softsub"] = soft_checkpoint
+            previous_hard_checkpoint = manifest["checkpoints"].get("hardsub")
+            previous_encoder = str(
+                (previous_hard_checkpoint or {}).get("video_encoder")
+                or previous.get("video_encoder")
+                or ""
+            )
+            previous_audio_mode = str(
+                (previous_hard_checkpoint or {}).get("audio_mode")
+                or previous.get("audio_mode")
+                or ""
+            )
+            effective_hard_encoder = selected_encoder or previous_encoder
+            effective_hard_audio_mode = (
+                audio_mode
+                if self._render_requested(options.mode, "hardsub")
+                else previous_audio_mode
+            )
+            preserved_hard_dependencies = (
+                _hardsub_render_dependencies(
+                    render_config,
+                    video_encoder=effective_hard_encoder,
+                    audio_mode=effective_hard_audio_mode,
+                )
+                if effective_hard_encoder and effective_hard_audio_mode
+                else {}
+            )
+            preserved_hard_fingerprint = (
+                _output_fingerprint(
+                    "hardsub",
+                    source_hash=source_hash,
+                    ass_hash=ass_hash,
+                    render_dependencies=preserved_hard_dependencies,
+                )
+                if preserved_hard_dependencies
+                else ""
+            )
+            hard_legacy_fingerprint = (
+                _legacy_output_fingerprint(
+                    "hardsub",
+                    source_hash=source_hash,
+                    ass_hash=ass_hash,
+                    config_hash=previous_config_hash,
+                    video_encoder=effective_hard_encoder,
+                    audio_mode=effective_hard_audio_mode,
+                )
+                if previous_config_hash
+                and effective_hard_encoder
+                and effective_hard_audio_mode
+                else ""
+            )
+            hard_resume_allowed = (
+                not self._render_requested(options.mode, "hardsub")
+                or (
+                    options.resume
+                    and not (options.force or options.force_hardsub)
+                )
+            )
+            hard_checkpoint, hard_is_current, hard_checkpoint_migrated = (
+                self._checkpoint_for_resume(
+                    previous_hard_checkpoint,
+                    current_fingerprint=preserved_hard_fingerprint,
+                    legacy_fingerprint=hard_legacy_fingerprint,
+                    output_path=hard_path,
+                )
+                if preserved_hard_fingerprint and hard_resume_allowed
+                else (previous_hard_checkpoint, False, False)
+            )
+            if hard_checkpoint_migrated:
+                manifest["checkpoints"]["hardsub"] = hard_checkpoint
+            manifest.update(
+                {
+                    "softsub_render_config_hash": soft_render_config_hash,
+                    "hardsub_render_config_hash": (
+                        hard_render_config_hash
+                        or (
+                            hash_json(preserved_hard_dependencies)
+                            if preserved_hard_dependencies
+                            else ""
+                        )
+                    ),
+                }
+            )
+            plan["resume"] = {
+                "softsub_checkpoint_valid": soft_is_current,
+                "softsub_checkpoint_migrated": soft_checkpoint_migrated,
+                "hardsub_checkpoint_valid": hard_is_current,
+                "hardsub_checkpoint_migrated": hard_checkpoint_migrated,
+            }
             if not self._render_requested(options.mode, "softsub"):
                 if soft_is_current:
                     soft_probe, soft_report = self._probe_and_qc(
@@ -513,41 +754,13 @@ class Stage4Pipeline:
                     probes_after["softsub"] = soft_probe
                     reports["softsub"] = soft_report
                     manifest["softsub_output_path"] = str(soft_path)
-                    manifest["softsub_output_hash"] = sha256_file(soft_path)
+                    manifest["softsub_output_hash"] = str(
+                        (soft_checkpoint or {}).get("output_hash") or ""
+                    )
                 else:
                     probes_after.pop("softsub", None)
                     reports.pop("softsub", None)
             if not self._render_requested(options.mode, "hardsub"):
-                hard_checkpoint = manifest["checkpoints"].get("hardsub")
-                previous_encoder = str(
-                    (hard_checkpoint or {}).get("video_encoder")
-                    or previous.get("video_encoder")
-                    or ""
-                )
-                previous_audio_mode = str(
-                    (hard_checkpoint or {}).get("audio_mode")
-                    or previous.get("audio_mode")
-                    or ""
-                )
-                preserved_hard_fingerprint = (
-                    hash_json(
-                        {
-                            "source": source_hash,
-                            "ass": ass_hash,
-                            "config": config_hash,
-                            "encoder": previous_encoder,
-                            "audio_mode": previous_audio_mode,
-                            "kind": "hardsub",
-                        }
-                    )
-                    if previous_encoder and previous_audio_mode
-                    else ""
-                )
-                hard_is_current = bool(preserved_hard_fingerprint) and output_matches_checkpoint(
-                    hard_checkpoint,
-                    fingerprint=preserved_hard_fingerprint,
-                    output_path=hard_path,
-                )
                 if hard_is_current:
                     preserved_transcoded = bool(
                         (hard_checkpoint or {}).get(
@@ -566,7 +779,9 @@ class Stage4Pipeline:
                     probes_after["hardsub"] = hard_probe
                     reports["hardsub"] = hard_report
                     manifest["hardsub_output_path"] = str(hard_path)
-                    manifest["hardsub_output_hash"] = sha256_file(hard_path)
+                    manifest["hardsub_output_hash"] = str(
+                        (hard_checkpoint or {}).get("output_hash") or ""
+                    )
                 else:
                     probes_after.pop("hardsub", None)
                     reports.pop("hardsub", None)
@@ -589,7 +804,8 @@ class Stage4Pipeline:
                     fingerprint=soft_fingerprint,
                     force=options.force or options.force_softsub,
                     resume=options.resume,
-                    checkpoint=manifest["checkpoints"].get("softsub"),
+                    checkpoint=soft_checkpoint,
+                    checkpoint_verified=soft_is_current,
                     source_probe=source_probe,
                     duration_tolerance=duration_tolerance,
                     audio_transcoded=False,
@@ -601,7 +817,12 @@ class Stage4Pipeline:
                 reports["softsub"] = soft_report
                 manifest["checkpoints"]["softsub"] = checkpoint
                 manifest["softsub_output_path"] = str(soft_path)
-                manifest["softsub_output_hash"] = sha256_file(soft_path)
+                manifest["softsub_output_hash"] = checkpoint["output_hash"]
+                plan["softsub"] = {
+                    "path": str(soft_path),
+                    "reused": reused,
+                    "checkpoint_migrated": soft_checkpoint_migrated,
+                }
 
             if self._render_requested(options.mode, "hardsub"):
                 hard_probe, hard_report, checkpoint, reused = self._render_output(
@@ -619,7 +840,8 @@ class Stage4Pipeline:
                     fingerprint=hard_fingerprint,
                     force=options.force or options.force_hardsub,
                     resume=options.resume,
-                    checkpoint=manifest["checkpoints"].get("hardsub"),
+                    checkpoint=hard_checkpoint,
+                    checkpoint_verified=hard_is_current,
                     source_probe=source_probe,
                     duration_tolerance=duration_tolerance,
                     audio_transcoded=audio_transcoded,
@@ -638,7 +860,12 @@ class Stage4Pipeline:
                 )
                 manifest["checkpoints"]["hardsub"] = checkpoint
                 manifest["hardsub_output_path"] = str(hard_path)
-                manifest["hardsub_output_hash"] = sha256_file(hard_path)
+                manifest["hardsub_output_hash"] = checkpoint["output_hash"]
+                plan["hardsub"] = {
+                    "path": str(hard_path),
+                    "reused": reused,
+                    "checkpoint_migrated": hard_checkpoint_migrated,
+                }
 
             if probes_after:
                 atomic_write_json(paths["qc"] / "media_probe_after.json", probes_after)

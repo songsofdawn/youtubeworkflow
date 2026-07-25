@@ -6,7 +6,7 @@ cd /d "%~dp0"
 set "CHECK_ONLY=0"
 if /I "%~1"=="--check" set "CHECK_ONLY=1"
 set "PYTHON_EXE=.venv\Scripts\python.exe"
-set "COMMIT_MESSAGE=fix: recover stage4 subtitles and safe FFmpeg paths"
+set "COMMIT_MESSAGE=fix: resume only incomplete stage4 renders"
 
 where git >nul 2>&1
 if errorlevel 1 (

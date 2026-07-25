@@ -75,6 +75,8 @@ class Stage4EntrypointTests(unittest.TestCase):
                     "succeeded": 1,
                     "skipped": 1,
                     "failed": 0,
+                    "reused_outputs": 0,
+                    "generated_outputs": 0,
                 },
             )
             saved = json.loads(report_path.read_text(encoding="utf-8"))

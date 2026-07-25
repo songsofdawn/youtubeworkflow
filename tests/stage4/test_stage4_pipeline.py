@@ -3,12 +3,13 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from unittest import mock
 
 from src.stage4.models import CommandResult, PipelineOptions
 from src.stage4.render_pipeline import Stage4Pipeline
-from src.stage4.stage4_manifest import sha256_file
+from src.stage4.stage4_manifest import hash_json, sha256_file
 
 
 SRT_EN = "1\n00:00:00,000 --> 00:00:01,000\nHello.\n"
@@ -96,6 +97,9 @@ class FakeRunner:
 
 
 class Stage4PipelineTests(unittest.TestCase):
+    def setUp(self) -> None:
+        FakeRunner.calls = 0
+
     def prepare(self, root: Path, *, reviewed: bool = False) -> tuple[Stage4Pipeline, Path, Path, Path]:
         tools = root / "tools" / "bin"
         tools.mkdir(parents=True)
@@ -261,6 +265,175 @@ class Stage4PipelineTests(unittest.TestCase):
             self.assertTrue(manifest["softsub_output_path"])
             self.assertTrue(manifest["hardsub_output_path"])
             self.assertEqual(set(reports), {"softsub", "hardsub"})
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
+    def test_resume_reuses_hardsub_when_only_input_recovery_config_changes(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pipeline, task, _, _ = self.prepare(root, reviewed=True)
+            pipeline.run(task, PipelineOptions(mode="hardsub"))
+            self.assertEqual(FakeRunner.calls, 1)
+
+            changed_config = deepcopy(CONFIG)
+            changed_config["input"]["automatic_recovery"] = {
+                "enabled": True,
+                "allow_timing_repair": True,
+            }
+            resumed = Stage4Pipeline(
+                root,
+                changed_config,
+                ffmpeg_path=pipeline.ffmpeg_path,
+                ffprobe_path=pipeline.ffprobe_path,
+            ).run(task, PipelineOptions(mode="hardsub"))
+
+            self.assertEqual(FakeRunner.calls, 1)
+            self.assertTrue(resumed.plan["hardsub"]["reused"])
+            self.assertTrue(resumed.plan["resume"]["hardsub_checkpoint_valid"])
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
+    def test_resume_rerenders_hardsub_when_render_quality_changes(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pipeline, task, _, _ = self.prepare(root, reviewed=True)
+            pipeline.run(task, PipelineOptions(mode="hardsub"))
+
+            changed_config = deepcopy(CONFIG)
+            changed_config["render"]["x264_crf"] = 20
+            rerun = Stage4Pipeline(
+                root,
+                changed_config,
+                ffmpeg_path=pipeline.ffmpeg_path,
+                ffprobe_path=pipeline.ffprobe_path,
+            ).run(task, PipelineOptions(mode="hardsub"))
+
+            self.assertEqual(FakeRunner.calls, 2)
+            self.assertFalse(rerun.plan["hardsub"]["reused"])
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
+    def test_resume_migrates_legacy_checkpoint_without_reencoding(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pipeline, task, _, _ = self.prepare(root, reviewed=True)
+            first = pipeline.run(task, PipelineOptions(mode="hardsub"))
+            manifest = json.loads(first.manifest_path.read_text(encoding="utf-8"))
+            legacy_fingerprint = hash_json(
+                {
+                    "source": manifest["source_video_hash"],
+                    "ass": manifest["bilingual_ass_hash"],
+                    "config": manifest["config_hash"],
+                    "encoder": "libx264",
+                    "audio_mode": "copy",
+                    "kind": "hardsub",
+                }
+            )
+            manifest["checkpoints"]["hardsub"]["fingerprint"] = legacy_fingerprint
+            first.manifest_path.write_text(
+                json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            changed_config = deepcopy(CONFIG)
+            changed_config["input"]["automatic_recovery"] = {"enabled": True}
+            resumed = Stage4Pipeline(
+                root,
+                changed_config,
+                ffmpeg_path=pipeline.ffmpeg_path,
+                ffprobe_path=pipeline.ffprobe_path,
+            ).run(task, PipelineOptions(mode="hardsub"))
+            migrated = json.loads(resumed.manifest_path.read_text(encoding="utf-8"))
+
+            self.assertEqual(FakeRunner.calls, 1)
+            self.assertTrue(resumed.plan["hardsub"]["reused"])
+            self.assertTrue(resumed.plan["hardsub"]["checkpoint_migrated"])
+            self.assertEqual(
+                migrated["checkpoints"]["hardsub"]["migrated_from_fingerprint"],
+                legacy_fingerprint,
+            )
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
+    def test_resume_rerenders_failed_checkpoint(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            pipeline, task, _, _ = self.prepare(Path(temporary), reviewed=True)
+            first = pipeline.run(task, PipelineOptions(mode="hardsub"))
+            manifest = json.loads(first.manifest_path.read_text(encoding="utf-8"))
+            manifest["checkpoints"]["hardsub"]["qc_status"] = "QC_FAILED"
+            first.manifest_path.write_text(
+                json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            rerun = pipeline.run(task, PipelineOptions(mode="hardsub"))
+
+            self.assertEqual(FakeRunner.calls, 2)
+            self.assertFalse(rerun.plan["hardsub"]["reused"])
 
     @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
     @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())
