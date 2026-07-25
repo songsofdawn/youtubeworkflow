@@ -6,7 +6,7 @@ cd /d "%~dp0"
 set "CHECK_ONLY=0"
 if /I "%~1"=="--check" set "CHECK_ONLY=1"
 set "PYTHON_EXE=.venv\Scripts\python.exe"
-set "COMMIT_MESSAGE=fix: resume only incomplete stage4 renders"
+set "COMMIT_MESSAGE=fix: resume stage4 renders with larger subtitles"
 
 where git >nul 2>&1
 if errorlevel 1 (

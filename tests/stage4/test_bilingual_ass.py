@@ -33,6 +33,13 @@ STYLE = {
 
 
 class BilingualAssTests(unittest.TestCase):
+    def test_default_style_uses_large_readable_bilingual_sizes(self) -> None:
+        scaled = scaled_style({}, 1920, 1080)
+        self.assertEqual(scaled["chinese_font_size"], 48)
+        self.assertEqual(scaled["english_font_size"], 34)
+        self.assertEqual(scaled["chinese_min_font_size"], 34)
+        self.assertEqual(scaled["english_min_font_size"], 25)
+
     def test_special_characters_are_escaped(self) -> None:
         escaped = escape_ass_text(r"{\pos(1,2)} C:\temp")
         self.assertIn(r"\{", escaped)
@@ -60,7 +67,7 @@ class BilingualAssTests(unittest.TestCase):
         self.assertIn("[V4+ Styles]", value)
         self.assertIn("[Events]", value)
         self.assertIn("ScaledBorderAndShadow: yes", value)
-        self.assertIn("WrapStyle: 2", value)
+        self.assertIn("WrapStyle: 0", value)
 
     def test_720p_style_scales(self) -> None:
         scaled = scaled_style(STYLE, 1280, 720)

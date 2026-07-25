@@ -356,6 +356,64 @@ class Stage4PipelineTests(unittest.TestCase):
             else source_probe()["video_codec"],
         },
     )
+    def test_larger_subtitle_style_regenerates_ass_and_overwrites_hardsub(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pipeline, task, _, _ = self.prepare(root, reviewed=True)
+            first = pipeline.run(task, PipelineOptions(mode="hardsub"))
+            old_ass = (
+                task / "stage4" / "subtitles" / "bilingual.ass"
+            ).read_text(encoding="utf-8")
+            old_checkpoint = json.loads(
+                first.manifest_path.read_text(encoding="utf-8")
+            )["checkpoints"]["hardsub"]["fingerprint"]
+
+            changed_config = deepcopy(CONFIG)
+            changed_config["subtitle_style"].update(
+                {
+                    "chinese_font_size_1080p": 48,
+                    "english_font_size_1080p": 34,
+                    "chinese_min_font_size_1080p": 34,
+                    "english_min_font_size_1080p": 25,
+                }
+            )
+            rerun = Stage4Pipeline(
+                root,
+                changed_config,
+                ffmpeg_path=pipeline.ffmpeg_path,
+                ffprobe_path=pipeline.ffprobe_path,
+            ).run(task, PipelineOptions(mode="hardsub"))
+            new_ass = (
+                task / "stage4" / "subtitles" / "bilingual.ass"
+            ).read_text(encoding="utf-8")
+            new_checkpoint = json.loads(
+                rerun.manifest_path.read_text(encoding="utf-8")
+            )["checkpoints"]["hardsub"]["fingerprint"]
+
+            self.assertEqual(FakeRunner.calls, 2)
+            self.assertFalse(rerun.plan["ass"]["reused"])
+            self.assertFalse(rerun.plan["hardsub"]["reused"])
+            self.assertNotEqual(old_ass, new_ass)
+            self.assertNotEqual(old_checkpoint, new_checkpoint)
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
     def test_resume_migrates_legacy_checkpoint_without_reencoding(
         self,
         _probe: mock.Mock,

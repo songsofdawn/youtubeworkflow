@@ -8,7 +8,7 @@ from typing import Any, Iterable
 from .models import SubtitleCue
 
 
-ASS_GENERATOR_VERSION = "1.0"
+ASS_GENERATOR_VERSION = "1.2"
 
 
 def escape_ass_text(value: str) -> str:
@@ -38,13 +38,13 @@ def scaled_style(style: dict[str, Any], width: int, height: int) -> dict[str, An
         **style,
         "play_res_x": int(width),
         "play_res_y": int(height),
-        "chinese_font_size": int(round(float(style.get("chinese_font_size_1080p", 42)) * scale)),
-        "english_font_size": int(round(float(style.get("english_font_size_1080p", 30)) * scale)),
+        "chinese_font_size": int(round(float(style.get("chinese_font_size_1080p", 48)) * scale)),
+        "english_font_size": int(round(float(style.get("english_font_size_1080p", 34)) * scale)),
         "chinese_min_font_size": int(
-            round(float(style.get("chinese_min_font_size_1080p", 32)) * scale)
+            round(float(style.get("chinese_min_font_size_1080p", 34)) * scale)
         ),
         "english_min_font_size": int(
-            round(float(style.get("english_min_font_size_1080p", 23)) * scale)
+            round(float(style.get("english_min_font_size_1080p", 25)) * scale)
         ),
         "outline": _round_scaled(float(style.get("outline_1080p", 2.5)), scale, minimum=0.1),
         "shadow": _round_scaled(float(style.get("shadow_1080p", 0.8)), scale, minimum=0.0),
@@ -195,7 +195,7 @@ def build_bilingual_ass(
     header = f"""[Script Info]
 Title: English / 中文
 ScriptType: v4.00+
-WrapStyle: 2
+WrapStyle: 0
 ScaledBorderAndShadow: yes
 PlayResX: {scaled["play_res_x"]}
 PlayResY: {scaled["play_res_y"]}
