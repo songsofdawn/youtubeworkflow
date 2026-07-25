@@ -10,6 +10,40 @@
 - DeepSeek 密钥只保存在本地 `.env`，不会提交到 Git；
 - 下载的视频、音频、本地模型、虚拟环境和生成结果默认不会上传 GitHub。
 
+## 本地控制面板（推荐入口）
+
+完成首次配置后，双击：
+
+```text
+start_panel.bat
+```
+
+脚本会启动本地控制面板并打开浏览器，默认地址为
+`http://127.0.0.1:8765`。控制面板只监听本机，不会部署到公网。
+
+第一版面板支持：
+
+- 输入自定义关键词和数量搜索 YouTube；
+- 输入一个或多个视频 ID/URL，直接加入下载队列；
+- 在下载前确认视频使用权，并将确认结果写入下载 manifest；
+- 自动扫描 `downloads` 下的现有任务，显示下载、英文字幕、中文翻译和
+  双语成片四阶段状态；
+- 批量处理到双语字幕，或一键继续到软字幕、硬字幕或两种成片；
+- 查看近实时任务日志、重试失败任务和打开视频任务目录；
+- 面板重启后恢复未完成队列，底层阶段继续使用原有断点续跑机制。
+
+关键词搜索需要 `.env` 中存在 `YOUTUBE_API_KEY`。字幕翻译需要
+`DEEPSEEK_API_KEY`，并且每次加入翻译队列前都必须在面板上确认允许付费调用。
+本地 Whisper 与成片仍使用 `.venv_stage3`，下载和控制面板使用 `.venv`；
+这些环境由面板自动选择，无需手动切换。
+
+需要手动指定端口或不自动打开浏览器时，也可以运行：
+
+```bat
+.venv\Scripts\python.exe src\run_control_panel.py --port 8765
+.venv\Scripts\python.exe src\run_control_panel.py --no-browser
+```
+
 ## 项目目录
 
 ```text
@@ -23,6 +57,7 @@ youtubeworkflow\
 ├─private\                      Cookies 等私密文件（Git 忽略）
 ├─.venv\                        下载与翻译环境（Git 忽略）
 ├─.venv_stage3\                 本地 GPU 识别环境（Git 忽略）
+├─start_panel.bat               本地控制面板（推荐入口）
 ├─run_stage3.bat                字幕处理主菜单
 └─push_to_github.bat            推送当前已提交分支到 GitHub
 ```

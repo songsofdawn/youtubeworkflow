@@ -22,6 +22,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--no-audio-extract", action="store_true")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--confirm-rights", action="store_true", help="Confirm you have permission to download and use this video.")
+    parser.add_argument(
+        "--rights-status",
+        choices=("APPROVED", "OWNED", "LICENSED", "PERMISSION_GRANTED"),
+        default="",
+        help="Optional rights record saved in the download manifest.",
+    )
     return parser.parse_args(argv)
 
 
@@ -36,7 +42,9 @@ def main(argv: list[str] | None = None) -> int:
         tools = find_local_tools()
         output = args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
         result = download_one_video(
-            args.url, source_mode="manual", output_root=output, config=config, tools=tools,
+            args.url, source_mode="manual",
+            candidate={"rights_status": args.rights_status},
+            output_root=output, config=config, tools=tools,
             metadata_only=args.metadata_only, subtitles_only=args.subtitles_only,
             no_audio_extract=args.no_audio_extract, force=args.force,
         )

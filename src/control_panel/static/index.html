@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="YouTube Workflow 本地视频处理控制面板">
+  <title>YouTube Workflow 控制面板</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="YouTube Workflow 首页">
+      <span class="brand-mark">YT</span>
+      <span>
+        <strong>WORKFLOW</strong>
+        <small>LOCAL CONTROL</small>
+      </span>
+    </a>
+    <div class="topbar-actions">
+      <span class="connection" id="connectionState"><i></i> 正在连接</span>
+      <button class="button button-ghost button-small" id="refreshButton" type="button">刷新状态</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="command-hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">VIDEO OPERATIONS / 01—04</p>
+        <h1 id="heroTitle">从一个关键词，<br>到一支双语成片。</h1>
+        <p class="hero-intro">搜索、下载、字幕选择、翻译与成片，全部从这里进入。任务会自动保存状态，失败后可以从当前阶段继续。</p>
+        <div class="metric-row" aria-label="工作流摘要">
+          <article><span id="metricTasks">0</span><small>视频任务</small></article>
+          <article><span id="metricQueued">0</span><small>等待执行</small></article>
+          <article><span id="metricRunning">0</span><small>正在处理</small></article>
+          <article><span id="metricCompleted">0</span><small>成片完成</small></article>
+        </div>
+      </div>
+
+      <div class="discovery-card">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">01 / DISCOVER</p>
+            <h2>发现或指定视频</h2>
+          </div>
+          <span class="quota-note">关键词搜索会消耗 YouTube API 配额</span>
+        </div>
+        <div class="tabs" role="tablist" aria-label="视频输入方式">
+          <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="keyword">关键词搜索</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="direct">视频 ID / URL</button>
+        </div>
+
+        <form id="searchForm" class="tab-panel active" data-panel="keyword">
+          <label class="field grow">
+            <span>搜索关键词</span>
+            <input id="searchQuery" name="query" type="search" maxlength="120" placeholder="例如：Minecraft hardcore challenge" required>
+          </label>
+          <label class="field narrow">
+            <span>数量</span>
+            <input id="searchLimit" name="limit" type="number" min="1" max="50" value="10" required>
+          </label>
+          <label class="field medium">
+            <span>排序</span>
+            <select id="searchOrder" name="order">
+              <option value="relevance">相关度</option>
+              <option value="date">最新发布</option>
+              <option value="viewCount">播放量</option>
+            </select>
+          </label>
+          <button class="button button-primary search-submit" type="submit">
+            <span>开始搜索</span><b aria-hidden="true">→</b>
+          </button>
+        </form>
+
+        <form id="directForm" class="tab-panel direct-panel" data-panel="direct">
+          <label class="field grow">
+            <span>每行一个视频 ID 或 YouTube 链接</span>
+            <textarea id="directInput" rows="4" placeholder="dQw4w9WgXcQ&#10;https://www.youtube.com/watch?v=..."></textarea>
+          </label>
+          <label class="confirm-line">
+            <input id="directRights" type="checkbox">
+            <span>我确认拥有下载和使用这些视频的权利</span>
+          </label>
+          <button class="button button-primary" type="submit">加入下载队列 <b aria-hidden="true">→</b></button>
+        </form>
+      </div>
+    </section>
+
+    <section class="search-results hidden" id="searchResultsSection" aria-labelledby="searchResultsTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SEARCH RESULTS</p>
+          <h2 id="searchResultsTitle">搜索结果</h2>
+        </div>
+        <div class="result-actions">
+          <button class="button button-ghost button-small" id="selectAllResults" type="button">全选</button>
+          <label class="confirm-line inline">
+            <input id="searchRights" type="checkbox">
+            <span>已确认所选视频的使用权</span>
+          </label>
+          <button class="button button-primary button-small" id="downloadResults" type="button">下载所选视频</button>
+        </div>
+      </div>
+      <div class="result-grid" id="searchResults"></div>
+    </section>
+
+    <section class="workspace-grid">
+      <div class="tasks-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">02—04 / PRODUCTION</p>
+            <h2>视频任务</h2>
+          </div>
+          <button class="button button-ghost button-small" id="selectAllTasks" type="button">选择全部</button>
+        </div>
+
+        <div class="batch-bar">
+          <div class="batch-copy">
+            <strong><span id="selectedTaskCount">0</span> 个任务已选择</strong>
+            <span>所有操作默认启用断点续跑</span>
+          </div>
+          <label class="field compact-field">
+            <span>成片格式</span>
+            <select id="renderMode">
+              <option value="softsub">软字幕 MKV</option>
+              <option value="hardsub">硬字幕 MP4</option>
+              <option value="both">两种都生成</option>
+              <option value="ass">仅双语 ASS</option>
+            </select>
+          </label>
+          <label class="confirm-line paid-confirm">
+            <input id="paidApiConfirm" type="checkbox">
+            <span>允许 DeepSeek 付费翻译</span>
+          </label>
+          <div class="batch-buttons">
+            <button class="button button-secondary" type="button" data-workflow="subtitles">处理到双语字幕</button>
+            <button class="button button-primary" type="button" data-workflow="complete">一键生成成片</button>
+          </div>
+        </div>
+
+        <div class="task-list" id="taskList">
+          <div class="empty-state">
+            <span>00</span>
+            <h3>还没有下载任务</h3>
+            <p>从上方搜索视频，或直接输入视频 ID 开始。</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-column">
+        <section class="system-card" aria-labelledby="systemTitle">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SYSTEM CHECK</p>
+              <h2 id="systemTitle">运行环境</h2>
+            </div>
+            <span class="readiness" id="readinessBadge">检查中</span>
+          </div>
+          <div class="check-list" id="healthChecks"></div>
+          <p class="system-note">面板不会显示或传输密钥内容，只检查它们是否已经配置。</p>
+        </section>
+
+        <section class="queue-card" aria-labelledby="queueTitle">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">ACTIVITY</p>
+              <h2 id="queueTitle">最近任务</h2>
+            </div>
+          </div>
+          <div class="job-list" id="jobList">
+            <p class="muted">暂无运行记录</p>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="logDialog">
+    <div class="dialog-head">
+      <div>
+        <p class="eyebrow">LIVE LOG</p>
+        <h2 id="logTitle">任务日志</h2>
+      </div>
+      <button class="icon-button" id="closeLog" type="button" aria-label="关闭日志">×</button>
+    </div>
+    <pre id="logContent">正在读取日志…</pre>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
