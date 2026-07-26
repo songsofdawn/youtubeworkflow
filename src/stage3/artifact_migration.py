@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import json
 import os
-import uuid
 from pathlib import Path
 from typing import Any
 
 from .manifest import sha256_file, utc_now
-from .subtitle_writer import atomic_write_json
+from .subtitle_writer import atomic_write_json, temporary_sibling
 
 
 MIGRATIONS = (
@@ -37,7 +36,7 @@ MIGRATIONS = (
 
 def atomic_copy(source: Path, destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+    temporary = temporary_sibling(destination)
     try:
         temporary.write_bytes(source.read_bytes())
         os.replace(temporary, destination)

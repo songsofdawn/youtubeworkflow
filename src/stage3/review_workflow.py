@@ -5,13 +5,18 @@ import html
 import io
 import json
 import os
-import uuid
 from pathlib import Path
 from typing import Any
 
 from .manifest import sha256_file, utc_now
 from .models import TranslationSegment
-from .subtitle_writer import atomic_write_json, atomic_write_srt, format_timestamp, read_srt
+from .subtitle_writer import (
+    atomic_write_json,
+    atomic_write_srt,
+    format_timestamp,
+    read_srt,
+    temporary_sibling,
+)
 
 
 REVIEW_COLUMNS = (
@@ -22,7 +27,7 @@ REVIEW_COLUMNS = (
 
 def _atomic_text(path: Path, content: str) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
+    temporary = temporary_sibling(path)
     try:
         temporary.write_text(content, encoding="utf-8", newline="")
         os.replace(temporary, path)

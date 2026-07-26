@@ -4,7 +4,6 @@ import json
 import math
 import os
 import re
-import uuid
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +21,12 @@ from .sentence_segmenter import segment_sentences
 from .source_selector import assess_source, select_source
 from .subtitle_scoring import score_subtitle, subtitle_agreement
 from .subtitle_selector import SELECTION_POLICY_VERSION, choose_source, write_selection_outputs
-from .subtitle_writer import atomic_write_json, atomic_write_srt, read_srt
+from .subtitle_writer import (
+    atomic_write_json,
+    atomic_write_srt,
+    read_srt,
+    temporary_sibling,
+)
 from .timeline_builder import rebuild_timeline
 from .translation_qc import estimate_translation, p0_quality, qc_text, translation_quality
 from .translator_deepseek import (
@@ -96,7 +100,7 @@ def _media_metadata(video_dir: Path) -> dict[str, Any]:
 
 def _atomic_text(path: Path, content: str) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
+    temporary = temporary_sibling(path)
     try:
         temporary.write_text(content, encoding="utf-8")
         os.replace(temporary, path)

@@ -10,6 +10,13 @@ from typing import Any, Iterable
 from .models import SubtitleSegment, TranslationSegment
 
 
+def temporary_sibling(destination: Path) -> Path:
+    """Return a short same-directory temp path that stays below Windows MAX_PATH."""
+    return destination.with_name(
+        f".tmp-{uuid.uuid4().hex[:12]}{destination.suffix}"
+    )
+
+
 def format_timestamp(seconds: float) -> str:
     milliseconds = max(0, round(seconds * 1000))
     hours, remainder = divmod(milliseconds, 3_600_000)
@@ -72,7 +79,7 @@ def write_json(path: Path | str, value: Any) -> Path:
 def atomic_write_json(path: Path | str, value: Any) -> Path:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+    temporary = temporary_sibling(destination)
     try:
         temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         os.replace(temporary, destination)
@@ -91,7 +98,7 @@ def atomic_write_srt(
 ) -> Path:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.tmp")
+    temporary = temporary_sibling(destination)
     try:
         write_srt(temporary, segments, translated=translated, width=width, max_lines=max_lines)
         os.replace(temporary, destination)
