@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterator
 
+from .publishing import BiliupIntegration
 from .tasks import WorkflowScanner
 
 
@@ -166,6 +167,18 @@ class JobStore:
             error="",
         )
 
+    def has_active(self, kind: str, target: str) -> bool:
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                SELECT 1 FROM jobs
+                WHERE kind = ? AND target = ? AND status IN ('queued', 'running')
+                LIMIT 1
+                """,
+                (kind, target),
+            ).fetchone()
+        return row is not None
+
     def log_tail(self, job_id: str, max_chars: int = 30000) -> str:
         job = self.get(job_id)
         path = Path(job["log_path"])
@@ -187,10 +200,12 @@ class WorkflowWorker:
         project_root: Path,
         store: JobStore,
         scanner: WorkflowScanner,
+        publisher: BiliupIntegration,
     ) -> None:
         self.project_root = project_root.resolve()
         self.store = store
         self.scanner = scanner
+        self.publisher = publisher
         self._stop_event = threading.Event()
         self._wake_event = threading.Event()
         self._thread = threading.Thread(target=self._run, daemon=True, name="workflow-worker")
@@ -226,7 +241,11 @@ class WorkflowWorker:
     def _execute(self, job: dict[str, Any]) -> None:
         job_id = str(job["id"])
         log_path = Path(job["log_path"])
+        publish_task: Path | None = None
         try:
+            if job["kind"] == "publish":
+                publish_task = self.scanner.resolve_task(str(job["target"]))
+                self.publisher.mark_running(publish_task, job["payload"])
             commands = self._build_commands(job)
             total = max(1, len(commands))
             for index, (label, command) in enumerate(commands):
@@ -239,6 +258,11 @@ class WorkflowWorker:
                     progress=start_progress,
                 )
                 self._append_log(log_path, f"\n===== {label} =====\n")
+                if job["kind"] == "publish" and label == "上传并提交到哔哩哔哩":
+                    assert publish_task is not None
+                    media = self.publisher.expected_hardsub(publish_task)
+                    if not media.is_file() or media.stat().st_size == 0:
+                        raise FileNotFoundError(f"投稿视频不存在或为空：{media}")
                 exit_code = self._run_command(command, log_path)
                 if exit_code != 0:
                     raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
@@ -246,6 +270,29 @@ class WorkflowWorker:
                     job_id,
                     progress=int((index + 1) / total * 100),
                 )
+            if job["kind"] == "publish":
+                assert publish_task is not None
+                try:
+                    self.publisher.mark_published(
+                        publish_task,
+                        job["payload"],
+                        self.store.log_tail(job_id, max_chars=100000),
+                    )
+                except Exception as exc:
+                    self._append_log(
+                        log_path,
+                        f"\n[警告] 投稿命令已成功，但本地投稿状态保存失败：{exc}\n",
+                    )
+                    self.store.update(
+                        job_id,
+                        status="completed",
+                        step="投稿成功，本地状态保存失败",
+                        progress=100,
+                        exit_code=0,
+                        error=str(exc),
+                        finished_at=utc_now(),
+                    )
+                    return
             self.store.update(
                 job_id,
                 status="completed",
@@ -256,6 +303,11 @@ class WorkflowWorker:
             )
         except Exception as exc:  # Worker must survive individual task failures.
             self._append_log(log_path, f"\n[任务失败] {exc}\n")
+            if job["kind"] == "publish" and publish_task is not None:
+                try:
+                    self.publisher.mark_failed(publish_task, job["payload"], str(exc))
+                except Exception:
+                    pass
             self.store.update(
                 job_id,
                 status="failed",
@@ -279,6 +331,33 @@ class WorkflowWorker:
                 "PERMISSION_GRANTED",
             ]
             return [("下载视频、字幕、元数据与音频", command)]
+
+        if job["kind"] == "publish":
+            task_dir = self.scanner.resolve_task(str(job["target"]))
+            commands: list[tuple[str, list[str]]] = []
+            if payload.get("prepare_hardsub"):
+                stage3_python = self.project_root / ".venv_stage3" / "Scripts" / "python.exe"
+                commands.append(
+                    (
+                        "生成投稿用硬字幕 MP4",
+                        [
+                            str(stage3_python),
+                            str(self.project_root / "src" / "run_stage4.py"),
+                            "--video-dir",
+                            str(task_dir),
+                            "--mode",
+                            "hardsub",
+                            "--resume",
+                        ],
+                    )
+                )
+            commands.append(
+                (
+                    "上传并提交到哔哩哔哩",
+                    self.publisher.build_upload_command(task_dir, payload),
+                )
+            )
+            return commands
 
         if job["kind"] != "pipeline":
             raise ValueError(f"未知任务类型：{job['kind']}")

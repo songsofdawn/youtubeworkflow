@@ -65,6 +65,7 @@ class WorkflowScanner:
         download = read_json(manifest_path)
         stage3 = read_json(task_dir / "stage3_manifest.json")
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        stage5 = read_json(task_dir / "stage5" / "publish_manifest.json")
         info = read_json(task_dir / "metadata" / "info.json")
 
         download_status = str(download.get("overall_status") or "unknown")
@@ -75,6 +76,7 @@ class WorkflowScanner:
         ]
         stage4_status = str(stage4.get("status") or "")
         stage4_qc = str(stage4.get("qc_status") or "")
+        publish_status = str(stage5.get("status") or "")
 
         download_complete = download_status in {"success", "skipped"}
         english_complete = selected_path.is_file() and selected_path.stat().st_size > 0
@@ -109,15 +111,29 @@ class WorkflowScanner:
                     stage4_status or "等待处理",
                 )
             ),
+            "publish": (
+                {"state": "active", "detail": publish_status}
+                if publish_status == "RUNNING"
+                else self._stage_state(
+                    publish_status == "PUBLISHED",
+                    publish_status == "FAILED",
+                    publish_status or "等待投稿",
+                )
+            ),
         }
         completed_count = sum(
             stages[name]["state"] in {"complete", "review"}
-            for name in ("download", "english", "translation", "render")
+            for name in ("download", "english", "translation", "render", "publish")
         )
         relative = task_dir.relative_to(self.downloads_root).as_posix()
         newest_mtime = max(
             path.stat().st_mtime
-            for path in (manifest_path, task_dir / "stage3_manifest.json", task_dir / "stage4" / "stage4_manifest.json")
+            for path in (
+                manifest_path,
+                task_dir / "stage3_manifest.json",
+                task_dir / "stage4" / "stage4_manifest.json",
+                task_dir / "stage5" / "publish_manifest.json",
+            )
             if path.is_file()
         )
         overall = self._overall_label(stages)
@@ -132,10 +148,13 @@ class WorkflowScanner:
                 newest_mtime, tz=timezone.utc
             ).isoformat(),
             "overall": overall,
-            "progress": completed_count * 25,
+            "progress": completed_count * 20,
             "stages": stages,
             "stage3_status": str(stage3.get("translation_status") or ""),
             "stage4_status": stage4_status,
+            "publish_status": publish_status,
+            "bvid": str(stage5.get("bvid") or ""),
+            "bilibili_url": str(stage5.get("url") or ""),
             "output_path": str(
                 stage4.get("hardsub_output_path")
                 or stage4.get("softsub_output_path")
@@ -147,6 +166,7 @@ class WorkflowScanner:
                     list(download.get("errors") or [])
                     + list(stage3.get("errors") or [])
                     + list(stage4.get("errors") or [])
+                    + list(stage5.get("errors") or [])
                 )
                 if str(item).strip()
             ][-5:],
@@ -170,9 +190,15 @@ class WorkflowScanner:
     @staticmethod
     def _overall_label(stages: dict[str, dict[str, str]]) -> str:
         states = [item["state"] for item in stages.values()]
-        if states[-1] == "complete":
-            return "成片完成"
-        if states[-1] == "review":
+        if stages["publish"]["state"] == "complete":
+            return "投稿完成"
+        if stages["publish"]["state"] == "active":
+            return "正在投稿"
+        if stages["publish"]["state"] == "failed":
+            return "投稿失败"
+        if stages["render"]["state"] == "complete":
+            return "成片完成，等待投稿"
+        if stages["render"]["state"] == "review":
             return "需要复核"
         if "failed" in states:
             return "处理失败"

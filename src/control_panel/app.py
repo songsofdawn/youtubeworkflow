@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .jobs import JobStore, WorkflowWorker
+from .publishing import BiliupIntegration
 from .tasks import WorkflowScanner
 from .youtube import TargetedYouTubeSearch, load_env_values, normalize_video_inputs
 
@@ -20,7 +21,13 @@ class ControlPanelApp:
             self.project_root / "logs" / "control_panel" / "jobs",
         )
         self.searcher = TargetedYouTubeSearch(self.project_root)
-        self.worker = WorkflowWorker(self.project_root, self.store, self.scanner)
+        self.publisher = BiliupIntegration(self.project_root)
+        self.worker = WorkflowWorker(
+            self.project_root,
+            self.store,
+            self.scanner,
+            self.publisher,
+        )
 
     def start(self) -> None:
         self.worker.start()
@@ -41,6 +48,7 @@ class ControlPanelApp:
             for name in ("yt-dlp", "ffmpeg", "ffprobe")
         }
         model = self.project_root / "models" / "faster-whisper-large-v3"
+        publishing = self.publisher.health()
         checks = {
             "download_environment": download_python.is_file(),
             "stage3_environment": stage3_python.is_file(),
@@ -48,6 +56,8 @@ class ControlPanelApp:
             "whisper_model": model.is_dir(),
             "youtube_api": configured("YOUTUBE_API_KEY"),
             "deepseek_api": configured("DEEPSEEK_API_KEY"),
+            "biliup": publishing["available"],
+            "biliup_account": publishing["account_ready"],
         }
         return {
             "ready": all(
@@ -61,6 +71,7 @@ class ControlPanelApp:
             ),
             "checks": checks,
             "tools": tools,
+            "publishing": publishing,
         }
 
     def dashboard(self) -> dict[str, Any]:
@@ -68,7 +79,7 @@ class ControlPanelApp:
         tasks = self.scanner.scan()
         active_by_target: dict[str, dict[str, Any]] = {}
         for job in jobs:
-            if job["kind"] != "pipeline" or job["status"] not in {"queued", "running"}:
+            if job["kind"] not in {"pipeline", "publish"} or job["status"] not in {"queued", "running"}:
                 continue
             active_by_target.setdefault(str(job["target"]), job)
         for task in tasks:
@@ -91,8 +102,11 @@ class ControlPanelApp:
                 "queued": sum(job["status"] == "queued" for job in jobs),
                 "running": sum(job["status"] == "running" for job in jobs),
                 "failed": sum(job["status"] == "failed" for job in jobs),
-                "completed": sum(
+                "rendered": sum(
                     task["stages"]["render"]["state"] == "complete" for task in tasks
+                ),
+                "published": sum(
+                    task["stages"]["publish"]["state"] == "complete" for task in tasks
                 ),
             },
         }
@@ -169,7 +183,23 @@ class ControlPanelApp:
         return jobs
 
     def retry_job(self, job_id: str) -> dict[str, Any]:
+        existing = self.store.get(job_id)
+        if existing["kind"] == "publish":
+            raise ValueError("投稿任务不能一键重试，请重新打开投稿窗口核对并确认")
         job = self.store.retry(job_id)
+        self.worker.wake()
+        return job
+
+    def publish_defaults(self, task: str) -> dict[str, Any]:
+        task_dir = self.scanner.resolve_task(task)
+        return self.publisher.defaults(task_dir) | {"task": task}
+
+    def queue_publish(self, task: str, values: dict[str, Any]) -> dict[str, Any]:
+        task_dir = self.scanner.resolve_task(task)
+        if self.store.has_active("publish", task):
+            raise ValueError("这个视频已经在投稿队列中")
+        payload = self.publisher.validate_submission(task_dir, values)
+        job = self.store.enqueue("publish", task, payload)
         self.worker.wake()
         return job
 

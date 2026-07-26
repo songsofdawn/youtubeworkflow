@@ -10,6 +10,7 @@ from unittest import TestCase, mock
 
 from src.control_panel.app import ControlPanelApp
 from src.control_panel.jobs import JobStore, WorkflowWorker
+from src.control_panel.publishing import BiliupIntegration
 from src.control_panel.server import make_handler
 from src.control_panel.tasks import WorkflowScanner
 from src.control_panel.youtube import (
@@ -45,6 +46,31 @@ def make_task(project: Path, name: str = "2026-07-26/abcdefghijk_Test") -> Path:
         {"id": "abcdefghijk", "title": "Test video", "duration": 123},
     )
     return task
+
+
+def make_publish_config(project: Path) -> tuple[Path, Path]:
+    executable = project / "bbup-app" / "binaries" / "biliup.exe"
+    executable.parent.mkdir(parents=True, exist_ok=True)
+    executable.write_bytes(b"fake")
+    account_dir = project / "bbup-app" / "data"
+    write_json(
+        account_dir / "10001.json",
+        {"cookie_info": {}, "token_info": {}, "platform": "TV"},
+    )
+    write_json(
+        project / "config" / "publish_config.json",
+        {
+            "biliup_executable_candidates": [str(executable)],
+            "account_directories": [str(account_dir)],
+            "default_submit": "web",
+            "default_tid": 171,
+            "upload_limit": 3,
+            "default_copyright": 2,
+            "default_only_self": True,
+            "default_no_reprint": True,
+        },
+    )
+    return executable, account_dir / "10001.json"
 
 
 class VideoInputTests(TestCase):
@@ -165,8 +191,32 @@ class ScannerTests(TestCase):
             )
             rows = WorkflowScanner(project).scan()
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["progress"], 100)
-        self.assertEqual(rows[0]["overall"], "成片完成")
+        self.assertEqual(rows[0]["progress"], 80)
+        self.assertEqual(rows[0]["overall"], "成片完成，等待投稿")
+
+    def test_published_manifest_completes_fifth_stage(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "en.selected.srt").write_text("English", encoding="utf-8")
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {"status": "STAGE4_COMPLETED", "qc_status": "QC_PASSED"},
+            )
+            write_json(
+                task / "stage5" / "publish_manifest.json",
+                {
+                    "status": "PUBLISHED",
+                    "bvid": "BV1xx411c7mD",
+                    "url": "https://www.bilibili.com/video/BV1xx411c7mD",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+        self.assertEqual(row["progress"], 100)
+        self.assertEqual(row["overall"], "投稿完成")
+        self.assertEqual(row["bvid"], "BV1xx411c7mD")
 
     def test_task_resolution_cannot_escape_downloads(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -195,7 +245,13 @@ class QueueTests(TestCase):
             task = make_task(project)
             store = JobStore(project / "jobs.sqlite3", project / "logs")
             scanner = WorkflowScanner(project)
-            worker = WorkflowWorker(project, store, scanner)
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                scanner,
+                BiliupIntegration(project),
+            )
             commands = worker._build_commands(
                 {
                     "kind": "pipeline",
@@ -209,11 +265,57 @@ class QueueTests(TestCase):
         self.assertIn("run_stage4.py", commands[2][1][1])
 
 
+class PublishingTests(TestCase):
+    def test_detects_account_without_returning_cookie_contents(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            publishing = BiliupIntegration(project)
+            accounts = publishing.accounts()
+        self.assertEqual(len(accounts), 1)
+        self.assertEqual(accounts[0]["label"], "10001")
+        self.assertNotIn("cookie_info", json.dumps(accounts))
+
+    def test_validated_submission_builds_v122_cli_command(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            executable, account = make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            publishing = BiliupIntegration(project)
+            defaults = publishing.defaults(task)
+            payload = publishing.validate_submission(
+                task,
+                defaults | {"confirm_publish": True},
+            )
+            command = publishing.build_upload_command(task, payload)
+        self.assertEqual(command[0], str(executable))
+        self.assertEqual(command[1:4], ["--user-cookie", str(account), "upload"])
+        self.assertIn("--submit", command)
+        self.assertIn("web", command)
+        self.assertIn("--copyright", command)
+        self.assertEqual(command[-1], str(publishing.expected_hardsub(task)))
+        self.assertTrue(payload["prepare_hardsub"])
+
+    def test_submission_requires_explicit_final_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            publishing = BiliupIntegration(project)
+            with self.assertRaisesRegex(ValueError, "确认"):
+                publishing.validate_submission(task, publishing.defaults(task))
+
+
 class ServerSmokeTests(TestCase):
     def test_dashboard_endpoint_and_static_page(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
             make_task(project)
+            make_publish_config(project)
             static = project / "static"
             static.mkdir()
             (static / "index.html").write_text("<!doctype html><title>Panel</title>", encoding="utf-8")

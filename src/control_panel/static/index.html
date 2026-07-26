@@ -27,14 +27,15 @@
   <main>
     <section class="command-hero" aria-labelledby="heroTitle">
       <div class="hero-copy">
-        <p class="eyebrow">VIDEO OPERATIONS / 01—04</p>
-        <h1 id="heroTitle">从一个关键词，<br>到一支双语成片。</h1>
-        <p class="hero-intro">搜索、下载、字幕选择、翻译与成片，全部从这里进入。任务会自动保存状态，失败后可以从当前阶段继续。</p>
+        <p class="eyebrow">VIDEO OPERATIONS / 01—05</p>
+        <h1 id="heroTitle">从一个关键词，<br>到完成投稿。</h1>
+        <p class="hero-intro">搜索、下载、字幕选择、翻译、成片与哔哩哔哩投稿，全部从这里进入。任务会自动保存状态，失败后可以从当前阶段继续。</p>
         <div class="metric-row" aria-label="工作流摘要">
           <article><span id="metricTasks">0</span><small>视频任务</small></article>
           <article><span id="metricQueued">0</span><small>等待执行</small></article>
           <article><span id="metricRunning">0</span><small>正在处理</small></article>
-          <article><span id="metricCompleted">0</span><small>成片完成</small></article>
+          <article><span id="metricRendered">0</span><small>成片完成</small></article>
+          <article><span id="metricPublished">0</span><small>投稿完成</small></article>
         </div>
       </div>
 
@@ -109,7 +110,7 @@
       <div class="tasks-panel">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">02—04 / PRODUCTION</p>
+            <p class="eyebrow">02—05 / PRODUCTION</p>
             <h2>视频任务</h2>
           </div>
           <button class="button button-ghost button-small" id="selectAllTasks" type="button">选择全部</button>
@@ -185,6 +186,120 @@
       <button class="icon-button" id="closeLog" type="button" aria-label="关闭日志">×</button>
     </div>
     <pre id="logContent">正在读取日志…</pre>
+  </dialog>
+
+  <dialog id="publishDialog" class="publish-dialog">
+    <form id="publishForm">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">05 / BILIBILI PUBLISH</p>
+          <h2 id="publishDialogTitle">投稿到哔哩哔哩</h2>
+        </div>
+        <button class="icon-button" id="closePublish" type="button" aria-label="关闭投稿窗口">×</button>
+      </div>
+      <div class="publish-body">
+        <div class="publish-notice">
+          <strong id="publishMediaState">正在检查成片…</strong>
+          <span>使用 biliup v1.2.2。本窗口不会读取或显示 Cookie 内容。</span>
+        </div>
+
+        <div class="publish-grid">
+          <label class="field span-2">
+            <span>投稿标题</span>
+            <input id="publishTitle" maxlength="80" required>
+          </label>
+          <label class="field">
+            <span>账号</span>
+            <select id="publishAccount" required></select>
+          </label>
+          <label class="field">
+            <span>分区 TID</span>
+            <input id="publishTid" type="number" min="1" required>
+          </label>
+          <label class="field">
+            <span>版权类型</span>
+            <select id="publishCopyright">
+              <option value="2">转载</option>
+              <option value="1">自制</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>投稿接口</span>
+            <select id="publishSubmit">
+              <option value="web">Web</option>
+              <option value="app">App</option>
+              <option value="b-cut-android">必剪 Android</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>上传线路</span>
+            <select id="publishLine">
+              <option value="">自动选择</option>
+              <option value="bda2">bda2</option>
+              <option value="cnbd">cnbd</option>
+              <option value="tx">tx</option>
+              <option value="cntx">cntx</option>
+              <option value="alia">alia</option>
+              <option value="bldsa">bldsa</option>
+              <option value="cnbldsa">cnbldsa</option>
+              <option value="andsa">andsa</option>
+              <option value="atdsa">atdsa</option>
+              <option value="anbd">anbd</option>
+              <option value="atbd">atbd</option>
+              <option value="antx">antx</option>
+              <option value="attx">attx</option>
+              <option value="bda">bda</option>
+              <option value="txa">txa</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>上传并发数</span>
+            <input id="publishLimit" type="number" min="1" max="10" value="3" required>
+          </label>
+          <label class="field span-2">
+            <span>转载来源</span>
+            <input id="publishSource" maxlength="300" placeholder="原视频链接">
+          </label>
+          <label class="field span-2">
+            <span>标签（逗号分隔）</span>
+            <input id="publishTags" placeholder="中英双语,中文翻译" required>
+          </label>
+          <label class="field span-2">
+            <span>视频简介</span>
+            <textarea id="publishDescription" rows="7" maxlength="2000"></textarea>
+          </label>
+          <label class="field span-2">
+            <span>空间动态</span>
+            <textarea id="publishDynamic" rows="2" maxlength="255"></textarea>
+          </label>
+        </div>
+
+        <div class="publish-options">
+          <label class="confirm-line safety-option">
+            <input id="publishOnlySelf" type="checkbox" checked>
+            <span><strong>仅自己可见</strong>（建议首次投稿保持开启）</span>
+          </label>
+          <label class="confirm-line">
+            <input id="publishNoReprint" type="checkbox" checked>
+            <span>禁止他人转载</span>
+          </label>
+          <label class="confirm-line">
+            <input id="publishUseCover" type="checkbox">
+            <span>使用下载任务中的缩略图作为封面</span>
+          </label>
+        </div>
+
+        <label class="confirm-line final-confirm">
+          <input id="publishConfirm" type="checkbox">
+          <span>我已核对版权、标题、分区、标签和转载来源，确认将此视频提交到哔哩哔哩</span>
+        </label>
+
+        <div class="publish-footer">
+          <button class="button button-ghost" id="cancelPublish" type="button">取消</button>
+          <button class="button button-primary" id="submitPublish" type="submit">确认加入投稿队列</button>
+        </div>
+      </div>
+    </form>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

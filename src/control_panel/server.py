@@ -33,6 +33,11 @@ def make_handler(app: ControlPanelApp, static_root: Path) -> type[BaseHTTPReques
                 if parsed.path == "/api/tasks":
                     self._json(HTTPStatus.OK, {"tasks": app.scanner.scan()})
                     return
+                if parsed.path == "/api/publish/defaults":
+                    query = parse_qs(parsed.query)
+                    task = str((query.get("task") or [""])[0])
+                    self._json(HTTPStatus.OK, app.publish_defaults(task))
+                    return
                 if parsed.path == "/api/jobs":
                     query = parse_qs(parsed.query)
                     limit = int((query.get("limit") or ["80"])[0])
@@ -81,6 +86,13 @@ def make_handler(app: ControlPanelApp, static_root: Path) -> type[BaseHTTPReques
                         allow_paid_api=body.get("allow_paid_api") is True,
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})
+                    return
+                if parsed.path == "/api/publish":
+                    task = str(body.get("task") or "")
+                    self._json(
+                        HTTPStatus.ACCEPTED,
+                        {"job": app.queue_publish(task, body)},
+                    )
                     return
                 if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/retry"):
                     job_id = parsed.path.split("/")[3]

@@ -6,6 +6,7 @@ const state = {
   selectedResults: new Set(),
   selectedTasks: new Set(),
   activeLogJob: null,
+  publishTask: null,
   refreshBusy: false,
 };
 
@@ -77,7 +78,8 @@ function renderDashboard(dashboard) {
   $("#metricTasks").textContent = summary.tasks;
   $("#metricQueued").textContent = summary.queued;
   $("#metricRunning").textContent = summary.running;
-  $("#metricCompleted").textContent = summary.completed;
+  $("#metricRendered").textContent = summary.rendered;
+  $("#metricPublished").textContent = summary.published;
   renderHealth(dashboard.health);
   renderTasks(dashboard.tasks);
   renderJobs(dashboard.jobs);
@@ -91,6 +93,8 @@ function renderHealth(health) {
     whisper_model: "本地 Whisper 模型",
     youtube_api: "YouTube API 密钥",
     deepseek_api: "DeepSeek API 密钥",
+    biliup: "biliup 投稿工具",
+    biliup_account: "哔哩哔哩登录账号",
   };
   $("#healthChecks").innerHTML = Object.entries(labels)
     .map(([key, label]) => `
@@ -104,7 +108,7 @@ function renderHealth(health) {
   badge.classList.toggle("ready", health.ready);
 }
 
-const stageNames = { download: "下载", english: "英文", translation: "翻译", render: "成片" };
+const stageNames = { download: "下载", english: "英文", translation: "翻译", render: "成片", publish: "投稿" };
 
 function renderTasks(tasks) {
   const taskKeys = new Set(tasks.map((task) => task.task));
@@ -132,8 +136,17 @@ function renderTasks(tasks) {
     const image = task.thumbnail_url
       ? `<img class="task-thumb" src="${escapeHtml(task.thumbnail_url)}" alt="" loading="lazy">`
       : `<div class="task-thumb"></div>`;
+    const publishAction = task.stages.publish.state === "complete"
+      ? task.bilibili_url
+        ? `<button class="icon-button open-bilibili" type="button" title="打开B站稿件" aria-label="打开B站稿件">B</button>`
+        : ""
+      : task.stages.publish.state === "active"
+        ? ""
+        : (task.stages.translation.state === "complete" || task.stages.render.state === "complete")
+          ? `<button class="icon-button publish-task" type="button" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">↑</button>`
+          : "";
     return `
-      <article class="task-row ${selected ? "selected" : ""}" data-task="${escapeHtml(task.task)}">
+      <article class="task-row ${selected ? "selected" : ""}" data-task="${escapeHtml(task.task)}" data-bilibili-url="${escapeHtml(task.bilibili_url || "")}">
         <input class="task-check" type="checkbox" aria-label="选择 ${escapeHtml(task.title)}" ${selected ? "checked" : ""}>
         ${image}
         <div class="task-title">
@@ -147,6 +160,7 @@ function renderTasks(tasks) {
           <progress class="progress-mini" max="100" value="${Math.max(0, Math.min(100, progress))}" aria-label="进度 ${progress}%"></progress>
         </div>
         <div class="task-actions">
+          ${publishAction}
           ${task.stages.translation.state === "complete" && task.stage4_status !== "STAGE4_COMPLETED"
             ? `<button class="icon-button render-task" type="button" title="仅重新成片" aria-label="仅重新成片">▶</button>`
             : ""}
@@ -163,10 +177,10 @@ function renderJobs(jobs) {
     return;
   }
   container.innerHTML = jobs.slice(0, 20).map((job) => {
-    const retry = job.status === "failed"
+    const retry = job.status === "failed" && job.kind !== "publish"
       ? `<button class="button button-ghost retry-job" type="button" data-job-id="${job.id}">重试</button>`
       : "";
-    const kind = job.kind === "download" ? "DOWNLOAD" : "PIPELINE";
+    const kind = job.kind === "download" ? "DOWNLOAD" : job.kind === "publish" ? "PUBLISH" : "PIPELINE";
     const status = {
       queued: "等待中",
       running: "运行中",
@@ -336,6 +350,12 @@ $("#taskList").addEventListener("click", async (event) => {
     state.selectedTasks = new Set([row.dataset.task]);
     await queueWorkflow("render");
   }
+  if (event.target.closest(".publish-task")) {
+    await openPublishDialog(row.dataset.task);
+  }
+  if (event.target.closest(".open-bilibili") && row.dataset.bilibiliUrl) {
+    window.open(row.dataset.bilibiliUrl, "_blank", "noopener,noreferrer");
+  }
 });
 
 $("#selectAllTasks").addEventListener("click", () => {
@@ -410,6 +430,99 @@ async function refreshLog() {
     $("#logContent").textContent = error.message;
   }
 }
+
+async function openPublishDialog(task) {
+  state.publishTask = task;
+  const dialog = $("#publishDialog");
+  $("#publishDialogTitle").textContent = "正在准备投稿信息…";
+  $("#publishMediaState").textContent = "正在检查成片与账号…";
+  $("#submitPublish").disabled = true;
+  dialog.showModal();
+  try {
+    const defaults = await api(`/api/publish/defaults?task=${encodeURIComponent(task)}`);
+    $("#publishDialogTitle").textContent = targetLabel(task);
+    $("#publishTitle").value = defaults.title;
+    $("#publishTid").value = defaults.tid;
+    $("#publishCopyright").value = String(defaults.copyright);
+    $("#publishSubmit").value = defaults.submit;
+    $("#publishLine").value = defaults.line;
+    $("#publishLimit").value = defaults.limit;
+    $("#publishSource").value = defaults.source;
+    $("#publishTags").value = defaults.tags;
+    $("#publishDescription").value = defaults.description;
+    $("#publishDynamic").value = defaults.dynamic;
+    $("#publishOnlySelf").checked = defaults.is_only_self;
+    $("#publishNoReprint").checked = defaults.no_reprint;
+    $("#publishUseCover").checked = defaults.use_cover;
+    $("#publishUseCover").disabled = !defaults.cover_available;
+    $("#publishConfirm").checked = false;
+    $("#publishAccount").innerHTML = defaults.accounts.length
+      ? defaults.accounts.map((account) =>
+          `<option value="${escapeHtml(account.id)}">${escapeHtml(account.label)} · ${escapeHtml(account.source)}</option>`
+        ).join("")
+      : '<option value="">未找到登录账号</option>';
+    $("#publishAccount").value = defaults.account_id;
+    $("#publishMediaState").textContent = defaults.media_ready
+      ? `投稿成片已就绪 · ${defaults.media_name}`
+      : defaults.translation_ready
+        ? `将先生成硬字幕 MP4 · ${defaults.media_name}`
+        : "中文字幕尚未完成，暂时不能投稿";
+    $("#submitPublish").disabled = !defaults.accounts.length || (!defaults.translation_ready && !defaults.media_ready);
+    updateSourceRequirement();
+  } catch (error) {
+    $("#publishMediaState").textContent = error.message;
+    $("#submitPublish").disabled = true;
+    toast(error.message, true);
+  }
+}
+
+function updateSourceRequirement() {
+  const isReprint = $("#publishCopyright").value === "2";
+  $("#publishSource").required = isReprint;
+  $("#publishSource").closest(".field").querySelector("span").textContent =
+    isReprint ? "转载来源（必填）" : "素材来源（可选）";
+}
+
+$("#publishCopyright").addEventListener("change", updateSourceRequirement);
+$("#closePublish").addEventListener("click", () => $("#publishDialog").close());
+$("#cancelPublish").addEventListener("click", () => $("#publishDialog").close());
+$("#publishDialog").addEventListener("close", () => { state.publishTask = null; });
+
+$("#publishForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!state.publishTask) return;
+  const button = $("#submitPublish");
+  button.disabled = true;
+  try {
+    await api("/api/publish", {
+      method: "POST",
+      body: JSON.stringify({
+        task: state.publishTask,
+        account_id: $("#publishAccount").value,
+        title: $("#publishTitle").value,
+        tid: Number($("#publishTid").value),
+        copyright: Number($("#publishCopyright").value),
+        submit: $("#publishSubmit").value,
+        line: $("#publishLine").value,
+        limit: Number($("#publishLimit").value),
+        source: $("#publishSource").value,
+        tags: $("#publishTags").value,
+        description: $("#publishDescription").value,
+        dynamic: $("#publishDynamic").value,
+        is_only_self: $("#publishOnlySelf").checked,
+        no_reprint: $("#publishNoReprint").checked,
+        use_cover: $("#publishUseCover").checked,
+        confirm_publish: $("#publishConfirm").checked,
+      }),
+    });
+    $("#publishDialog").close();
+    toast("投稿任务已加入队列");
+    await refreshDashboard();
+  } catch (error) {
+    button.disabled = false;
+    toast(error.message, true);
+  }
+});
 
 $("#closeLog").addEventListener("click", () => $("#logDialog").close());
 $("#logDialog").addEventListener("close", () => { state.activeLogJob = null; });

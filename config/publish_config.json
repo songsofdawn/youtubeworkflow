@@ -1,0 +1,15 @@
+{
+  "biliup_executable_candidates": [
+    "E:/biliup/bbup-app/binaries/biliup.exe"
+  ],
+  "account_directories": [
+    "E:/biliup/bbup-app/data"
+  ],
+  "default_submit": "web",
+  "default_tid": 171,
+  "default_line": "",
+  "upload_limit": 3,
+  "default_copyright": 2,
+  "default_only_self": true,
+  "default_no_reprint": true
+}
