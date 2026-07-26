@@ -48,6 +48,14 @@ function number(value) {
   return new Intl.NumberFormat("zh-CN", { notation: value > 999999 ? "compact" : "standard" }).format(value || 0);
 }
 
+function formatBytes(value) {
+  const bytes = Math.max(0, Number(value) || 0);
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+  return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+}
+
 function targetLabel(target) {
   const parts = String(target || "").split(/[\\/]/);
   return parts.at(-1) || target || "未命名任务";
@@ -153,7 +161,7 @@ function renderTasks(tasks) {
     const image = task.thumbnail_url
       ? `<img class="task-thumb" src="${escapeHtml(task.thumbnail_url)}" alt="" loading="lazy">`
       : `<div class="task-thumb"></div>`;
-    const publishAction = task.stages.publish.state === "complete"
+    const publishAction = active ? "" : task.stages.publish.state === "complete"
       ? task.bilibili_url
         ? `<button class="icon-button open-bilibili" type="button" title="打开B站稿件" aria-label="打开B站稿件">B</button>`
         : ""
@@ -163,7 +171,7 @@ function renderTasks(tasks) {
           ? `<button class="icon-button publish-task" type="button" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">↑</button>`
           : "";
     return `
-      <article class="task-row ${selected ? "selected" : ""}" data-task="${escapeHtml(task.task)}" data-bilibili-url="${escapeHtml(task.bilibili_url || "")}">
+      <article class="task-row ${selected ? "selected" : ""}" data-task="${escapeHtml(task.task)}" data-video-id="${escapeHtml(task.video_id)}" data-title="${escapeHtml(task.title)}" data-bilibili-url="${escapeHtml(task.bilibili_url || "")}">
         <input class="task-check" type="checkbox" aria-label="选择 ${escapeHtml(task.title)}" ${selected ? "checked" : ""}>
         ${image}
         <div class="task-title">
@@ -177,11 +185,15 @@ function renderTasks(tasks) {
           <progress class="progress-mini" max="100" value="${Math.max(0, Math.min(100, progress))}" aria-label="进度 ${progress}%"></progress>
         </div>
         <div class="task-actions">
+          ${active
+            ? `<button class="icon-button danger cancel-task-job" type="button" data-job-id="${escapeHtml(active.id)}" title="终止当前进程" aria-label="终止当前进程">■</button>`
+            : ""}
           ${publishAction}
-          ${task.stages.translation.state === "complete" && task.stage4_status !== "STAGE4_COMPLETED"
+          ${!active && task.stages.translation.state === "complete" && task.stage4_status !== "STAGE4_COMPLETED"
             ? `<button class="icon-button render-task" type="button" title="仅重新成片" aria-label="仅重新成片">▶</button>`
             : ""}
           <button class="icon-button open-folder" type="button" title="打开任务目录" aria-label="打开任务目录">↗</button>
+          <button class="icon-button danger delete-task" type="button" title="${active ? "请先终止运行中的任务" : "删除视频任务及全部文件"}" aria-label="删除视频任务及全部文件" ${active ? "disabled" : ""}>×</button>
         </div>
       </article>`;
   }).join("");
@@ -194,8 +206,14 @@ function renderJobs(jobs) {
     return;
   }
   container.innerHTML = jobs.slice(0, 20).map((job) => {
-    const retry = job.status === "failed" && job.kind !== "publish"
+    const retry = ["failed", "cancelled"].includes(job.status) && job.kind !== "publish"
       ? `<button class="button button-ghost retry-job" type="button" data-job-id="${job.id}">重试</button>`
+      : "";
+    const cancel = ["queued", "running"].includes(job.status)
+      ? `<button class="button button-danger cancel-job" type="button" data-job-id="${job.id}">终止</button>`
+      : "";
+    const deleteLog = job.has_log && !["queued", "running"].includes(job.status)
+      ? `<button class="button button-danger-outline delete-job-log" type="button" data-job-id="${job.id}">删日志</button>`
       : "";
     const kind = job.kind === "download" ? "DOWNLOAD" : job.kind === "publish" ? "PUBLISH" : "PIPELINE";
     const runningHint = job.status === "running" && job.kind === "publish"
@@ -216,7 +234,9 @@ function renderJobs(jobs) {
         <progress class="progress-mini" max="100" value="${job.progress}" aria-label="进度 ${job.progress}%"></progress>
         <div class="job-actions">
           <button class="button button-ghost show-log" type="button" data-job-id="${job.id}" data-job-title="${escapeHtml(targetLabel(job.target))}">查看日志</button>
+          ${cancel}
           ${retry}
+          ${deleteLog}
         </div>
       </article>`;
   }).join("");
@@ -356,6 +376,49 @@ $("#taskList").addEventListener("change", (event) => {
 $("#taskList").addEventListener("click", async (event) => {
   const row = event.target.closest(".task-row");
   if (!row) return;
+  const cancelButton = event.target.closest(".cancel-task-job");
+  if (cancelButton) {
+    if (!window.confirm("确定终止这个任务的当前进程吗？\n已生成的文件会保留，稍后仍可重试。")) return;
+    cancelButton.disabled = true;
+    try {
+      await api(`/api/jobs/${cancelButton.dataset.jobId}/cancel`, {
+        method: "POST",
+        body: "{}",
+      });
+      toast("已发送终止请求");
+      await refreshDashboard();
+    } catch (error) {
+      cancelButton.disabled = false;
+      toast(error.message, true);
+    }
+    return;
+  }
+  const deleteButton = event.target.closest(".delete-task");
+  if (deleteButton) {
+    const label = row.dataset.title || row.dataset.videoId || targetLabel(row.dataset.task);
+    const videoId = row.dataset.videoId || "";
+    if (!window.confirm(`永久删除“${label}”及其全部本地文件？\n关联的作业记录和日志也会删除，此操作无法撤销。`)) return;
+    const typed = window.prompt(`为防止误删，请输入视频号：${videoId}`);
+    if (typed === null) return;
+    if (typed.trim() !== videoId) return toast("视频号不匹配，已取消删除", true);
+    deleteButton.disabled = true;
+    try {
+      const payload = await api("/api/tasks/delete", {
+        method: "POST",
+        body: JSON.stringify({
+          task: row.dataset.task,
+          confirmation: row.dataset.task,
+        }),
+      });
+      state.selectedTasks.delete(row.dataset.task);
+      toast(`已删除 ${payload.files} 个文件，共 ${formatBytes(payload.bytes)}`);
+      await refreshDashboard();
+    } catch (error) {
+      deleteButton.disabled = false;
+      toast(error.message, true);
+    }
+    return;
+  }
   if (event.target.closest(".open-folder")) {
     try {
       await api("/api/open-folder", {
@@ -433,6 +496,40 @@ $("#jobList").addEventListener("click", async (event) => {
       toast("任务已重新加入队列");
       await refreshDashboard();
     } catch (error) {
+      toast(error.message, true);
+    }
+    return;
+  }
+  const cancelButton = event.target.closest(".cancel-job");
+  if (cancelButton) {
+    if (!window.confirm("确定终止这个任务吗？\n已生成的文件会保留，终止后可重新加入队列。")) return;
+    cancelButton.disabled = true;
+    try {
+      await api(`/api/jobs/${cancelButton.dataset.jobId}/cancel`, {
+        method: "POST",
+        body: "{}",
+      });
+      toast("已发送终止请求");
+      await refreshDashboard();
+    } catch (error) {
+      cancelButton.disabled = false;
+      toast(error.message, true);
+    }
+    return;
+  }
+  const deleteLogButton = event.target.closest(".delete-job-log");
+  if (deleteLogButton) {
+    if (!window.confirm("删除这条任务日志？作业记录会保留。")) return;
+    deleteLogButton.disabled = true;
+    try {
+      const payload = await api(`/api/jobs/${deleteLogButton.dataset.jobId}/delete-log`, {
+        method: "POST",
+        body: "{}",
+      });
+      toast(payload.deleted ? `日志已删除，释放 ${formatBytes(payload.bytes)}` : "这条日志已经为空");
+      await refreshDashboard();
+    } catch (error) {
+      deleteLogButton.disabled = false;
       toast(error.message, true);
     }
   }
@@ -574,6 +671,42 @@ $("#publishForm").addEventListener("submit", async (event) => {
 
 $("#closeLog").addEventListener("click", () => $("#logDialog").close());
 $("#logDialog").addEventListener("close", () => { state.activeLogJob = null; });
+$("#deleteCurrentLog").addEventListener("click", async () => {
+  if (!state.activeLogJob) return;
+  if (!window.confirm("删除当前显示的日志？作业记录会保留。")) return;
+  const button = $("#deleteCurrentLog");
+  button.disabled = true;
+  try {
+    const payload = await api(`/api/jobs/${state.activeLogJob}/delete-log`, {
+      method: "POST",
+      body: "{}",
+    });
+    $("#logDialog").close();
+    toast(payload.deleted ? `日志已删除，释放 ${formatBytes(payload.bytes)}` : "这条日志已经为空");
+    await refreshDashboard();
+  } catch (error) {
+    toast(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
+});
+$("#clearOldLogs").addEventListener("click", async () => {
+  if (!window.confirm("清空所有已完成、失败和已取消任务的历史日志？\n运行中日志不会删除。")) return;
+  const button = $("#clearOldLogs");
+  button.disabled = true;
+  try {
+    const payload = await api("/api/logs/clear", {
+      method: "POST",
+      body: "{}",
+    });
+    toast(`已清理 ${payload.deleted} 条日志，释放 ${formatBytes(payload.bytes)}`);
+    await refreshDashboard();
+  } catch (error) {
+    toast(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
+});
 $("#refreshButton").addEventListener("click", () => refreshDashboard(true));
 
 refreshDashboard(true);

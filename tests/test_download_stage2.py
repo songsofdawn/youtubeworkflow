@@ -151,7 +151,7 @@ class CoreTests(TestCase):
             command = [str(item) for item in runner.call_args.args[0]]
             self.assertTrue(result["success"])
             self.assertEqual(command[command.index("--http-chunk-size") + 1], "1M")
-            self.assertEqual(command[command.index("--socket-timeout") + 1], "30")
+            self.assertEqual(command[command.index("--socket-timeout") + 1], "15")
             self.assertIn("--force-ipv4", command)
             self.assertIn("--newline", command)
 
@@ -159,24 +159,24 @@ class CoreTests(TestCase):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
             task = root / "task"
-            attempts = 0
 
             def execute(command, cwd=None, **kwargs):
-                nonlocal attempts
-                attempts += 1
                 values = [str(item) for item in command]
-                if attempts == 1:
-                    return {
-                        "success": False,
-                        "returncode": 1,
-                        "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
-                        "stderr": "",
-                        "command": values,
-                    }
-                (task / "video" / "source.mp4").write_bytes(b"video")
-                return {"success": True, "returncode": 0, "stdout": "", "stderr": "", "command": values}
+                return {
+                    "success": False,
+                    "returncode": 1,
+                    "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
+                    "stderr": "",
+                    "command": values,
+                }
 
-            with mock.patch("src.download_core.run_command", side_effect=execute):
+            def fallback(url, video_dir, tools, paths, config):
+                (task / "video" / "source.mp4").write_bytes(b"video")
+                return {"success": True, "error": "", "command_results": []}
+
+            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
+                "src.download_core._download_via_alternate_cdn", side_effect=fallback
+            ) as cdn_fallback:
                 result = download_video_media(
                     "https://youtu.be/id",
                     task,
@@ -185,8 +185,8 @@ class CoreTests(TestCase):
                     get_project_paths(root),
                 )
             self.assertTrue(result["success"])
-            self.assertEqual(attempts, 2)
-            self.assertEqual(len(result["command_results"]), 2)
+            cdn_fallback.assert_called_once()
+            self.assertEqual(len(result["command_results"]), 1)
 
     def test_media_download_explains_persistent_tls_failure(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -202,7 +202,10 @@ class CoreTests(TestCase):
                     "command": [str(item) for item in command],
                 }
 
-            with mock.patch("src.download_core.run_command", side_effect=execute):
+            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
+                "src.download_core._download_via_alternate_cdn",
+                return_value={"success": False, "error": "alternate failed", "command_results": []},
+            ):
                 result = download_video_media(
                     "https://youtu.be/id",
                     root / "task",
@@ -211,9 +214,20 @@ class CoreTests(TestCase):
                     get_project_paths(root),
                 )
             self.assertFalse(result["success"])
-            self.assertEqual(len(result["command_results"]), 2)
+            self.assertEqual(len(result["command_results"]), 1)
+            self.assertIn("alternate failed", result["error"])
             self.assertIn("Clash/VPN", result["error"])
             self.assertIn("字幕、封面和元数据会被保留", result["error"])
+
+    def test_alternate_googlevideo_urls_use_secondary_machine(self) -> None:
+        source = (
+            "https://rr1---sn-primary.googlevideo.com/videoplayback"
+            "?mn=sn-primary%2Csn-secondary&clen=1024"
+        )
+        alternatives = download_core._alternate_googlevideo_urls(source)
+        self.assertTrue(alternatives)
+        self.assertTrue(all("sn-secondary.googlevideo.com" in item for item in alternatives))
+        self.assertTrue(all("sn-primary.googlevideo.com" not in item for item in alternatives))
 
 
 class SubtitleTests(TestCase):

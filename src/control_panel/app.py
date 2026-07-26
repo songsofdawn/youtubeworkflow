@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
 
 from .jobs import JobStore, WorkflowWorker
 from .publishing import BiliupIntegration
-from .tasks import WorkflowScanner
+from .tasks import WorkflowScanner, read_json
 from .youtube import TargetedYouTubeSearch, load_env_values, normalize_video_inputs
 
 
@@ -79,11 +80,13 @@ class ControlPanelApp:
         tasks = self.scanner.scan()
         active_by_target: dict[str, dict[str, Any]] = {}
         for job in jobs:
-            if job["kind"] not in {"pipeline", "publish"} or job["status"] not in {"queued", "running"}:
+            if job["status"] not in {"queued", "running"}:
                 continue
             active_by_target.setdefault(str(job["target"]), job)
         for task in tasks:
-            active = active_by_target.get(str(task["task"]))
+            active = active_by_target.get(str(task["task"])) or active_by_target.get(
+                str(task["video_id"])
+            )
             if active:
                 task["active_job"] = {
                     "id": active["id"],
@@ -189,6 +192,61 @@ class ControlPanelApp:
         job = self.store.retry(job_id)
         self.worker.wake()
         return job
+
+    def cancel_job(self, job_id: str) -> dict[str, Any]:
+        return self.worker.cancel(job_id)
+
+    def delete_job_log(self, job_id: str) -> dict[str, Any]:
+        return self.store.delete_log(job_id)
+
+    def clear_old_logs(self) -> dict[str, int]:
+        return self.store.clear_inactive_logs()
+
+    def delete_task(self, task: str, confirmation: str) -> dict[str, Any]:
+        if not task or confirmation != task:
+            raise ValueError("删除确认不匹配，请重新确认视频任务")
+        task_dir = self.scanner.resolve_task(task)
+        downloads_root = self.scanner.downloads_root.resolve()
+        resolved = task_dir.resolve()
+        try:
+            resolved.relative_to(downloads_root)
+        except ValueError as exc:
+            raise ValueError("任务目录超出 downloads 范围") from exc
+        if resolved == downloads_root:
+            raise ValueError("不能删除 downloads 根目录")
+
+        manifest = read_json(resolved / "download_manifest.json")
+        info = read_json(resolved / "metadata" / "info.json")
+        video_id = str(manifest.get("video_id") or info.get("id") or "")
+        targets = {task}
+        if video_id:
+            targets.add(video_id)
+        if self.store.active_for_targets(targets):
+            raise ValueError("视频仍有运行中或排队中的任务，请先终止后再删除")
+
+        file_count = 0
+        total_bytes = 0
+        for path in resolved.rglob("*"):
+            if path.is_file() and not path.is_symlink():
+                file_count += 1
+                total_bytes += path.stat().st_size
+        shutil.rmtree(resolved)
+        parent = resolved.parent
+        while parent != downloads_root:
+            try:
+                parent.rmdir()
+            except OSError:
+                break
+            parent = parent.parent
+        history = self.store.delete_jobs_for_targets(targets)
+        return {
+            "deleted": True,
+            "task": task,
+            "video_id": video_id,
+            "files": file_count,
+            "bytes": total_bytes,
+            "history": history,
+        }
 
     def publish_defaults(self, task: str) -> dict[str, Any]:
         task_dir = self.scanner.resolve_task(task)

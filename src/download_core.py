@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 import json
+import http.client
 import logging
 import re
 import shutil
 import subprocess
 import sys
+import time
 import unicodedata
+import urllib.error
+import urllib.request
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -350,6 +354,214 @@ def _download_network_hint(result: dict[str, Any]) -> str:
     )
 
 
+def _alternate_googlevideo_urls(url: str) -> list[str]:
+    split = urlsplit(url)
+    hostname = (split.hostname or "").casefold()
+    if not hostname.endswith(".googlevideo.com"):
+        return []
+    machines = [
+        value.strip()
+        for value in parse_qs(split.query).get("mn", [""])[0].split(",")
+        if value.strip()
+    ]
+    alternatives = [machine for machine in machines if machine not in hostname]
+    if not alternatives:
+        return []
+    current_prefix = hostname.split("---", 1)[0] if "---" in hostname else "rr1"
+    prefixes = list(dict.fromkeys((current_prefix, "rr1", "rr2", "r1")))
+    urls: list[str] = []
+    for machine in alternatives:
+        for prefix in prefixes:
+            netloc = f"{prefix}---{machine}.googlevideo.com"
+            candidate = urlunsplit((split.scheme, netloc, split.path, split.query, split.fragment))
+            if candidate not in urls:
+                urls.append(candidate)
+    return urls
+
+
+def _format_expected_size(format_info: dict[str, Any]) -> int:
+    for key in ("filesize", "filesize_approx"):
+        try:
+            size = int(format_info.get(key) or 0)
+        except (TypeError, ValueError):
+            size = 0
+        if size > 0:
+            return size
+    try:
+        return max(0, int(parse_qs(urlsplit(str(format_info.get("url", ""))).query).get("clen", ["0"])[0]))
+    except (TypeError, ValueError):
+        return 0
+
+
+def _stream_cdn_download(
+    urls: list[str],
+    destination: Path,
+    format_info: dict[str, Any],
+    label: str,
+    config: dict[str, Any],
+) -> tuple[bool, str]:
+    if not urls:
+        return False, "媒体地址中没有可用的备用 CDN"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    expected_size = _format_expected_size(format_info)
+    retries = max(1, int(config.get("cdn_fallback_retries", 5)))
+    timeout = max(10, int(config.get("cdn_fallback_timeout_seconds", 60)))
+    read_size = max(64 * 1024, int(config.get("cdn_read_chunk_bytes", 1024 * 1024)))
+    source_headers = {
+        str(key): str(value)
+        for key, value in dict(format_info.get("http_headers") or {}).items()
+        if str(key).casefold() not in {"host", "range", "accept-encoding"}
+    }
+    source_headers["Accept-Encoding"] = "identity"
+    last_error = ""
+    for attempt in range(retries):
+        current_size = destination.stat().st_size if destination.is_file() else 0
+        if expected_size and current_size > expected_size:
+            destination.unlink(missing_ok=True)
+            current_size = 0
+        headers = dict(source_headers)
+        if current_size:
+            headers["Range"] = f"bytes={current_size}-"
+        request = urllib.request.Request(urls[attempt % len(urls)], headers=headers)
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                status = int(getattr(response, "status", 200) or 200)
+                if current_size and status != 206:
+                    destination.unlink(missing_ok=True)
+                    current_size = 0
+                mode = "ab" if current_size and status == 206 else "wb"
+                downloaded = current_size if mode == "ab" else 0
+                last_reported_percent = -1
+                with destination.open(mode) as handle:
+                    while True:
+                        block = response.read(read_size)
+                        if not block:
+                            break
+                        handle.write(block)
+                        downloaded += len(block)
+                        if expected_size:
+                            percent = min(100, int(downloaded * 100 / expected_size))
+                            if percent != last_reported_percent:
+                                LOGGER.info(
+                                    "[备用 CDN] %s %s%%（%.1f / %.1f MiB）",
+                                    label,
+                                    percent,
+                                    downloaded / 1024 / 1024,
+                                    expected_size / 1024 / 1024,
+                                )
+                                last_reported_percent = percent
+            actual_size = destination.stat().st_size if destination.is_file() else 0
+            if expected_size and actual_size < expected_size:
+                raise http.client.IncompleteRead(b"", expected_size - actual_size)
+            if actual_size <= 0:
+                raise OSError("下载结果为空")
+            LOGGER.info("[备用 CDN] %s 下载完成（%.1f MiB）", label, actual_size / 1024 / 1024)
+            return True, ""
+        except (OSError, TimeoutError, urllib.error.URLError, http.client.HTTPException) as exc:
+            last_error = str(exc)
+            LOGGER.warning(
+                "[备用 CDN] %s 连接中断，将从 %.1f MiB 处续传（%s/%s）：%s",
+                label,
+                (destination.stat().st_size if destination.is_file() else 0) / 1024 / 1024,
+                attempt + 1,
+                retries,
+                exc,
+            )
+            if attempt + 1 < retries:
+                time.sleep(min(2 ** attempt, 8))
+    return False, last_error or "备用 CDN 下载失败"
+
+
+def _download_via_alternate_cdn(
+    url: str,
+    video_dir: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    cookies, _ = _cookie_argument(config, paths)
+    selection_command: list[str | Path] = [
+        tools["yt-dlp"],
+        url,
+        "--no-playlist",
+        "--simulate",
+        "--dump-single-json",
+        "--no-warnings",
+        "--format",
+        str(config["format_selector"]),
+        "--ffmpeg-location",
+        paths["tools_bin"],
+        *cookies,
+    ]
+    selection = run_command(selection_command, paths["project_root"])
+    command_results = [selection]
+    if not selection["success"]:
+        return {
+            "success": False,
+            "error": f"无法刷新备用 CDN 地址：{_short_error(selection)}",
+            "command_results": command_results,
+        }
+    try:
+        payload = json.loads(selection["stdout"])
+    except (json.JSONDecodeError, TypeError) as exc:
+        return {"success": False, "error": f"备用 CDN 元数据无法解析：{exc}", "command_results": command_results}
+    selected_formats = list(payload.get("requested_formats") or [])
+    if not selected_formats:
+        selected_formats = list(payload.get("requested_downloads") or [])
+    video_format = next(
+        (item for item in selected_formats if str(item.get("vcodec", "none")) != "none"),
+        None,
+    )
+    audio_format = next(
+        (item for item in selected_formats if str(item.get("acodec", "none")) != "none"),
+        None,
+    )
+    if video_format is None:
+        return {"success": False, "error": "备用 CDN 没有选出视频流", "command_results": command_results}
+
+    downloaded: dict[str, Path] = {}
+    streams = [("视频", "video", video_format)]
+    if audio_format is not None and audio_format is not video_format:
+        streams.append(("音频", "audio", audio_format))
+    for label, role, format_info in streams:
+        media_url = str(format_info.get("url") or "")
+        alternatives = _alternate_googlevideo_urls(media_url)
+        extension = re.sub(r"[^A-Za-z0-9]", "", str(format_info.get("ext") or "bin")) or "bin"
+        part = video_dir / f".cdn-{role}.{extension}.part"
+        ok, error = _stream_cdn_download(alternatives, part, format_info, label, config)
+        if not ok:
+            return {
+                "success": False,
+                "error": f"{label}备用 CDN 下载失败：{error}",
+                "command_results": command_results,
+            }
+        downloaded[role] = part
+
+    final = video_dir / "source.mp4"
+    temporary = video_dir / ".source.cdn.tmp.mp4"
+    temporary.unlink(missing_ok=True)
+    merge_command: list[str | Path] = [tools["ffmpeg"], "-hide_banner", "-y", "-i", downloaded["video"]]
+    if "audio" in downloaded:
+        merge_command.extend(["-i", downloaded["audio"], "-map", "0:v:0", "-map", "1:a:0"])
+    else:
+        merge_command.extend(["-map", "0:v:0", "-map", "0:a?"])
+    merge_command.extend(["-c", "copy", "-movflags", "+faststart", temporary])
+    merge = run_command(merge_command, paths["project_root"], stream_output=True)
+    command_results.append(merge)
+    if not merge["success"] or not temporary.is_file() or temporary.stat().st_size <= 0:
+        return {
+            "success": False,
+            "error": f"备用 CDN 音视频合并失败：{_short_error(merge)}",
+            "command_results": command_results,
+        }
+    final.unlink(missing_ok=True)
+    temporary.replace(final)
+    for part in downloaded.values():
+        part.unlink(missing_ok=True)
+    LOGGER.info("[备用 CDN] 已生成视频：%s", final)
+    return {"success": True, "error": "", "command_results": command_results}
+
+
 def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] | None = None, config: dict[str, Any] | None = None, paths: dict[str, Path] | None = None, archive_path: Path | str | None = None, use_archive: bool = True) -> dict[str, Any]:
     paths = paths or get_project_paths(); tools = tools or find_local_tools(paths); config = config or load_download_config()
     task_dir = Path(task_dir); video_dir = task_dir / "video"; video_dir.mkdir(parents=True, exist_ok=True)
@@ -365,19 +577,26 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
     if archive_path and use_archive:
         archive = Path(archive_path); archive.parent.mkdir(parents=True, exist_ok=True)
         command.extend(["--download-archive", archive])
-    command_results: list[dict[str, Any]] = []
-    recovery_attempts = max(0, int(config.get("network_recovery_attempts", 1)))
-    for attempt in range(recovery_attempts + 1):
-        if attempt:
-            LOGGER.warning(
-                "检测到临时网络中断，正在刷新媒体地址并从断点自动恢复（第 %s/%s 次）",
-                attempt,
-                recovery_attempts,
-            )
-        result = run_command(command, paths["project_root"], stream_output=True)
-        command_results.append(result)
-        if result["success"] or not _is_transient_download_error(result):
-            break
+    result = run_command(command, paths["project_root"], stream_output=True)
+    command_results: list[dict[str, Any]] = [result]
+    fallback_error = ""
+    if (
+        not result["success"]
+        and _is_transient_download_error(result)
+        and config.get("cdn_fallback_enabled", True)
+    ):
+        LOGGER.warning("主视频 CDN 无法连接，正在自动切换到签名内的备用 CDN")
+        fallback = _download_via_alternate_cdn(url, video_dir, tools, paths, config)
+        command_results.extend(fallback.get("command_results") or [])
+        fallback_error = str(fallback.get("error") or "")
+        if fallback["success"]:
+            result = {
+                "success": True,
+                "returncode": 0,
+                "stdout": "备用 CDN 下载成功",
+                "stderr": "",
+                "command": ["internal:alternate-googlevideo-cdn"],
+            }
     final = video_dir / "source.mp4"
     mp4_files = sorted((item for item in video_dir.glob("*.mp4") if item.is_file() and item.stat().st_size > 0), key=lambda item: item.stat().st_mtime, reverse=True)
     if mp4_files and mp4_files[0] != final:
@@ -386,6 +605,8 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         mp4_files[0].replace(final)
     success = result["success"] and final.is_file() and final.stat().st_size > 0
     error = "" if success else _short_error(result)
+    if fallback_error:
+        error = f"{error}\n{fallback_error}".strip()
     network_hint = _download_network_hint(result)
     if network_hint:
         error = f"{error}\n{network_hint}".strip()

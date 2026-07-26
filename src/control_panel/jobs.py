@@ -19,6 +19,10 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+class JobCancelled(RuntimeError):
+    pass
+
+
 class JobStore:
     def __init__(self, database_path: Path, logs_dir: Path) -> None:
         self.database_path = database_path
@@ -179,18 +183,124 @@ class JobStore:
             ).fetchone()
         return row is not None
 
+    def active_for_targets(self, targets: set[str]) -> list[dict[str, Any]]:
+        normalized = {str(target) for target in targets if str(target)}
+        if not normalized:
+            return []
+        placeholders = ", ".join("?" for _ in normalized)
+        with self._connect() as connection:
+            rows = connection.execute(
+                f"""
+                SELECT * FROM jobs
+                WHERE target IN ({placeholders})
+                  AND status IN ('queued', 'running')
+                ORDER BY created_at
+                """,
+                tuple(sorted(normalized)),
+            ).fetchall()
+        return [self._serialize(row) for row in rows]
+
     def log_tail(self, job_id: str, max_chars: int = 30000) -> str:
         job = self.get(job_id)
-        path = Path(job["log_path"])
+        path = self._safe_log_path(job)
         if not path.is_file():
             return ""
         text = path.read_text(encoding="utf-8", errors="replace")
         return text[-max_chars:]
 
+    def delete_log(self, job_id: str) -> dict[str, Any]:
+        job = self.get(job_id)
+        if job["status"] in {"queued", "running"}:
+            raise ValueError("运行中或排队中的任务不能删除日志，请先终止任务")
+        path = self._safe_log_path(job)
+        size = path.stat().st_size if path.is_file() else 0
+        path.unlink(missing_ok=True)
+        return {"deleted": size > 0, "bytes": size, "job_id": job_id}
+
+    def clear_inactive_logs(self) -> dict[str, int]:
+        with self._connect() as connection:
+            rows = connection.execute("SELECT * FROM jobs ORDER BY created_at DESC").fetchall()
+        jobs = [self._serialize(row) for row in rows]
+        active_paths = {
+            self._safe_log_path(job)
+            for job in jobs
+            if job["status"] in {"queued", "running"}
+        }
+        deleted = 0
+        deleted_bytes = 0
+        skipped_active = sum(path.is_file() for path in active_paths)
+        root = self.logs_dir.resolve()
+        for candidate in self.logs_dir.rglob("*.log"):
+            try:
+                path = candidate.resolve()
+                path.relative_to(root)
+            except (OSError, ValueError):
+                continue
+            if path in active_paths or not path.is_file():
+                continue
+            deleted_bytes += path.stat().st_size
+            path.unlink()
+            deleted += 1
+        return {
+            "deleted": deleted,
+            "bytes": deleted_bytes,
+            "skipped_active": skipped_active,
+        }
+
+    def delete_jobs_for_targets(self, targets: set[str]) -> dict[str, int]:
+        normalized = {str(target) for target in targets if str(target)}
+        if not normalized:
+            return {"jobs": 0, "logs": 0, "log_bytes": 0}
+        active = self.active_for_targets(normalized)
+        if active:
+            raise ValueError("视频仍有运行中或排队中的任务，请先终止后再删除")
+        placeholders = ", ".join("?" for _ in normalized)
+        with self._connect() as connection:
+            rows = connection.execute(
+                f"SELECT * FROM jobs WHERE target IN ({placeholders})",
+                tuple(sorted(normalized)),
+            ).fetchall()
+        jobs = [self._serialize(row) for row in rows]
+        deleted_logs = 0
+        deleted_bytes = 0
+        for job in jobs:
+            path = self._safe_log_path(job)
+            if path.is_file():
+                deleted_bytes += path.stat().st_size
+                path.unlink()
+                deleted_logs += 1
+        if jobs:
+            with self._connect() as connection:
+                connection.executemany(
+                    "DELETE FROM jobs WHERE id = ?",
+                    [(str(job["id"]),) for job in jobs],
+                )
+        return {
+            "jobs": len(jobs),
+            "logs": deleted_logs,
+            "log_bytes": deleted_bytes,
+        }
+
+    def _safe_log_path(self, job: dict[str, Any]) -> Path:
+        root = self.logs_dir.resolve()
+        path = Path(str(job["log_path"])).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError as exc:
+            raise ValueError("日志路径超出控制面板日志目录") from exc
+        return path
+
     @staticmethod
     def _serialize(row: sqlite3.Row) -> dict[str, Any]:
         payload = dict(row)
         payload["payload"] = json.loads(payload.pop("payload_json"))
+        log_path = Path(str(payload["log_path"]))
+        try:
+            log_size = log_path.stat().st_size if log_path.is_file() else 0
+        except OSError:
+            log_size = 0
+        payload["has_log"] = log_size > 0
+        payload["log_size"] = log_size
         return payload
 
 
@@ -211,6 +321,8 @@ class WorkflowWorker:
         self._thread = threading.Thread(target=self._run, daemon=True, name="workflow-worker")
         self._process_lock = threading.Lock()
         self._current_process: subprocess.Popen[bytes] | None = None
+        self._current_job_id: str | None = None
+        self._cancel_requested: set[str] = set()
 
     def start(self) -> None:
         if not self._thread.is_alive():
@@ -225,9 +337,32 @@ class WorkflowWorker:
         with self._process_lock:
             process = self._current_process
         if process is not None and process.poll() is None:
-            process.terminate()
+            self._terminate_process_tree(process)
         if self._thread.is_alive():
             self._thread.join(timeout=5)
+
+    def cancel(self, job_id: str) -> dict[str, Any]:
+        job = self.store.get(job_id)
+        if job["status"] == "queued":
+            return self.store.update(
+                job_id,
+                status="cancelled",
+                step="已取消",
+                progress=0,
+                exit_code=0,
+                error="",
+                finished_at=utc_now(),
+            )
+        if job["status"] != "running":
+            raise ValueError("只有运行中或排队中的任务可以终止")
+        with self._process_lock:
+            self._cancel_requested.add(job_id)
+            process = self._current_process if self._current_job_id == job_id else None
+        self.store.update(job_id, step="正在终止")
+        if process is not None and process.poll() is None:
+            self._terminate_process_tree(process)
+        self._wake_event.set()
+        return self.store.get(job_id)
 
     def _run(self) -> None:
         while not self._stop_event.is_set():
@@ -242,7 +377,10 @@ class WorkflowWorker:
         job_id = str(job["id"])
         log_path = Path(job["log_path"])
         publish_task: Path | None = None
+        with self._process_lock:
+            self._current_job_id = job_id
         try:
+            self._raise_if_cancelled(job_id)
             if job["kind"] == "publish":
                 publish_task = self.scanner.resolve_task(str(job["target"]))
                 original_payload = job["payload"]
@@ -259,6 +397,7 @@ class WorkflowWorker:
             commands = self._build_commands(job)
             total = max(1, len(commands))
             for index, (label, command) in enumerate(commands):
+                self._raise_if_cancelled(job_id)
                 if self._stop_event.is_set():
                     raise RuntimeError("控制面板正在关闭，任务已停止")
                 start_progress = int(index / total * 100)
@@ -274,6 +413,7 @@ class WorkflowWorker:
                     if not media.is_file() or media.stat().st_size == 0:
                         raise FileNotFoundError(f"投稿视频不存在或为空：{media}")
                 exit_code = self._run_command(command, log_path)
+                self._raise_if_cancelled(job_id)
                 if exit_code != 0:
                     if job["kind"] == "publish":
                         raise RuntimeError(
@@ -318,6 +458,21 @@ class WorkflowWorker:
                 exit_code=0,
                 finished_at=utc_now(),
             )
+        except JobCancelled:
+            self._append_log(log_path, "\n[任务已终止] 用户从控制面板终止了这个任务。\n")
+            if job["kind"] == "publish" and publish_task is not None:
+                try:
+                    self.publisher.mark_failed(publish_task, job["payload"], "用户终止任务")
+                except Exception:
+                    pass
+            self.store.update(
+                job_id,
+                status="cancelled",
+                step="已终止",
+                exit_code=0,
+                error="",
+                finished_at=utc_now(),
+            )
         except Exception as exc:  # Worker must survive individual task failures.
             self._append_log(log_path, f"\n[任务失败] {exc}\n")
             if job["kind"] == "publish" and publish_task is not None:
@@ -333,6 +488,11 @@ class WorkflowWorker:
                 error=str(exc),
                 finished_at=utc_now(),
             )
+        finally:
+            with self._process_lock:
+                if self._current_job_id == job_id:
+                    self._current_job_id = None
+                self._cancel_requested.discard(job_id)
 
     def _build_commands(self, job: dict[str, Any]) -> list[tuple[str, list[str]]]:
         payload = job["payload"]
@@ -468,6 +628,31 @@ class WorkflowWorker:
             with self._process_lock:
                 self._current_process = None
 
+    def _raise_if_cancelled(self, job_id: str) -> None:
+        with self._process_lock:
+            cancelled = job_id in self._cancel_requested
+        if cancelled:
+            raise JobCancelled()
+
+    @staticmethod
+    def _terminate_process_tree(process: subprocess.Popen[bytes]) -> None:
+        if process.poll() is not None:
+            return
+        if os.name == "nt":
+            try:
+                subprocess.run(
+                    ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    check=False,
+                    timeout=10,
+                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                )
+            except (OSError, subprocess.TimeoutExpired):
+                process.kill()
+            return
+        process.terminate()
+
     @staticmethod
     def _decode_process_output(raw: bytes | str) -> str:
         if isinstance(raw, str):
@@ -486,4 +671,4 @@ class WorkflowWorker:
             handle.write(text)
 
 
-__all__ = ["JobStore", "WorkflowWorker"]
+__all__ = ["JobCancelled", "JobStore", "WorkflowWorker"]

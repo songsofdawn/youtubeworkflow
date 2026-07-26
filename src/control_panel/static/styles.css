@@ -398,6 +398,27 @@ select {
   background: var(--panel-2);
 }
 
+.button-danger {
+  border-color: rgba(255, 89, 94, 0.55);
+  color: #fff;
+  background: #a93439;
+}
+
+.button-danger:hover {
+  background: #c33f45;
+}
+
+.button-danger-outline {
+  border-color: rgba(255, 89, 94, 0.4);
+  color: #ff8c90;
+  background: transparent;
+}
+
+.button-danger-outline:hover {
+  border-color: var(--red);
+  background: rgba(255, 89, 94, 0.08);
+}
+
 .button-small {
   min-height: 36px;
   padding: 7px 11px;
@@ -764,6 +785,21 @@ input[type="checkbox"] {
   background: var(--panel-2);
 }
 
+.icon-button.danger {
+  border-color: rgba(255, 89, 94, 0.28);
+  color: #ff8c90;
+}
+
+.icon-button.danger:hover {
+  border-color: var(--red);
+  background: rgba(255, 89, 94, 0.08);
+}
+
+.icon-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .readiness {
   padding: 5px 8px;
   border: 1px solid var(--line);
@@ -835,6 +871,11 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+}
+
+.job-actions {
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .job-kind {
@@ -929,7 +970,7 @@ dialog::backdrop {
 }
 
 dialog pre {
-  height: calc(100% - 78px);
+  height: calc(100% - 128px);
   margin: 0;
   padding: 20px;
   overflow: auto;
@@ -938,6 +979,18 @@ dialog pre {
   font: 11px/1.6 Consolas, "SFMono-Regular", monospace;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.log-dialog-actions {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  background: #0d1012;
+  font-size: 10px;
 }
 
 .publish-dialog {

@@ -168,6 +168,7 @@
               <p class="eyebrow">ACTIVITY</p>
               <h2 id="queueTitle">最近任务</h2>
             </div>
+            <button class="button button-ghost button-small" id="clearOldLogs" type="button">清理历史日志</button>
           </div>
           <div class="job-list" id="jobList">
             <p class="muted">暂无运行记录</p>
@@ -186,6 +187,10 @@
       <button class="icon-button" id="closeLog" type="button" aria-label="关闭日志">×</button>
     </div>
     <pre id="logContent">正在读取日志…</pre>
+    <div class="log-dialog-actions">
+      <button class="button button-danger button-small" id="deleteCurrentLog" type="button">删除此日志</button>
+      <span>运行中的日志需要先终止任务。</span>
+    </div>
   </dialog>
 
   <dialog id="publishDialog" class="publish-dialog">

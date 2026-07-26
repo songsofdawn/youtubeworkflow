@@ -106,6 +106,26 @@ def make_handler(
                     job_id = parsed.path.split("/")[3]
                     self._json(HTTPStatus.ACCEPTED, {"job": app.retry_job(job_id)})
                     return
+                if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/cancel"):
+                    job_id = parsed.path.split("/")[3]
+                    self._json(HTTPStatus.ACCEPTED, {"job": app.cancel_job(job_id)})
+                    return
+                if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/delete-log"):
+                    job_id = parsed.path.split("/")[3]
+                    self._json(HTTPStatus.OK, app.delete_job_log(job_id))
+                    return
+                if parsed.path == "/api/logs/clear":
+                    self._json(HTTPStatus.OK, app.clear_old_logs())
+                    return
+                if parsed.path == "/api/tasks/delete":
+                    self._json(
+                        HTTPStatus.OK,
+                        app.delete_task(
+                            str(body.get("task") or ""),
+                            str(body.get("confirmation") or ""),
+                        ),
+                    )
+                    return
                 if parsed.path == "/api/open-folder":
                     app.open_task_folder(str(body.get("task") or ""))
                     self._json(HTTPStatus.OK, {"opened": True})

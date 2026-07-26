@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest import TestCase, mock
 
 from src.control_panel.app import ControlPanelApp
-from src.control_panel.jobs import JobStore, WorkflowWorker
+from src.control_panel.jobs import JobCancelled, JobStore, WorkflowWorker
 from src.control_panel.publishing import BiliupIntegration
 from src.control_panel.server import make_handler
 from src.control_panel.tasks import WorkflowScanner
@@ -289,6 +289,116 @@ class QueueTests(TestCase):
         self.assertIn("run_stage3.py", commands[0][1][1])
         self.assertIn("--resume", commands[0][1])
         self.assertIn("run_stage4.py", commands[2][1][1])
+
+    def test_queued_job_can_be_cancelled(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+            job = store.enqueue("download", "abcdefghijk", {"url": "https://youtu.be/abcdefghijk"})
+            cancelled = worker.cancel(job["id"])
+        self.assertEqual(cancelled["status"], "cancelled")
+        self.assertEqual(cancelled["step"], "已取消")
+
+    def test_running_job_termination_targets_current_process(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+            job = store.enqueue("download", "abcdefghijk", {"url": "https://youtu.be/abcdefghijk"})
+            running = store.claim_next()
+            process = mock.Mock()
+            process.poll.return_value = None
+            with worker._process_lock:
+                worker._current_job_id = running["id"]
+                worker._current_process = process
+            with mock.patch.object(worker, "_terminate_process_tree") as terminate:
+                result = worker.cancel(running["id"])
+            terminate.assert_called_once_with(process)
+            self.assertEqual(result["step"], "正在终止")
+            with self.assertRaises(JobCancelled):
+                worker._raise_if_cancelled(running["id"])
+
+    def test_log_cleanup_keeps_job_history_and_skips_active_logs(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            finished = store.enqueue("download", "finished", {"url": "https://youtu.be/abcdefghijk"})
+            active = store.enqueue("download", "active", {"url": "https://youtu.be/12345678901"})
+            Path(finished["log_path"]).write_text("finished log", encoding="utf-8")
+            Path(active["log_path"]).write_text("active log", encoding="utf-8")
+            orphan = root / "logs" / "orphan.log"
+            orphan.write_text("orphan log", encoding="utf-8")
+            store.update(finished["id"], status="completed")
+            store.claim_next()
+            summary = store.clear_inactive_logs()
+            self.assertFalse(Path(finished["log_path"]).exists())
+            self.assertFalse(orphan.exists())
+            self.assertTrue(Path(active["log_path"]).exists())
+            self.assertEqual(store.get(finished["id"])["status"], "completed")
+        self.assertEqual(summary["deleted"], 2)
+        self.assertEqual(summary["skipped_active"], 1)
+
+
+class DestructiveActionTests(TestCase):
+    def test_delete_task_removes_files_related_history_and_logs(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            (task / "video").mkdir()
+            (task / "video" / "source.mp4").write_bytes(b"video")
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            job = app.store.enqueue("download", "abcdefghijk", {"url": "https://youtu.be/abcdefghijk"})
+            Path(job["log_path"]).write_text("download log", encoding="utf-8")
+            app.store.update(job["id"], status="completed")
+            result = app.delete_task(reference, reference)
+            self.assertFalse(task.exists())
+            self.assertFalse(Path(job["log_path"]).exists())
+            with self.assertRaises(KeyError):
+                app.store.get(job["id"])
+            app.close()
+        self.assertTrue(result["deleted"])
+        self.assertEqual(result["video_id"], "abcdefghijk")
+        self.assertGreaterEqual(result["files"], 3)
+
+    def test_delete_task_rejects_active_related_job(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            app.store.enqueue("download", "abcdefghijk", {"url": "https://youtu.be/abcdefghijk"})
+            with self.assertRaisesRegex(ValueError, "先终止"):
+                app.delete_task(reference, reference)
+            self.assertTrue(task.is_dir())
+            app.close()
+
+    def test_delete_task_requires_exact_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            with self.assertRaisesRegex(ValueError, "确认不匹配"):
+                app.delete_task(reference, "wrong")
+            self.assertTrue(task.is_dir())
+            app.close()
 
 
 class PublishingTests(TestCase):
