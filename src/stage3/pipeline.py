@@ -11,6 +11,11 @@ from typing import Any
 from .artifact_migration import atomic_copy, migrate_legacy_artifacts
 from .manifest import hash_config, sha256_file, utc_now, write_manifest
 from .models import RawCue, SubtitleSegment, TranslationSegment, WordEvent
+from .publish_metadata import (
+    PUBLISH_METADATA_PROMPT_VERSION,
+    fallback_publish_metadata,
+    load_category_mapping,
+)
 from .review_workflow import export_review, generate_review_html, import_review
 from .rolling_caption_cleaner import build_word_events
 from .sentence_segmenter import segment_sentences
@@ -65,11 +70,27 @@ def _media_metadata(video_dir: Path) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig")) if manifest_path.is_file() else {}
     info_path = video_dir / "metadata" / "info.json"
     info = json.loads(info_path.read_text(encoding="utf-8-sig")) if info_path.is_file() else {}
+    description_path = video_dir / "metadata" / "description.txt"
+    description = (
+        description_path.read_text(encoding="utf-8-sig", errors="replace")
+        if description_path.is_file()
+        else str(info.get("description") or "")
+    )
+    raw_tags = info.get("tags") or []
+    tags = [str(item) for item in raw_tags] if isinstance(raw_tags, list) else []
     return {
         "title": str(info.get("title") or manifest.get("title") or ""),
         "channel": str(info.get("channel") or info.get("uploader") or manifest.get("channel") or ""),
         "topic": str(info.get("categories", [""])[0] if info.get("categories") else ""),
         "duration": float(info.get("duration") or 0) or None,
+        "description": description,
+        "tags": tags,
+        "source_url": str(
+            info.get("webpage_url")
+            or info.get("original_url")
+            or manifest.get("url")
+            or ""
+        ),
     }
 
 
@@ -819,6 +840,128 @@ class Stage3Pipeline:
             },
         )
 
+    def _publish_metadata_checkpoint_metadata(
+        self,
+        metadata: dict[str, Any],
+        selected_path: Path,
+        model: str,
+        category_mapping: dict[str, Any],
+    ) -> dict[str, Any]:
+        source_payload = {
+            key: metadata.get(key)
+            for key in ("title", "channel", "topic", "description", "tags", "source_url")
+        }
+        return {
+            "prompt_version": PUBLISH_METADATA_PROMPT_VERSION,
+            "model": model,
+            "source_hash": hash_config(source_payload),
+            "selected_subtitle_hash": sha256_file(selected_path),
+            "category_mapping_hash": sha256_file(Path(category_mapping["path"])),
+        }
+
+    def _ensure_publish_metadata(
+        self,
+        source: list[SubtitleSegment],
+        metadata: dict[str, Any],
+        selected_path: Path,
+        model: str,
+        *,
+        force: bool,
+        translator: DeepSeekTranslator | None = None,
+    ) -> dict[str, Any]:
+        category_mapping = load_category_mapping()
+        output_path = self.stage3_dir / "publish_metadata.json"
+        usage_path = self.translation_dir / "publish_metadata_usage.json"
+        checkpoint_path = self.translation_dir / "publish_metadata_checkpoint.json"
+        checkpoint_metadata = self._publish_metadata_checkpoint_metadata(
+            metadata,
+            selected_path,
+            model,
+            category_mapping,
+        )
+        cached = None if force else self._load_output_checkpoint(
+            checkpoint_path,
+            checkpoint_metadata,
+            {"PUBLISH_METADATA_COMPLETED", "PUBLISH_METADATA_FALLBACK"},
+        )
+        if cached is not None:
+            result = json.loads(output_path.read_text(encoding="utf-8"))
+            metadata_usage = (
+                json.loads(usage_path.read_text(encoding="utf-8"))
+                if usage_path.is_file()
+                else {}
+            )
+            result["skipped"] = True
+            result["checkpoint_reused"] = True
+            self.manifest.update(
+                publish_metadata_status=result.get("status", ""),
+                publish_metadata_path=str(output_path),
+                publish_metadata_tid=result.get("tid"),
+                publish_metadata_category=result.get("category_path", ""),
+                publish_metadata_usage=metadata_usage,
+            )
+            return result
+
+        response_path: Path | None = None
+        try:
+            active_translator = translator or DeepSeekTranslator(
+                self.config,
+                self.translation_dir,
+            )
+            response = active_translator.recommend_publish_metadata(
+                metadata,
+                source,
+                category_mapping,
+            )
+            recommendation = dict(response.get("recommendation") or {})
+            if recommendation.get("status") != "RECOMMENDED":
+                raise TranslationError("DeepSeek 没有返回可用的投稿元数据推荐")
+            usage = dict(response.get("usage") or {})
+            raw_response = str(response.get("response_path") or "")
+            response_path = Path(raw_response) if raw_response else None
+        except Exception as exc:
+            recommendation = fallback_publish_metadata(
+                metadata,
+                category_mapping,
+                warning=str(exc),
+            )
+            usage = {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0,
+            }
+
+        result = {
+            "schema_version": 1,
+            **recommendation,
+            "prompt_version": PUBLISH_METADATA_PROMPT_VERSION,
+            "model": model,
+            "generated_at": utc_now(),
+        }
+        atomic_write_json(output_path, result)
+        atomic_write_json(usage_path, usage)
+        checkpoint_outputs = [output_path, usage_path]
+        if response_path is not None and response_path.is_file():
+            checkpoint_outputs.append(response_path)
+        self._write_output_checkpoint(
+            checkpoint_path,
+            checkpoint_metadata,
+            (
+                "PUBLISH_METADATA_COMPLETED"
+                if result["status"] == "RECOMMENDED"
+                else "PUBLISH_METADATA_FALLBACK"
+            ),
+            checkpoint_outputs,
+        )
+        self.manifest.update(
+            publish_metadata_status=result["status"],
+            publish_metadata_path=str(output_path),
+            publish_metadata_tid=result["tid"],
+            publish_metadata_category=result["category_path"],
+            publish_metadata_usage=usage,
+        )
+        return result
+
     def run_p1(
         self,
         *,
@@ -865,6 +1008,7 @@ class Stage3Pipeline:
             "model": settings["model"],
             "batch_count": batch_count,
             "estimated_translation_count": len(source),
+            "estimated_publish_metadata_requests": 1,
             "input": str(selected_path),
             "source_sha256": sha256_file(selected_path),
             "selection_report_sha256": sha256_file(selection_report_path),
@@ -927,8 +1071,17 @@ class Stage3Pipeline:
                 json.loads(usage_path.read_text(encoding="utf-8"))
                 if usage_path.is_file() else {}
             )
+            metadata = _media_metadata(self.video_dir)
+            publish_metadata = self._ensure_publish_metadata(
+                source,
+                metadata,
+                selected_path,
+                settings["model"],
+                force=force,
+            )
             report["skipped"] = True
             report["checkpoint_reused"] = True
+            report["publish_metadata"] = publish_metadata
             clean_path = self.subtitle_dir / "zh.clean.srt"
             self.manifest.update(
                 translation_status=report["status"],
@@ -1032,8 +1185,16 @@ class Stage3Pipeline:
             "TRANSLATION_COMPLETED",
             stage_outputs,
         )
+        publish_metadata = self._ensure_publish_metadata(
+            source,
+            metadata,
+            selected_path,
+            settings["model"],
+            force=force,
+            translator=translator,
+        )
         self._finish()
-        return report
+        return report | {"publish_metadata": publish_metadata}
 
     def run_review_export(self) -> dict[str, Any]:
         result = export_review(self.video_dir)

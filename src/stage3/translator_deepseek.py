@@ -9,6 +9,10 @@ from typing import Any, Callable
 
 from .models import SubtitleSegment
 from .manifest import hash_config, sha256_file, utc_now
+from .publish_metadata import (
+    build_publish_metadata_messages,
+    normalize_ai_recommendation,
+)
 from .subtitle_writer import atomic_write_json
 
 
@@ -200,6 +204,53 @@ class DeepSeekTranslator:
         except (ValueError, TypeError, KeyError) as exc:
             raise TranslationError("API returned invalid or truncated JSON") from exc
         return translations, _usage_dict(response), content
+
+    def recommend_publish_metadata(
+        self,
+        metadata: dict[str, Any],
+        segments: list[SubtitleSegment],
+        category_mapping: dict[str, Any],
+    ) -> dict[str, Any]:
+        messages = build_publish_metadata_messages(metadata, segments, category_mapping)
+        attempts = 0
+        max_retries = int(self.config["max_retries"])
+        delays = list(self.config.get("retry_delays_seconds", [2, 4, 8]))
+        last_error = ""
+        while attempts <= max_retries:
+            attempts += 1
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.settings["model"],
+                    messages=messages,
+                    temperature=min(0.3, float(self.config["temperature"])),
+                    response_format={"type": "json_object"},
+                )
+                content = _response_content(response)
+                payload = json.loads(content)
+                if not isinstance(payload, dict):
+                    raise TranslationError("API returned invalid publish metadata JSON")
+                recommendation = normalize_ai_recommendation(
+                    payload,
+                    metadata,
+                    category_mapping,
+                )
+                response_path = self.response_dir / "publish_metadata.json"
+                atomic_write_json(response_path, payload)
+                return {
+                    "recommendation": recommendation,
+                    "usage": _usage_dict(response),
+                    "response_path": str(response_path),
+                    "response_hash": sha256_file(response_path),
+                    "attempts": attempts,
+                }
+            except Exception as exc:
+                last_error = str(exc)
+                if attempts > max_retries:
+                    break
+                self.sleeper(float(delays[min(attempts - 1, len(delays) - 1)]))
+        raise TranslationError(
+            f"Publish metadata recommendation failed after {attempts} attempts: {last_error}"
+        )
 
     def translate_batch(
         self,

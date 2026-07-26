@@ -156,6 +156,29 @@ class Stage3PipelineTests(TestCase):
             def usage_report(self):
                 return {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2}
 
+            def recommend_publish_metadata(self, metadata, segments, category_mapping):
+                return {
+                    "recommendation": {
+                        "status": "RECOMMENDED",
+                        "title_zh": "可靠的软件系统",
+                        "original_title": metadata.get("title", ""),
+                        "upload_title": "【中英双语】可靠的软件系统｜Test video",
+                        "tags": "中英双语,中文翻译,软件工程",
+                        "tid": 231,
+                        "category_name": "计算机技术",
+                        "parent_tid": 188,
+                        "parent_name": "科技",
+                        "category_path": "科技 / 计算机技术",
+                        "recommendation_reason": "字幕内容主要讨论软件工程。",
+                        "warning": "",
+                    },
+                    "usage": {
+                        "prompt_tokens": 2,
+                        "completion_tokens": 1,
+                        "total_tokens": 3,
+                    },
+                }
+
         with tempfile.TemporaryDirectory() as directory, mock.patch.dict("os.environ", {"DEEPSEEK_API_KEY": "unit-secret"}, clear=False), mock.patch("src.stage3.pipeline.DeepSeekTranslator", FakeTranslator):
             video = Path(directory); subtitles = video / "subtitles"; subtitles.mkdir()
             prepare_selected(video,
@@ -170,6 +193,11 @@ class Stage3PipelineTests(TestCase):
             chinese = (subtitles / "zh.clean.srt").read_text(encoding="utf-8")
             self.assertEqual([line for line in english.splitlines() if "-->" in line], [line for line in chinese.splitlines() if "-->" in line])
             self.assertNotIn("unit-secret", "".join(path.read_text(encoding="utf-8") for path in video.rglob("*.json")))
+            publish_metadata = json.loads(
+                (video / "stage3" / "publish_metadata.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(publish_metadata["title_zh"], "可靠的软件系统")
+            self.assertEqual(publish_metadata["category_path"], "科技 / 计算机技术")
 
     def test_polish_all_sends_every_id_to_second_pass(self) -> None:
         calls: list[tuple[str, list[int]]] = []

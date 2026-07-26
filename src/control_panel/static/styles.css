@@ -982,6 +982,56 @@ dialog pre {
   text-align: right;
 }
 
+.ai-recommendation {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid rgba(200, 245, 96, 0.24);
+  border-radius: 10px;
+  background:
+    linear-gradient(110deg, rgba(200, 245, 96, 0.08), transparent 58%),
+    #0c0f11;
+}
+
+.ai-recommendation > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-recommendation strong {
+  font-size: 12px;
+}
+
+.ai-recommendation p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.ai-recommendation[data-status="fallback"] {
+  border-color: rgba(255, 180, 68, 0.35);
+  background:
+    linear-gradient(110deg, rgba(255, 180, 68, 0.08), transparent 58%),
+    #0c0f11;
+}
+
+.recommendation-badge {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: #0a0c0d;
+  background: var(--accent);
+  font: 800 8px/1 var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.ai-recommendation[data-status="fallback"] .recommendation-badge {
+  background: #ffb444;
+}
+
 .publish-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -990,6 +1040,16 @@ dialog pre {
 
 .publish-grid .span-2 {
   grid-column: 1 / -1;
+}
+
+.field-note {
+  color: var(--muted);
+  font-size: 9px;
+  text-align: right;
+}
+
+.field-note.limit-warning {
+  color: #ffb444;
 }
 
 .publish-options {

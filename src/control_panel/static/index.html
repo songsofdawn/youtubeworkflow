@@ -203,9 +203,17 @@
           <span>使用 biliup v1.2.2。本窗口不会读取或显示 Cookie 内容。</span>
         </div>
 
+        <div class="ai-recommendation" id="publishRecommendation">
+          <div>
+            <span class="recommendation-badge">DEEPSEEK 推荐</span>
+            <strong id="publishRecommendedCategory">正在读取智能投稿资料…</strong>
+          </div>
+          <p id="publishRecommendationReason">标题、标签和分区会在字幕翻译完成时自动生成，仍可在投稿前修改。</p>
+        </div>
+
         <div class="publish-grid">
           <label class="field span-2">
-            <span>投稿标题</span>
+            <span>投稿标题（中文 + 英文）</span>
             <input id="publishTitle" maxlength="80" required>
           </label>
           <label class="field">
@@ -213,8 +221,8 @@
             <select id="publishAccount" required></select>
           </label>
           <label class="field">
-            <span>分区 TID</span>
-            <input id="publishTid" type="number" min="1" required>
+            <span>投稿分区</span>
+            <select id="publishTid" required></select>
           </label>
           <label class="field">
             <span>版权类型</span>
@@ -261,12 +269,13 @@
             <input id="publishSource" maxlength="300" placeholder="原视频链接">
           </label>
           <label class="field span-2">
-            <span>标签（逗号分隔）</span>
+            <span>智能标签（逗号分隔，可修改）</span>
             <input id="publishTags" placeholder="中英双语,中文翻译" required>
           </label>
           <label class="field span-2">
-            <span>视频简介</span>
+            <span>视频简介（免责声明 + 原视频简介）</span>
             <textarea id="publishDescription" rows="7" maxlength="2000"></textarea>
+            <small id="publishDescriptionCount" class="field-note">投稿安全长度 0 / 1900</small>
           </label>
           <label class="field span-2">
             <span>空间动态</span>

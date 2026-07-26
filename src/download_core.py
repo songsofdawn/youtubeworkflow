@@ -5,6 +5,7 @@ import logging
 import re
 import shutil
 import subprocess
+import sys
 import unicodedata
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -122,28 +123,59 @@ def redact_command(command: Iterable[str | Path]) -> list[str]:
     return redacted
 
 
-def run_command(command: Iterable[str | Path], cwd: Path | str | None = None) -> dict[str, Any]:
+def run_command(
+    command: Iterable[str | Path],
+    cwd: Path | str | None = None,
+    *,
+    stream_output: bool = False,
+) -> dict[str, Any]:
     args = [str(item) for item in command]
     safe_command = redact_command(args)
     LOGGER.info("执行命令: %s", safe_command)
     try:
-        completed = subprocess.run(
-            args,
-            cwd=str(cwd or PROJECT_ROOT),
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            shell=False,
-            check=False,
-        )
-        result = {
-            "success": completed.returncode == 0,
-            "returncode": completed.returncode,
-            "stdout": completed.stdout or "",
-            "stderr": completed.stderr or "",
-            "command": safe_command,
-        }
+        if stream_output:
+            process = subprocess.Popen(
+                args,
+                cwd=str(cwd or PROJECT_ROOT),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                shell=False,
+            )
+            output: list[str] = []
+            assert process.stdout is not None
+            for line in process.stdout:
+                output.append(line)
+                sys.stdout.write(line)
+                sys.stdout.flush()
+            returncode = process.wait()
+            result = {
+                "success": returncode == 0,
+                "returncode": returncode,
+                "stdout": "".join(output),
+                "stderr": "",
+                "command": safe_command,
+            }
+        else:
+            completed = subprocess.run(
+                args,
+                cwd=str(cwd or PROJECT_ROOT),
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                shell=False,
+                check=False,
+            )
+            result = {
+                "success": completed.returncode == 0,
+                "returncode": completed.returncode,
+                "stdout": completed.stdout or "",
+                "stderr": completed.stderr or "",
+                "command": safe_command,
+            }
     except (OSError, ValueError) as exc:
         result = {"success": False, "returncode": None, "stdout": "", "stderr": str(exc), "command": safe_command}
     return result
@@ -257,6 +289,67 @@ def _base_ytdlp_command(url: str, tools: dict[str, Path], paths: dict[str, Path]
     return [tools["yt-dlp"], url, "--no-playlist"], warning
 
 
+def _download_network_options(config: dict[str, Any]) -> list[str]:
+    options = [
+        "--socket-timeout",
+        str(config.get("socket_timeout_seconds", 30)),
+        "--http-chunk-size",
+        str(config.get("http_chunk_size", "1M")),
+        "--concurrent-fragments",
+        str(config.get("concurrent_fragments", 1)),
+        "--newline",
+        "--progress-delta",
+        "1",
+    ]
+    if config.get("force_ipv4", True):
+        options.append("--force-ipv4")
+    retry_ceiling = max(
+        int(config.get("retry_sleep_seconds", 2)),
+        int(config.get("retry_sleep_max_seconds", 20)),
+    )
+    options.extend(
+        [
+            "--retry-sleep",
+            f"http:exp=1:{retry_ceiling}",
+            "--retry-sleep",
+            f"fragment:exp=1:{retry_ceiling}",
+        ]
+    )
+    return options
+
+
+def _is_transient_download_error(result: dict[str, Any]) -> bool:
+    text = f"{result.get('stderr', '')}\n{result.get('stdout', '')}".casefold()
+    markers = (
+        "eof occurred in violation of protocol",
+        "ssl",
+        "tls",
+        "connection reset",
+        "connection aborted",
+        "remote end closed",
+        "incompleteread",
+        "timed out",
+        "timeout",
+        "temporary failure",
+        "http error 429",
+        "http error 500",
+        "http error 502",
+        "http error 503",
+        "http error 504",
+    )
+    return any(marker in text for marker in markers)
+
+
+def _download_network_hint(result: dict[str, Any]) -> str:
+    if not _is_transient_download_error(result):
+        return ""
+    return (
+        "下载链路无法与 YouTube 视频 CDN 建立稳定的 TLS 连接。"
+        "若正在使用 Clash/VPN，请切换代理节点后在面板点击“重试”；"
+        "已经成功的字幕、封面和元数据会被保留。"
+    )
+
+
 def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] | None = None, config: dict[str, Any] | None = None, paths: dict[str, Path] | None = None, archive_path: Path | str | None = None, use_archive: bool = True) -> dict[str, Any]:
     paths = paths or get_project_paths(); tools = tools or find_local_tools(paths); config = config or load_download_config()
     task_dir = Path(task_dir); video_dir = task_dir / "video"; video_dir.mkdir(parents=True, exist_ok=True)
@@ -267,12 +360,24 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         "--retry-sleep", str(config["retry_sleep_seconds"]), "--ffmpeg-location", paths["tools_bin"],
         "--format", str(config["format_selector"]), "--merge-output-format", str(config.get("video_container", "mp4")),
         "--remux-video", str(config.get("video_container", "mp4")), "--output", video_dir / "source.%(ext)s",
-        "--no-write-playlist-metafiles", *cookies,
+        "--no-write-playlist-metafiles", *_download_network_options(config), *cookies,
     ]
     if archive_path and use_archive:
         archive = Path(archive_path); archive.parent.mkdir(parents=True, exist_ok=True)
         command.extend(["--download-archive", archive])
-    result = run_command(command, paths["project_root"])
+    command_results: list[dict[str, Any]] = []
+    recovery_attempts = max(0, int(config.get("network_recovery_attempts", 1)))
+    for attempt in range(recovery_attempts + 1):
+        if attempt:
+            LOGGER.warning(
+                "检测到临时网络中断，正在刷新媒体地址并从断点自动恢复（第 %s/%s 次）",
+                attempt,
+                recovery_attempts,
+            )
+        result = run_command(command, paths["project_root"], stream_output=True)
+        command_results.append(result)
+        if result["success"] or not _is_transient_download_error(result):
+            break
     final = video_dir / "source.mp4"
     mp4_files = sorted((item for item in video_dir.glob("*.mp4") if item.is_file() and item.stat().st_size > 0), key=lambda item: item.stat().st_mtime, reverse=True)
     if mp4_files and mp4_files[0] != final:
@@ -281,10 +386,21 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         mp4_files[0].replace(final)
     success = result["success"] and final.is_file() and final.stat().st_size > 0
     error = "" if success else _short_error(result)
+    network_hint = _download_network_hint(result)
+    if network_hint:
+        error = f"{error}\n{network_hint}".strip()
     hint = _auth_hint(error)
     if hint:
         error += f" {hint}"
-    return {"success": success, "status": "success" if success else "failed", "file": final if success else None, "command_result": result, "warning": warning, "error": error}
+    return {
+        "success": success,
+        "status": "success" if success else "failed",
+        "file": final if success else None,
+        "command_result": result,
+        "command_results": command_results,
+        "warning": warning,
+        "error": error,
+    }
 
 
 def _subtitle_candidates(directory: Path, prefix: str) -> list[Path]:
@@ -652,7 +768,8 @@ def download_one_video(
                 warning = "WARNING: 归档中已有该视频 ID，但本地视频缺失；本次修复暂不使用 download archive。"
                 LOGGER.warning(warning); errors.append(warning); use_archive = False
             media = download_video_media(url, task_dir, tools, config, paths, paths["archive"] if source_mode == "candidate" else None, use_archive)
-            commands.append(media["command_result"]["command"])
+            command_results = media.get("command_results") or [media["command_result"]]
+            commands.extend(result["command"] for result in command_results)
             video_ok = media["success"]
             manifest["video_status"] = media["status"]
             if media.get("warning"): errors.append(str(media["warning"]))

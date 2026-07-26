@@ -20,6 +20,9 @@ start_panel.bat
 
 脚本会启动本地控制面板并打开浏览器，默认地址为
 `http://127.0.0.1:8765`。控制面板只监听本机，不会部署到公网。
+再次双击启动脚本时，如果检测到同一项目的旧版面板且没有活动任务，会自动
+替换旧进程；同版本面板已经运行时只会重新打开页面，避免端口占用后继续加载
+旧版后端。
 
 第一版面板支持：
 
@@ -53,11 +56,26 @@ BILIUP_COOKIE_FILE=E:\其他目录\账号.json
 
 中文字幕完成后，任务右侧会出现 `↑` 投稿按钮。投稿前必须逐项核对：
 
-- 投稿账号、标题和标签；
-- 分区 TID，可参考 [biliup 分区表](https://biliup.github.io/tid-ref.html)；
+- 投稿账号、双语标题和智能标签；
+- DeepSeek 推荐的具体分区名称与 TID；面板下拉框使用
+  [biliup 分区表](https://biliup.github.io/tid-ref.html) 的完整小分区映射；
 - 自制/转载类型；转载时必须填写原视频来源；
 - 投稿接口、上传线路和并发数；
 - 是否仅自己可见、是否禁止转载及是否使用缩略图封面。
+
+字幕翻译成功后，工作流会额外执行一次轻量的投稿资料分析，并写入
+`stage3\publish_metadata.json`。DeepSeek 会根据原英文标题、原简介、原标签
+和字幕内容生成中文标题、逗号分隔的标签，以及一个限定在分区映射内的 TID。
+投稿标题自动组合为 `【中英双语】中文标题｜English title`，最长 80 个字符；
+投稿简介由固定免责声明和 `metadata\description.txt` 中的原视频简介组成，
+最长 2000 个哔哩哔哩计数字符。这些内容会直接加载到投稿窗口，同时仍允许
+人工修改。面板会同时检查网页字符数和 UTF-8 字节数，并保留安全余量，避免
+素材上传完成后才收到 `21010`“简介字数过长”错误。
+
+投稿资料拥有独立检查点和用量记录，不会因为补生成标题或分区而重复翻译整条
+字幕。DeepSeek 推荐失败时，字幕任务仍然成功，并回退到“生活 / 日常”，面板
+会醒目提示人工核对。升级前已经完成翻译的旧任务，只需在面板中再次运行一次
+“处理到双语字幕”；字幕检查点会直接复用，仅补生成投稿资料。
 
 首次投稿默认开启“仅自己可见”。如果硬字幕 MP4 尚未生成，队列会先运行阶段
 四的硬字幕模式，再调用 biliup。投稿成功后写入
@@ -499,6 +517,7 @@ stage3\selection\scoring.json      双源六维评分
 stage3\selection\comparison.json   分数和一致度比较
 stage3\selection\selection_report.json 最终选择、哈希和审核状态
 stage3\translation\               翻译 JSON、QC、用量和批次断点
+stage3\publish_metadata.json       中文标题、智能标签与推荐投稿分区
 stage3\review\review_export.tsv    人工审核工作表
 stage3\review\review_import_report.json 审核导入报告
 stage3\stage3_review.html          只读筛选审核页面

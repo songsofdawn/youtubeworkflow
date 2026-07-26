@@ -53,6 +53,23 @@ function targetLabel(target) {
   return parts.at(-1) || target || "未命名任务";
 }
 
+function updatePublishDescriptionCount() {
+  const field = $("#publishDescription");
+  const counter = $("#publishDescriptionCount");
+  if (!field || !counter) return;
+  const bytes = new TextEncoder().encode(field.value).length;
+  const max = 1900;
+  counter.textContent = `投稿安全长度 ${bytes} / ${max}`;
+  counter.classList.toggle("limit-warning", bytes >= max - 50);
+}
+
+function elapsedText(startedAt) {
+  if (!startedAt) return "";
+  const seconds = Math.max(0, Math.floor((Date.now() - Date.parse(startedAt)) / 1000));
+  if (seconds < 60) return `${seconds} 秒`;
+  return `${Math.floor(seconds / 60)} 分 ${seconds % 60} 秒`;
+}
+
 async function refreshDashboard(showError = false) {
   if (state.refreshBusy) return;
   state.refreshBusy = true;
@@ -181,6 +198,9 @@ function renderJobs(jobs) {
       ? `<button class="button button-ghost retry-job" type="button" data-job-id="${job.id}">重试</button>`
       : "";
     const kind = job.kind === "download" ? "DOWNLOAD" : job.kind === "publish" ? "PUBLISH" : "PIPELINE";
+    const runningHint = job.status === "running" && job.kind === "publish"
+      ? ` · 已用时 ${elapsedText(job.started_at)} · biliup 不返回实时百分比`
+      : "";
     const status = {
       queued: "等待中",
       running: "运行中",
@@ -192,7 +212,7 @@ function renderJobs(jobs) {
       <article class="job-item">
         <div class="job-top"><span class="job-kind">${kind}</span><span class="job-status">${status} · ${job.progress}%</span></div>
         <strong title="${escapeHtml(job.target)}">${escapeHtml(targetLabel(job.target))}</strong>
-        <p>${escapeHtml(job.step)}${job.error ? ` · ${escapeHtml(job.error)}` : ""}</p>
+        <p>${escapeHtml(job.step)}${escapeHtml(runningHint)}${job.error ? ` · ${escapeHtml(job.error)}` : ""}</p>
         <progress class="progress-mini" max="100" value="${job.progress}" aria-label="进度 ${job.progress}%"></progress>
         <div class="job-actions">
           <button class="button button-ghost show-log" type="button" data-job-id="${job.id}" data-job-title="${escapeHtml(targetLabel(job.target))}">查看日志</button>
@@ -431,6 +451,20 @@ async function refreshLog() {
   }
 }
 
+function categoryOptions(categories) {
+  const groups = new Map();
+  for (const category of categories || []) {
+    const parent = category.parent_name || "其他";
+    if (!groups.has(parent)) groups.set(parent, []);
+    groups.get(parent).push(category);
+  }
+  return [...groups.entries()].map(([parent, rows]) =>
+    `<optgroup label="${escapeHtml(parent)}">${rows.map((row) =>
+      `<option value="${Number(row.tid)}">${escapeHtml(row.name)} · TID ${Number(row.tid)}</option>`
+    ).join("")}</optgroup>`
+  ).join("");
+}
+
 async function openPublishDialog(task) {
   state.publishTask = task;
   const dialog = $("#publishDialog");
@@ -442,6 +476,7 @@ async function openPublishDialog(task) {
     const defaults = await api(`/api/publish/defaults?task=${encodeURIComponent(task)}`);
     $("#publishDialogTitle").textContent = targetLabel(task);
     $("#publishTitle").value = defaults.title;
+    $("#publishTid").innerHTML = categoryOptions(defaults.categories);
     $("#publishTid").value = defaults.tid;
     $("#publishCopyright").value = String(defaults.copyright);
     $("#publishSubmit").value = defaults.submit;
@@ -450,6 +485,7 @@ async function openPublishDialog(task) {
     $("#publishSource").value = defaults.source;
     $("#publishTags").value = defaults.tags;
     $("#publishDescription").value = defaults.description;
+    updatePublishDescriptionCount();
     $("#publishDynamic").value = defaults.dynamic;
     $("#publishOnlySelf").checked = defaults.is_only_self;
     $("#publishNoReprint").checked = defaults.no_reprint;
@@ -462,6 +498,17 @@ async function openPublishDialog(task) {
         ).join("")
       : '<option value="">未找到登录账号</option>';
     $("#publishAccount").value = defaults.account_id;
+    const recommendation = $("#publishRecommendation");
+    const recommended = defaults.metadata_status === "RECOMMENDED";
+    recommendation.dataset.status = recommended ? "recommended" : "fallback";
+    recommendation.querySelector(".recommendation-badge").textContent =
+      recommended ? "DEEPSEEK 推荐" : "请人工核对";
+    $("#publishRecommendedCategory").textContent =
+      `${defaults.category_path} · TID ${defaults.tid}`;
+    $("#publishRecommendationReason").textContent = [
+      defaults.recommendation_reason,
+      defaults.metadata_warning,
+    ].filter(Boolean).join(" ");
     $("#publishMediaState").textContent = defaults.media_ready
       ? `投稿成片已就绪 · ${defaults.media_name}`
       : defaults.translation_ready
@@ -484,6 +531,7 @@ function updateSourceRequirement() {
 }
 
 $("#publishCopyright").addEventListener("change", updateSourceRequirement);
+$("#publishDescription").addEventListener("input", updatePublishDescriptionCount);
 $("#closePublish").addEventListener("click", () => $("#publishDialog").close());
 $("#cancelPublish").addEventListener("click", () => $("#publishDialog").close());
 $("#publishDialog").addEventListener("close", () => { state.publishTask = null; });

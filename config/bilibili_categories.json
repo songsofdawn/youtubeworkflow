@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "source": "https://biliup.github.io/tid-ref.html",
+  "fallback_tid": 21,
+  "categories": [
+    {"tid": 138, "name": "搞笑", "parent_tid": 160, "parent_name": "生活"},
+    {"tid": 239, "name": "家居房产", "parent_tid": 160, "parent_name": "生活"},
+    {"tid": 161, "name": "手工", "parent_tid": 160, "parent_name": "生活"},
+    {"tid": 162, "name": "绘画", "parent_tid": 160, "parent_name": "生活"},
+    {"tid": 21, "name": "日常", "parent_tid": 160, "parent_name": "生活"},
+
+    {"tid": 17, "name": "单机游戏", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 65, "name": "网络游戏", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 172, "name": "手机游戏", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 171, "name": "电子竞技", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 173, "name": "桌游棋牌", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 136, "name": "音游", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 121, "name": "GMV", "parent_tid": 4, "parent_name": "游戏"},
+    {"tid": 19, "name": "Mugen", "parent_tid": 4, "parent_name": "游戏"},
+
+    {"tid": 71, "name": "综艺", "parent_tid": 5, "parent_name": "娱乐"},
+    {"tid": 137, "name": "明星", "parent_tid": 5, "parent_name": "娱乐"},
+
+    {"tid": 201, "name": "科学科普", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 124, "name": "社科·法律·心理", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 228, "name": "人文历史", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 207, "name": "财经商业", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 208, "name": "校园学习", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 209, "name": "职业职场", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 229, "name": "设计·创意", "parent_tid": 36, "parent_name": "知识"},
+    {"tid": 122, "name": "野生技能协会", "parent_tid": 36, "parent_name": "知识"},
+
+    {"tid": 85, "name": "短片", "parent_tid": 181, "parent_name": "影视"},
+    {"tid": 182, "name": "影视杂谈", "parent_tid": 181, "parent_name": "影视"},
+    {"tid": 183, "name": "影视剪辑", "parent_tid": 181, "parent_name": "影视"},
+    {"tid": 184, "name": "预告·资讯", "parent_tid": 181, "parent_name": "影视"},
+
+    {"tid": 130, "name": "音乐综合", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 29, "name": "音乐现场", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 59, "name": "演奏", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 31, "name": "翻唱", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 193, "name": "MV", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 30, "name": "VOCALOID·UTAU", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 194, "name": "电音", "parent_tid": 3, "parent_name": "音乐"},
+    {"tid": 28, "name": "原创音乐", "parent_tid": 3, "parent_name": "音乐"},
+
+    {"tid": 24, "name": "MAD·AMV", "parent_tid": 1, "parent_name": "动画"},
+    {"tid": 25, "name": "MMD·3D", "parent_tid": 1, "parent_name": "动画"},
+    {"tid": 27, "name": "综合", "parent_tid": 1, "parent_name": "动画"},
+    {"tid": 47, "name": "短片·手书·配音", "parent_tid": 1, "parent_name": "动画"},
+    {"tid": 210, "name": "手办·模玩", "parent_tid": 1, "parent_name": "动画"},
+    {"tid": 86, "name": "特摄", "parent_tid": 1, "parent_name": "动画"},
+
+    {"tid": 157, "name": "美妆护肤", "parent_tid": 155, "parent_name": "时尚"},
+    {"tid": 158, "name": "穿搭", "parent_tid": 155, "parent_name": "时尚"},
+    {"tid": 159, "name": "时尚潮流", "parent_tid": 155, "parent_name": "时尚"},
+
+    {"tid": 76, "name": "美食制作", "parent_tid": 211, "parent_name": "美食"},
+    {"tid": 212, "name": "美食侦探", "parent_tid": 211, "parent_name": "美食"},
+    {"tid": 213, "name": "美食测评", "parent_tid": 211, "parent_name": "美食"},
+    {"tid": 214, "name": "田园美食", "parent_tid": 211, "parent_name": "美食"},
+    {"tid": 215, "name": "美食记录", "parent_tid": 211, "parent_name": "美食"},
+
+    {"tid": 176, "name": "汽车生活", "parent_tid": 223, "parent_name": "汽车"},
+    {"tid": 224, "name": "汽车文化", "parent_tid": 223, "parent_name": "汽车"},
+    {"tid": 225, "name": "汽车极客", "parent_tid": 223, "parent_name": "汽车"},
+    {"tid": 240, "name": "摩托车", "parent_tid": 223, "parent_name": "汽车"},
+    {"tid": 226, "name": "智能出行", "parent_tid": 223, "parent_name": "汽车"},
+    {"tid": 227, "name": "购车攻略", "parent_tid": 223, "parent_name": "汽车"},
+
+    {"tid": 235, "name": "篮球·足球", "parent_tid": 234, "parent_name": "运动"},
+    {"tid": 164, "name": "健身", "parent_tid": 234, "parent_name": "运动"},
+    {"tid": 236, "name": "竞技体育", "parent_tid": 234, "parent_name": "运动"},
+    {"tid": 237, "name": "运动文化", "parent_tid": 234, "parent_name": "运动"},
+    {"tid": 238, "name": "运动综合", "parent_tid": 234, "parent_name": "运动"},
+
+    {"tid": 95, "name": "数码", "parent_tid": 188, "parent_name": "科技"},
+    {"tid": 230, "name": "软件应用", "parent_tid": 188, "parent_name": "科技"},
+    {"tid": 231, "name": "计算机技术", "parent_tid": 188, "parent_name": "科技"},
+    {"tid": 232, "name": "工业·工程·机械", "parent_tid": 188, "parent_name": "科技"},
+    {"tid": 233, "name": "极客DIY", "parent_tid": 188, "parent_name": "科技"},
+
+    {"tid": 218, "name": "喵星人", "parent_tid": 217, "parent_name": "动物圈"},
+    {"tid": 219, "name": "汪星人", "parent_tid": 217, "parent_name": "动物圈"},
+    {"tid": 221, "name": "野生动物", "parent_tid": 217, "parent_name": "动物圈"},
+    {"tid": 222, "name": "爬宠", "parent_tid": 217, "parent_name": "动物圈"},
+    {"tid": 220, "name": "大熊猫", "parent_tid": 217, "parent_name": "动物圈"},
+    {"tid": 75, "name": "动物综合", "parent_tid": 217, "parent_name": "动物圈"},
+
+    {"tid": 20, "name": "宅舞", "parent_tid": 129, "parent_name": "舞蹈"},
+    {"tid": 154, "name": "舞蹈综合", "parent_tid": 129, "parent_name": "舞蹈"},
+    {"tid": 156, "name": "舞蹈教程", "parent_tid": 129, "parent_name": "舞蹈"},
+    {"tid": 198, "name": "街舞", "parent_tid": 129, "parent_name": "舞蹈"},
+    {"tid": 199, "name": "明星舞蹈", "parent_tid": 129, "parent_name": "舞蹈"},
+    {"tid": 200, "name": "中国舞", "parent_tid": 129, "parent_name": "舞蹈"},
+
+    {"tid": 153, "name": "国产动画", "parent_tid": 167, "parent_name": "国创"},
+    {"tid": 168, "name": "国产原创相关", "parent_tid": 167, "parent_name": "国创"},
+    {"tid": 169, "name": "布袋戏", "parent_tid": 167, "parent_name": "国创"},
+    {"tid": 170, "name": "资讯", "parent_tid": 167, "parent_name": "国创"},
+    {"tid": 195, "name": "动态漫·广播剧", "parent_tid": 167, "parent_name": "国创"},
+
+    {"tid": 22, "name": "鬼畜调教", "parent_tid": 119, "parent_name": "鬼畜"},
+    {"tid": 26, "name": "音MAD", "parent_tid": 119, "parent_name": "鬼畜"},
+    {"tid": 126, "name": "人力VOCALOID", "parent_tid": 119, "parent_name": "鬼畜"},
+    {"tid": 216, "name": "鬼畜剧场", "parent_tid": 119, "parent_name": "鬼畜"},
+    {"tid": 127, "name": "教程演示", "parent_tid": 119, "parent_name": "鬼畜"},
+
+    {"tid": 37, "name": "人文·历史", "parent_tid": 177, "parent_name": "纪录片"},
+    {"tid": 178, "name": "科学·探索·自然", "parent_tid": 177, "parent_name": "纪录片"},
+    {"tid": 179, "name": "军事", "parent_tid": 177, "parent_name": "纪录片"},
+    {"tid": 180, "name": "社会·美食·旅行", "parent_tid": 177, "parent_name": "纪录片"},
+
+    {"tid": 51, "name": "资讯", "parent_tid": 13, "parent_name": "番剧"},
+    {"tid": 152, "name": "官方延伸", "parent_tid": 13, "parent_name": "番剧"},
+    {"tid": 32, "name": "完结动画", "parent_tid": 13, "parent_name": "番剧"},
+    {"tid": 33, "name": "连载动画", "parent_tid": 13, "parent_name": "番剧"},
+
+    {"tid": 185, "name": "国产剧", "parent_tid": 11, "parent_name": "电视剧"},
+    {"tid": 187, "name": "海外剧", "parent_tid": 11, "parent_name": "电视剧"},
+
+    {"tid": 83, "name": "其他国家", "parent_tid": 23, "parent_name": "电影"},
+    {"tid": 145, "name": "欧美电影", "parent_tid": 23, "parent_name": "电影"},
+    {"tid": 146, "name": "日本电影", "parent_tid": 23, "parent_name": "电影"},
+    {"tid": 147, "name": "国产电影", "parent_tid": 23, "parent_name": "电影"}
+  ]
+}

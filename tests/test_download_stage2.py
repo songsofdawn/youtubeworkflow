@@ -10,6 +10,7 @@ from unittest import TestCase, mock
 from src import download_core
 from src.download_core import (
     MANIFEST_FIELDS,
+    download_video_media,
     download_subtitles,
     extract_audio,
     find_local_tools,
@@ -127,6 +128,92 @@ class CoreTests(TestCase):
             command = [str(item) for item in runner.call_args.args[0]]
             self.assertTrue(result["success"]); self.assertIn("pcm_s16le", command)
             self.assertEqual(command[command.index("-ar") + 1], "48000"); self.assertEqual(command[command.index("-ac") + 1], "2")
+
+    def test_media_download_uses_resilient_network_options(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            task = root / "task"
+
+            def execute(command, cwd=None, **kwargs):
+                values = [str(item) for item in command]
+                (task / "video" / "source.mp4").write_bytes(b"video")
+                self.assertTrue(kwargs["stream_output"])
+                return {"success": True, "returncode": 0, "stdout": "", "stderr": "", "command": values}
+
+            with mock.patch("src.download_core.run_command", side_effect=execute) as runner:
+                result = download_video_media(
+                    "https://youtu.be/id",
+                    task,
+                    fake_tools(root),
+                    stage2_config(),
+                    get_project_paths(root),
+                )
+            command = [str(item) for item in runner.call_args.args[0]]
+            self.assertTrue(result["success"])
+            self.assertEqual(command[command.index("--http-chunk-size") + 1], "1M")
+            self.assertEqual(command[command.index("--socket-timeout") + 1], "30")
+            self.assertIn("--force-ipv4", command)
+            self.assertIn("--newline", command)
+
+    def test_media_download_refreshes_url_after_transient_ssl_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            task = root / "task"
+            attempts = 0
+
+            def execute(command, cwd=None, **kwargs):
+                nonlocal attempts
+                attempts += 1
+                values = [str(item) for item in command]
+                if attempts == 1:
+                    return {
+                        "success": False,
+                        "returncode": 1,
+                        "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
+                        "stderr": "",
+                        "command": values,
+                    }
+                (task / "video" / "source.mp4").write_bytes(b"video")
+                return {"success": True, "returncode": 0, "stdout": "", "stderr": "", "command": values}
+
+            with mock.patch("src.download_core.run_command", side_effect=execute):
+                result = download_video_media(
+                    "https://youtu.be/id",
+                    task,
+                    fake_tools(root),
+                    stage2_config(),
+                    get_project_paths(root),
+                )
+            self.assertTrue(result["success"])
+            self.assertEqual(attempts, 2)
+            self.assertEqual(len(result["command_results"]), 2)
+
+    def test_media_download_explains_persistent_tls_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            config = stage2_config()
+
+            def execute(command, cwd=None, **kwargs):
+                return {
+                    "success": False,
+                    "returncode": 1,
+                    "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
+                    "stderr": "",
+                    "command": [str(item) for item in command],
+                }
+
+            with mock.patch("src.download_core.run_command", side_effect=execute):
+                result = download_video_media(
+                    "https://youtu.be/id",
+                    root / "task",
+                    fake_tools(root),
+                    config,
+                    get_project_paths(root),
+                )
+            self.assertFalse(result["success"])
+            self.assertEqual(len(result["command_results"]), 2)
+            self.assertIn("Clash/VPN", result["error"])
+            self.assertIn("字幕、封面和元数据会被保留", result["error"])
 
 
 class SubtitleTests(TestCase):

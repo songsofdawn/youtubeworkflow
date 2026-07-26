@@ -10,6 +10,7 @@ from unittest import TestCase, mock
 
 from src.stage3.manifest import hash_config
 from src.stage3.models import SubtitleSegment
+from src.stage3.publish_metadata import load_category_mapping
 from src.stage3.translator_deepseek import (
     PROMPT_VERSION,
     DeepSeekTranslator,
@@ -45,6 +46,44 @@ class TranslatorTests(TestCase):
         self.assertIn("输出 JSON", combined)
         self.assertIn("context_before_read_only", combined)
         self.assertIn("Roblox", combined)
+
+    def test_publish_metadata_recommends_valid_mapped_category(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            client = mock.Mock()
+            client.chat.completions.create.return_value = response(
+                json.dumps(
+                    {
+                        "chinese_title": "如何构建可靠的软件系统",
+                        "tags": ["软件工程", "系统设计", "编程"],
+                        "tid": 231,
+                        "reason": "内容主要讨论软件工程。",
+                    },
+                    ensure_ascii=False,
+                )
+            )
+            translator = DeepSeekTranslator(
+                CONFIG,
+                directory,
+                client=client,
+                sleeper=lambda _: None,
+            )
+            result = translator.recommend_publish_metadata(
+                {
+                    "title": "How to Build Reliable Software Systems",
+                    "description": "A practical engineering guide.",
+                    "tags": ["programming"],
+                },
+                [SubtitleSegment(1, 0, 2, "Today we design a reliable system.")],
+                load_category_mapping(),
+            )
+        self.assertEqual(result["recommendation"]["tid"], 231)
+        self.assertEqual(
+            result["recommendation"]["category_path"],
+            "科技 / 计算机技术",
+        )
+        prompt = client.chat.completions.create.call_args.kwargs["messages"][1]["content"]
+        self.assertIn("allowed_bilibili_categories", prompt)
+        self.assertIn("计算机技术", prompt)
 
     def test_shuffled_response_is_merged_by_id(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

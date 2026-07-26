@@ -15,11 +15,16 @@ from .youtube import YouTubeAPIError
 MAX_REQUEST_BYTES = 1024 * 1024
 
 
-def make_handler(app: ControlPanelApp, static_root: Path) -> type[BaseHTTPRequestHandler]:
+def make_handler(
+    app: ControlPanelApp,
+    static_root: Path,
+    runtime_info: dict[str, Any] | None = None,
+) -> type[BaseHTTPRequestHandler]:
     static_root = static_root.resolve()
+    runtime = dict(runtime_info or {})
 
     class PanelRequestHandler(BaseHTTPRequestHandler):
-        server_version = "YouTubeWorkflowPanel/1.0"
+        server_version = "YouTubeWorkflowPanel/2.0"
 
         def do_GET(self) -> None:  # noqa: N802
             parsed = urlparse(self.path)
@@ -29,6 +34,9 @@ def make_handler(app: ControlPanelApp, static_root: Path) -> type[BaseHTTPReques
                     return
                 if parsed.path == "/api/health":
                     self._json(HTTPStatus.OK, app.health())
+                    return
+                if parsed.path == "/api/runtime":
+                    self._json(HTTPStatus.OK, runtime)
                     return
                 if parsed.path == "/api/tasks":
                     self._json(HTTPStatus.OK, {"tasks": app.scanner.scan()})

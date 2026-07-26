@@ -210,7 +210,7 @@ class WorkflowWorker:
         self._wake_event = threading.Event()
         self._thread = threading.Thread(target=self._run, daemon=True, name="workflow-worker")
         self._process_lock = threading.Lock()
-        self._current_process: subprocess.Popen[str] | None = None
+        self._current_process: subprocess.Popen[bytes] | None = None
 
     def start(self) -> None:
         if not self._thread.is_alive():
@@ -245,6 +245,16 @@ class WorkflowWorker:
         try:
             if job["kind"] == "publish":
                 publish_task = self.scanner.resolve_task(str(job["target"]))
+                original_payload = job["payload"]
+                job["payload"] = self.publisher.prepare_payload_for_execution(
+                    original_payload
+                )
+                if job["payload"] != original_payload:
+                    self._append_log(
+                        log_path,
+                        "\n[投稿预检] 已按哔哩哔哩的字符计数规则自动修正"
+                        "标题、简介或空间动态；无需重新编辑旧任务。\n",
+                    )
                 self.publisher.mark_running(publish_task, job["payload"])
             commands = self._build_commands(job)
             total = max(1, len(commands))
@@ -265,6 +275,13 @@ class WorkflowWorker:
                         raise FileNotFoundError(f"投稿视频不存在或为空：{media}")
                 exit_code = self._run_command(command, log_path)
                 if exit_code != 0:
+                    if job["kind"] == "publish":
+                        raise RuntimeError(
+                            self.publisher.explain_upload_failure(
+                                self.store.log_tail(job_id, max_chars=100000),
+                                exit_code,
+                            )
+                        )
                     raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
                 self.store.update(
                     job_id,
@@ -424,16 +441,15 @@ class WorkflowWorker:
             raise FileNotFoundError(f"缺少运行环境：{executable}")
         environment = os.environ.copy()
         environment["PYTHONUTF8"] = "1"
+        environment["PYTHONIOENCODING"] = "utf-8"
         creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
         process = subprocess.Popen(
             command,
             cwd=self.project_root,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            bufsize=1,
+            text=False,
+            bufsize=0,
             shell=False,
             env=environment,
             creationflags=creation_flags,
@@ -443,13 +459,25 @@ class WorkflowWorker:
         try:
             assert process.stdout is not None
             with log_path.open("a", encoding="utf-8") as handle:
-                for line in process.stdout:
+                for raw_line in process.stdout:
+                    line = self._decode_process_output(raw_line)
                     handle.write(line)
                     handle.flush()
             return process.wait()
         finally:
             with self._process_lock:
                 self._current_process = None
+
+    @staticmethod
+    def _decode_process_output(raw: bytes | str) -> str:
+        if isinstance(raw, str):
+            return raw
+        for encoding in ("utf-8", "gb18030"):
+            try:
+                return raw.decode(encoding)
+            except UnicodeDecodeError:
+                continue
+        return raw.decode("utf-8", errors="replace")
 
     @staticmethod
     def _append_log(path: Path, text: str) -> None:
