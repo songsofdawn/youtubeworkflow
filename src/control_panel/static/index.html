@@ -124,15 +124,22 @@
           <label class="field compact-field">
             <span>成片格式</span>
             <select id="renderMode">
-              <option value="softsub">软字幕 MKV</option>
               <option value="hardsub">硬字幕 MP4</option>
+              <option value="softsub">软字幕 MKV</option>
               <option value="both">两种都生成</option>
               <option value="ass">仅双语 ASS</option>
             </select>
           </label>
+          <label class="field compact-field subtitle-source-field">
+            <span>中文字幕来源</span>
+            <select id="chineseSubtitleSource">
+              <option value="deepseek">DeepSeek 翻译（质量优先）</option>
+              <option value="youtube_auto">YouTube 自动中文（免费）</option>
+            </select>
+          </label>
           <label class="confirm-line paid-confirm">
             <input id="paidApiConfirm" type="checkbox">
-            <span>允许 DeepSeek 付费翻译</span>
+            <span id="paidApiLabel">允许 DeepSeek 付费翻译</span>
           </label>
           <div class="batch-buttons">
             <button class="button button-secondary" type="button" data-workflow="subtitles">处理到双语字幕</button>
@@ -168,7 +175,7 @@
               <p class="eyebrow">ACTIVITY</p>
               <h2 id="queueTitle">最近任务</h2>
             </div>
-            <button class="button button-ghost button-small" id="clearOldLogs" type="button">清理历史日志</button>
+            <button class="button button-ghost button-small" id="clearOldLogs" type="button">清空历史记录</button>
           </div>
           <div class="job-list" id="jobList">
             <p class="muted">暂无运行记录</p>

@@ -37,6 +37,52 @@ def _thumbnail_url(info: dict[str, Any]) -> str:
     return f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" if video_id else ""
 
 
+def deepseek_translation_ready(task_dir: Path) -> bool:
+    stage3 = read_json(task_dir / "stage3_manifest.json")
+    status = str(
+        stage3.get("translation_status")
+        or stage3.get("p1_status")
+        or ""
+    ).upper()
+    if status not in {"QC_PASSED", "REVIEW_REQUIRED", "TRANSLATION_COMPLETED"}:
+        return False
+    return any(
+        path.is_file() and path.stat().st_size > 0
+        for path in (
+            task_dir / "subtitles" / "zh.reviewed.srt",
+            task_dir / "subtitles" / "zh.clean.srt",
+        )
+    )
+
+
+def youtube_auto_chinese_path(task_dir: Path) -> Path | None:
+    download = read_json(task_dir / "download_manifest.json")
+    tracks = download.get("subtitle_tracks")
+    chinese_track = tracks.get("zh") if isinstance(tracks, dict) else {}
+    recorded_auto = (
+        isinstance(chinese_track, dict)
+        and str(chinese_track.get("source") or "").casefold() == "auto"
+    )
+    raw_auto_exists = any(
+        path.is_file() and path.stat().st_size > 0
+        for path in (
+            task_dir / "subtitles" / "zh.auto.srt",
+            task_dir / "subtitles" / "zh.auto.vtt",
+        )
+    )
+    if not recorded_auto and not raw_auto_exists:
+        return None
+    candidates = (
+        task_dir / "subtitles" / "zh.youtube.clean.srt",
+        task_dir / "subtitles" / "zh.auto.srt",
+        task_dir / "subtitles" / "zh.auto.vtt",
+    )
+    for path in candidates:
+        if path.is_file() and path.stat().st_size > 0:
+            return path
+    return None
+
+
 class WorkflowScanner:
     def __init__(self, project_root: Path) -> None:
         self.project_root = project_root.resolve()
@@ -70,19 +116,14 @@ class WorkflowScanner:
 
         download_status = str(download.get("overall_status") or "unknown")
         selected_path = task_dir / "subtitles" / "en.selected.srt"
-        translated_paths = [
-            task_dir / "subtitles" / "zh.reviewed.srt",
-            task_dir / "subtitles" / "zh.clean.srt",
-        ]
+        auto_chinese = youtube_auto_chinese_path(task_dir)
         stage4_status = str(stage4.get("status") or "")
         stage4_qc = str(stage4.get("qc_status") or "")
         publish_status = str(stage5.get("status") or "")
 
         download_complete = download_status in {"success", "skipped"}
         english_complete = selected_path.is_file() and selected_path.stat().st_size > 0
-        translation_complete = any(
-            path.is_file() and path.stat().st_size > 0 for path in translated_paths
-        )
+        translation_complete = deepseek_translation_ready(task_dir)
         render_complete = stage4_status == "STAGE4_COMPLETED"
         render_review = stage4_status == "REVIEW_REQUIRED" or stage4_qc == "REVIEW_REQUIRED"
 
@@ -100,7 +141,7 @@ class WorkflowScanner:
             "translation": self._stage_state(
                 translation_complete,
                 self._stage3_failed(stage3, "translation"),
-                str(stage3.get("translation_status") or "等待处理"),
+                str(stage3.get("translation_status") or "未运行 DeepSeek"),
             ),
             "render": (
                 {"state": "review", "detail": stage4_status}
@@ -151,6 +192,8 @@ class WorkflowScanner:
             "progress": completed_count * 20,
             "stages": stages,
             "stage3_status": str(stage3.get("translation_status") or ""),
+            "chinese_auto_available": auto_chinese is not None,
+            "chinese_auto_name": auto_chinese.name if auto_chinese else "",
             "stage4_status": stage4_status,
             "publish_status": publish_status,
             "bvid": str(stage5.get("bvid") or ""),
@@ -211,4 +254,9 @@ class WorkflowScanner:
         return "等待下载"
 
 
-__all__ = ["WorkflowScanner", "read_json"]
+__all__ = [
+    "WorkflowScanner",
+    "deepseek_translation_ready",
+    "read_json",
+    "youtube_auto_chinese_path",
+]

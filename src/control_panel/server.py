@@ -90,7 +90,10 @@ def make_handler(
                     jobs = app.queue_pipeline(
                         tasks=[str(item) for item in tasks] if isinstance(tasks, list) else [],
                         workflow=str(body.get("workflow") or "complete"),
-                        render_mode=str(body.get("render_mode") or "softsub"),
+                        render_mode=str(body.get("render_mode") or "hardsub"),
+                        chinese_subtitle_source=str(
+                            body.get("chinese_subtitle_source") or "deepseek"
+                        ),
                         allow_paid_api=body.get("allow_paid_api") is True,
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})

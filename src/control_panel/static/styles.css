@@ -567,7 +567,7 @@ input[type="checkbox"] {
 
 .batch-bar {
   display: grid;
-  grid-template-columns: minmax(160px, 1fr) 145px auto auto;
+  grid-template-columns: minmax(150px, 1fr) 135px 205px auto auto;
   gap: 14px;
   align-items: end;
   margin-bottom: 18px;
@@ -600,6 +600,25 @@ input[type="checkbox"] {
 .paid-confirm {
   align-self: center;
   max-width: 130px;
+}
+
+.paid-confirm.disabled {
+  opacity: 0.55;
+}
+
+.task-title small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.task-title small.available {
+  color: var(--lime);
+}
+
+.task-title small.missing {
+  color: var(--yellow);
 }
 
 .task-list {

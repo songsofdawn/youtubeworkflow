@@ -64,6 +64,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
     )
     parser.add_argument(
+        "--chinese-source",
+        choices=("auto", "deepseek", "youtube_auto"),
+        default="auto",
+        help="中文字幕来源：自动择优、DeepSeek 翻译或 YouTube 自动中文",
+    )
+    parser.add_argument(
         "--config",
         default="config/stage4_config.json",
         help="相对于项目根目录的阶段四配置路径",
@@ -108,10 +114,11 @@ def _options_from_args(
     config: dict[str, Any],
 ) -> PipelineOptions:
     render = config.get("render", {})
-    mode = args.mode or str(render.get("default_mode", "softsub"))
+    mode = args.mode or str(render.get("default_mode", "hardsub"))
     encoder = args.video_encoder or str(render.get("video_encoder", "auto"))
     return PipelineOptions(
         mode=mode,
+        chinese_source=args.chinese_source,
         video_encoder=encoder,
         resume=args.resume,
         force=args.force,

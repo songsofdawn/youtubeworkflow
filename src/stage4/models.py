@@ -93,7 +93,7 @@ class CommandResult:
 
 @dataclass
 class PipelineOptions:
-    mode: str = "softsub"
+    mode: str = "hardsub"
     video_encoder: str = "auto"
     resume: bool = True
     force: bool = False
@@ -105,6 +105,7 @@ class PipelineOptions:
     require_audio_copy: bool = False
     keep_temp: bool = False
     dry_run: bool = False
+    chinese_source: str = "auto"
 
 
 @dataclass

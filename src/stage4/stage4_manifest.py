@@ -82,6 +82,7 @@ def empty_manifest(video_dir: Path, mode: str) -> dict[str, Any]:
         "english_subtitle_hash": "",
         "chinese_subtitle_path": "",
         "chinese_subtitle_hash": "",
+        "chinese_subtitle_source": "",
         "chinese_subtitle_reviewed": False,
         "chinese_subtitle_auto_selected": False,
         "chinese_subtitle_selection_reason": "",

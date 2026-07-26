@@ -133,7 +133,7 @@ function renderHealth(health) {
   badge.classList.toggle("ready", health.ready);
 }
 
-const stageNames = { download: "下载", english: "英文", translation: "翻译", render: "成片", publish: "投稿" };
+const stageNames = { download: "下载", english: "英文", translation: "DeepSeek", render: "成片", publish: "投稿" };
 
 function renderTasks(tasks) {
   const taskKeys = new Set(tasks.map((task) => task.task));
@@ -177,6 +177,11 @@ function renderTasks(tasks) {
         <div class="task-title">
           <strong title="${escapeHtml(task.title)}">${escapeHtml(task.title)}</strong>
           <span>${escapeHtml(task.channel || task.video_id || task.task)}</span>
+          <small class="${task.chinese_auto_available ? "available" : "missing"}">
+            ${task.chinese_auto_available
+              ? `YouTube 自动中文可用 · ${escapeHtml(task.chinese_auto_name)}`
+              : "没有 YouTube 自动中文字幕"}
+          </small>
         </div>
         <div class="stage-track">${stages}</div>
         <div class="status-cell">
@@ -206,13 +211,17 @@ function renderJobs(jobs) {
     return;
   }
   container.innerHTML = jobs.slice(0, 20).map((job) => {
+    const isActive = ["queued", "running"].includes(job.status);
     const retry = ["failed", "cancelled"].includes(job.status) && job.kind !== "publish"
       ? `<button class="button button-ghost retry-job" type="button" data-job-id="${job.id}">重试</button>`
       : "";
-    const cancel = ["queued", "running"].includes(job.status)
+    const cancel = isActive
       ? `<button class="button button-danger cancel-job" type="button" data-job-id="${job.id}">终止</button>`
       : "";
-    const deleteLog = job.has_log && !["queued", "running"].includes(job.status)
+    const showLog = job.has_log || isActive
+      ? `<button class="button button-ghost show-log" type="button" data-job-id="${job.id}" data-job-title="${escapeHtml(targetLabel(job.target))}">查看日志</button>`
+      : "";
+    const deleteLog = job.has_log && !isActive
       ? `<button class="button button-danger-outline delete-job-log" type="button" data-job-id="${job.id}">删日志</button>`
       : "";
     const kind = job.kind === "download" ? "DOWNLOAD" : job.kind === "publish" ? "PUBLISH" : "PIPELINE";
@@ -233,7 +242,7 @@ function renderJobs(jobs) {
         <p>${escapeHtml(job.step)}${escapeHtml(runningHint)}${job.error ? ` · ${escapeHtml(job.error)}` : ""}</p>
         <progress class="progress-mini" max="100" value="${job.progress}" aria-label="进度 ${job.progress}%"></progress>
         <div class="job-actions">
-          <button class="button button-ghost show-log" type="button" data-job-id="${job.id}" data-job-title="${escapeHtml(targetLabel(job.target))}">查看日志</button>
+          ${showLog}
           ${cancel}
           ${retry}
           ${deleteLog}
@@ -455,9 +464,20 @@ $$("[data-workflow]").forEach((button) => {
 async function queueWorkflow(workflow) {
   const tasks = [...state.selectedTasks];
   if (!tasks.length) return toast("请先选择至少一个视频任务", true);
-  const needsPaid = workflow === "subtitles" || workflow === "complete";
+  const chineseSource = $("#chineseSubtitleSource").value;
+  const needsPaid = chineseSource === "deepseek"
+    && (workflow === "subtitles" || workflow === "complete");
   if (needsPaid && !$("#paidApiConfirm").checked) {
     return toast("请先确认允许 DeepSeek 付费翻译", true);
+  }
+  if (chineseSource === "youtube_auto") {
+    const selected = (state.dashboard?.tasks || [])
+      .filter((task) => state.selectedTasks.has(task.task));
+    const missing = selected.filter((task) => !task.chinese_auto_available);
+    if (missing.length) {
+      const names = missing.slice(0, 3).map((task) => task.title).join("、");
+      return toast(`${names} 没有自动生成的中文字幕，请改选 DeepSeek 翻译`, true);
+    }
   }
   try {
     const payload = await api("/api/pipeline", {
@@ -466,6 +486,7 @@ async function queueWorkflow(workflow) {
         tasks,
         workflow,
         render_mode: $("#renderMode").value,
+        chinese_subtitle_source: chineseSource,
         allow_paid_api: $("#paidApiConfirm").checked,
       }),
     });
@@ -476,6 +497,20 @@ async function queueWorkflow(workflow) {
     toast(error.message, true);
   }
 }
+
+function updateChineseSourceControls() {
+  const usesDeepSeek = $("#chineseSubtitleSource").value === "deepseek";
+  const confirm = $("#paidApiConfirm");
+  confirm.disabled = !usesDeepSeek;
+  if (!usesDeepSeek) confirm.checked = false;
+  confirm.closest(".paid-confirm").classList.toggle("disabled", !usesDeepSeek);
+  $("#paidApiLabel").textContent = usesDeepSeek
+    ? "允许 DeepSeek 付费翻译"
+    : "自动中文不调用 DeepSeek";
+}
+
+$("#chineseSubtitleSource").addEventListener("change", updateChineseSourceControls);
+updateChineseSourceControls();
 
 $("#jobList").addEventListener("click", async (event) => {
   const logButton = event.target.closest(".show-log");
@@ -691,7 +726,7 @@ $("#deleteCurrentLog").addEventListener("click", async () => {
   }
 });
 $("#clearOldLogs").addEventListener("click", async () => {
-  if (!window.confirm("清空所有已完成、失败和已取消任务的历史日志？\n运行中日志不会删除。")) return;
+  if (!window.confirm("清空所有已完成、失败和已取消任务的历史记录及日志？\n排队中和运行中的任务不会删除。")) return;
   const button = $("#clearOldLogs");
   button.disabled = true;
   try {
@@ -699,7 +734,7 @@ $("#clearOldLogs").addEventListener("click", async () => {
       method: "POST",
       body: "{}",
     });
-    toast(`已清理 ${payload.deleted} 条日志，释放 ${formatBytes(payload.bytes)}`);
+    toast(`已清理 ${payload.deleted_jobs} 条历史记录、${payload.deleted_logs} 个日志文件，释放 ${formatBytes(payload.bytes)}`);
     await refreshDashboard();
   } catch (error) {
     toast(error.message, true);

@@ -50,6 +50,17 @@ def make_task(project: Path, name: str = "2026-07-26/abcdefghijk_Test") -> Path:
     return task
 
 
+def mark_deepseek_translation(task: Path, status: str = "QC_PASSED") -> None:
+    write_json(
+        task / "stage3_manifest.json",
+        {
+            "translation_status": status,
+            "p1_status": status,
+            "translation_source_hash": "translated",
+        },
+    )
+
+
 def make_publish_config(project: Path) -> tuple[Path, Path]:
     executable = project / "bbup-app" / "binaries" / "biliup.exe"
     executable.parent.mkdir(parents=True, exist_ok=True)
@@ -211,6 +222,7 @@ class ScannerTests(TestCase):
             (task / "subtitles").mkdir()
             (task / "subtitles" / "en.selected.srt").write_text("English", encoding="utf-8")
             (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
             write_json(
                 task / "stage4" / "stage4_manifest.json",
                 {"status": "STAGE4_COMPLETED", "qc_status": "QC_PASSED"},
@@ -227,6 +239,7 @@ class ScannerTests(TestCase):
             (task / "subtitles").mkdir()
             (task / "subtitles" / "en.selected.srt").write_text("English", encoding="utf-8")
             (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
             write_json(
                 task / "stage4" / "stage4_manifest.json",
                 {"status": "STAGE4_COMPLETED", "qc_status": "QC_PASSED"},
@@ -243,6 +256,40 @@ class ScannerTests(TestCase):
         self.assertEqual(row["progress"], 100)
         self.assertEqual(row["overall"], "投稿完成")
         self.assertEqual(row["bvid"], "BV1xx411c7mD")
+
+    def test_downloaded_auto_chinese_does_not_mark_deepseek_translation_complete(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.auto.srt").write_text("自动中文", encoding="utf-8")
+            (task / "subtitles" / "zh.clean.srt").write_text(
+                "旧版下载阶段清洗文件",
+                encoding="utf-8",
+            )
+            row = WorkflowScanner(project).scan()[0]
+        self.assertEqual(row["stages"]["translation"]["state"], "pending")
+        self.assertTrue(row["chinese_auto_available"])
+        self.assertEqual(row["chinese_auto_name"], "zh.auto.srt")
+
+    def test_manual_chinese_track_is_not_reported_as_automatic(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            manifest = json.loads(
+                (task / "download_manifest.json").read_text(encoding="utf-8")
+            )
+            manifest["subtitle_tracks"] = {
+                "zh": {"status": "success", "source": "manual"}
+            }
+            write_json(task / "download_manifest.json", manifest)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.youtube.clean.srt").write_text(
+                "人工中文",
+                encoding="utf-8",
+            )
+            row = WorkflowScanner(project).scan()[0]
+        self.assertFalse(row["chinese_auto_available"])
 
     def test_task_resolution_cannot_escape_downloads(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -289,6 +336,78 @@ class QueueTests(TestCase):
         self.assertIn("run_stage3.py", commands[0][1][1])
         self.assertIn("--resume", commands[0][1])
         self.assertIn("run_stage4.py", commands[2][1][1])
+        self.assertIn("--chinese-source", commands[2][1])
+        self.assertIn("deepseek", commands[2][1])
+
+    def test_youtube_auto_workflow_skips_paid_translation_and_renders_hardsub(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+            commands = worker._build_commands(
+                {
+                    "kind": "pipeline",
+                    "target": task.relative_to(project / "downloads").as_posix(),
+                    "payload": {
+                        "workflow": "complete",
+                        "render_mode": "hardsub",
+                        "chinese_subtitle_source": "youtube_auto",
+                    },
+                }
+            )
+        self.assertEqual(len(commands), 2)
+        self.assertNotIn("translate", " ".join(commands[0][1]))
+        self.assertEqual(commands[-1][1][commands[-1][1].index("--mode") + 1], "hardsub")
+        self.assertEqual(
+            commands[-1][1][commands[-1][1].index("--chinese-source") + 1],
+            "youtube_auto",
+        )
+
+    def test_queue_reports_when_youtube_auto_chinese_is_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            with self.assertRaisesRegex(ValueError, "没有自动生成的中文字幕"):
+                app.queue_pipeline(
+                    tasks=[reference],
+                    workflow="complete",
+                    render_mode="hardsub",
+                    chinese_subtitle_source="youtube_auto",
+                    allow_paid_api=False,
+                )
+            app.close()
+
+    def test_youtube_auto_queue_does_not_require_paid_api_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.auto.srt").write_text(
+                "自动中文",
+                encoding="utf-8",
+            )
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            jobs = app.queue_pipeline(
+                tasks=[reference],
+                workflow="complete",
+                render_mode="hardsub",
+                chinese_subtitle_source="youtube_auto",
+                allow_paid_api=False,
+            )
+            app.close()
+        self.assertEqual(jobs[0]["payload"]["chinese_subtitle_source"], "youtube_auto")
 
     def test_queued_job_can_be_cancelled(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -331,7 +450,7 @@ class QueueTests(TestCase):
             with self.assertRaises(JobCancelled):
                 worker._raise_if_cancelled(running["id"])
 
-    def test_log_cleanup_keeps_job_history_and_skips_active_logs(self) -> None:
+    def test_log_cleanup_removes_inactive_history_and_skips_active_jobs(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
             store = JobStore(root / "jobs.sqlite3", root / "logs")
@@ -347,9 +466,25 @@ class QueueTests(TestCase):
             self.assertFalse(Path(finished["log_path"]).exists())
             self.assertFalse(orphan.exists())
             self.assertTrue(Path(active["log_path"]).exists())
-            self.assertEqual(store.get(finished["id"])["status"], "completed")
+            with self.assertRaises(KeyError):
+                store.get(finished["id"])
+            self.assertEqual(store.get(active["id"])["status"], "running")
         self.assertEqual(summary["deleted"], 2)
+        self.assertEqual(summary["deleted_logs"], 2)
+        self.assertEqual(summary["deleted_jobs"], 1)
         self.assertEqual(summary["skipped_active"], 1)
+
+    def test_log_cleanup_removes_inactive_history_without_log_file(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            finished = store.enqueue("download", "finished", {"url": "https://youtu.be/abcdefghijk"})
+            store.update(finished["id"], status="completed")
+            summary = store.clear_inactive_logs()
+            with self.assertRaises(KeyError):
+                store.get(finished["id"])
+        self.assertEqual(summary["deleted_logs"], 0)
+        self.assertEqual(summary["deleted_jobs"], 1)
 
 
 class DestructiveActionTests(TestCase):
@@ -419,6 +554,7 @@ class PublishingTests(TestCase):
             task = make_task(project)
             (task / "subtitles").mkdir()
             (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
             publishing = BiliupIntegration(project)
             defaults = publishing.defaults(task)
             payload = publishing.validate_submission(
@@ -472,6 +608,7 @@ class PublishingTests(TestCase):
             task = make_task(project)
             (task / "subtitles").mkdir()
             (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
             publishing = BiliupIntegration(project)
             with self.assertRaisesRegex(ValueError, "确认"):
                 publishing.validate_submission(task, publishing.defaults(task))

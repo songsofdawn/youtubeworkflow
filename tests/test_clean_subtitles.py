@@ -133,6 +133,7 @@ class SubtitleCleanerTests(TestCase):
         try:
             english_cues = parse_srt(result["clean_srt"])
             chinese_cues = parse_srt(result["zh_clean_srt"])
+            self.assertEqual(Path(result["zh_clean_srt"]).name, "zh.youtube.clean.srt")
             self.assertEqual([(cue.start, cue.end) for cue in chinese_cues], [(cue.start, cue.end) for cue in english_cues])
             self.assertIn("第一句", chinese_cues[0].text)
         finally:

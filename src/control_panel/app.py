@@ -8,7 +8,12 @@ from typing import Any
 
 from .jobs import JobStore, WorkflowWorker
 from .publishing import BiliupIntegration
-from .tasks import WorkflowScanner, read_json
+from .tasks import (
+    WorkflowScanner,
+    deepseek_translation_ready,
+    read_json,
+    youtube_auto_chinese_path,
+)
 from .youtube import TargetedYouTubeSearch, load_env_values, normalize_video_inputs
 
 
@@ -149,27 +154,58 @@ class ControlPanelApp:
         tasks: list[str],
         workflow: str,
         render_mode: str,
+        chinese_subtitle_source: str,
         allow_paid_api: bool,
     ) -> list[dict[str, Any]]:
         if workflow not in {"subtitles", "render", "complete"}:
             raise ValueError("不支持的处理流程")
         if render_mode not in {"ass", "softsub", "hardsub", "both"}:
             raise ValueError("不支持的成片模式")
+        if chinese_subtitle_source not in {"deepseek", "youtube_auto"}:
+            raise ValueError("不支持的中文字幕来源")
         if not tasks:
             raise ValueError("请至少选择一个已下载的视频")
         if len(tasks) > 50:
             raise ValueError("一次最多加入 50 个视频")
-        if workflow in {"subtitles", "complete"}:
+        uses_deepseek = (
+            chinese_subtitle_source == "deepseek"
+            and workflow in {"subtitles", "complete"}
+        )
+        if uses_deepseek:
             if not allow_paid_api:
                 raise ValueError("翻译会调用付费 API，请先在面板中确认")
             if not self.health()["checks"]["deepseek_api"]:
                 raise ValueError("DEEPSEEK_API_KEY 尚未配置")
 
-        validated = []
+        validated: list[str] = []
+        task_dirs: dict[str, Path] = {}
         for task in tasks:
-            self.scanner.resolve_task(task)
+            task_dirs[task] = self.scanner.resolve_task(task)
             if task not in validated:
                 validated.append(task)
+        if chinese_subtitle_source == "youtube_auto":
+            missing = [
+                task for task in validated
+                if youtube_auto_chinese_path(task_dirs[task]) is None
+            ]
+            if missing:
+                labels = "、".join(Path(task).name for task in missing[:5])
+                suffix = f"等 {len(missing)} 个视频" if len(missing) > 5 else ""
+                raise ValueError(
+                    f"以下视频没有自动生成的中文字幕：{labels}{suffix}。"
+                    "请改选 DeepSeek 翻译。"
+                )
+        if workflow == "render" and chinese_subtitle_source == "deepseek":
+            missing = [
+                task for task in validated
+                if not deepseek_translation_ready(task_dirs[task])
+            ]
+            if missing:
+                labels = "、".join(Path(task).name for task in missing[:5])
+                raise ValueError(
+                    f"以下视频尚未完成 DeepSeek 翻译：{labels}。"
+                    "请先处理到双语字幕。"
+                )
         jobs = [
             self.store.enqueue(
                 "pipeline",
@@ -177,6 +213,7 @@ class ControlPanelApp:
                 {
                     "workflow": workflow,
                     "render_mode": render_mode,
+                    "chinese_subtitle_source": chinese_subtitle_source,
                     "allow_paid_api": bool(allow_paid_api),
                 },
             )

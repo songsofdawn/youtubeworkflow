@@ -21,7 +21,7 @@ from src.stage3.publish_metadata import (
     utf16_code_units,
 )
 
-from .tasks import read_json
+from .tasks import deepseek_translation_ready, read_json
 from .youtube import load_env_values
 
 
@@ -254,13 +254,7 @@ class BiliupIntegration:
         cover = task_dir / "metadata" / "thumbnail.jpg"
         accounts = self.accounts()
         media = self.expected_hardsub(task_dir)
-        translated = any(
-            path.is_file() and path.stat().st_size > 0
-            for path in (
-                task_dir / "subtitles" / "zh.reviewed.srt",
-                task_dir / "subtitles" / "zh.clean.srt",
-            )
-        )
+        translated = deepseek_translation_ready(task_dir)
         metadata_status = str(recommendation.get("status") or "MISSING")
         return {
             "title": upload_title,
@@ -374,13 +368,7 @@ class BiliupIntegration:
         use_cover = values.get("use_cover") is True
         if use_cover and (not cover.is_file() or cover.stat().st_size == 0):
             raise ValueError("任务中没有可用的封面文件")
-        translated = any(
-            path.is_file() and path.stat().st_size > 0
-            for path in (
-                task_dir / "subtitles" / "zh.reviewed.srt",
-                task_dir / "subtitles" / "zh.clean.srt",
-            )
-        )
+        translated = deepseek_translation_ready(task_dir)
         media = self.expected_hardsub(task_dir)
         if not translated and not (media.is_file() and media.stat().st_size > 0):
             raise ValueError("中文字幕尚未完成，请先运行双语字幕处理")

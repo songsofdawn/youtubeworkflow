@@ -353,7 +353,7 @@ def clean_subtitle_file(input_path: Path | str, output_path: Path | str | None =
         zh_raw = parse_webvtt(zh_reference) if zh_reference.suffix.lower() == ".vtt" else parse_srt(zh_reference)
         zh_fragments, prepared_stats = prepare_fragments(zh_raw)
         aligned = align_translation_to_english(clean_english, zh_fragments)
-        zh_clean = source.with_name("zh.clean.srt")
+        zh_clean = source.with_name("zh.youtube.clean.srt")
         write_srt(zh_clean, aligned)
         zh_stats = {"status": "success", "reference": str(zh_reference), "input_cues": len(zh_raw), "output_cues": len(aligned), **prepared_stats}
 

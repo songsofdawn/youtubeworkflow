@@ -331,6 +331,7 @@ class Stage4Pipeline:
                 root,
                 self.config,
                 require_reviewed=options.require_reviewed,
+                chinese_source=options.chinese_source,
             )
             source_hash = sha256_file(resolved.source_video)
             source_probe = probe_media(self.ffprobe_path, resolved.source_video)
@@ -379,6 +380,7 @@ class Stage4Pipeline:
                     "english_subtitle_hash": english_hash,
                     "chinese_subtitle_path": str(resolved.chinese_subtitle),
                     "chinese_subtitle_hash": chinese_hash,
+                    "chinese_subtitle_source": options.chinese_source,
                     "chinese_subtitle_reviewed": resolved.chinese_subtitle_reviewed,
                     "chinese_subtitle_auto_selected": resolved.chinese_subtitle_auto_selected,
                     "chinese_subtitle_selection_reason": (

@@ -101,6 +101,44 @@ class InputResolverTests(unittest.TestCase):
                 resolve_inputs(root, CONFIG)
             self.assertEqual(caught.exception.code, "CHINESE_SUBTITLE_NOT_FOUND")
 
+    def test_deepseek_source_requires_translation_manifest_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            with self.assertRaises(Stage4Error) as caught:
+                resolve_inputs(root, CONFIG, chinese_source="deepseek")
+            self.assertEqual(caught.exception.code, "DEEPSEEK_TRANSLATION_NOT_FOUND")
+
+    def test_deepseek_source_accepts_completed_translation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            (root / "stage3_manifest.json").write_text(
+                json.dumps({"translation_status": "QC_PASSED"}),
+                encoding="utf-8",
+            )
+            result = resolve_inputs(root, CONFIG, chinese_source="deepseek")
+            self.assertEqual(result.chinese_subtitle.name, "zh.clean.srt")
+
+    def test_youtube_auto_source_reports_missing_chinese_track(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            with self.assertRaises(Stage4Error) as caught:
+                resolve_inputs(root, CONFIG, chinese_source="youtube_auto")
+            self.assertEqual(caught.exception.code, "ZH_AUTO_SUBTITLE_NOT_FOUND")
+
+    def test_youtube_auto_source_uses_automatic_chinese_track(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            (root / "subtitles" / "zh.auto.srt").write_text(
+                CHINESE_SRT,
+                encoding="utf-8",
+            )
+            result = resolve_inputs(root, CONFIG, chinese_source="youtube_auto")
+            self.assertEqual(result.chinese_subtitle.name, "zh.auto.srt")
+
     def test_manifest_video_beats_unrelated_candidate(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

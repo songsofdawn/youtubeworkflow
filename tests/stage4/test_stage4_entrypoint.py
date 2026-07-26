@@ -35,6 +35,9 @@ def make_task(root: Path, name: str) -> Path:
 
 
 class Stage4EntrypointTests(unittest.TestCase):
+    def test_default_output_mode_is_publishable_hardsub(self) -> None:
+        self.assertEqual(PipelineOptions().mode, "hardsub")
+
     def test_discovers_direct_task_without_treating_it_as_batch(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             task = make_task(Path(temporary), "task")

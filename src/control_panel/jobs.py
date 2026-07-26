@@ -221,14 +221,18 @@ class JobStore:
         with self._connect() as connection:
             rows = connection.execute("SELECT * FROM jobs ORDER BY created_at DESC").fetchall()
         jobs = [self._serialize(row) for row in rows]
+        active_jobs = [
+            job for job in jobs if job["status"] in {"queued", "running"}
+        ]
+        inactive_jobs = [
+            job for job in jobs if job["status"] not in {"queued", "running"}
+        ]
         active_paths = {
             self._safe_log_path(job)
-            for job in jobs
-            if job["status"] in {"queued", "running"}
+            for job in active_jobs
         }
         deleted = 0
         deleted_bytes = 0
-        skipped_active = sum(path.is_file() for path in active_paths)
         root = self.logs_dir.resolve()
         for candidate in self.logs_dir.rglob("*.log"):
             try:
@@ -241,10 +245,18 @@ class JobStore:
             deleted_bytes += path.stat().st_size
             path.unlink()
             deleted += 1
+        if inactive_jobs:
+            with self._connect() as connection:
+                connection.executemany(
+                    "DELETE FROM jobs WHERE id = ?",
+                    [(str(job["id"]),) for job in inactive_jobs],
+                )
         return {
             "deleted": deleted,
+            "deleted_logs": deleted,
+            "deleted_jobs": len(inactive_jobs),
             "bytes": deleted_bytes,
-            "skipped_active": skipped_active,
+            "skipped_active": len(active_jobs),
         }
 
     def delete_jobs_for_targets(self, targets: set[str]) -> dict[str, int]:
@@ -542,6 +554,11 @@ class WorkflowWorker:
         task_dir = self.scanner.resolve_task(str(job["target"]))
         stage3_python = self.project_root / ".venv_stage3" / "Scripts" / "python.exe"
         steps = str(payload.get("workflow") or "complete")
+        chinese_source = str(
+            payload.get("chinese_subtitle_source") or "deepseek"
+        )
+        if chinese_source not in {"deepseek", "youtube_auto"}:
+            raise ValueError("不支持的中文字幕来源")
         commands: list[tuple[str, list[str]]] = []
         if steps in {"subtitles", "complete"}:
             commands.append(
@@ -560,23 +577,24 @@ class WorkflowWorker:
                     ],
                 )
             )
-            commands.append(
-                (
-                    "翻译并检查中文字幕",
-                    [
-                        str(stage3_python),
-                        str(self.project_root / "src" / "run_stage3.py"),
-                        "--video-dir",
-                        str(task_dir),
-                        "--steps",
-                        "translate",
-                        "--resume",
-                        "--allow-paid-api",
-                    ],
+            if chinese_source == "deepseek":
+                commands.append(
+                    (
+                        "翻译并检查中文字幕",
+                        [
+                            str(stage3_python),
+                            str(self.project_root / "src" / "run_stage3.py"),
+                            "--video-dir",
+                            str(task_dir),
+                            "--steps",
+                            "translate",
+                            "--resume",
+                            "--allow-paid-api",
+                        ],
+                    )
                 )
-            )
         if steps in {"render", "complete"}:
-            mode = str(payload.get("render_mode") or "softsub")
+            mode = str(payload.get("render_mode") or "hardsub")
             if mode not in {"ass", "softsub", "hardsub", "both"}:
                 raise ValueError("不支持的成片模式")
             commands.append(
@@ -589,6 +607,8 @@ class WorkflowWorker:
                         str(task_dir),
                         "--mode",
                         mode,
+                        "--chinese-source",
+                        chinese_source,
                         "--resume",
                     ],
                 )

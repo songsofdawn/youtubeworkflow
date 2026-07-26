@@ -53,7 +53,7 @@
     "max_combined_lines": 4
   },
   "render": {
-    "default_mode": "softsub",
+    "default_mode": "hardsub",
     "video_encoder": "auto",
     "nvenc_preset": "p6",
     "nvenc_cq": 19,

@@ -49,13 +49,60 @@ def _recovered_subtitle_inputs(
     return english, chinese, False, True, score, reason, report
 
 
+def _deepseek_translation_ready(video_dir: Path) -> bool:
+    manifest_path = video_dir / "stage3_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    status = str(
+        manifest.get("translation_status")
+        or manifest.get("p1_status")
+        or ""
+    ).upper()
+    return status in {"QC_PASSED", "REVIEW_REQUIRED", "TRANSLATION_COMPLETED"}
+
+
+def _youtube_auto_chinese_available(video_dir: Path) -> bool:
+    manifest_path = video_dir / "download_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        manifest = {}
+    tracks = manifest.get("subtitle_tracks")
+    chinese_track = tracks.get("zh") if isinstance(tracks, dict) else {}
+    recorded_auto = (
+        isinstance(chinese_track, dict)
+        and str(chinese_track.get("source") or "").casefold() == "auto"
+    )
+    raw_auto_exists = any(
+        _configured_task_path(video_dir, value).is_file()
+        for value in ("subtitles/zh.auto.srt", "subtitles/zh.auto.vtt")
+    )
+    return recorded_auto or raw_auto_exists
+
+
 def resolve_subtitle_inputs(
     video_dir: Path,
     config: dict[str, Any],
     *,
     require_reviewed: bool = False,
+    chinese_source: str = "auto",
 ) -> tuple[Path, Path, bool, bool, float | None, str, dict[str, Any]]:
+    if chinese_source not in {"auto", "deepseek", "youtube_auto"}:
+        raise Stage4Error(
+            "UNSUPPORTED_CHINESE_SUBTITLE_SOURCE",
+            f"不支持的中文字幕来源：{chinese_source}",
+        )
     input_config = config.get("input", {})
+    youtube_auto_config = {
+        **input_config,
+        "chinese_recovery_candidates": [
+            "subtitles/zh.youtube.clean.srt",
+            "subtitles/zh.auto.vtt",
+            "subtitles/zh.auto.srt",
+        ],
+    }
     english = _configured_task_path(
         video_dir,
         str(input_config.get("english_subtitle", "subtitles/en.selected.srt")),
@@ -65,19 +112,30 @@ def resolve_subtitle_inputs(
             "EN_SELECTED_SUBTITLE_NOT_FOUND",
             f"找不到阶段三选定的英文字幕：{english}。请先完成阶段三字幕选择。",
         )
-        if not require_reviewed:
+        if not require_reviewed and chinese_source in {"auto", "youtube_auto"}:
             try:
-                return _recovered_subtitle_inputs(video_dir, input_config)
+                recovery_config = (
+                    youtube_auto_config
+                    if chinese_source == "youtube_auto"
+                    else input_config
+                )
+                return _recovered_subtitle_inputs(video_dir, recovery_config)
             except Stage4Error as recovery_error:
                 missing_english.details["automatic_recovery"] = recovery_error.to_dict()
         raise missing_english
+
+    if chinese_source == "deepseek" and not _deepseek_translation_ready(video_dir):
+        raise Stage4Error(
+            "DEEPSEEK_TRANSLATION_NOT_FOUND",
+            "尚未生成 DeepSeek 中文字幕。请先在控制面板选择 DeepSeek 翻译并处理字幕。",
+        )
 
     priorities = input_config.get(
         "chinese_priority",
         ["subtitles/zh.reviewed.srt", "subtitles/zh.clean.srt"],
     )
     reviewed = _configured_task_path(video_dir, "subtitles/zh.reviewed.srt")
-    if reviewed.is_file():
+    if reviewed.is_file() and chinese_source != "youtube_auto":
         reason = "存在人工审核字幕，按最高优先级选择 zh.reviewed.srt"
         return (
             english,
@@ -100,7 +158,23 @@ def resolve_subtitle_inputs(
             "ZH_REVIEWED_SUBTITLE_NOT_FOUND",
             f"严格模式要求人工审核字幕，但文件不存在：{reviewed}",
         )
-    candidates = input_config.get("chinese_auto_candidates", priorities)
+    if chinese_source == "youtube_auto":
+        candidates = [
+            "subtitles/zh.youtube.clean.srt",
+            "subtitles/zh.auto.srt",
+        ]
+        if not _youtube_auto_chinese_available(video_dir):
+            raise Stage4Error(
+                "ZH_AUTO_SUBTITLE_NOT_FOUND",
+                "该视频没有自动生成的中文字幕，请改选 DeepSeek 翻译。",
+            )
+    elif chinese_source == "deepseek":
+        candidates = [
+            "subtitles/zh.clean.srt",
+            "subtitles/zh.raw.srt",
+        ]
+    else:
+        candidates = input_config.get("chinese_auto_candidates", priorities)
     try:
         selected, score, reason, report = select_best_chinese_subtitle(
             video_dir,
@@ -115,11 +189,23 @@ def resolve_subtitle_inputs(
             "NO_VALID_CHINESE_SUBTITLE",
         }:
             raise
-        try:
-            return _recovered_subtitle_inputs(video_dir, input_config)
-        except Stage4Error as recovery_error:
-            selection_error.details["automatic_recovery"] = recovery_error.to_dict()
-            raise selection_error
+        if chinese_source != "deepseek":
+            try:
+                recovery_config = (
+                    youtube_auto_config
+                    if chinese_source == "youtube_auto"
+                    else input_config
+                )
+                return _recovered_subtitle_inputs(video_dir, recovery_config)
+            except Stage4Error as recovery_error:
+                selection_error.details["automatic_recovery"] = recovery_error.to_dict()
+        if chinese_source == "youtube_auto":
+            raise Stage4Error(
+                "ZH_AUTO_SUBTITLE_UNUSABLE",
+                "找到了自动生成的中文字幕，但无法与英文字幕可靠对齐。请改选 DeepSeek 翻译。",
+                details=selection_error.details,
+            )
+        raise selection_error
     return english, selected, False, True, score, reason, report
 
 
@@ -216,6 +302,7 @@ def resolve_inputs(
     config: dict[str, Any],
     *,
     require_reviewed: bool = False,
+    chinese_source: str = "auto",
 ) -> ResolvedInputs:
     root = Path(video_dir).resolve()
     if not root.is_dir():
@@ -232,6 +319,7 @@ def resolve_inputs(
         root,
         config,
         require_reviewed=require_reviewed,
+        chinese_source=chinese_source,
     )
     source, reason, candidates = resolve_source_video(root)
     return ResolvedInputs(
