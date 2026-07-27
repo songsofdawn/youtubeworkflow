@@ -1,0 +1,51 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements_stage1.txt
+            requirements_stage3.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements_stage1.txt -r requirements_stage3.txt
+
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -p "test_*.py"
+
+      - name: Check source syntax
+        run: python -m compileall -q src tests
+
+      - name: Check dependency consistency
+        run: python -m pip check
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Ensure private paths are not tracked
+        shell: pwsh
+        run: |
+          $tracked = git ls-files -- .env models downloads .venv .venv_stage3 private logs work
+          if ($tracked) {
+            Write-Error "Private or generated paths are tracked:`n$($tracked -join "`n")"
+          }

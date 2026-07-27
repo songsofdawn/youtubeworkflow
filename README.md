@@ -595,6 +595,17 @@ models\faster-whisper-large-v3\vocabulary.json
 .venv_stage3\Scripts\python.exe -m compileall -q src
 ```
 
+Windows 下也可以直接双击：
+
+```text
+verify_project.bat
+```
+
+它会依次运行完整离线测试、两套环境的语法检查与依赖一致性检查、Git
+空白错误检查，以及私密/生成目录误入版本库检查。仓库的 GitHub Actions 会在
+每次推送和 Pull Request 时执行同等的离线质量门禁；测试使用 mock，不会访问
+YouTube、调用 DeepSeek、启动 FFmpeg 成片或产生投稿。
+
 ## 上传 GitHub
 
 `.gitignore` 已排除以下内容：

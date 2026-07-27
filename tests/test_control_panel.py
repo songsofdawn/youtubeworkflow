@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 import threading
 import urllib.request
@@ -108,6 +109,19 @@ def make_publish_config(project: Path) -> tuple[Path, Path]:
         },
     )
     return executable, account_dir / "10001.json"
+
+
+class StaticPanelContractTests(TestCase):
+    def test_sidebar_can_shrink_inside_the_workspace_grid(self) -> None:
+        stylesheet = (
+            ROOT / "src" / "control_panel" / "static" / "styles.css"
+        ).read_text(encoding="utf-8")
+        side_column_rule = re.search(r"\.side-column,\s*\n\.system-card,", stylesheet)
+        self.assertIsNotNone(side_column_rule)
+        shrink_group = stylesheet[
+            side_column_rule.start() : stylesheet.find("}", side_column_rule.start())
+        ]
+        self.assertIn("min-width: 0;", shrink_group)
 
 
 class VideoInputTests(TestCase):

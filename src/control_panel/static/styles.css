@@ -545,6 +545,13 @@ input[type="checkbox"] {
 }
 
 .tasks-panel,
+.side-column,
+.system-card,
+.queue-card {
+  min-width: 0;
+}
+
+.tasks-panel,
 .system-card,
 .queue-card {
   padding: 26px;
@@ -878,6 +885,7 @@ input[type="checkbox"] {
 }
 
 .job-item {
+  min-width: 0;
   padding: 11px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
@@ -886,6 +894,7 @@ input[type="checkbox"] {
 
 .job-top,
 .job-actions {
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
