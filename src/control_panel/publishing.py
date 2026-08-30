@@ -13,6 +13,7 @@ from src.stage3.publish_metadata import (
     build_publish_description,
     category_for_tid,
     compose_bilingual_title,
+    compose_localized_title,
     load_category_mapping,
     normalize_tags,
     truncate_utf8,
@@ -21,7 +22,11 @@ from src.stage3.publish_metadata import (
     utf16_code_units,
 )
 
-from .tasks import deepseek_translation_ready, read_json
+from .tasks import (
+    deepseek_translation_ready,
+    no_english_subtitle_or_recognized_speech,
+    read_json,
+)
 from .youtube import load_env_values
 
 
@@ -48,6 +53,27 @@ BVID_PATTERN = re.compile(r"\b(BV[0-9A-Za-z]{10})\b")
 RESPONSE_ERROR_PATTERN = re.compile(
     r'ResponseData\s*\{\s*code:\s*(-?\d+).*?message:\s*"([^"]*)"',
     re.DOTALL,
+)
+SENSITIVE_LOG_VALUE_PATTERN = re.compile(
+    r"(?i)(\b(?:access_key|access_token|refresh_token|sign|SESSDATA|bili_jct)"
+    r"(?:=|%3D|:))"
+    r"[^&\s\"')]+"
+)
+TRANSIENT_UPLOAD_PATTERNS = (
+    "tls handshake eof",
+    "tls close_notify",
+    "peer closed connection",
+    "unexpected eof",
+    "connection error",
+    "connection reset",
+    "error sending request",
+    "network is unreachable",
+    "operation timed out",
+    "request timed out",
+    "http2 error",
+    "http 502",
+    "http 503",
+    "http 504",
 )
 BILIBILI_DESCRIPTION_MAX_UNITS = 2000
 BILIBILI_DESCRIPTION_MAX_UTF8_BYTES = 1900
@@ -193,19 +219,58 @@ class BiliupIntegration:
     def health(self) -> dict[str, Any]:
         executable = self.executable()
         accounts = self.accounts()
+        minimum_interval_seconds = self.publish_min_interval_seconds()
         return {
             "available": executable is not None,
             "version": self.version() if executable else "",
             "account_count": len(accounts),
             "account_ready": bool(accounts),
             "accounts": accounts,
+            "publish_min_interval_seconds": minimum_interval_seconds,
+            "publish_min_interval_minutes": minimum_interval_seconds // 60,
         }
+
+    def update_publish_settings(self, values: dict[str, Any]) -> list[str]:
+        if "publish_min_interval_minutes" not in values:
+            return []
+        raw_minutes = values["publish_min_interval_minutes"]
+        if isinstance(raw_minutes, bool):
+            raise ValueError("投稿最短间隔必须是整数分钟")
+        try:
+            minutes = int(raw_minutes)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("投稿最短间隔必须是整数分钟") from exc
+        if str(raw_minutes).strip() != str(minutes):
+            raise ValueError("投稿最短间隔必须是整数分钟")
+        if not 1 <= minutes <= 1440:
+            raise ValueError("投稿最短间隔必须在 1 到 1440 分钟之间")
+        updated = dict(self.config)
+        updated["publish_min_interval_seconds"] = minutes * 60
+        atomic_write_json(self.config_path, updated)
+        self.config = updated
+        return ["publish_min_interval_minutes"]
 
     @staticmethod
     def expected_hardsub(task_dir: Path) -> Path:
         return task_dir / "stage4" / "video" / "final_bilingual_hardsub.mp4"
 
-    def defaults(self, task_dir: Path) -> dict[str, Any]:
+    @staticmethod
+    def expected_source_video(task_dir: Path) -> Path:
+        return task_dir / "video" / "source.mp4"
+
+    def media_for_payload(self, task_dir: Path, payload: dict[str, Any]) -> Path:
+        return (
+            self.expected_source_video(task_dir)
+            if payload.get("publish_original_video") is True
+            else self.expected_hardsub(task_dir)
+        )
+
+    def defaults(
+        self,
+        task_dir: Path,
+        *,
+        publish_original_video: bool | None = None,
+    ) -> dict[str, Any]:
         download = read_json(task_dir / "download_manifest.json")
         info = read_json(task_dir / "metadata" / "info.json")
         recommendation = read_json(task_dir / "stage3" / "publish_metadata.json")
@@ -225,8 +290,22 @@ class BiliupIntegration:
             if description_path.is_file()
             else str(info.get("description") or "")
         )
+        original_media = (
+            no_english_subtitle_or_recognized_speech(task_dir)
+            if publish_original_video is None
+            else bool(publish_original_video)
+        )
         chinese_title = str(recommendation.get("title_zh") or "").strip()
-        upload_title = compose_bilingual_title(chinese_title, title)
+        upload_title = (
+            compose_localized_title(
+                chinese_title,
+                title,
+                prefix="【无配音】",
+                fallback_title="无配音精选",
+            )
+            if original_media
+            else compose_bilingual_title(chinese_title, title)
+        )
         recommended_tid = int(
             recommendation.get("tid")
             or self.config.get("default_tid")
@@ -243,8 +322,15 @@ class BiliupIntegration:
         description = build_publish_description(
             original_description,
             disclaimer=str(
-                self.config.get("description_disclaimer")
-                or "【免责声明】\n本视频为中英双语本地化版本，请以原视频内容为准。"
+                (
+                    "【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区"
+                    "已进行中文本地化，视频画面及音轨保持原样。"
+                )
+                if original_media
+                else (
+                    self.config.get("description_disclaimer")
+                    or "【免责声明】\n本视频为中英双语本地化版本，请以原视频内容为准。"
+                )
             ),
             original_heading=str(
                 self.config.get("description_original_heading")
@@ -253,7 +339,11 @@ class BiliupIntegration:
         )
         cover = task_dir / "metadata" / "thumbnail.jpg"
         accounts = self.accounts()
-        media = self.expected_hardsub(task_dir)
+        media = (
+            self.expected_source_video(task_dir)
+            if original_media
+            else self.expected_hardsub(task_dir)
+        )
         translated = deepseek_translation_ready(task_dir)
         metadata_status = str(recommendation.get("status") or "MISSING")
         return {
@@ -269,6 +359,8 @@ class BiliupIntegration:
             "tags": normalize_tags(
                 recommendation.get("tags"),
                 fallback=[category["name"]],
+                required=["无配音"] if original_media else None,
+                excluded=["中英双语", "中文翻译"] if original_media else None,
             ),
             "copyright": int(self.config.get("default_copyright", 2)),
             "source": source_url,
@@ -293,6 +385,7 @@ class BiliupIntegration:
             "media_ready": media.is_file() and media.stat().st_size > 0,
             "translation_ready": translated,
             "media_name": media.name,
+            "publish_original_video": original_media,
             "accounts": accounts,
             "account_id": accounts[0]["id"] if accounts else "",
         }
@@ -321,8 +414,13 @@ class BiliupIntegration:
             raise ValueError("投稿标题不能为空")
         if utf16_code_units(title) > 80:
             raise ValueError("投稿标题不能超过 80 个字符")
-        if not title.startswith("【中英双语】"):
-            raise ValueError("投稿标题必须以【中英双语】开头")
+        publish_original_video = values.get("publish_original_video") is True or (
+            "publish_original_video" not in values
+            and no_english_subtitle_or_recognized_speech(task_dir)
+        )
+        expected_prefix = "【无配音】" if publish_original_video else "【中英双语】"
+        if not title.startswith(expected_prefix):
+            raise ValueError(f"投稿标题必须以{expected_prefix}开头")
         if not re.search(r"[\u3400-\u9fff]", title):
             raise ValueError("投稿标题必须包含中文标题")
         if utf16_code_units(description) > BILIBILI_DESCRIPTION_MAX_UNITS:
@@ -369,9 +467,18 @@ class BiliupIntegration:
         if use_cover and (not cover.is_file() or cover.stat().st_size == 0):
             raise ValueError("任务中没有可用的封面文件")
         translated = deepseek_translation_ready(task_dir)
-        media = self.expected_hardsub(task_dir)
-        if not translated and not (media.is_file() and media.stat().st_size > 0):
+        media = self.media_for_payload(
+            task_dir,
+            {"publish_original_video": publish_original_video},
+        )
+        if not publish_original_video and not translated and not (
+            media.is_file() and media.stat().st_size > 0
+        ):
             raise ValueError("中文字幕尚未完成，请先运行双语字幕处理")
+        if publish_original_video and not (
+            media.is_file() and media.stat().st_size > 0
+        ):
+            raise ValueError("原始视频不存在或为空，无法按无配音模式投稿")
         if values.get("confirm_publish") is not True:
             raise ValueError("投稿前必须确认版权、分区、标题和来源均已核对")
 
@@ -379,7 +486,11 @@ class BiliupIntegration:
             "title": title,
             "description": description,
             "dynamic": dynamic,
-            "tags": normalize_tags(tags),
+            "tags": normalize_tags(
+                tags,
+                required=["无配音"] if publish_original_video else None,
+                excluded=["中英双语", "中文翻译"] if publish_original_video else None,
+            ),
             "copyright": copyright_value,
             "source": source,
             "tid": tid,
@@ -395,7 +506,65 @@ class BiliupIntegration:
             "account_id": account["id"],
             "account_label": account["label"],
             "prepare_hardsub": not (media.is_file() and media.stat().st_size > 0),
+            "publish_original_video": publish_original_video,
         }
+
+    def automatic_submission(
+        self,
+        task_dir: Path,
+        *,
+        account_id: str = "",
+        is_only_self: bool | None = None,
+        publish_original_video: bool = False,
+    ) -> dict[str, Any]:
+        """Build a validated payload for an explicitly enabled unattended run."""
+        defaults = self.defaults(
+            task_dir,
+            publish_original_video=publish_original_video,
+        )
+        values = {
+            **defaults,
+            "account_id": account_id or defaults.get("account_id") or "",
+            "confirm_publish": True,
+        }
+        if is_only_self is not None:
+            values["is_only_self"] = bool(is_only_self)
+        payload = self.validate_submission(task_dir, values)
+        payload["automatic"] = True
+        return payload
+
+    @staticmethod
+    def mark_automation_skipped(
+        task_dir: Path,
+        reason: str,
+        *,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        atomic_write_json(
+            task_dir / "stage5" / "automation_manifest.json",
+            {
+                "schema_version": 1,
+                "status": "SKIPPED",
+                "reason": str(reason),
+                "details": dict(details or {}),
+                "finished_at": utc_now(),
+            },
+        )
+
+    @staticmethod
+    def mark_automation_original_media(task_dir: Path) -> None:
+        atomic_write_json(
+            task_dir / "stage5" / "automation_manifest.json",
+            {
+                "schema_version": 1,
+                "status": "ORIGINAL_MEDIA",
+                "reason": "NO_NARRATION_OR_BACKGROUND_MUSIC",
+                "details": {
+                    "message": "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息"
+                },
+                "finished_at": utc_now(),
+            },
+        )
 
     @staticmethod
     def prepare_payload_for_execution(payload: dict[str, Any]) -> dict[str, Any]:
@@ -419,11 +588,139 @@ class BiliupIntegration:
         return prepared
 
     @staticmethod
+    def redact_log_text(log_text: str) -> str:
+        """Remove Bilibili session material from uploader output before persistence."""
+        return SENSITIVE_LOG_VALUE_PATTERN.sub(r"\1<redacted>", str(log_text))
+
+    @staticmethod
+    def is_transient_upload_failure(log_text: str) -> bool:
+        normalized = str(log_text).casefold()
+        return any(pattern in normalized for pattern in TRANSIENT_UPLOAD_PATTERNS)
+
+    @staticmethod
+    def response_error(log_text: str) -> tuple[int, str] | None:
+        matches = list(RESPONSE_ERROR_PATTERN.finditer(str(log_text)))
+        if not matches:
+            return None
+        match = matches[-1]
+        return int(match.group(1)), match.group(2).strip()
+
+    @staticmethod
+    def is_publish_rate_limited(log_text: str) -> bool:
+        response = BiliupIntegration.response_error(log_text)
+        return response is not None and response[0] == 137022
+
+    @staticmethod
+    def failed_upload_is_safe_to_retry(log_text: str) -> bool:
+        """Allow one-click retry only when failure happened before submission."""
+        normalized = str(log_text).casefold()
+        if BiliupIntegration.is_publish_rate_limited(log_text):
+            # Bilibili explicitly rejected archive creation, so retrying after
+            # the scheduler cooldown cannot create a duplicate submission.
+            return True
+        if not BiliupIntegration.is_transient_upload_failure(normalized):
+            return False
+        if BVID_PATTERN.search(log_text) or any(
+            marker in normalized
+            for marker in (
+                "投稿成功",
+                "submit success",
+                "archive created",
+                "稿件创建成功",
+            )
+        ):
+            return False
+        return any(
+            marker in normalized
+            for marker in (
+                "passport-login/oauth2/info",
+                "/preupload?",
+                "pre_upload:",
+            )
+        )
+
+    def transient_retry_delays(self) -> list[float]:
+        raw = self.config.get("transient_retry_delays_seconds", [3, 8, 15])
+        if not isinstance(raw, list):
+            return [3.0, 8.0, 15.0]
+        delays: list[float] = []
+        for value in raw[:5]:
+            try:
+                delay = float(value)
+            except (TypeError, ValueError):
+                continue
+            if 0 <= delay <= 60:
+                delays.append(delay)
+        return delays
+
+    def publish_min_interval_seconds(self) -> int:
+        try:
+            value = int(self.config.get("publish_min_interval_seconds", 180))
+        except (TypeError, ValueError):
+            value = 180
+        return max(0, min(value, 86400))
+
+    def publish_daily_limit(self) -> int:
+        try:
+            value = int(self.config.get("publish_daily_limit", 20))
+        except (TypeError, ValueError):
+            value = 20
+        return max(0, min(value, 100))
+
+    def publish_rate_limit_cooldown_seconds(self) -> int:
+        try:
+            value = int(
+                self.config.get("publish_rate_limit_cooldown_seconds", 21600)
+            )
+        except (TypeError, ValueError):
+            value = 21600
+        return max(300, min(value, 604800))
+
+    def retry_upload_command(
+        self,
+        command: list[str],
+        retry_number: int,
+    ) -> list[str]:
+        """Use a different CDN after an automatic-line upload attempt fails."""
+        if "--line" in command:
+            return list(command)
+        raw_lines = self.config.get(
+            "transient_retry_lines",
+            ["bldsa", "bda2", "tx"],
+        )
+        lines = [
+            str(value).strip()
+            for value in raw_lines
+            if str(value).strip() in ALLOWED_UPLOAD_LINES
+        ] if isinstance(raw_lines, list) else []
+        index = int(retry_number) - 1
+        if index < 0 or index >= len(lines):
+            return list(command)
+        return [*command[:-1], "--line", lines[index], command[-1]]
+
+    def configure_upload_environment(self, environment: dict[str, str]) -> None:
+        """Keep large Bilibili uploads off an optional Windows/system proxy."""
+        if not bool(self.config.get("bypass_system_proxy_for_upload", True)):
+            return
+        for name in (
+            "HTTP_PROXY",
+            "HTTPS_PROXY",
+            "ALL_PROXY",
+            "http_proxy",
+            "https_proxy",
+            "all_proxy",
+        ):
+            environment.pop(name, None)
+        # biliup only talks to Bilibili during this command.  A wildcard also
+        # covers CDN hosts selected dynamically after the initial line probe.
+        environment["NO_PROXY"] = "*"
+        environment["no_proxy"] = "*"
+
+    @staticmethod
     def explain_upload_failure(log_text: str, exit_code: int) -> str:
-        match = RESPONSE_ERROR_PATTERN.search(log_text)
-        if match:
-            code = int(match.group(1))
-            message = match.group(2).strip()
+        response = BiliupIntegration.response_error(log_text)
+        if response is not None:
+            code, message = response
             if code == 21010:
                 return (
                     "哔哩哔哩拒绝投稿：简介字数过长（错误码 21010）。"
@@ -433,6 +730,11 @@ class BiliupIntegration:
             if message and "�" not in message:
                 return f"哔哩哔哩拒绝投稿：{message}（错误码 {code}）"
             return f"哔哩哔哩拒绝投稿（错误码 {code}）"
+        if BiliupIntegration.is_transient_upload_failure(log_text):
+            return (
+                "哔哩哔哩连接在登录校验或上传阶段被中断；"
+                "系统已完成自动重试与线路降级，但网络仍未恢复。"
+            )
         return f"上传并提交到哔哩哔哩失败，退出代码 {exit_code}"
 
     def build_upload_command(
@@ -444,7 +746,7 @@ class BiliupIntegration:
         if executable is None:
             raise FileNotFoundError("未找到 biliup.exe")
         account_path, _ = self.resolve_account(str(payload.get("account_id") or ""))
-        media = self.expected_hardsub(task_dir)
+        media = self.media_for_payload(task_dir, payload)
         cover = task_dir / "metadata" / "thumbnail.jpg"
         command = [
             str(executable),
@@ -495,6 +797,30 @@ class BiliupIntegration:
             },
         )
 
+    def mark_waiting(
+        self,
+        task_dir: Path,
+        payload: dict[str, Any],
+        *,
+        reason: str,
+        resume_at: str,
+    ) -> None:
+        previous = read_json(task_dir / "stage5" / "publish_manifest.json")
+        atomic_write_json(
+            task_dir / "stage5" / "publish_manifest.json",
+            self._manifest_base(task_dir, payload)
+            | {
+                "status": "WAITING",
+                "started_at": str(previous.get("started_at") or utc_now()),
+                "finished_at": "",
+                "resume_at": str(resume_at),
+                "wait_reason": str(reason),
+                "bvid": "",
+                "url": "",
+                "errors": [],
+            },
+        )
+
     def mark_failed(self, task_dir: Path, payload: dict[str, Any], error: str) -> None:
         previous = read_json(task_dir / "stage5" / "publish_manifest.json")
         atomic_write_json(
@@ -533,7 +859,7 @@ class BiliupIntegration:
         )
 
     def _manifest_base(self, task_dir: Path, payload: dict[str, Any]) -> dict[str, Any]:
-        media = self.expected_hardsub(task_dir)
+        media = self.media_for_payload(task_dir, payload)
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
         return {
             "schema_version": 1,
@@ -542,7 +868,11 @@ class BiliupIntegration:
             "account": str(payload.get("account_label") or ""),
             "media_path": str(media),
             "media_size": media.stat().st_size if media.is_file() else 0,
-            "media_hash": str(stage4.get("hardsub_output_hash") or ""),
+            "media_hash": (
+                str(stage4.get("hardsub_output_hash") or "")
+                if not payload.get("publish_original_video")
+                else self._sha256_file(media)
+            ),
             "metadata": {
                 key: payload.get(key)
                 for key in (
@@ -562,9 +892,20 @@ class BiliupIntegration:
                     "no_reprint",
                     "is_only_self",
                     "use_cover",
+                    "publish_original_video",
                 )
             },
         }
+
+    @staticmethod
+    def _sha256_file(path: Path) -> str:
+        if not path.is_file():
+            return ""
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
 
 
 __all__ = ["BiliupIntegration"]

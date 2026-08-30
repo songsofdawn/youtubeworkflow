@@ -10,6 +10,8 @@ from unittest import TestCase, mock
 
 from src.run_stage3 import discover_video_dirs, load_config, main
 from src.stage3.pipeline import Stage3Pipeline
+from src.stage3.models import SubtitleSegment, TranslationSegment
+from src.stage3.translation_qc import translation_structure_quality
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -39,7 +41,81 @@ def prepare_selected(video: Path, content: str) -> Path:
     return selected
 
 
+class TranslationStructureTests(TestCase):
+    def test_multiple_captions_concatenated_into_one_id_requires_review(self) -> None:
+        source = [SubtitleSegment(165, 598.62, 602.82, "bootleg minecraft here we go")]
+        translated = [
+            TranslationSegment(
+                165,
+                598.62,
+                602.82,
+                source[0].text,
+                "后续多条字幕被错误拼接进当前字幕。" * 30,
+                "",
+            )
+        ]
+        report = translation_structure_quality(source, translated)
+        self.assertEqual(report["status"], "REVIEW_REQUIRED")
+        self.assertEqual(report["segment_payload_overflow_ids"], [165])
+        self.assertEqual(report["semantic_quality_checks"], "disabled")
+
+    def test_short_cue_with_concatenated_translation_requires_review(self) -> None:
+        source = [
+            SubtitleSegment(
+                99,
+                100.0,
+                101.805,
+                "harvested harvested all of the onions.",
+            )
+        ]
+        translated = [
+            TranslationSegment(
+                99,
+                100.0,
+                101.805,
+                source[0].text,
+                (
+                    "我本来不打算收白洋葱和艾尔莎克雷格，但因为我想把这块地"
+                    "整理好准备种大蒜，所以觉得最好现在就弄完。"
+                ),
+                "",
+            )
+        ]
+        report = translation_structure_quality(source, translated)
+        self.assertEqual(report["status"], "REVIEW_REQUIRED")
+        self.assertEqual(report["segment_payload_overflow_ids"], [99])
+        self.assertIn(
+            "TIMELINE_DENSITY",
+            report["segment_payload_overflow_details"][0]["reasons"],
+        )
+
+
 class Stage3PipelineTests(TestCase):
+    def test_publish_metadata_can_use_video_metadata_without_subtitles(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            video = Path(directory)
+            (video / "download_manifest.json").write_text(
+                json.dumps(
+                    {
+                        "title": "Growing watermelons with eggs",
+                        "channel": "Gardening",
+                        "description": "A silent gardening demonstration.",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with mock.patch(
+                "src.stage3.pipeline.load_ollama_settings",
+                return_value=mock.Mock(enabled=False),
+            ):
+                result = Stage3Pipeline(video, CONFIG).run_publish_metadata(
+                    provider="auto",
+                    allow_no_subtitles=True,
+                )
+
+        self.assertEqual(result["status"], "FALLBACK")
+        self.assertEqual(result["prompt_version"], "stage3-publish-metadata-v2")
+
     def test_batch_directory_discovers_downloaded_video_tasks(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -140,7 +216,7 @@ class Stage3PipelineTests(TestCase):
                 str(subtitles / "en.auto.vtt"),
             })
 
-    def test_mocked_paid_run_writes_both_srts_and_polishes_only_failed_qc(self) -> None:
+    def test_mocked_paid_run_does_not_trigger_local_quality_retranslation(self) -> None:
         calls: list[tuple[str, list[int]]] = []
 
         class FakeTranslator:
@@ -186,7 +262,9 @@ class Stage3PipelineTests(TestCase):
             )
             report = Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True)
             self.assertEqual(report["status"], "QC_PASSED")
-            self.assertEqual(calls, [("raw", [1, 2]), ("polished", [2])])
+            self.assertEqual(calls, [("raw", [1, 2])])
+            self.assertEqual(report["validation_mode"], "structural_only")
+            self.assertEqual(report["semantic_quality_checks"], "disabled")
             self.assertTrue((subtitles / "zh.raw.srt").is_file())
             self.assertTrue((subtitles / "zh.clean.srt").is_file())
             english = (subtitles / "en.selected.srt").read_text(encoding="utf-8")

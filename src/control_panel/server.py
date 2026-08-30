@@ -12,7 +12,7 @@ from .app import ControlPanelApp
 from .youtube import YouTubeAPIError
 
 
-MAX_REQUEST_BYTES = 1024 * 1024
+MAX_REQUEST_BYTES = 6 * 1024 * 1024
 
 
 def make_handler(
@@ -41,10 +41,25 @@ def make_handler(
                 if parsed.path == "/api/tasks":
                     self._json(HTTPStatus.OK, {"tasks": app.scanner.scan()})
                     return
+                if parsed.path == "/api/discovery/packs":
+                    self._json(HTTPStatus.OK, {"packs": app.discovery_catalog()})
+                    return
+                if parsed.path == "/api/discovery/result":
+                    query = parse_qs(parsed.query)
+                    job_id = str((query.get("job_id") or [""])[0])
+                    if not job_id:
+                        raise ValueError("缺少智能发现任务 ID")
+                    self._json(HTTPStatus.OK, app.discovery_job_result(job_id))
+                    return
                 if parsed.path == "/api/publish/defaults":
                     query = parse_qs(parsed.query)
                     task = str((query.get("task") or [""])[0])
                     self._json(HTTPStatus.OK, app.publish_defaults(task))
+                    return
+                if parsed.path == "/api/render-review":
+                    query = parse_qs(parsed.query)
+                    task = str((query.get("task") or [""])[0])
+                    self._json(HTTPStatus.OK, app.render_review(task))
                     return
                 if parsed.path == "/api/jobs":
                     query = parse_qs(parsed.query)
@@ -77,11 +92,78 @@ def make_handler(
                     )
                     self._json(HTTPStatus.OK, {"results": results})
                     return
+                if parsed.path == "/api/discover":
+                    raw_packs = body.get("packs")
+                    job = app.queue_discovery(
+                        [str(item) for item in raw_packs]
+                        if isinstance(raw_packs, list)
+                        else [],
+                        int(body.get("hours") or 72),
+                        int(body.get("per_pack") or 20),
+                        int(body.get("minimum_duration_minutes") or 5),
+                        (
+                            int(body["maximum_duration_minutes"])
+                            if body.get("maximum_duration_minutes") is not None
+                            else None
+                        ),
+                    )
+                    self._json(HTTPStatus.ACCEPTED, {"job": job})
+                    return
+                if parsed.path == "/api/discovery/feedback":
+                    item = body.get("item")
+                    if not isinstance(item, dict):
+                        raise ValueError("智能发现反馈缺少视频信息")
+                    result = app.record_discovery_feedback(
+                        item,
+                        str(body.get("feedback") or ""),
+                    )
+                    self._json(HTTPStatus.OK, {"feedback": result})
+                    return
+                if parsed.path == "/api/settings":
+                    self._json(HTTPStatus.OK, app.save_settings(body))
+                    return
+                if parsed.path == "/api/youtube/cookies":
+                    self._json(HTTPStatus.OK, app.update_youtube_cookies(body))
+                    return
+                if parsed.path == "/api/biliup/login":
+                    self._json(HTTPStatus.OK, app.open_biliup_login())
+                    return
                 if parsed.path == "/api/downloads":
                     jobs = app.queue_downloads(
                         raw_input=str(body.get("input") or ""),
                         items=body.get("items") if isinstance(body.get("items"), list) else None,
                         confirm_rights=body.get("confirm_rights") is True,
+                        auto_publish=body.get("auto_publish") is True,
+                        whisper_for_auto_subtitles=(
+                            body.get("whisper_for_auto_subtitles") is not False
+                        ),
+                        auto_translate_missing=(
+                            body.get("auto_translate_missing") is not False
+                        ),
+                        publish_metadata_provider=str(
+                            body.get("publish_metadata_provider") or "auto"
+                        ),
+                        account_id=str(body.get("account_id") or ""),
+                        publish_only_self=body.get("publish_only_self") is True,
+                        automation_render_mode=str(
+                            body.get("automation_render_mode") or "hardsub"
+                        ),
+                        automation_failure_policy=str(
+                            body.get("automation_failure_policy") or "skip"
+                        ),
+                        automation_target=str(
+                            body.get("automation_target") or "publish"
+                        ),
+                        english_subtitle_policy=str(
+                            body.get("english_subtitle_policy") or ""
+                        ),
+                        automation_chinese_policy=str(
+                            body.get("automation_chinese_policy") or ""
+                        ),
+                        automation_silent_video_policy=str(
+                            body.get("automation_silent_video_policy")
+                            or "publish_original"
+                        ),
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})
                     return
@@ -95,8 +177,53 @@ def make_handler(
                             body.get("chinese_subtitle_source") or "deepseek"
                         ),
                         allow_paid_api=body.get("allow_paid_api") is True,
+                        whisper_for_auto_subtitles=(
+                            body.get("whisper_for_auto_subtitles") is not False
+                        ),
+                        auto_translate_missing=(
+                            body.get("auto_translate_missing") is not False
+                        ),
+                        auto_publish=body.get("auto_publish") is True,
+                        publish_metadata_provider=str(
+                            body.get("publish_metadata_provider") or "auto"
+                        ),
+                        account_id=str(body.get("account_id") or ""),
+                        publish_only_self=body.get("publish_only_self") is True,
+                        automation_failure_policy=str(
+                            body.get("automation_failure_policy") or "skip"
+                        ),
+                        automation_target=str(
+                            body.get("automation_target") or "publish"
+                        ),
+                        english_subtitle_policy=str(
+                            body.get("english_subtitle_policy") or ""
+                        ),
+                        automation_chinese_policy=str(
+                            body.get("automation_chinese_policy") or ""
+                        ),
+                        automation_silent_video_policy=str(
+                            body.get("automation_silent_video_policy")
+                            or "publish_original"
+                        ),
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})
+                    return
+                if parsed.path == "/api/render-review":
+                    raw_edits = body.get("edits")
+                    edits = (
+                        [item for item in raw_edits if isinstance(item, dict)]
+                        if isinstance(raw_edits, list)
+                        else []
+                    )
+                    result = app.save_render_review(
+                        task=str(body.get("task") or ""),
+                        edits=edits,
+                        render_mode=str(body.get("render_mode") or "hardsub"),
+                    )
+                    self._json(
+                        HTTPStatus.ACCEPTED if result.get("job") else HTTPStatus.OK,
+                        result,
+                    )
                     return
                 if parsed.path == "/api/publish":
                     task = str(body.get("task") or "")
@@ -125,6 +252,18 @@ def make_handler(
                         HTTPStatus.OK,
                         app.delete_task(
                             str(body.get("task") or ""),
+                            str(body.get("confirmation") or ""),
+                        ),
+                    )
+                    return
+                if parsed.path == "/api/tasks/delete-batch":
+                    raw_tasks = body.get("tasks")
+                    self._json(
+                        HTTPStatus.OK,
+                        app.delete_tasks(
+                            [str(item) for item in raw_tasks]
+                            if isinstance(raw_tasks, list)
+                            else [],
                             str(body.get("confirmation") or ""),
                         ),
                     )

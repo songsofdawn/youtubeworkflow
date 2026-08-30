@@ -23,6 +23,8 @@
   "http_chunk_size": "1M",
   "concurrent_fragments": 1,
   "force_ipv4": true,
+  "po_token_fallback_enabled": true,
+  "po_token_fallback_client": "web_embedded",
   "cdn_fallback_enabled": true,
   "cdn_fallback_retries": 5,
   "cdn_fallback_timeout_seconds": 60,

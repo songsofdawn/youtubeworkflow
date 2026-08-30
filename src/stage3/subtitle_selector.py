@@ -8,7 +8,7 @@ from .manifest import sha256_file, utc_now
 from .subtitle_writer import atomic_write_json, read_srt
 
 
-SELECTION_POLICY_VERSION = "stage3-auto-selection-v2"
+SELECTION_POLICY_VERSION = "stage3-auto-selection-v4"
 
 
 def _hard_safe(report: dict[str, Any] | None) -> bool:

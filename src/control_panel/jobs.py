@@ -2,17 +2,25 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sqlite3
 import subprocess
 import threading
+import time
 import uuid
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
+from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from .publishing import BiliupIntegration
-from .tasks import WorkflowScanner
+from .tasks import (
+    WorkflowScanner,
+    no_english_subtitle_or_recognized_speech,
+    read_json,
+    youtube_chinese_path,
+)
 
 
 def utc_now() -> str:
@@ -51,6 +59,7 @@ class JobStore:
                     kind TEXT NOT NULL,
                     target TEXT NOT NULL,
                     payload_json TEXT NOT NULL,
+                    resource_class TEXT NOT NULL DEFAULT '',
                     status TEXT NOT NULL,
                     step TEXT NOT NULL,
                     progress INTEGER NOT NULL DEFAULT 0,
@@ -63,6 +72,26 @@ class JobStore:
                 )
                 """
             )
+            columns = {
+                str(row["name"])
+                for row in connection.execute("PRAGMA table_info(jobs)").fetchall()
+            }
+            if "resource_class" not in columns:
+                connection.execute(
+                    "ALTER TABLE jobs ADD COLUMN resource_class TEXT NOT NULL DEFAULT ''"
+                )
+            connection.execute(
+                """
+                UPDATE jobs
+                SET resource_class = CASE kind
+                    WHEN 'download' THEN 'network'
+                    WHEN 'pipeline' THEN 'gpu_heavy'
+                    WHEN 'publish' THEN 'upload'
+                    ELSE 'general'
+                END
+                WHERE resource_class = ''
+                """
+            )
             connection.execute(
                 """
                 UPDATE jobs
@@ -71,15 +100,45 @@ class JobStore:
                 WHERE status = 'running'
                 """
             )
+            connection.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_jobs_resource_scheduler
+                ON jobs(status, kind, resource_class, target, created_at)
+                """
+            )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS worker_state (
+                    key TEXT PRIMARY KEY,
+                    value TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+                """
+            )
 
-    def enqueue(self, kind: str, target: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def enqueue(
+        self,
+        kind: str,
+        target: str,
+        payload: dict[str, Any],
+        *,
+        resource_class: str | None = None,
+    ) -> dict[str, Any]:
         job_id = uuid.uuid4().hex
         log_path = self.logs_dir / f"{job_id}.log"
+        default_resources = {
+            "download": "network",
+            "pipeline": "gpu_heavy",
+            "publish": "upload",
+        }
         record = {
             "id": job_id,
             "kind": kind,
             "target": target,
             "payload_json": json.dumps(payload, ensure_ascii=False),
+            "resource_class": str(
+                resource_class or default_resources.get(kind) or "general"
+            ),
             "status": "queued",
             "step": "等待执行",
             "progress": 0,
@@ -90,8 +149,8 @@ class JobStore:
             connection.execute(
                 """
                 INSERT INTO jobs
-                (id, kind, target, payload_json, status, step, progress, created_at, log_path)
-                VALUES (:id, :kind, :target, :payload_json, :status, :step, :progress, :created_at, :log_path)
+                (id, kind, target, payload_json, resource_class, status, step, progress, created_at, log_path)
+                VALUES (:id, :kind, :target, :payload_json, :resource_class, :status, :step, :progress, :created_at, :log_path)
                 """,
                 record,
             )
@@ -111,11 +170,122 @@ class JobStore:
             ).fetchall()
         return [self._serialize(row) for row in rows]
 
-    def claim_next(self) -> dict[str, Any] | None:
+    def publish_completion_stats(self, since: str) -> dict[str, Any]:
+        """Return successful publish count since a boundary and latest success."""
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                SELECT
+                    SUM(
+                        CASE
+                            WHEN status = 'completed'
+                             AND exit_code = 0
+                             AND finished_at >= ?
+                            THEN 1 ELSE 0
+                        END
+                    ) AS completed_since,
+                    MAX(
+                        CASE
+                            WHEN status = 'completed' AND exit_code = 0
+                            THEN finished_at ELSE ''
+                        END
+                    ) AS latest_completed_at,
+                    MAX(
+                        CASE
+                            WHEN status = 'failed' AND error LIKE '%137022%'
+                            THEN finished_at ELSE ''
+                        END
+                    ) AS latest_rate_limited_at
+                FROM jobs
+                WHERE kind = 'publish'
+                """,
+                (since,),
+            ).fetchone()
+        return {
+            "completed_since": int(row["completed_since"] or 0),
+            "latest_completed_at": str(row["latest_completed_at"] or ""),
+            "latest_rate_limited_at": str(row["latest_rate_limited_at"] or ""),
+        }
+
+    def worker_state(self, key: str) -> str:
+        with self._connect() as connection:
+            row = connection.execute(
+                "SELECT value FROM worker_state WHERE key = ?",
+                (str(key),),
+            ).fetchone()
+        return str(row["value"] or "") if row is not None else ""
+
+    def set_worker_state(self, key: str, value: str) -> None:
+        with self._connect() as connection:
+            connection.execute(
+                """
+                INSERT INTO worker_state (key, value, updated_at)
+                VALUES (?, ?, ?)
+                ON CONFLICT(key) DO UPDATE SET
+                    value = excluded.value,
+                    updated_at = excluded.updated_at
+                """,
+                (str(key), str(value), utc_now()),
+            )
+
+    def update_queued_publish_step(self, step: str) -> int:
+        with self._connect() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET step = ?
+                WHERE kind = 'publish'
+                  AND resource_class = 'upload'
+                  AND status = 'queued'
+                  AND step != ?
+                """,
+                (str(step), str(step)),
+            )
+        return int(cursor.rowcount)
+
+    def claim_next(
+        self,
+        kinds: set[str] | None = None,
+        resource_classes: set[str] | None = None,
+    ) -> dict[str, Any] | None:
+        normalized_kinds = sorted({str(kind) for kind in (kinds or set()) if str(kind)})
+        normalized_resources = sorted(
+            {
+                str(resource)
+                for resource in (resource_classes or set())
+                if str(resource)
+            }
+        )
+        kind_clause = ""
+        resource_clause = ""
+        parameters: list[Any] = []
+        if normalized_kinds:
+            placeholders = ", ".join("?" for _ in normalized_kinds)
+            kind_clause = f"AND queued.kind IN ({placeholders})"
+            parameters.extend(normalized_kinds)
+        if normalized_resources:
+            placeholders = ", ".join("?" for _ in normalized_resources)
+            resource_clause = f"AND queued.resource_class IN ({placeholders})"
+            parameters.extend(normalized_resources)
         with self._connect() as connection:
             connection.execute("BEGIN IMMEDIATE")
             row = connection.execute(
-                "SELECT id FROM jobs WHERE status = 'queued' ORDER BY created_at LIMIT 1"
+                f"""
+                SELECT queued.id
+                FROM jobs AS queued
+                WHERE queued.status = 'queued'
+                  {kind_clause}
+                  {resource_clause}
+                  AND NOT EXISTS (
+                      SELECT 1
+                      FROM jobs AS running
+                      WHERE running.status = 'running'
+                        AND running.target = queued.target
+                  )
+                ORDER BY queued.created_at
+                LIMIT 1
+                """,
+                parameters,
             ).fetchone()
             if row is None:
                 connection.commit()
@@ -123,7 +293,8 @@ class JobStore:
             connection.execute(
                 """
                 UPDATE jobs
-                SET status = 'running', step = '正在准备', started_at = ?,
+                SET status = 'running', step = '正在准备',
+                    started_at = CASE WHEN started_at = '' THEN ? ELSE started_at END,
                     finished_at = '', error = '', exit_code = NULL
                 WHERE id = ?
                 """,
@@ -131,6 +302,21 @@ class JobStore:
             )
             connection.commit()
         return self.get(str(row["id"]))
+
+    def cancel_if_queued(self, job_id: str) -> dict[str, Any] | None:
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'cancelled', step = '已取消', progress = 0,
+                    exit_code = 0, error = '', finished_at = ?
+                WHERE id = ? AND status = 'queued'
+                """,
+                (utc_now(), job_id),
+            )
+            connection.commit()
+        return self.get(job_id) if cursor.rowcount else None
 
     def update(self, job_id: str, **values: Any) -> dict[str, Any]:
         allowed = {
@@ -150,6 +336,46 @@ class JobStore:
             connection.execute(
                 f"UPDATE jobs SET {assignments} WHERE id = ?",
                 (*updates.values(), job_id),
+            )
+        return self.get(job_id)
+
+    def replace_payload(
+        self,
+        job_id: str,
+        payload: dict[str, Any],
+    ) -> dict[str, Any]:
+        with self._connect() as connection:
+            connection.execute(
+                "UPDATE jobs SET payload_json = ? WHERE id = ?",
+                (json.dumps(payload, ensure_ascii=False), job_id),
+            )
+        return self.get(job_id)
+
+    def requeue_stage(
+        self,
+        job_id: str,
+        *,
+        payload: dict[str, Any],
+        resource_class: str,
+        step: str,
+        progress: int,
+    ) -> dict[str, Any]:
+        with self._connect() as connection:
+            connection.execute(
+                """
+                UPDATE jobs
+                SET payload_json = ?, resource_class = ?, status = 'queued',
+                    step = ?, progress = ?, finished_at = '', exit_code = NULL,
+                    error = ''
+                WHERE id = ? AND status = 'running'
+                """,
+                (
+                    json.dumps(payload, ensure_ascii=False),
+                    resource_class,
+                    step,
+                    max(0, min(int(progress), 100)),
+                    job_id,
+                ),
             )
         return self.get(job_id)
 
@@ -245,6 +471,25 @@ class JobStore:
             deleted_bytes += path.stat().st_size
             path.unlink()
             deleted += 1
+        deleted_results = 0
+        result_root = (self.database_path.parent / "discovery_results").resolve()
+        active_result_names = {
+            f"{job['id']}.json"
+            for job in active_jobs
+            if job["kind"] == "discovery"
+        }
+        if result_root.is_dir():
+            for candidate in result_root.glob("*.json"):
+                try:
+                    path = candidate.resolve()
+                    path.relative_to(result_root)
+                except (OSError, ValueError):
+                    continue
+                if path.name in active_result_names or not path.is_file():
+                    continue
+                deleted_bytes += path.stat().st_size
+                path.unlink()
+                deleted_results += 1
         if inactive_jobs:
             with self._connect() as connection:
                 connection.executemany(
@@ -254,6 +499,7 @@ class JobStore:
         return {
             "deleted": deleted,
             "deleted_logs": deleted,
+            "deleted_results": deleted_results,
             "deleted_jobs": len(inactive_jobs),
             "bytes": deleted_bytes,
             "skipped_active": len(active_jobs),
@@ -317,128 +563,489 @@ class JobStore:
 
 
 class WorkflowWorker:
+    DOWNLOAD_WORKERS = 2
+    GPU_HEAVY_WORKERS = 1
+    DEEPSEEK_WORKERS = 2
+    UPLOAD_WORKERS = 1
+    PUBLISH_COOLDOWN_STATE_KEY = "publish_cooldown_until"
+
     def __init__(
         self,
         project_root: Path,
         store: JobStore,
         scanner: WorkflowScanner,
         publisher: BiliupIntegration,
+        discovery_runner: Callable[..., dict[str, Any]] | None = None,
     ) -> None:
         self.project_root = project_root.resolve()
         self.store = store
         self.scanner = scanner
         self.publisher = publisher
+        self.discovery_runner = discovery_runner
         self._stop_event = threading.Event()
         self._wake_event = threading.Event()
-        self._thread = threading.Thread(target=self._run, daemon=True, name="workflow-worker")
+        profile = load_portable_manifest(self.project_root)
+        is_cpu = bool(
+            profile.get("portable")
+            and str(profile.get("asr_device") or "").casefold() == "cpu"
+        )
+        self.max_active_processes = 3 if is_cpu else 4
+        self._global_slots = threading.BoundedSemaphore(self.max_active_processes)
+        download_threads = [
+            threading.Thread(
+                target=self._run,
+                args=({"download"}, {"network"}),
+                daemon=True,
+                name=f"download-worker-{index + 1}",
+            )
+            for index in range(self.DOWNLOAD_WORKERS)
+        ]
+        gpu_threads = [
+            threading.Thread(
+                target=self._run,
+                args=({"pipeline", "publish", "discovery"}, {"gpu_heavy"}),
+                daemon=True,
+                name=f"gpu-heavy-worker-{index + 1}",
+            )
+            for index in range(self.GPU_HEAVY_WORKERS)
+        ]
+        deepseek_threads = [
+            threading.Thread(
+                target=self._run,
+                args=({"pipeline"}, {"paid_api"}),
+                daemon=True,
+                name=f"deepseek-worker-{index + 1}",
+            )
+            for index in range(self.DEEPSEEK_WORKERS)
+        ]
+        upload_threads = [
+            threading.Thread(
+                target=self._run,
+                args=({"publish"}, {"upload"}),
+                daemon=True,
+                name=f"upload-worker-{index + 1}",
+            )
+            for index in range(self.UPLOAD_WORKERS)
+        ]
+        self._threads = [
+            *download_threads,
+            *gpu_threads,
+            *deepseek_threads,
+            *upload_threads,
+        ]
         self._process_lock = threading.Lock()
-        self._current_process: subprocess.Popen[bytes] | None = None
-        self._current_job_id: str | None = None
+        self._processes: dict[str, subprocess.Popen[bytes]] = {}
         self._cancel_requested: set[str] = set()
+        self._cookie_work_dir = self.project_root / "work" / "cookies"
+        self._cleanup_stale_cookie_copies()
 
     def start(self) -> None:
-        if not self._thread.is_alive():
-            self._thread.start()
+        for thread in self._threads:
+            if thread.ident is None:
+                thread.start()
 
     def wake(self) -> None:
         self._wake_event.set()
+
+    @staticmethod
+    def initial_resource(kind: str, payload: dict[str, Any]) -> str:
+        if kind == "download":
+            return "network"
+        if kind == "pipeline":
+            return "gpu_heavy"
+        if kind == "publish":
+            return "gpu_heavy" if payload.get("prepare_hardsub") else "upload"
+        if kind == "discovery":
+            return "gpu_heavy"
+        return "general"
+
+    @staticmethod
+    def _automation_enabled(payload: dict[str, Any]) -> bool:
+        """Accept new policy payloads and legacy auto_publish jobs."""
+        return bool(payload.get("automation_enabled") or payload.get("auto_publish"))
+
+    @staticmethod
+    def _automation_target(payload: dict[str, Any]) -> str:
+        target = str(payload.get("automation_target") or "").strip().casefold()
+        if target in {"subtitles", "render", "publish"}:
+            return target
+        return "publish" if payload.get("auto_publish") else ""
+
+    def snapshot(self, jobs: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+        rows = jobs if jobs is not None else self.store.list(limit=200)
+        publish_guard = self.publish_guard()
+        running = {
+            "network": 0,
+            "gpu_heavy": 0,
+            "paid_api": 0,
+            "upload": 0,
+        }
+        for job in rows:
+            resource = str(job.get("resource_class") or "")
+            if job.get("status") == "running" and resource in running:
+                running[resource] += 1
+        return {
+            "mode": "stage_pipeline_v0.5",
+            "global": {
+                "running": sum(running.values()),
+                "capacity": self.max_active_processes,
+            },
+            "resources": {
+                "network": {"running": running["network"], "capacity": self.DOWNLOAD_WORKERS},
+                "gpu_heavy": {"running": running["gpu_heavy"], "capacity": self.GPU_HEAVY_WORKERS},
+                "paid_api": {"running": running["paid_api"], "capacity": self.DEEPSEEK_WORKERS},
+                "upload": {"running": running["upload"], "capacity": self.UPLOAD_WORKERS},
+            },
+            "publishing": publish_guard,
+        }
+
+    @staticmethod
+    def _parse_datetime(value: str) -> datetime | None:
+        try:
+            parsed = datetime.fromisoformat(str(value))
+        except (TypeError, ValueError):
+            return None
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
+
+    def publish_guard(self, now: datetime | None = None) -> dict[str, Any]:
+        """Describe the persistent upload guard without claiming a queue job."""
+        now_utc = now or datetime.now(timezone.utc)
+        if now_utc.tzinfo is None:
+            now_utc = now_utc.replace(tzinfo=timezone.utc)
+        now_utc = now_utc.astimezone(timezone.utc)
+        local_now = now_utc.astimezone()
+        local_day_start = local_now.replace(
+            hour=0,
+            minute=0,
+            second=0,
+            microsecond=0,
+        )
+        next_local_day = local_day_start + timedelta(days=1)
+        stats = self.store.publish_completion_stats(
+            local_day_start.astimezone(timezone.utc).isoformat()
+        )
+        daily_limit = self.publisher.publish_daily_limit()
+        minimum_interval = self.publisher.publish_min_interval_seconds()
+        barriers: list[tuple[datetime, str]] = []
+
+        cooldown_until = self._parse_datetime(
+            self.store.worker_state(self.PUBLISH_COOLDOWN_STATE_KEY)
+        )
+        if cooldown_until is not None and cooldown_until > now_utc:
+            barriers.append(
+                (cooldown_until, "B 站返回 137022，投稿接口正在冷却")
+            )
+        latest_rate_limited = self._parse_datetime(
+            str(stats["latest_rate_limited_at"])
+        )
+        if latest_rate_limited is not None:
+            recovered_cooldown = latest_rate_limited + timedelta(
+                seconds=self.publisher.publish_rate_limit_cooldown_seconds()
+            )
+            if recovered_cooldown > now_utc:
+                barriers.append(
+                    (recovered_cooldown, "检测到已有 137022 失败，投稿接口正在冷却")
+                )
+
+        completed_today = int(stats["completed_since"])
+        if daily_limit > 0 and completed_today >= daily_limit:
+            barriers.append(
+                (
+                    next_local_day.astimezone(timezone.utc),
+                    f"今日已成功投稿 {completed_today}/{daily_limit}",
+                )
+            )
+
+        latest_completed = self._parse_datetime(str(stats["latest_completed_at"]))
+        if latest_completed is not None and minimum_interval > 0:
+            interval_until = latest_completed + timedelta(seconds=minimum_interval)
+            if interval_until > now_utc:
+                minutes = max(1, round(minimum_interval / 60))
+                barriers.append(
+                    (interval_until, f"投稿安全间隔为 {minutes} 分钟")
+                )
+
+        if not barriers:
+            return {
+                "active": False,
+                "step": "",
+                "resume_at": "",
+                "wait_seconds": 0,
+                "completed_today": completed_today,
+                "daily_limit": daily_limit,
+                "minimum_interval_seconds": minimum_interval,
+            }
+
+        resume_at, reason = max(barriers, key=lambda item: item[0])
+        local_resume = resume_at.astimezone()
+        step = (
+            f"投稿保护：{reason}；"
+            f"{local_resume.strftime('%m-%d %H:%M')} 后自动恢复"
+        )
+        return {
+            "active": True,
+            "step": step,
+            "resume_at": resume_at.isoformat(),
+            "wait_seconds": max(0, int((resume_at - now_utc).total_seconds())),
+            "completed_today": completed_today,
+            "daily_limit": daily_limit,
+            "minimum_interval_seconds": minimum_interval,
+        }
+
+    def _activate_publish_cooldown(self) -> dict[str, Any]:
+        now_utc = datetime.now(timezone.utc)
+        requested_until = now_utc + timedelta(
+            seconds=self.publisher.publish_rate_limit_cooldown_seconds()
+        )
+        previous_until = self._parse_datetime(
+            self.store.worker_state(self.PUBLISH_COOLDOWN_STATE_KEY)
+        )
+        cooldown_until = max(
+            requested_until,
+            previous_until or requested_until,
+        )
+        self.store.set_worker_state(
+            self.PUBLISH_COOLDOWN_STATE_KEY,
+            cooldown_until.isoformat(),
+        )
+        return self.publish_guard(now_utc)
 
     def close(self) -> None:
         self._stop_event.set()
         self._wake_event.set()
         with self._process_lock:
-            process = self._current_process
-        if process is not None and process.poll() is None:
-            self._terminate_process_tree(process)
-        if self._thread.is_alive():
-            self._thread.join(timeout=5)
+            processes = list(self._processes.values())
+        for process in processes:
+            if process.poll() is None:
+                self._terminate_process_tree(process)
+        for thread in self._threads:
+            if thread.is_alive():
+                thread.join(timeout=5)
 
     def cancel(self, job_id: str) -> dict[str, Any]:
         job = self.store.get(job_id)
         if job["status"] == "queued":
-            return self.store.update(
-                job_id,
-                status="cancelled",
-                step="已取消",
-                progress=0,
-                exit_code=0,
-                error="",
-                finished_at=utc_now(),
-            )
+            cancelled = self.store.cancel_if_queued(job_id)
+            if cancelled is not None:
+                return cancelled
+            job = self.store.get(job_id)
         if job["status"] != "running":
             raise ValueError("只有运行中或排队中的任务可以终止")
         with self._process_lock:
             self._cancel_requested.add(job_id)
-            process = self._current_process if self._current_job_id == job_id else None
+            process = self._processes.get(job_id)
         self.store.update(job_id, step="正在终止")
         if process is not None and process.poll() is None:
             self._terminate_process_tree(process)
         self._wake_event.set()
         return self.store.get(job_id)
 
-    def _run(self) -> None:
+    def _run(self, kinds: set[str], resource_classes: set[str]) -> None:
         while not self._stop_event.is_set():
-            job = self.store.claim_next()
+            if kinds == {"publish"} and resource_classes == {"upload"}:
+                guard = self.publish_guard()
+                if guard["active"]:
+                    self.store.update_queued_publish_step(str(guard["step"]))
+                    self._wake_event.wait(
+                        timeout=max(
+                            0.5,
+                            min(float(guard["wait_seconds"] or 0.5), 30.0),
+                        )
+                    )
+                    self._wake_event.clear()
+                    continue
+            if not self._global_slots.acquire(timeout=0.5):
+                continue
+            job = self.store.claim_next(kinds, resource_classes)
             if job is None:
-                self._wake_event.wait(timeout=1.0)
+                self._global_slots.release()
+                self._wake_event.wait(timeout=0.5)
                 self._wake_event.clear()
                 continue
-            self._execute(job)
+            try:
+                self._execute(job)
+            finally:
+                self._global_slots.release()
+                self._wake_event.set()
 
     def _execute(self, job: dict[str, Any]) -> None:
         job_id = str(job["id"])
         log_path = Path(job["log_path"])
         publish_task: Path | None = None
-        with self._process_lock:
-            self._current_job_id = job_id
+        cookie_copy: Path | None = None
         try:
             self._raise_if_cancelled(job_id)
-            if job["kind"] == "publish":
-                publish_task = self.scanner.resolve_task(str(job["target"]))
-                original_payload = job["payload"]
-                job["payload"] = self.publisher.prepare_payload_for_execution(
-                    original_payload
-                )
-                if job["payload"] != original_payload:
+            try:
+                stage_index = max(0, int(job["payload"].get("_stage_index") or 0))
+            except (TypeError, ValueError):
+                stage_index = 0
+            if job["kind"] == "discovery":
+                self._execute_discovery(job, log_path)
+                return
+            if job["kind"] == "download":
+                cookie_copy = self._create_cookie_copy(job_id)
+                if cookie_copy is not None:
                     self._append_log(
                         log_path,
-                        "\n[投稿预检] 已按哔哩哔哩的字符计数规则自动修正"
-                        "标题、简介或空间动态；无需重新编辑旧任务。\n",
+                        "[下载隔离] 已为此任务创建独立的 YouTube Cookie 副本。\n",
                     )
-                self.publisher.mark_running(publish_task, job["payload"])
-            commands = self._build_commands(job)
-            total = max(1, len(commands))
-            for index, (label, command) in enumerate(commands):
-                self._raise_if_cancelled(job_id)
-                if self._stop_event.is_set():
-                    raise RuntimeError("控制面板正在关闭，任务已停止")
-                start_progress = int(index / total * 100)
-                self.store.update(
-                    job_id,
-                    step=label,
-                    progress=start_progress,
-                )
-                self._append_log(log_path, f"\n===== {label} =====\n")
-                if job["kind"] == "publish" and label == "上传并提交到哔哩哔哩":
-                    assert publish_task is not None
-                    media = self.publisher.expected_hardsub(publish_task)
-                    if not media.is_file() or media.stat().st_size == 0:
-                        raise FileNotFoundError(f"投稿视频不存在或为空：{media}")
-                exit_code = self._run_command(command, log_path)
-                self._raise_if_cancelled(job_id)
-                if exit_code != 0:
-                    if job["kind"] == "publish":
-                        raise RuntimeError(
-                            self.publisher.explain_upload_failure(
-                                self.store.log_tail(job_id, max_chars=100000),
-                                exit_code,
-                            )
+            if job["kind"] == "publish":
+                publish_task = self.scanner.resolve_task(str(job["target"]))
+                if stage_index == 0:
+                    original_payload = job["payload"]
+                    job["payload"] = self.publisher.prepare_payload_for_execution(
+                        original_payload
+                    )
+                    if job["payload"] != original_payload:
+                        self.store.replace_payload(job_id, job["payload"])
+                        self._append_log(
+                            log_path,
+                            "\n[投稿预检] 已按哔哩哔哩的字符计数规则自动修正"
+                            "标题、简介或空间动态；无需重新编辑旧任务。\n",
                         )
-                    raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
-                self.store.update(
-                    job_id,
-                    progress=int((index + 1) / total * 100),
+                    self.publisher.mark_running(publish_task, job["payload"])
+
+            stages = self._build_stages(job)
+            if not stages:
+                raise RuntimeError("任务没有可执行步骤")
+            if stage_index >= len(stages):
+                raise RuntimeError(
+                    f"任务步骤游标无效：{stage_index}/{len(stages)}"
                 )
+            total = len(stages)
+            label, command, resource_class = stages[stage_index]
+            if str(job.get("resource_class") or "") != resource_class:
+                self.store.requeue_stage(
+                    job_id,
+                    payload=job["payload"],
+                    resource_class=resource_class,
+                    step=f"等待资源：{label}",
+                    progress=int(stage_index / total * 100),
+                )
+                self._append_log(
+                    log_path,
+                    f"\n[资源调度] 已转入 {resource_class} 队列：{label}\n",
+                )
+                return
+            if cookie_copy is not None:
+                command = [*command, "--cookies-path", str(cookie_copy)]
+            self._raise_if_cancelled(job_id)
+            if self._stop_event.is_set():
+                raise RuntimeError("控制面板正在关闭，任务已停止")
+            self.store.update(
+                job_id,
+                step=label,
+                progress=int(stage_index / total * 100),
+            )
+            self._append_log(
+                log_path,
+                f"\n===== {label} [{resource_class}] =====\n",
+            )
+            if job["kind"] == "publish" and resource_class == "upload":
+                assert publish_task is not None
+                media = self.publisher.media_for_payload(
+                    publish_task,
+                    job["payload"],
+                )
+                if not media.is_file() or media.stat().st_size == 0:
+                    raise FileNotFoundError(f"投稿视频不存在或为空：{media}")
+            if job["kind"] == "publish" and resource_class == "upload":
+                exit_code = self._run_publish_upload_with_retries(
+                    job_id,
+                    command,
+                    log_path,
+                )
+            else:
+                exit_code = self._run_command(job_id, command, log_path)
+            self._raise_if_cancelled(job_id)
+            if exit_code != 0:
+                if job["kind"] == "pipeline" and self._automation_enabled(
+                    job["payload"]
+                ):
+                    if self._continue_unattended_original_media_publish(
+                        job,
+                        label=label,
+                        exit_code=exit_code,
+                        log_path=log_path,
+                    ):
+                        return
+                    if self._retry_unusable_youtube_chinese_with_api(
+                        job,
+                        label=label,
+                        exit_code=exit_code,
+                        log_path=log_path,
+                    ):
+                        return
+                    if str(
+                        job["payload"].get("automation_failure_policy") or "skip"
+                    ) == "skip":
+                        self._complete_unattended_pipeline_skip(
+                            job,
+                            label=label,
+                            exit_code=exit_code,
+                            log_path=log_path,
+                        )
+                        return
+                if job["kind"] == "publish" and resource_class == "upload":
+                    upload_log = self.store.log_tail(job_id, max_chars=100000)
+                    if self.publisher.is_publish_rate_limited(upload_log):
+                        guard = self._activate_publish_cooldown()
+                        wait_reason = self.publisher.explain_upload_failure(
+                            upload_log,
+                            exit_code,
+                        )
+                        self.store.requeue_stage(
+                            job_id,
+                            payload=job["payload"],
+                            resource_class="upload",
+                            step=str(guard["step"]),
+                            progress=int(stage_index / total * 100),
+                        )
+                        if publish_task is not None:
+                            self.publisher.mark_waiting(
+                                publish_task,
+                                job["payload"],
+                                reason=wait_reason,
+                                resume_at=str(guard["resume_at"]),
+                            )
+                        self._append_log(
+                            log_path,
+                            "\n[投稿保护] B 站返回 137022；当前任务已保留，"
+                            "全部投稿队列进入冷却，不会继续上传后续视频。\n"
+                            f"[自动恢复] {guard['step']}\n",
+                        )
+                        return
+                    raise RuntimeError(
+                        self.publisher.explain_upload_failure(
+                            upload_log,
+                            exit_code,
+                        )
+                    )
+                raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
+
+            completed_progress = int((stage_index + 1) / total * 100)
+            self.store.update(job_id, progress=completed_progress)
+            if stage_index + 1 < total:
+                next_label, _, next_resource = stages[stage_index + 1]
+                next_payload = dict(job["payload"])
+                next_payload["_stage_index"] = stage_index + 1
+                self.store.requeue_stage(
+                    job_id,
+                    payload=next_payload,
+                    resource_class=next_resource,
+                    step=f"等待资源：{next_label}",
+                    progress=completed_progress,
+                )
+                self._append_log(
+                    log_path,
+                    f"\n[步骤完成] {label}\n"
+                    f"[释放资源] {resource_class}\n"
+                    f"[下一步] {next_label} [{next_resource}]\n",
+                )
+                return
+
             if job["kind"] == "publish":
                 assert publish_task is not None
                 try:
@@ -470,6 +1077,29 @@ class WorkflowWorker:
                 exit_code=0,
                 finished_at=utc_now(),
             )
+            try:
+                followup_step = ""
+                if job["kind"] == "download" and self._automation_enabled(
+                    job["payload"]
+                ):
+                    followup_step = self._queue_post_download_automation(job)
+                elif (
+                    job["kind"] == "pipeline"
+                    and self._automation_target(job["payload"]) == "publish"
+                ):
+                    followup_step = self._queue_automatic_publish(job)
+                if followup_step:
+                    self.store.update(job_id, step=followup_step)
+            except Exception as exc:
+                self._append_log(log_path, f"\n[自动接力失败] {exc}\n")
+                self.store.update(
+                    job_id,
+                    status="failed",
+                    step="自动接力失败",
+                    exit_code=1,
+                    error=str(exc),
+                    finished_at=utc_now(),
+                )
         except JobCancelled:
             self._append_log(log_path, "\n[任务已终止] 用户从控制面板终止了这个任务。\n")
             if job["kind"] == "publish" and publish_task is not None:
@@ -487,6 +1117,26 @@ class WorkflowWorker:
             )
         except Exception as exc:  # Worker must survive individual task failures.
             self._append_log(log_path, f"\n[任务失败] {exc}\n")
+            if (
+                job["kind"] == "pipeline"
+                and self._automation_enabled(job["payload"])
+                and str(
+                    job["payload"].get("automation_failure_policy") or "skip"
+                ) == "skip"
+            ):
+                try:
+                    self._complete_unattended_pipeline_skip(
+                        job,
+                        label="准备或执行自动化流程",
+                        exit_code=1,
+                        log_path=log_path,
+                    )
+                    return
+                except Exception as skip_exc:
+                    self._append_log(
+                        log_path,
+                        f"[自动跳过状态保存失败] {skip_exc}\n",
+                    )
             if job["kind"] == "publish" and publish_task is not None:
                 try:
                     self.publisher.mark_failed(publish_task, job["payload"], str(exc))
@@ -502,17 +1152,403 @@ class WorkflowWorker:
             )
         finally:
             with self._process_lock:
-                if self._current_job_id == job_id:
-                    self._current_job_id = None
+                self._processes.pop(job_id, None)
                 self._cancel_requested.discard(job_id)
+            if cookie_copy is not None:
+                cookie_copy.unlink(missing_ok=True)
+
+    def _task_reference_for_video_id(self, video_id: str) -> str:
+        for task in self.scanner.scan():
+            if str(task.get("video_id") or "") == str(video_id):
+                return str(task["task"])
+        raise FileNotFoundError(f"下载完成后未找到视频任务目录：{video_id}")
+
+    @staticmethod
+    def _last_manifest_error_code(manifest: dict[str, Any]) -> str:
+        for item in reversed(list(manifest.get("errors") or [])):
+            if isinstance(item, dict) and str(item.get("code") or "").strip():
+                return str(item["code"]).strip()
+        return ""
+
+    @classmethod
+    def _youtube_chinese_requires_api_fallback(cls, task_dir: Path) -> bool:
+        stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        return cls._last_manifest_error_code(stage4) in {
+            "NO_VALID_CHINESE_SUBTITLE",
+            "ZH_AUTO_SUBTITLE_UNUSABLE",
+        }
+
+    def _retry_unusable_youtube_chinese_with_api(
+        self,
+        job: dict[str, Any],
+        *,
+        label: str,
+        exit_code: int,
+        log_path: Path,
+    ) -> bool:
+        """Route a structurally unusable YouTube Chinese track to API translation."""
+        payload = dict(job.get("payload") or {})
+        if (
+            label != "生成并质检双语成片"
+            or str(payload.get("chinese_subtitle_source") or "") != "auto"
+            or not payload.get("auto_translate_missing", True)
+            or not payload.get("allow_paid_api")
+        ):
+            return False
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        if not self._youtube_chinese_requires_api_fallback(task_dir):
+            return False
+
+        payload["chinese_subtitle_source"] = "deepseek"
+        payload["_stage_index"] = 1
+        self.store.requeue_stage(
+            str(job["id"]),
+            payload=payload,
+            resource_class="paid_api",
+            step="等待资源：翻译并检查中文字幕",
+            progress=25,
+        )
+        self._append_log(
+            log_path,
+            "\n[无人值守自动降级] YouTube 中文字幕无法与已选英文字幕"
+            f"结构对齐（原退出码 {exit_code}），已自动改用 API 翻译。\n",
+        )
+        return True
+
+    def _continue_unattended_original_media_publish(
+        self,
+        job: dict[str, Any],
+        *,
+        label: str,
+        exit_code: int,
+        log_path: Path,
+    ) -> bool:
+        """Reroute a verified no-speech video to metadata-only original upload."""
+        payload = dict(job.get("payload") or {})
+        if (
+            label != "生成并选择最佳英文字幕"
+            or self._automation_target(payload) != "publish"
+            or str(
+                payload.get("automation_silent_video_policy") or "publish_original"
+            ).strip().casefold()
+            != "publish_original"
+        ):
+            return False
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        if not no_english_subtitle_or_recognized_speech(task_dir):
+            return False
+
+        payload["silent_video_mode"] = True
+        payload["publish_original_video"] = True
+        payload["_stage_index"] = 0
+        metadata_provider = str(
+            payload.get("publish_metadata_provider") or "auto"
+        ).strip().casefold()
+        resource_class = (
+            "paid_api" if metadata_provider == "translation_api" else "gpu_heavy"
+        )
+        self.publisher.mark_automation_original_media(task_dir)
+        self.store.requeue_stage(
+            str(job["id"]),
+            payload=payload,
+            resource_class=resource_class,
+            step="等待资源：生成无配音视频投稿信息",
+            progress=45,
+        )
+        self._append_log(
+            log_path,
+            "\n[无人值守无配音分支] 未检测到英文字幕或可识别语音"
+            f"（原退出码 {exit_code}）。将保留原画面与音轨，仅生成中文投稿信息后投稿。\n",
+        )
+        return True
+
+    def _complete_unattended_pipeline_skip(
+        self,
+        job: dict[str, Any],
+        *,
+        label: str,
+        exit_code: int,
+        log_path: Path,
+    ) -> None:
+        """Turn a subtitle/render rejection into a terminal unattended skip.
+
+        A single unusable video must not leave an unattended queue asking for
+        human input.  The original process exit and manifests remain recorded
+        in details so infrastructure and content failures are still auditable.
+        """
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        stage3 = read_json(task_dir / "stage3_manifest.json")
+        stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        review = stage4.get("review") if isinstance(stage4.get("review"), dict) else {}
+        reason = str(review.get("code") or "").strip()
+        if not reason:
+            reason = self._last_manifest_error_code(stage4)
+        if not reason:
+            if (
+                label == "生成并选择最佳英文字幕"
+                and no_english_subtitle_or_recognized_speech(task_dir)
+            ):
+                reason = "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH"
+        if not reason:
+            reason_by_label = {
+                "生成并选择最佳英文字幕": "ENGLISH_SUBTITLE_STAGE_FAILED",
+                "翻译并检查中文字幕": "CHINESE_TRANSLATION_STAGE_FAILED",
+                "生成并质检双语成片": "STAGE4_RENDER_STAGE_FAILED",
+            }
+            reason = reason_by_label.get(label, "UNATTENDED_PIPELINE_STAGE_FAILED")
+        details = {
+            "stage_label": label,
+            "process_exit_code": int(exit_code),
+            "stage3_translation_status": str(
+                stage3.get("translation_status") or ""
+            ),
+            "stage3_errors": list(stage3.get("errors") or []),
+            "stage4_status": str(stage4.get("status") or ""),
+            "stage4_qc_status": str(stage4.get("qc_status") or ""),
+            "stage4_errors": list(stage4.get("errors") or []),
+            "review": review,
+        }
+        self.publisher.mark_automation_skipped(task_dir, reason, details=details)
+        message = "字幕或成片未通过安全检查，已自动跳过此视频并继续队列"
+        self._append_log(
+            log_path,
+            f"\n[无人值守自动跳过] {message}：{reason}（原退出代码 {exit_code}）\n",
+        )
+        self.store.update(
+            str(job["id"]),
+            status="completed",
+            step=message,
+            progress=100,
+            exit_code=0,
+            error="",
+            finished_at=utc_now(),
+        )
+
+    def _queue_post_download_automation(self, job: dict[str, Any]) -> str:
+        payload = dict(job["payload"])
+        automation_target = self._automation_target(payload) or "publish"
+        target = self._task_reference_for_video_id(str(job["target"]))
+        task_dir = self.scanner.resolve_task(target)
+        has_youtube_chinese = youtube_chinese_path(task_dir) is not None
+        if (
+            not has_youtube_chinese
+            and not payload.get("auto_translate_missing", True)
+            and str(payload.get("automation_failure_policy") or "skip") == "skip"
+            and not (
+                automation_target == "publish"
+                and str(
+                    payload.get("automation_silent_video_policy")
+                    or "publish_original"
+                ).strip().casefold()
+                == "publish_original"
+            )
+        ):
+            self.publisher.mark_automation_skipped(
+                task_dir,
+                "YOUTUBE_CHINESE_SUBTITLE_NOT_FOUND",
+                details={"message": "没有 YouTube 中文字幕，且自动 API 翻译已关闭"},
+            )
+            return "下载完成；无中文字幕，已按无人值守设置跳过"
+        self.store.enqueue(
+            "pipeline",
+            target,
+            {
+                "workflow": (
+                    "subtitles" if automation_target == "subtitles" else "complete"
+                ),
+                "render_mode": str(payload.get("render_mode") or "hardsub"),
+                "chinese_subtitle_source": str(
+                    payload.get("chinese_subtitle_source") or "auto"
+                ),
+                "whisper_for_auto_subtitles": bool(
+                    payload.get("whisper_for_auto_subtitles", True)
+                ),
+                "english_subtitle_policy": str(
+                    payload.get("english_subtitle_policy") or "quality"
+                ),
+                "auto_translate_missing": bool(
+                    payload.get("auto_translate_missing", True)
+                ),
+                "allow_paid_api": bool(payload.get("allow_paid_api")),
+                "automation_enabled": True,
+                "automation_target": automation_target,
+                "auto_publish": automation_target == "publish",
+                "automation_chinese_policy": str(
+                    payload.get("automation_chinese_policy") or "youtube_preferred"
+                ),
+                "publish_metadata_provider": str(
+                    payload.get("publish_metadata_provider") or "auto"
+                ),
+                "account_id": str(payload.get("account_id") or ""),
+                "publish_only_self": bool(payload.get("publish_only_self", False)),
+                "automation_failure_policy": str(
+                    payload.get("automation_failure_policy") or "skip"
+                ),
+                "automation_silent_video_policy": str(
+                    payload.get("automation_silent_video_policy")
+                    or "publish_original"
+                ),
+            },
+            resource_class="gpu_heavy",
+        )
+        return {
+            "subtitles": "下载完成，已自动接续到双语字幕",
+            "render": "下载完成，已自动接续字幕与成片",
+            "publish": "下载完成，已自动接续字幕、成片与投稿",
+        }[automation_target]
+
+    def _queue_automatic_publish(self, job: dict[str, Any]) -> str:
+        target = str(job["target"])
+        task_dir = self.scanner.resolve_task(target)
+        publish_original_video = bool(
+            job["payload"].get("publish_original_video")
+        )
+        manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        media = self.publisher.media_for_payload(task_dir, job["payload"])
+        review = manifest.get("review") if isinstance(manifest.get("review"), dict) else {}
+        render_blocked = bool(review.get("render_blocked_before_ffmpeg"))
+        status = str(manifest.get("status") or "")
+        media_ready = media.is_file() and media.stat().st_size > 0
+        if not publish_original_video and (
+            render_blocked or not media_ready or status not in {
+            "STAGE4_COMPLETED",
+            "REVIEW_REQUIRED",
+            }
+        ):
+            reason = (
+                "SUBTITLE_LAYOUT_REVIEW_REQUIRED"
+                if render_blocked or status == "REVIEW_REQUIRED"
+                else "HARDSUB_OUTPUT_NOT_READY"
+            )
+            if str(
+                job["payload"].get("automation_failure_policy") or "skip"
+            ) != "skip":
+                raise RuntimeError(
+                    f"成片未达到可投稿条件（{reason}）；"
+                    "已按设置保留失败状态，未自动投稿"
+                )
+            self.publisher.mark_automation_skipped(
+                task_dir,
+                reason,
+                details={
+                    "stage4_status": status,
+                    "media_ready": media_ready,
+                    "review": review,
+                },
+            )
+            return "成片未达到可投稿条件，已自动跳过并继续队列"
+        if self.store.has_active("publish", target):
+            return "成片完成，投稿任务已在队列中"
+        publish_payload = self.publisher.automatic_submission(
+            task_dir,
+            account_id=str(job["payload"].get("account_id") or ""),
+            is_only_self=bool(job["payload"].get("publish_only_self", False)),
+            publish_original_video=publish_original_video,
+        )
+        self.store.enqueue(
+            "publish",
+            target,
+            publish_payload,
+            resource_class=self.initial_resource("publish", publish_payload),
+        )
+        return (
+            "无配音视频投稿信息完成，已使用原视频加入投稿队列"
+            if publish_original_video
+            else "成片完成，已自动加入投稿队列"
+        )
+
+    def _execute_discovery(self, job: dict[str, Any], log_path: Path) -> None:
+        if self.discovery_runner is None:
+            raise RuntimeError("智能发现执行器尚未配置")
+        job_id = str(job["id"])
+        self._append_log(log_path, "\n===== 智能发现 [gpu_heavy] =====\n")
+
+        def update_progress(step: str, progress: int) -> None:
+            self._raise_if_cancelled(job_id)
+            self.store.update(
+                job_id,
+                step=str(step)[:300],
+                progress=max(0, min(int(progress), 99)),
+            )
+
+        result = self.discovery_runner(
+            dict(job["payload"]),
+            progress=update_progress,
+            cancelled=lambda: self._raise_if_cancelled(job_id),
+        )
+        self._raise_if_cancelled(job_id)
+        result_dir = self.project_root / "work" / "control_panel" / "discovery_results"
+        result_dir.mkdir(parents=True, exist_ok=True)
+        result_path = result_dir / f"{job_id}.json"
+        temporary = result_path.with_suffix(".json.tmp")
+        try:
+            temporary.write_text(
+                json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            os.replace(temporary, result_path)
+        finally:
+            temporary.unlink(missing_ok=True)
+        payload = dict(job["payload"])
+        payload["result_file"] = result_path.name
+        self.store.replace_payload(job_id, payload)
+        self._append_log(
+            log_path,
+            f"[智能发现] 返回 {len(result.get('results', []))} 个候选。\n",
+        )
+        self.store.update(
+            job_id,
+            status="completed",
+            step="智能发现完成",
+            progress=100,
+            exit_code=0,
+            error="",
+            finished_at=utc_now(),
+        )
+
+    def _build_stages(
+        self,
+        job: dict[str, Any],
+    ) -> list[tuple[str, list[str], str]]:
+        stages: list[tuple[str, list[str], str]] = []
+        for label, command in self._build_commands(job):
+            if job["kind"] == "download":
+                resource_class = "network"
+            elif job["kind"] == "publish":
+                resource_class = (
+                    "upload"
+                    if label == "上传并提交到哔哩哔哩"
+                    else "gpu_heavy"
+                )
+            elif "--steps" in command:
+                command_step = command[command.index("--steps") + 1]
+                metadata_provider = (
+                    command[command.index("--publish-metadata-provider") + 1]
+                    if "--publish-metadata-provider" in command
+                    else ""
+                )
+                resource_class = (
+                    "paid_api"
+                    if command_step == "translate"
+                    or (
+                        command_step == "metadata"
+                        and metadata_provider == "translation_api"
+                    )
+                    else "gpu_heavy"
+                )
+            else:
+                resource_class = "gpu_heavy"
+            stages.append((label, command, resource_class))
+        return stages
 
     def _build_commands(self, job: dict[str, Any]) -> list[tuple[str, list[str]]]:
         payload = job["payload"]
         if job["kind"] == "download":
-            python = self.project_root / ".venv" / "Scripts" / "python.exe"
+            python = resolve_python_executable(self.project_root)
             command = [
                 str(python),
-                str(self.project_root / "src" / "download_video.py"),
+                "-m",
+                "src.download_video",
                 "--url",
                 str(payload["url"]),
                 "--confirm-rights",
@@ -525,13 +1561,14 @@ class WorkflowWorker:
             task_dir = self.scanner.resolve_task(str(job["target"]))
             commands: list[tuple[str, list[str]]] = []
             if payload.get("prepare_hardsub"):
-                stage3_python = self.project_root / ".venv_stage3" / "Scripts" / "python.exe"
+                stage3_python = resolve_python_executable(self.project_root)
                 commands.append(
                     (
                         "生成投稿用硬字幕 MP4",
                         [
                             str(stage3_python),
-                            str(self.project_root / "src" / "run_stage4.py"),
+                            "-m",
+                            "src.run_stage4",
                             "--video-dir",
                             str(task_dir),
                             "--mode",
@@ -552,29 +1589,88 @@ class WorkflowWorker:
             raise ValueError(f"未知任务类型：{job['kind']}")
 
         task_dir = self.scanner.resolve_task(str(job["target"]))
-        stage3_python = self.project_root / ".venv_stage3" / "Scripts" / "python.exe"
+        stage3_python = resolve_python_executable(self.project_root)
+        if payload.get("silent_video_mode"):
+            metadata_provider = str(
+                payload.get("publish_metadata_provider") or "auto"
+            )
+            metadata_command = [
+                str(stage3_python),
+                "-m",
+                "src.run_stage3",
+                "--video-dir",
+                str(task_dir),
+                "--steps",
+                "metadata",
+                "--publish-metadata-provider",
+                metadata_provider,
+                "--allow-no-subtitles",
+                "--resume",
+            ]
+            if payload.get("allow_paid_api"):
+                metadata_command.append("--allow-paid-api")
+            return [("生成无配音视频投稿信息", metadata_command)]
         steps = str(payload.get("workflow") or "complete")
-        chinese_source = str(
+        requested_chinese_source = str(
             payload.get("chinese_subtitle_source") or "deepseek"
         )
-        if chinese_source not in {"deepseek", "youtube_auto"}:
+        if requested_chinese_source not in {"auto", "deepseek", "youtube_auto"}:
             raise ValueError("不支持的中文字幕来源")
+        has_youtube_chinese = youtube_chinese_path(task_dir) is not None
+        if requested_chinese_source == "auto":
+            youtube_chinese_unusable = (
+                has_youtube_chinese
+                and payload.get("auto_translate_missing", True)
+                and self._youtube_chinese_requires_api_fallback(task_dir)
+            )
+            if has_youtube_chinese and not youtube_chinese_unusable:
+                chinese_source = "auto"
+            elif payload.get("auto_translate_missing", True):
+                chinese_source = "deepseek"
+            elif (
+                self._automation_target(payload) == "publish"
+                and str(
+                    payload.get("automation_silent_video_policy")
+                    or "publish_original"
+                ).strip().casefold()
+                == "publish_original"
+            ):
+                # The English selection stage must run before we can distinguish
+                # a no-speech original from a voiced video missing Chinese text.
+                chinese_source = "auto"
+            else:
+                raise ValueError("没有 YouTube 中文字幕，且自动 API 翻译已关闭")
+        else:
+            chinese_source = requested_chinese_source
         commands: list[tuple[str, list[str]]] = []
         if steps in {"subtitles", "complete"}:
+            english_policy = str(
+                payload.get("english_subtitle_policy") or ""
+            ).strip().casefold()
+            if english_policy not in {"quality", "youtube_first", "whisper"}:
+                english_policy = (
+                    "quality"
+                    if payload.get("whisper_for_auto_subtitles", True)
+                    else "youtube_first"
+                )
+            selection_command = [
+                str(stage3_python),
+                "-m",
+                "src.run_stage3",
+                "--video-dir",
+                str(task_dir),
+                "--steps",
+                "select",
+                "--subtitle-source",
+                "whisper" if english_policy == "whisper" else "auto",
+                "--resume",
+            ]
+            if english_policy == "youtube_first":
+                selection_command.append("--no-whisper-for-auto-subtitles")
             commands.append(
                 (
                     "生成并选择最佳英文字幕",
-                    [
-                        str(stage3_python),
-                        str(self.project_root / "src" / "run_stage3.py"),
-                        "--video-dir",
-                        str(task_dir),
-                        "--steps",
-                        "select",
-                        "--subtitle-source",
-                        "auto",
-                        "--resume",
-                    ],
+                    selection_command,
                 )
             )
             if chinese_source == "deepseek":
@@ -583,7 +1679,8 @@ class WorkflowWorker:
                         "翻译并检查中文字幕",
                         [
                             str(stage3_python),
-                            str(self.project_root / "src" / "run_stage3.py"),
+                            "-m",
+                            "src.run_stage3",
                             "--video-dir",
                             str(task_dir),
                             "--steps",
@@ -592,6 +1689,31 @@ class WorkflowWorker:
                             "--allow-paid-api",
                         ],
                     )
+                )
+            metadata_provider = str(
+                payload.get("publish_metadata_provider") or "translation_api"
+            )
+            needs_metadata_step = self._automation_target(payload) == "publish" and (
+                chinese_source != "deepseek"
+                or metadata_provider != "translation_api"
+            )
+            if needs_metadata_step:
+                metadata_command = [
+                    str(stage3_python),
+                    "-m",
+                    "src.run_stage3",
+                    "--video-dir",
+                    str(task_dir),
+                    "--steps",
+                    "metadata",
+                    "--publish-metadata-provider",
+                    metadata_provider,
+                    "--resume",
+                ]
+                if payload.get("allow_paid_api"):
+                    metadata_command.append("--allow-paid-api")
+                commands.append(
+                    ("自动生成投稿标题、标签与分区", metadata_command)
                 )
         if steps in {"render", "complete"}:
             mode = str(payload.get("render_mode") or "hardsub")
@@ -602,7 +1724,8 @@ class WorkflowWorker:
                     "生成并质检双语成片",
                     [
                         str(stage3_python),
-                        str(self.project_root / "src" / "run_stage4.py"),
+                        "-m",
+                        "src.run_stage4",
                         "--video-dir",
                         str(task_dir),
                         "--mode",
@@ -615,13 +1738,39 @@ class WorkflowWorker:
             )
         return commands
 
-    def _run_command(self, command: list[str], log_path: Path) -> int:
+    def _create_cookie_copy(self, job_id: str) -> Path | None:
+        config_path = self.project_root / "config" / "download_config.json"
+        try:
+            config = json.loads(config_path.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            return None
+        if not config.get("use_cookies", True):
+            return None
+        configured = Path(str(config.get("cookies_path") or "private/cookies.txt"))
+        source = configured if configured.is_absolute() else self.project_root / configured
+        if not source.is_file() or source.stat().st_size <= 0:
+            return None
+        self._cookie_work_dir.mkdir(parents=True, exist_ok=True)
+        destination = self._cookie_work_dir / f"{job_id}.txt"
+        shutil.copy2(source, destination)
+        return destination
+
+    def _cleanup_stale_cookie_copies(self) -> None:
+        if not self._cookie_work_dir.is_dir():
+            return
+        for candidate in self._cookie_work_dir.glob("*.txt"):
+            if candidate.is_file():
+                candidate.unlink(missing_ok=True)
+
+    def _run_command(self, job_id: str, command: list[str], log_path: Path) -> int:
         executable = Path(command[0])
         if not executable.is_file():
             raise FileNotFoundError(f"缺少运行环境：{executable}")
         environment = os.environ.copy()
         environment["PYTHONUTF8"] = "1"
         environment["PYTHONIOENCODING"] = "utf-8"
+        if executable.name.casefold() == "biliup.exe":
+            self.publisher.configure_upload_environment(environment)
         creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
         process = subprocess.Popen(
             command,
@@ -635,18 +1784,77 @@ class WorkflowWorker:
             creationflags=creation_flags,
         )
         with self._process_lock:
-            self._current_process = process
+            self._processes[job_id] = process
+            terminate_immediately = (
+                job_id in self._cancel_requested or self._stop_event.is_set()
+            )
+        if terminate_immediately and process.poll() is None:
+            self._terminate_process_tree(process)
         try:
             assert process.stdout is not None
             with log_path.open("a", encoding="utf-8") as handle:
                 for raw_line in process.stdout:
-                    line = self._decode_process_output(raw_line)
+                    line = self.publisher.redact_log_text(
+                        self._decode_process_output(raw_line)
+                    )
                     handle.write(line)
                     handle.flush()
             return process.wait()
         finally:
             with self._process_lock:
-                self._current_process = None
+                if self._processes.get(job_id) is process:
+                    self._processes.pop(job_id, None)
+
+    def _run_publish_upload_with_retries(
+        self,
+        job_id: str,
+        command: list[str],
+        log_path: Path,
+    ) -> int:
+        delays = self.publisher.transient_retry_delays()
+        maximum_attempts = len(delays) + 1
+        for attempt_index in range(maximum_attempts):
+            attempt_number = attempt_index + 1
+            marker = (
+                f"\n[投稿尝试 {attempt_number}/{maximum_attempts}]"
+                + (" 自动线路" if attempt_index == 0 else " 故障线路降级")
+                + "\n"
+            )
+            self._append_log(log_path, marker)
+            attempt_command = self.publisher.retry_upload_command(
+                command,
+                attempt_index,
+            )
+            exit_code = self._run_command(job_id, attempt_command, log_path)
+            if exit_code == 0:
+                return 0
+            attempt_log = self.store.log_tail(job_id, max_chars=100000).rsplit(
+                marker,
+                1,
+            )[-1]
+            if (
+                attempt_index >= len(delays)
+                or not self.publisher.is_transient_upload_failure(attempt_log)
+            ):
+                return exit_code
+            delay = delays[attempt_index]
+            self.store.update(
+                job_id,
+                step=f"投稿网络中断，{delay:g} 秒后自动重试",
+            )
+            self._append_log(
+                log_path,
+                f"\n[自动恢复] 检测到可恢复的 TLS/网络中断，"
+                f"{delay:g} 秒后重试；已保留 biliup 上传检查点。\n",
+            )
+            deadline = time.monotonic() + delay
+            while time.monotonic() < deadline:
+                self._raise_if_cancelled(job_id)
+                if self._stop_event.wait(
+                    timeout=min(0.25, max(0.0, deadline - time.monotonic()))
+                ):
+                    raise RuntimeError("控制面板正在关闭，投稿自动重试已停止")
+        return 1
 
     def _raise_if_cancelled(self, job_id: str) -> None:
         with self._process_lock:

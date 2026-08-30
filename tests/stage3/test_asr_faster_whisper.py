@@ -120,7 +120,10 @@ class FasterWhisperTests(TestCase):
                 "subtitles/en.whisper.raw.srt", "subtitles/en.whisper.clean.srt",
             ):
                 self.assertTrue((root / relative).is_file(), relative)
-            self.assertEqual(json.loads((root / "stage3/asr/asr_qc.json").read_text(encoding="utf-8"))["overlaps"], 0)
+            qc = json.loads((root / "stage3/asr/asr_qc.json").read_text(encoding="utf-8"))
+            self.assertEqual(qc["overlaps"], 0)
+            self.assertEqual(qc["coverage_basis"], "clean_subtitle_active_duration_over_audio")
+            self.assertEqual(qc["coverage_ratio"], qc["subtitle_active_coverage_ratio"])
 
     def test_source_audio_hash_remains_unchanged(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

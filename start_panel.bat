@@ -4,16 +4,13 @@ setlocal EnableExtensions
 set "PROJECT_ROOT=%~dp0"
 cd /d "%PROJECT_ROOT%" || goto :bad_root
 
-if not exist ".venv\Scripts\python.exe" (
-  echo [ERROR] Python environment not found. Run setup_stage1_fixed.bat first.
-  goto :failed
-)
+call "%PROJECT_ROOT%set_runtime.bat" || goto :failed
 if not exist "src\run_control_panel.py" (
   echo [ERROR] Control panel entrypoint not found.
   goto :failed
 )
 
-".venv\Scripts\python.exe" "src\run_control_panel.py" %*
+"%PYTHON_EXE%" "src\run_control_panel.py" %*
 set "EXIT_CODE=%ERRORLEVEL%"
 if "%EXIT_CODE%"=="0" exit /b 0
 echo.

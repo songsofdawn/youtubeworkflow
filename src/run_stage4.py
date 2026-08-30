@@ -30,28 +30,39 @@ SKIPPABLE_INPUT_ERRORS = {
     "ZH_REVIEWED_SUBTITLE_NOT_FOUND",
 }
 
+DISPLAY_STATUS = {
+    "STAGE4_COMPLETED": "成片完成",
+    "DRY_RUN_COMPLETED": "检查完成",
+    "REVIEW_REQUIRED": "需要复核",
+    "FAILED": "成片失败",
+}
+
+
+def display_status(status: str) -> str:
+    return DISPLAY_STATUS.get(str(status), str(status))
+
 
 def load_config(path: Path | str) -> dict[str, Any]:
     source = Path(path)
     if not source.is_absolute():
         source = PROJECT_ROOT / source
     if not source.is_file():
-        raise Stage4Error("STAGE4_CONFIG_NOT_FOUND", f"阶段四配置不存在：{source}")
+        raise Stage4Error("STAGE4_CONFIG_NOT_FOUND", f"成片配置不存在：{source}")
     try:
         value = json.loads(source.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError as exc:
         raise Stage4Error(
             "STAGE4_CONFIG_INVALID",
-            f"阶段四配置 JSON 无效：{exc}",
+            f"成片配置 JSON 无效：{exc}",
         ) from exc
     if not isinstance(value, dict):
-        raise Stage4Error("STAGE4_CONFIG_INVALID", "阶段四配置顶层必须是 JSON 对象。")
+        raise Stage4Error("STAGE4_CONFIG_INVALID", "成片配置顶层必须是 JSON 对象。")
     return value
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="阶段四：保留原始配音并生成中英双语字幕成片"
+        description="保留原始配音并生成中英双语字幕成片"
     )
     parser.add_argument(
         "--video-dir",
@@ -67,12 +78,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--chinese-source",
         choices=("auto", "deepseek", "youtube_auto"),
         default="auto",
-        help="中文字幕来源：自动择优、DeepSeek 翻译或 YouTube 自动中文",
+        help="中文字幕来源：自动择优、AI API 翻译或 YouTube 自动中文",
     )
     parser.add_argument(
         "--config",
         default="config/stage4_config.json",
-        help="相对于项目根目录的阶段四配置路径",
+        help="相对于项目根目录的成片配置路径",
     )
     parser.add_argument(
         "--video-encoder",
@@ -134,9 +145,9 @@ def _options_from_args(
 
 
 def _print_result(result: Any, *, dry_run: bool) -> None:
-    print(f"阶段四状态：{result.status}")
-    label = "Dry-run 报告" if dry_run else "Manifest"
-    print(f"{label}：{result.manifest_path}")
+    print(f"成片状态：{display_status(result.status)}")
+    label = "检查报告" if dry_run else "成片报告"
+    print(f"{label}：已写入视频任务目录")
     for name in ("softsub", "hardsub"):
         outcome = result.plan.get(name)
         if isinstance(outcome, dict):
@@ -187,7 +198,7 @@ def run_batch(
             )
             label = "跳过" if is_skipped else "失败"
             print(
-                f"[{exc.code}] {label}：{exc.message}",
+                f"{label}：{exc.message}",
                 file=sys.stderr,
                 flush=True,
             )
@@ -209,7 +220,7 @@ def run_batch(
                 }
             )
             print(
-                f"[UNEXPECTED_STAGE4_ERROR] 失败：{type(exc).__name__}: {exc}",
+                f"失败：{type(exc).__name__}: {exc}",
                 file=sys.stderr,
                 flush=True,
             )
@@ -246,7 +257,7 @@ def run_batch(
         if generated_names:
             details.append("本次新生成：" + "/".join(generated_names))
         suffix = f"（{'；'.join(details)}）" if details else ""
-        print(f"完成：{result.status}{suffix}", flush=True)
+        print(f"完成：{display_status(result.status)}{suffix}", flush=True)
 
     summary = {
         "input_directory": str(input_dir),
@@ -273,7 +284,7 @@ def run_batch(
         f"复用成片 {reused_outputs}，新生成成片 {generated_outputs}",
         flush=True,
     )
-    print(f"批次报告：{report_path}", flush=True)
+    print(f"批次报告：已写入输入目录（{report_path.name}）", flush=True)
     exit_code = 0 if failed == 0 and succeeded > 0 else 2
     return exit_code, report_path, report
 
@@ -301,7 +312,7 @@ def main(argv: list[str] | None = None) -> int:
             return exit_code
         result = pipeline.run(input_dir, options)
     except Stage4Error as exc:
-        print(f"[{exc.code}] {exc.message}", file=sys.stderr, flush=True)
+        print(f"成片失败：{exc.message}", file=sys.stderr, flush=True)
         if exc.details:
             print(
                 json.dumps(exc.details, ensure_ascii=False, indent=2),

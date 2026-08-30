@@ -1,41 +1,69 @@
-# Secrets and local credentials
+# Local secrets and credentials
 .env
 .env.*
 !.env.example
+.envrc
+.direnv/
 private/
 .secrets/
+secrets/
+credentials/
+.netrc
+_netrc
 cookies.txt
 *.cookies.txt
 *.cookie
 *.pem
 *.key
+*.p12
+*.pfx
+*.token
 
-# Python virtual environments and caches
+# Python virtual environments
 .venv/
-.venv_stage3/
+.venv*/
 venv/
+venv*/
 env/
+ENV/
+
+# Python bytecode, tooling, tests, and coverage
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.hypothesis/
 .mypy_cache/
+.pyre/
+.pytype/
 .ruff_cache/
+.tox/
+.nox/
+.cache/
 .coverage
 .coverage.*
+coverage.xml
 htmlcov/
+test-results/
+*.cover
+*.py,cover
+pip-wheel-metadata/
 
 # Generated workflow data and runtime state
-candidates/
-downloads/
-logs/
-work/
-output/
-audio/
-subtitles/
-translation/
+/candidates/
+/downloads/
+/logs/
+/work/
+/output/
+/audio/
+/subtitles/
+/translation/
+/very-long-task/
+download_manifest.json
 stage3_manifest.json
 stage4_manifest.json
+dry_run_plan.json
+download_archive.txt
 **/stage3/[0-9][0-9]_*.json
 **/stage3/[0-9][0-9]_*.txt
 **/stage3/asr/
@@ -47,25 +75,47 @@ stage4_manifest.json
 **/stage3/stage3_review.html
 **/stage3/migrations.json
 **/stage3/source_comparison.json
-download_archive.txt
+**/stage4/video/
+**/stage4/subtitles/
+**/stage4/qc/
+**/stage4/review/
+*.log
+*.pid
+*.pid.lock
 *.part
 *.ytdl
-*.log
 *.tmp
 *.temp
+.tmp-*
+*.bak
+*.old
+*.orig
+*.rej
 
-# Bundled local tools and executable binaries
-tools/
+# Bundled local tools, account state, and native binaries
+/tools/
+/biliup/
 *.exe
 *.dll
+*.pyd
+*.so
+*.dylib
 
-# Downloaded media and large generated assets
+# Downloaded video and audio
 *.mp4
+*.m4v
 *.mkv
 *.webm
 *.mov
 *.avi
 *.wmv
+*.flv
+*.mpeg
+*.mpg
+*.ts
+*.mts
+*.m2ts
+*.m3u8
 *.wav
 *.mp3
 *.m4a
@@ -73,43 +123,62 @@ tools/
 *.flac
 *.ogg
 *.opus
-*.ts
+*.wma
+*.aiff
 
-# Large archives and model files
-*.zip
-*.7z
-*.rar
-*.tar
-*.tar.gz
-*.tgz
-*.gz
-*.bz2
-*.xz
+# Downloaded models and large binary weights
+/models/
 *.pt
 *.pth
 *.onnx
 *.safetensors
 *.ckpt
+*.gguf
+*.tflite
+*.h5
+*.pb
 
-# Build and package artifacts
-build/
-dist/
-site/
+# Archives and packaged releases
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.*
+*.tgz
+*.gz
+*.bz2
+*.xz
+*.whl
+
+# Python, frontend, and portable build artifacts
+/build/
+/dist/
+/site/
 *.egg-info/
 .eggs/
 node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# IDE and editor settings
+# IDEs, editors, and local scratch files
 .vscode/
 .idea/
+*.code-workspace
 *.swp
 *.swo
 *~
+~$*
 
 # Operating-system metadata
 .DS_Store
+._*
 Thumbs.db
+ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
-
-models/

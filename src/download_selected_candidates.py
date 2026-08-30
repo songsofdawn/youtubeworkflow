@@ -7,17 +7,24 @@ import sys
 from pathlib import Path
 from typing import Any
 
-try:
-    from .download_core import PROJECT_ROOT, download_one_video, find_local_tools, get_project_paths, load_download_config
-except ImportError:  # Direct execution: python src/download_selected_candidates.py
-    from download_core import PROJECT_ROOT, download_one_video, find_local_tools, get_project_paths, load_download_config
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from src.download_core import (
+    PROJECT_ROOT,
+    download_one_video,
+    find_local_tools,
+    get_project_paths,
+    load_download_config,
+)
 
 
 LOGGER = logging.getLogger("stage2_batch")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Download rights-approved candidates from the Stage 1 JSON file.")
+    parser = argparse.ArgumentParser(description="Download rights-approved videos from a candidate JSON file.")
     parser.add_argument("--input", type=Path, help="Candidate JSON; defaults to the newest *_US_localization_top50.json.")
     parser.add_argument("--video-ids", nargs="+", help="Only process these IDs; approval checks still apply.")
     return parser.parse_args(argv)
@@ -117,7 +124,7 @@ def main(argv: list[str] | None = None) -> int:
         tools = find_local_tools()
         stats = process_candidates(candidate_file, args.video_ids, config=config, tools=tools)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
-        LOGGER.error("阶段二配置、工具或输入错误: %s", exc)
+        LOGGER.error("下载配置、工具或输入错误: %s", exc)
         return 2
     print(json.dumps(stats, ensure_ascii=False, indent=2))
     return 1 if stats["failed"] or stats["partial_success"] else 0

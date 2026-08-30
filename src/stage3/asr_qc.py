@@ -51,8 +51,10 @@ def assess_asr_quality(
         item.get("start") is None or item.get("end") is None or bool(item.get("timestamps_approximated"))
         for item in words
     )
-    coverage_seconds = sum(item.duration for item in clean_segments)
-    coverage_ratio = coverage_seconds / audio_duration if audio_duration > 0 else 0.0
+    subtitle_active_seconds = sum(item.duration for item in clean_segments)
+    subtitle_active_coverage_ratio = (
+        subtitle_active_seconds / audio_duration if audio_duration > 0 else 0.0
+    )
     final_end = clean_segments[-1].end if clean_segments else 0.0
     tail_gap = max(0.0, audio_duration - final_end)
     truncated = bool(clean_segments and audio_duration > 0 and tail_gap > max(5.0, audio_duration * 0.1))
@@ -76,8 +78,14 @@ def assess_asr_quality(
         "average_word_probability": round(average_probability, 6),
         "low_confidence_words": low_confidence_words,
         "word_timestamp_missing_rate": round(missing_word_times / max(1, len(words)), 6),
-        "coverage_seconds": round(coverage_seconds, 3),
-        "coverage_ratio": round(coverage_ratio, 6),
+        # Preserve the legacy names for existing checkpoints and reports.  This is
+        # active clean-subtitle time over the full media duration, not VAD speech
+        # coverage and therefore must not be treated as an ASR confidence signal.
+        "coverage_seconds": round(subtitle_active_seconds, 3),
+        "coverage_ratio": round(subtitle_active_coverage_ratio, 6),
+        "coverage_basis": "clean_subtitle_active_duration_over_audio",
+        "subtitle_active_seconds": round(subtitle_active_seconds, 3),
+        "subtitle_active_coverage_ratio": round(subtitle_active_coverage_ratio, 6),
         "adjacent_duplicates": adjacent,
         "continuous_repeated_phrases": _continuous_repetitions(clean_segments),
         "audio_tail_gap_seconds": round(tail_gap, 3),

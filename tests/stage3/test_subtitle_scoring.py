@@ -46,6 +46,45 @@ class SubtitleScoringTests(TestCase):
             self.assertIn("OVERLAPS_REMAIN", report["hard_fail_reasons"])
             self.assertIn("SPEECH_COVERAGE_BELOW_MINIMUM", report["hard_fail_reasons"])
 
+    def test_sparse_subtitles_use_time_span_when_speech_intervals_are_unavailable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sparse.srt"
+            path.write_text(
+                "1\n00:00:10,000 --> 00:00:12,000\nFirst instruction.\n\n"
+                "2\n00:01:30,000 --> 00:01:32,000\nFinal instruction.\n",
+                encoding="utf-8",
+            )
+            report = score_subtitle(
+                path,
+                source="youtube",
+                source_type="auto",
+                config=CONFIG,
+                audio_duration=100.0,
+                speech_intervals=[],
+            )
+            coverage = report["scores"]["coverage"]["raw_values"]
+            self.assertEqual(coverage["coverage_basis"], "subtitle_time_span_proxy")
+            self.assertAlmostEqual(coverage["coverage_ratio"], 0.82)
+            self.assertIn("SPEECH_INTERVALS_UNAVAILABLE", report["flags"])
+            self.assertNotIn("SPEECH_COVERAGE_BELOW_MINIMUM", report["hard_fail_reasons"])
+            self.assertFalse(report["hard_fail"])
+
+    def test_narrow_subtitle_span_still_fails_without_speech_intervals(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "incomplete.srt"
+            path.write_text(SRT, encoding="utf-8")
+            report = score_subtitle(
+                path,
+                source="youtube",
+                source_type="auto",
+                config=CONFIG,
+                audio_duration=100.0,
+                speech_intervals=[],
+            )
+            self.assertTrue(report["hard_fail"])
+            self.assertIn("SUBTITLE_SPAN_BELOW_MINIMUM", report["hard_fail_reasons"])
+            self.assertNotIn("SPEECH_COVERAGE_BELOW_MINIMUM", report["hard_fail_reasons"])
+
     def test_structure_uses_original_ids_and_rejects_malformed_timing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "malformed.srt"
@@ -79,6 +118,35 @@ class SubtitleScoringTests(TestCase):
             readability = report["scores"]["readability"]["raw_values"]
             self.assertEqual(readability["long_lines"], 1)
             self.assertEqual(readability["too_many_lines"], 1)
+
+    def test_sparse_whisper_activity_is_not_mislabeled_as_low_vad_confidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "whisper.srt"
+            path.write_text(SRT, encoding="utf-8")
+            report = score_subtitle(
+                path,
+                source="whisper",
+                source_type="faster-whisper-large-v3",
+                config=CONFIG,
+                audio_duration=100.0,
+                speech_intervals=[(0.0, 2.0)],
+                source_qc={
+                    "average_word_probability": 0.9,
+                    "word_count": 2,
+                    "low_confidence_words": 0,
+                    "word_timestamp_missing_rate": 0.0,
+                    "subtitle_active_coverage_ratio": 0.02,
+                },
+            )
+            confidence = report["scores"]["source_confidence"]
+            self.assertEqual(
+                confidence["raw_values"]["subtitle_active_coverage_ratio"],
+                0.02,
+            )
+            self.assertNotIn(
+                "LOW_VAD_COVERAGE",
+                [item["reason"] for item in confidence["deductions"]],
+            )
 
     def test_agreement_is_recorded_but_not_named_accuracy(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

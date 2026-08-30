@@ -286,9 +286,9 @@ def _write_review_html(
             f"<td>{html.escape('|'.join(row_flags))}</td></tr>"
         )
     page = f"""<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><title>Stage 3 字幕审核</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>双语字幕审核</title>
 <style>body{{font-family:Segoe UI,Microsoft YaHei,sans-serif;margin:20px}}button,input{{margin:4px;padding:6px}}table{{border-collapse:collapse;width:100%;font-size:13px}}th,td{{border:1px solid #ccc;padding:6px;vertical-align:top}}th{{position:sticky;top:0;background:#eee}}.hidden{{display:none}}</style></head>
-<body><h1>阶段三只读字幕审核</h1>
+<body><h1>双语字幕只读审核</h1>
 <p>YouTube 评分：{youtube_score}；Whisper 评分：{whisper_score}；选择原因：{html.escape(str(selection.get("selection_reason", "")))}</p>
 <div><button data-filter="all">全部</button><button data-filter="qc">只看 QC 失败</button>
 <button data-filter="difference">只看双源差异</button><button data-filter="low-confidence">只看低置信度</button>

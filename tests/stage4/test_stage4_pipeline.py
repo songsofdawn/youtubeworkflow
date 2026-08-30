@@ -7,9 +7,11 @@ from copy import deepcopy
 from pathlib import Path
 from unittest import mock
 
-from src.stage4.models import CommandResult, PipelineOptions
+from src.stage4.layout_review import save_layout_review
+from src.stage4.models import CommandResult, PipelineOptions, ResolvedInputs
 from src.stage4.render_pipeline import Stage4Pipeline
 from src.stage4.stage4_manifest import hash_json, sha256_file
+from src.stage4.subtitle_recovery import clip_recovered_pair_to_video_duration
 
 
 SRT_EN = "1\n00:00:00,000 --> 00:00:01,000\nHello.\n"
@@ -137,6 +139,190 @@ class Stage4PipelineTests(unittest.TestCase):
             self.assertFalse((task / "stage4" / "video" / "final_bilingual_softsub.mkv").exists())
             self.assertIn("softsub", result.plan["commands"])
             self.assertIn("hardsub", result.plan["commands"])
+
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())
+    def test_unfit_single_line_stops_before_ffmpeg_and_explains_review(
+        self, _probe: mock.Mock, _version: mock.Mock
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            pipeline, task, _, _ = self.prepare(Path(temporary))
+            (task / "subtitles" / "zh.clean.srt").write_text(
+                "1\n00:00:00,000 --> 00:00:01,000\n" + "异常内容" * 100 + "\n",
+                encoding="utf-8",
+            )
+            result = pipeline.run(task, PipelineOptions(mode="hardsub"))
+            manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+            self.assertEqual(result.status, "REVIEW_REQUIRED")
+            self.assertEqual(FakeRunner.calls, 0)
+            self.assertTrue(manifest["review"]["render_blocked_before_ffmpeg"])
+            self.assertEqual(manifest["review"]["issue_ids"], ["1"])
+            self.assertFalse(
+                (task / "stage4" / "video" / "final_bilingual_hardsub.mp4").exists()
+            )
+
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())
+    def test_layout_review_survives_recovered_subtitle_regeneration_before_clip(
+        self, _probe: mock.Mock, _version: mock.Mock
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pipeline, task, source, _ = self.prepare(root)
+            recovered_dir = task / "stage4" / "subtitles"
+            recovered_dir.mkdir(parents=True, exist_ok=True)
+            english = recovered_dir / "en.recovered.srt"
+            chinese = recovered_dir / "zh.recovered.srt"
+            full_english = (
+                "1\n00:00:00,000 --> 00:00:01,000\n"
+                + "very long english text " * 30
+                + "\n\n2\n00:00:01,000 --> 00:00:01,500\n"
+                + "another long english text " * 20
+                + "\n"
+                + "\n3\n00:00:02,100 --> 00:00:03,000\nOutside media.\n"
+            )
+            full_chinese = (
+                "1\n00:00:00,000 --> 00:00:01,000\n"
+                + "很长的中文字幕" * 40
+                + "\n\n2\n00:00:01,000 --> 00:00:01,500\n"
+                + "另一条很长的中文字幕" * 20
+                + "\n"
+                + "\n3\n00:00:02,100 --> 00:00:03,000\n超出视频。\n"
+            )
+            english.write_text(full_english, encoding="utf-8")
+            chinese.write_text(full_chinese, encoding="utf-8")
+            clip_recovered_pair_to_video_duration(english, chinese, 2.0)
+            (task / "stage4" / "stage4_manifest.json").write_text(
+                json.dumps(
+                    {
+                        "status": "REVIEW_REQUIRED",
+                        "qc_status": "REVIEW_REQUIRED",
+                        "output_mode": "ass",
+                        "chinese_subtitle_source": "youtube_auto",
+                        "english_subtitle_path": str(english),
+                        "chinese_subtitle_path": str(chinese),
+                        "source_video_probe": source_probe(),
+                        "review": {
+                            "code": "SUBTITLE_LAYOUT_REVIEW_REQUIRED",
+                            "message": "2 条字幕需要复核",
+                            "issue_ids": ["1", "2"],
+                        },
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            qc = task / "stage4" / "qc" / "subtitle_qc.json"
+            qc.parent.mkdir(parents=True, exist_ok=True)
+            qc.write_text(
+                json.dumps(
+                    {
+                        "layout_warnings": [
+                            {"code": "BILINGUAL_LINE_TOO_WIDE", "id": "1"},
+                            {"code": "BILINGUAL_LINE_TOO_WIDE", "id": "2"},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            review = save_layout_review(
+                task,
+                [
+                    {"id": "1", "hidden_from_render": True},
+                    {"id": "2", "english": "Edited cue.", "chinese": "已修改字幕。"},
+                ],
+                CONFIG,
+            )
+            self.assertEqual(review["hidden_count"], 1)
+
+            # Automatic recovery regenerates the un-clipped pair on every run.
+            english.write_text(full_english, encoding="utf-8")
+            chinese.write_text(full_chinese, encoding="utf-8")
+            recovered = ResolvedInputs(
+                video_dir=task,
+                source_video=source,
+                source_video_reason="test",
+                source_video_candidates=(source,),
+                english_subtitle=english,
+                chinese_subtitle=chinese,
+                chinese_subtitle_reviewed=False,
+                chinese_subtitle_auto_selected=True,
+                chinese_subtitle_selection_reason="recovered",
+                chinese_subtitle_selection_score=90.0,
+                chinese_selection_report={
+                    "selection_mode": "auto_recovered_aligned_bilingual"
+                },
+            )
+            with mock.patch(
+                "src.stage4.render_pipeline.resolve_inputs", return_value=recovered
+            ):
+                result = pipeline.run(task, PipelineOptions(mode="ass"))
+
+            manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+            selection = json.loads(
+                (task / "stage4" / "subtitles" / "chinese_selection_report.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(result.status, "STAGE4_COMPLETED")
+            self.assertTrue(manifest["english_subtitle_path"].endswith("en.layout_reviewed.srt"))
+            self.assertTrue(manifest["chinese_subtitle_path"].endswith("zh.layout_reviewed.srt"))
+            self.assertEqual(selection["selection_mode"], "layout_reviewed")
+            self.assertEqual(selection["layout_review_hidden_ids"], ["1"])
+            reviewed_english = Path(manifest["english_subtitle_path"]).read_text(
+                encoding="utf-8"
+            )
+            reviewed_chinese = Path(manifest["chinese_subtitle_path"]).read_text(
+                encoding="utf-8"
+            )
+            self.assertNotIn("very long english text", reviewed_english)
+            self.assertIn("Edited cue.", reviewed_english)
+            self.assertIn("已修改字幕。", reviewed_chinese)
+
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path: {
+            **source_probe(),
+            "path": str(path),
+            "video_codec": "h264"
+            if "hardsub" in Path(path).name
+            else source_probe()["video_codec"],
+        },
+    )
+    def test_readable_long_line_is_fragmented_and_rendered(
+        self,
+        _probe: mock.Mock,
+        _version: mock.Mock,
+        _encoder: mock.Mock,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            pipeline, task, _, _ = self.prepare(Path(temporary))
+            (task / "subtitles" / "en.selected.srt").write_text(
+                "1\n00:00:00,000 --> 00:00:02,000\nA concise source.\n",
+                encoding="utf-8",
+            )
+            (task / "subtitles" / "zh.clean.srt").write_text(
+                "1\n00:00:00,000 --> 00:00:02,000\n" + "可读的中文分页内容" * 10 + "\n",
+                encoding="utf-8",
+            )
+
+            result = pipeline.run(task, PipelineOptions(mode="hardsub"))
+            subtitle_qc = json.loads(
+                (task / "stage4" / "qc" / "subtitle_qc.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            summary = subtitle_qc["scaled_style"]["adaptive_font_size_summary"]
+
+            self.assertEqual(result.status, "STAGE4_COMPLETED")
+            self.assertEqual(FakeRunner.calls, 1)
+            self.assertEqual(subtitle_qc["layout_warnings"], [])
+            self.assertEqual(summary["fragmented_segment_count"], 1)
+            self.assertGreater(summary["generated_event_count"], 1)
 
     @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
     @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")

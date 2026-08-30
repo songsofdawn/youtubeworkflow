@@ -33,7 +33,7 @@ class CudaRuntimeTests(TestCase):
     def test_missing_cuda_dll_has_explicit_error(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = self._site(directory, complete=False)
-            with self.assertRaisesRegex(RuntimeError, "CUDA_DLL_MISSING"):
+            with self.assertRaisesRegex(RuntimeError, "requirements.lock.txt"):
                 cuda_runtime.configure_cuda_runtime(platform_name="win32", site_packages=[root])
 
     def test_registration_keeps_handles_and_updates_process_path(self) -> None:

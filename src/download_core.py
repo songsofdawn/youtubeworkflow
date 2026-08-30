@@ -199,10 +199,11 @@ def _cookie_argument(config: dict[str, Any], paths: dict[str, Path]) -> tuple[li
     if not cookie_path.is_file() or cookie_path.stat().st_size == 0:
         return [], None
     try:
-        first_line = cookie_path.open(encoding="utf-8-sig", errors="replace").readline().strip()
+        with cookie_path.open(encoding="utf-8-sig", errors="replace") as cookie_file:
+            first_line = cookie_file.readline().strip()
     except OSError:
         first_line = ""
-    if "# Netscape HTTP Cookie File" not in first_line:
+    if first_line not in {"# Netscape HTTP Cookie File", "# HTTP Cookie File"}:
         warning = "Cookies 文件格式异常，将先尝试不使用 Cookies；如遇登录、年龄限制或机器人验证，请重新导出 Netscape 格式 Cookies。"
         LOGGER.warning(warning)
         return [], warning
@@ -344,6 +345,11 @@ def _is_transient_download_error(result: dict[str, Any]) -> bool:
     return any(marker in text for marker in markers)
 
 
+def _is_po_token_download_error(result: dict[str, Any]) -> bool:
+    text = f"{result.get('stderr', '')}\n{result.get('stdout', '')}".casefold()
+    return "http error 403" in text or "403: forbidden" in text
+
+
 def _download_network_hint(result: dict[str, Any]) -> str:
     if not _is_transient_download_error(result):
         return ""
@@ -472,6 +478,54 @@ def _stream_cdn_download(
     return False, last_error or "备用 CDN 下载失败"
 
 
+def _download_via_no_token_client(
+    url: str,
+    video_dir: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    """Retry public embeddable media through a client that does not require a GVS POT."""
+    client = str(config.get("po_token_fallback_client", "web_embedded")).strip()
+    if not client:
+        client = "web_embedded"
+    command: list[str | Path] = [
+        tools["yt-dlp"],
+        url,
+        "--no-playlist",
+        "--continue",
+        "--retries",
+        str(config["retries"]),
+        "--fragment-retries",
+        str(config["fragment_retries"]),
+        "--ffmpeg-location",
+        paths["tools_bin"],
+        "--extractor-args",
+        f"youtube:player_client={client}",
+        "--no-cookies",
+        "--format",
+        str(config["format_selector"]),
+        "--merge-output-format",
+        str(config.get("video_container", "mp4")),
+        "--remux-video",
+        str(config.get("video_container", "mp4")),
+        "--output",
+        video_dir / "source.%(ext)s",
+        "--no-write-playlist-metafiles",
+        *_download_network_options(config),
+    ]
+    deno = paths["tools_bin"] / "deno.exe"
+    if deno.is_file():
+        command.extend(["--js-runtimes", f"deno:{deno}"])
+    result = run_command(command, paths["project_root"], stream_output=True)
+    return {
+        "success": bool(result["success"]),
+        "error": "" if result["success"] else _short_error(result),
+        "command_result": result,
+        "command_results": [result],
+    }
+
+
 def _download_via_alternate_cdn(
     url: str,
     video_dir: Path,
@@ -579,7 +633,25 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         command.extend(["--download-archive", archive])
     result = run_command(command, paths["project_root"], stream_output=True)
     command_results: list[dict[str, Any]] = [result]
-    fallback_error = ""
+    fallback_errors: list[str] = []
+    if (
+        not result["success"]
+        and _is_po_token_download_error(result)
+        and config.get("po_token_fallback_enabled", True)
+    ):
+        LOGGER.warning(
+            "视频流被 YouTube 以 403 拒绝，正在改用无需 GVS PO Token 的嵌入式客户端续传"
+        )
+        pot_fallback = _download_via_no_token_client(
+            url, video_dir, tools, paths, config
+        )
+        command_results.extend(pot_fallback.get("command_results") or [])
+        if pot_fallback["success"]:
+            result = pot_fallback["command_result"]
+        else:
+            fallback_errors.append(
+                "嵌入式客户端回退失败：" + str(pot_fallback.get("error") or "未知错误")
+            )
     if (
         not result["success"]
         and _is_transient_download_error(result)
@@ -589,6 +661,8 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         fallback = _download_via_alternate_cdn(url, video_dir, tools, paths, config)
         command_results.extend(fallback.get("command_results") or [])
         fallback_error = str(fallback.get("error") or "")
+        if fallback_error:
+            fallback_errors.append(fallback_error)
         if fallback["success"]:
             result = {
                 "success": True,
@@ -605,8 +679,9 @@ def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] 
         mp4_files[0].replace(final)
     success = result["success"] and final.is_file() and final.stat().st_size > 0
     error = "" if success else _short_error(result)
-    if fallback_error:
-        error = f"{error}\n{fallback_error}".strip()
+    if fallback_errors and not success:
+        error = f"{error}\n" + "\n".join(fallback_errors)
+        error = error.strip()
     network_hint = _download_network_hint(result)
     if network_hint:
         error = f"{error}\n{network_hint}".strip()

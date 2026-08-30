@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class Stage3EntrypointTests(TestCase):
-    def test_batch_auto_modes_use_select_and_stage3_environment(self) -> None:
-        content = (ROOT / "run_stage3.bat").read_text(encoding="utf-8")
+    def test_batch_auto_modes_use_select_and_unified_runtime(self) -> None:
+        content = (ROOT / "subtitle_tools.bat").read_text(encoding="utf-8")
         self.assertIn('if /I "%RUN_MODE%"=="autoselect"', content)
         self.assertIn('set "RUN_ARGS=--steps select --subtitle-source auto --resume"', content)
         self.assertIn('if /I "%RUN_MODE%"=="autotranslate"', content)
@@ -24,9 +24,11 @@ class Stage3EntrypointTests(TestCase):
         self.assertIn('set "TRANSLATE_AFTER_SELECT=1"', content)
         self.assertIn('set "RUN_ARGS=--steps translate --resume --allow-paid-api"', content)
         self.assertIn('set "SELECTION_EXIT_CODE=%ERRORLEVEL%"', content)
-        self.assertIn("Paid confirmation will still be shown", content)
+        self.assertIn("API confirmation will still be shown", content)
         self.assertNotIn("Translation was not started", content)
-        self.assertGreaterEqual(content.count('set "STAGE3_PYTHON=.venv_stage3\\Scripts\\python.exe"'), 3)
+        self.assertIn('call "%PROJECT_ROOT%set_runtime.bat"', content)
+        self.assertIn('set "SUBTITLE_PYTHON=%PYTHON_EXE%"', content)
+        self.assertNotIn('.venv_stage3\\Scripts\\python.exe', content)
         self.assertIn('set "PAID_MODE=1"', content)
 
     def test_chinese_source_summary_contains_all_required_fields(self) -> None:

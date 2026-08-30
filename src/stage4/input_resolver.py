@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
+from .layout_review import apply_layout_review_override
 from .models import ResolvedInputs, Stage4Error
 from .subtitle_recovery import recover_aligned_bilingual_subtitles
 from .subtitle_selector import select_best_chinese_subtitle
@@ -21,6 +22,7 @@ EXCLUDED_VIDEO_MARKERS = (
     ".tmp",
     ".temp",
 )
+YTDLP_COMPONENT_PATTERN = re.compile(r"^source\.f\d+\.", re.IGNORECASE)
 VIDEO_KEYS = {
     "source_video",
     "source_video_path",
@@ -50,6 +52,9 @@ def _recovered_subtitle_inputs(
 
 
 def _deepseek_translation_ready(video_dir: Path) -> bool:
+    reviewed = video_dir / "subtitles" / "zh.reviewed.srt"
+    if reviewed.is_file() and reviewed.stat().st_size > 0:
+        return True
     manifest_path = video_dir / "stage3_manifest.json"
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
@@ -60,7 +65,7 @@ def _deepseek_translation_ready(video_dir: Path) -> bool:
         or manifest.get("p1_status")
         or ""
     ).upper()
-    return status in {"QC_PASSED", "REVIEW_REQUIRED", "TRANSLATION_COMPLETED"}
+    return status in {"QC_PASSED", "TRANSLATION_COMPLETED"}
 
 
 def _youtube_auto_chinese_available(video_dir: Path) -> bool:
@@ -110,7 +115,7 @@ def resolve_subtitle_inputs(
     if not english.is_file():
         missing_english = Stage4Error(
             "EN_SELECTED_SUBTITLE_NOT_FOUND",
-            f"找不到阶段三选定的英文字幕：{english}。请先完成阶段三字幕选择。",
+            f"找不到已选定的英文字幕：{english}。请先完成英文字幕处理。",
         )
         if not require_reviewed and chinese_source in {"auto", "youtube_auto"}:
             try:
@@ -127,7 +132,7 @@ def resolve_subtitle_inputs(
     if chinese_source == "deepseek" and not _deepseek_translation_ready(video_dir):
         raise Stage4Error(
             "DEEPSEEK_TRANSLATION_NOT_FOUND",
-            "尚未生成 DeepSeek 中文字幕。请先在控制面板选择 DeepSeek 翻译并处理字幕。",
+            "尚未生成 AI API 中文字幕。请先在控制面板选择 AI API 翻译并处理字幕。",
         )
 
     priorities = input_config.get(
@@ -166,7 +171,7 @@ def resolve_subtitle_inputs(
         if not _youtube_auto_chinese_available(video_dir):
             raise Stage4Error(
                 "ZH_AUTO_SUBTITLE_NOT_FOUND",
-                "该视频没有自动生成的中文字幕，请改选 DeepSeek 翻译。",
+                "该视频没有自动生成的中文字幕，请改选 AI API 翻译。",
             )
     elif chinese_source == "deepseek":
         candidates = [
@@ -202,7 +207,7 @@ def resolve_subtitle_inputs(
         if chinese_source == "youtube_auto":
             raise Stage4Error(
                 "ZH_AUTO_SUBTITLE_UNUSABLE",
-                "找到了自动生成的中文字幕，但无法与英文字幕可靠对齐。请改选 DeepSeek 翻译。",
+                "找到了自动生成的中文字幕，但无法与英文字幕可靠对齐。请改选 AI API 翻译。",
                 details=selection_error.details,
             )
         raise selection_error
@@ -220,7 +225,21 @@ def _is_video_candidate(path: Path, video_dir: Path) -> bool:
     if "stage4" in parts:
         return False
     name = path.name.casefold()
+    if YTDLP_COMPONENT_PATTERN.match(path.name):
+        return False
     return not any(marker in name for marker in EXCLUDED_VIDEO_MARKERS)
+
+
+def _is_canonical_source(path: Path, video_dir: Path) -> bool:
+    try:
+        relative = path.resolve().relative_to(video_dir.resolve())
+    except ValueError:
+        return False
+    return (
+        len(relative.parts) == 2
+        and relative.parts[0].casefold() == "video"
+        and path.stem.casefold() == "source"
+    )
 
 
 def _iter_manifest_strings(value: Any, key: str = "") -> Iterable[tuple[str, str]]:
@@ -253,8 +272,18 @@ def _manifest_video_candidates(manifest_path: Path, video_dir: Path) -> list[Pat
             explicit.append(candidate)
         elif normalized_key in {"output_files", "files", "outputs"}:
             output_files.append(candidate)
-    ordered = explicit + output_files
-    return list(dict.fromkeys(path for path in ordered if _is_video_candidate(path, video_dir)))
+    valid_explicit = list(
+        dict.fromkeys(path for path in explicit if _is_video_candidate(path, video_dir))
+    )
+    if valid_explicit:
+        return valid_explicit
+    valid_outputs = list(
+        dict.fromkeys(path for path in output_files if _is_video_candidate(path, video_dir))
+    )
+    canonical = [
+        path for path in valid_outputs if _is_canonical_source(path, video_dir)
+    ]
+    return canonical or valid_outputs
 
 
 def resolve_source_video(video_dir: Path) -> tuple[Path, str, tuple[Path, ...]]:
@@ -322,7 +351,7 @@ def resolve_inputs(
         chinese_source=chinese_source,
     )
     source, reason, candidates = resolve_source_video(root)
-    return ResolvedInputs(
+    resolved = ResolvedInputs(
         video_dir=root,
         source_video=source,
         source_video_reason=reason,
@@ -335,3 +364,4 @@ def resolve_inputs(
         chinese_subtitle_selection_score=selection_score,
         chinese_selection_report=selection_report,
     )
+    return apply_layout_review_override(root, resolved)

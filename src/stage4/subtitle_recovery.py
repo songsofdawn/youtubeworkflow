@@ -211,7 +211,7 @@ def recover_aligned_bilingual_subtitles(
         )
 
     reason = (
-        "阶段三精确配对不可用；已从独立中英文字幕自动重建并按时间重对齐，"
+        "原精确配对不可用；已从独立中英文字幕自动重建并按时间重对齐，"
         f"配对覆盖率 {float(selected['pair_ratio']):.1%}，"
         f"中文字符占比 {float(selected['cjk_ratio']):.1%}"
     )

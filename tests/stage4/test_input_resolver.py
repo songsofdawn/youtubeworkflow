@@ -147,6 +147,48 @@ class InputResolverTests(unittest.TestCase):
             result = resolve_inputs(root, CONFIG)
             self.assertEqual(result.source_video, source.resolve())
 
+    def test_canonical_merged_video_beats_preserved_ytdlp_audio_component(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = self.prepare(root)
+            component = root / "video" / "source.f251.webm"
+            component.write_bytes(b"audio-only component")
+            (root / "download_manifest.json").write_text(
+                json.dumps(
+                    {
+                        "output_files": [
+                            "video/source.f251.webm",
+                            "video/source.mp4",
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = resolve_inputs(root, CONFIG)
+            self.assertEqual(result.source_video, source.resolve())
+            self.assertNotIn(component.resolve(), result.source_video_candidates)
+
+    def test_explicit_manifest_source_beats_other_recorded_video_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = self.prepare(root)
+            alternate = root / "video" / "alternate.webm"
+            alternate.write_bytes(b"alternate")
+            (root / "download_manifest.json").write_text(
+                json.dumps(
+                    {
+                        "source_video": "video/source.mp4",
+                        "output_files": [
+                            "video/source.mp4",
+                            "video/alternate.webm",
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = resolve_inputs(root, CONFIG)
+            self.assertEqual(result.source_video, source.resolve())
+
     def test_auto_scoring_prefers_clean_chinese_over_english_leaking_raw(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -235,6 +235,7 @@ def score_subtitle(
     subtitle_intervals = [(item.start, item.end) for item in segments]
     speech = speech_intervals or []
     if speech:
+        coverage_basis = "speech_intervals"
         total_speech = _duration(speech)
         covered_speech = _intersection_duration(speech, subtitle_intervals)
         coverage_ratio = covered_speech / total_speech if total_speech else 0.0
@@ -242,10 +243,25 @@ def score_subtitle(
         first_speech_covered = any(start <= speech[0][0] + 1.0 and end >= speech[0][0] for start, end in subtitle_intervals)
         last_speech_covered = any(start <= speech[-1][1] and end >= speech[-1][1] - 1.0 for start, end in subtitle_intervals)
     else:
+        # Without Whisper/VAD intervals we do not know which gaps contain speech.
+        # Treating every second of music, ambience, or silent building footage as
+        # uncovered speech rejects valid sparse YouTube subtitles.  Use only the
+        # first-to-last subtitle span as a scoring proxy and keep the absence of
+        # real speech intervals explicit in the report.
+        coverage_basis = "subtitle_time_span_proxy"
         total_speech = audio_duration
-        covered_speech = min(_duration(subtitle_intervals), audio_duration) if audio_duration else _duration(subtitle_intervals)
+        if segments and audio_duration > 0:
+            span_start = min(max(0.0, min(item.start for item in segments)), audio_duration)
+            span_end = min(
+                max(span_start, max(item.end for item in segments)),
+                audio_duration,
+            )
+            covered_speech = max(0.0, span_end - span_start)
+            max_uncovered = max(span_start, max(0.0, audio_duration - span_end))
+        else:
+            covered_speech = _duration(subtitle_intervals)
+            max_uncovered = 0.0
         coverage_ratio = covered_speech / audio_duration if audio_duration else (1.0 if segments else 0.0)
-        max_uncovered = max(0.0, audio_duration - covered_speech) if audio_duration else 0.0
         first_speech_covered = bool(segments and segments[0].start <= 2.0)
         last_speech_covered = bool(segments and (not audio_duration or segments[-1].end >= audio_duration - 5.0))
         review_flags.append("SPEECH_INTERVALS_UNAVAILABLE")
@@ -313,7 +329,13 @@ def score_subtitle(
         average_log_probability = (source_qc or {}).get("average_log_probability")
         average_no_speech_probability = (source_qc or {}).get("average_no_speech_probability")
         missing_rate = float((source_qc or {}).get("word_timestamp_missing_rate", 0.0) or 0.0)
-        vad_coverage_ratio = float((source_qc or {}).get("coverage_ratio", 0.0) or 0.0)
+        subtitle_active_coverage_ratio = float(
+            (source_qc or {}).get(
+                "subtitle_active_coverage_ratio",
+                (source_qc or {}).get("coverage_ratio", 0.0),
+            )
+            or 0.0
+        )
         low_words = int((source_qc or {}).get("low_confidence_words", 0))
         word_count = max(1, int((source_qc or {}).get("word_count", 0)))
         base_confidence = average_probability * 100 if average_probability else 65.0
@@ -322,18 +344,13 @@ def score_subtitle(
             "average_log_probability": average_log_probability,
             "average_no_speech_probability": average_no_speech_probability,
             "word_timestamp_missing_rate": missing_rate,
-            "vad_coverage_ratio": vad_coverage_ratio,
+            "subtitle_active_coverage_ratio": subtitle_active_coverage_ratio,
             "low_confidence_word_ratio": low_words / word_count,
             "agreement_score": agreement_score,
         }
         confidence_deductions = [
             _deduction("MODEL_CONFIDENCE", 100 - base_confidence, max(0, 100 - base_confidence)),
             _deduction("MISSING_WORD_TIMESTAMPS", missing_rate, missing_rate * 30),
-            _deduction(
-                "LOW_VAD_COVERAGE",
-                vad_coverage_ratio,
-                max(0.0, 0.9 - vad_coverage_ratio) * 50,
-            ),
             _deduction("LOW_CONFIDENCE_WORDS", low_words / word_count, low_words / word_count * 20),
             _deduction("HIGH_NO_SPEECH", high_no_speech, high_no_speech * 2),
         ]
@@ -390,6 +407,7 @@ def score_subtitle(
                 "maximum_uncovered_speech_seconds": round(max_uncovered, 3),
                 "subtitle_coverage_seconds": round(_duration(subtitle_intervals), 3),
                 "audio_duration": round(audio_duration, 3),
+                "coverage_basis": coverage_basis,
             },
             coverage_deductions,
             weights["coverage"],
@@ -422,8 +440,10 @@ def score_subtitle(
         hard_fail_reasons.append("OVERLAPS_REMAIN")
     if empty:
         hard_fail_reasons.append("EMPTY_SUBTITLES_REMAIN")
-    if coverage_ratio < float(config["minimum_speech_coverage"]):
+    if speech and coverage_ratio < float(config["minimum_speech_coverage"]):
         hard_fail_reasons.append("SPEECH_COVERAGE_BELOW_MINIMUM")
+    elif not speech and coverage_ratio < float(config["minimum_speech_coverage"]):
+        hard_fail_reasons.append("SUBTITLE_SPAN_BELOW_MINIMUM")
     hard_fail_reasons = list(dict.fromkeys(hard_fail_reasons))
     final_score = round(sum(item["weighted_score"] for item in dimensions.values()), 3)
     if hard_fail_reasons:

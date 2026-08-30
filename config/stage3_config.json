@@ -56,8 +56,8 @@
     }
   },
   "translation": {
-    "batch_size": 24,
-    "context_before": 3,
+    "batch_size": 32,
+    "context_before": 2,
     "context_after": 2,
     "temperature": 0.2,
     "max_retries": 3,
@@ -66,6 +66,25 @@
       4,
       8
     ],
+    "overload_max_retries": 5,
+    "overload_retry_delays_seconds": [
+      5,
+      15,
+      30,
+      60,
+      120
+    ],
+    "retry_jitter_seconds": 3,
+    "response_max_retries": 6,
+    "response_retry_delays_seconds": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      30
+    ],
+    "degraded_batch_size": 16,
     "chinese_chars_per_second": 4.5,
     "tts_warning_ratio": 1.15,
     "tts_rewrite_ratio": 1.25,

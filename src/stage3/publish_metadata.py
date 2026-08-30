@@ -9,9 +9,9 @@ from .models import SubtitleSegment
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-PUBLISH_METADATA_PROMPT_VERSION = "stage3-publish-metadata-v1"
+PUBLISH_METADATA_PROMPT_VERSION = "stage3-publish-metadata-v2"
 _CJK_PATTERN = re.compile(r"[\u3400-\u9fff]")
-_PREFIX_PATTERN = re.compile(r"^\s*【\s*中英双语\s*】\s*")
+_PREFIX_PATTERN = re.compile(r"^\s*【\s*(?:中英双语|无配音)\s*】\s*")
 
 
 def utf16_code_units(value: str) -> int:
@@ -124,47 +124,85 @@ def category_for_tid(mapping: dict[str, Any], tid: int) -> dict[str, Any]:
     raise ValueError(f"未知的哔哩哔哩分区 TID：{tid}")
 
 
+def compose_localized_title(
+    chinese_title: str,
+    english_title: str,
+    *,
+    prefix: str,
+    fallback_title: str,
+    max_length: int = 80,
+) -> str:
+    """Compose a localized title using Bilibili's UTF-16 code-unit limit.
+
+    Python ``len`` counts supplementary characters such as emoji once, while
+    Bilibili's web form and API count each of them as two UTF-16 code units.
+    Build every budget from the same counter used by submission validation so
+    generated defaults can always be submitted unchanged.
+    """
+    chinese = _PREFIX_PATTERN.sub("", " ".join(str(chinese_title or "").split())).strip(" ｜|+-")
+    english = _PREFIX_PATTERN.sub("", " ".join(str(english_title or "").split())).strip(" ｜|+-")
+    if not chinese:
+        chinese = fallback_title
+    if not english or english.casefold() == chinese.casefold():
+        return truncate_utf16(prefix + chinese, max_length)
+    separator = "｜"
+    full = f"{prefix}{chinese}{separator}{english}"
+    if utf16_code_units(full) <= max_length:
+        return full
+    chinese_budget = min(utf16_code_units(chinese), 36)
+    chinese_short = truncate_utf16(chinese, chinese_budget, suffix="").rstrip()
+    english_budget = (
+        max_length
+        - utf16_code_units(prefix)
+        - utf16_code_units(separator)
+        - utf16_code_units(chinese_short)
+    )
+    if english_budget <= 1:
+        return truncate_utf16(prefix + chinese_short, max_length)
+    english_short = truncate_utf16(english, english_budget).rstrip()
+    return truncate_utf16(
+        f"{prefix}{chinese_short}{separator}{english_short}",
+        max_length,
+    )
+
+
 def compose_bilingual_title(
     chinese_title: str,
     english_title: str,
     *,
     max_length: int = 80,
 ) -> str:
-    prefix = "【中英双语】"
-    chinese = _PREFIX_PATTERN.sub("", " ".join(str(chinese_title or "").split())).strip(" ｜|+-")
-    english = _PREFIX_PATTERN.sub("", " ".join(str(english_title or "").split())).strip(" ｜|+-")
-    if not chinese:
-        chinese = "中英双语精选"
-    if not english or english.casefold() == chinese.casefold():
-        return (prefix + chinese)[:max_length]
-    separator = "｜"
-    full = f"{prefix}{chinese}{separator}{english}"
-    if len(full) <= max_length:
-        return full
-    chinese_budget = min(len(chinese), 36)
-    chinese_short = chinese[:chinese_budget].rstrip()
-    english_budget = max_length - len(prefix) - len(separator) - len(chinese_short)
-    if english_budget <= 1:
-        return (prefix + chinese_short)[:max_length]
-    english_short = english[:english_budget].rstrip()
-    if len(english_short) < len(english) and english_budget >= 2:
-        english_short = english_short[:-1].rstrip() + "…"
-    return f"{prefix}{chinese_short}{separator}{english_short}"[:max_length]
+    return compose_localized_title(
+        chinese_title,
+        english_title,
+        prefix="【中英双语】",
+        fallback_title="中英双语精选",
+        max_length=max_length,
+    )
 
 
-def normalize_tags(value: Any, *, fallback: list[str] | None = None) -> str:
+def normalize_tags(
+    value: Any,
+    *,
+    fallback: list[str] | None = None,
+    required: list[str] | None = None,
+    excluded: list[str] | None = None,
+) -> str:
     if isinstance(value, list):
         candidates = [str(item) for item in value]
     else:
         candidates = re.split(r"[,，、;\n]+", str(value or ""))
-    required = ["中英双语", "中文翻译"]
-    candidates = required + candidates + list(fallback or [])
+    candidates = list(required or []) + candidates + list(fallback or [])
+    excluded_values = {"中英双语".casefold(), "中文翻译".casefold()}
+    excluded_values.update(
+        str(item).strip().casefold() for item in (excluded or [])
+    )
     cleaned: list[str] = []
     seen: set[str] = set()
     for candidate in candidates:
         tag = re.sub(r"^[#＃]+", "", candidate.strip())
         tag = re.sub(r"\s+", " ", tag).strip(" ,，、;；")
-        if not tag:
+        if not tag or tag.casefold() in excluded_values:
             continue
         tag = tag[:20].rstrip()
         key = tag.casefold()
@@ -198,10 +236,11 @@ def build_publish_metadata_messages(
         for row in mapping["categories"]
     ]
     system = (
-        "你是哔哩哔哩视频本地化编辑。根据英文标题、原简介、原标签和字幕样本，"
+        "你是哔哩哔哩视频本地化编辑。根据英文标题、原简介、原标签以及可能存在的字幕样本，"
         "生成准确克制的中文标题、投稿标签并推荐最具体的哔哩哔哩小分区。"
         "不得编造视频中没有的事实，不使用夸张点击诱导。中文标题不要包含【中英双语】前缀，"
-        "应自然概括内容并尽量控制在 12—32 个中文字符。标签返回 5—8 个相关词，"
+        "应自然概括内容并尽量控制在 12—32 个中文字符。标签返回 5—8 个内容相关词，"
+        "不要返回‘中英双语’或‘中文翻译’这类描述视频形式的标签，"
         "不要带 # 或逗号。tid 必须严格选自给定分区列表。只返回合法 JSON："
         '{"chinese_title":"示例中文标题","tags":["标签1","标签2"],'
         '"tid":231,"reason":"一句话说明推荐依据"}'
@@ -235,14 +274,14 @@ def normalize_ai_recommendation(
         " ".join(str(payload.get("chinese_title") or "").split()),
     ).strip(" ｜|+-")
     if not chinese_title or not _CJK_PATTERN.search(chinese_title):
-        raise ValueError("DeepSeek 没有返回有效的中文标题")
+        raise ValueError("AI API 没有返回有效的中文标题")
     chinese_title = chinese_title[:40].rstrip()
     tid = int(payload.get("tid"))
     category = category_for_tid(mapping, tid)
     source_tags = [str(item) for item in metadata.get("tags") or []]
     tags = normalize_tags(payload.get("tags"), fallback=source_tags[:2])
     if len(tags.split(",")) < 3:
-        raise ValueError("DeepSeek 返回的投稿标签不足")
+        raise ValueError("AI API 返回的投稿标签不足")
     reason = " ".join(str(payload.get("reason") or "").split())[:160]
     original_title = str(metadata.get("title") or "").strip()
     return {
@@ -310,6 +349,7 @@ __all__ = [
     "build_publish_metadata_messages",
     "category_for_tid",
     "compose_bilingual_title",
+    "compose_localized_title",
     "fallback_publish_metadata",
     "load_category_mapping",
     "normalize_ai_recommendation",

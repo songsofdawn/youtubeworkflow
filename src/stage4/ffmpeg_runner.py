@@ -191,7 +191,10 @@ def detect_nvenc(ffmpeg_path: Path | str) -> bool:
         "-f",
         "lavfi",
         "-i",
-        "color=c=black:s=64x64:r=1:d=0.1",
+        # Recent NVENC generations reject 64x64 even though normal video
+        # resolutions encode correctly. Use a small, broadly supported frame
+        # size so auto-detection does not incorrectly fall back to libx264.
+        "color=c=black:s=256x256:r=1:d=0.1",
         "-frames:v",
         "1",
         "-c:v",
@@ -277,7 +280,7 @@ class FFmpegRunner:
                 for line in process.stdout:
                     stdout_lines.append(line)
                     if line.startswith("out_time=") and time.monotonic() - last_progress_print >= 10:
-                        print(f"[stage4] FFmpeg 进度 {line.split('=', 1)[1].strip()}", flush=True)
+                        print(f"[render] FFmpeg 进度 {line.split('=', 1)[1].strip()}", flush=True)
                         last_progress_print = time.monotonic()
             returncode = process.wait()
             stderr_thread.join()

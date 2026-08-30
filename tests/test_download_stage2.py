@@ -84,6 +84,23 @@ class CandidateInputTests(TestCase):
 
 
 class CoreTests(TestCase):
+    def test_cookie_argument_accepts_both_official_netscape_headers(self) -> None:
+        for header in ("# Netscape HTTP Cookie File", "# HTTP Cookie File"):
+            with self.subTest(header=header), tempfile.TemporaryDirectory() as name:
+                root = Path(name)
+                cookie_path = root / "private" / "cookies.txt"
+                cookie_path.parent.mkdir(parents=True)
+                cookie_path.write_text(
+                    f"{header}\n.youtube.com\tTRUE\t/\tTRUE\t1\tSID\tvalue\n",
+                    encoding="utf-8",
+                )
+                arguments, warning = download_core._cookie_argument(
+                    {"use_cookies": True, "cookies_path": "private/cookies.txt"},
+                    get_project_paths(root),
+                )
+            self.assertEqual(arguments, ["--cookies", str(cookie_path)])
+            self.assertIsNone(warning)
+
     def test_local_tool_paths_are_project_local(self) -> None:
         tools = find_local_tools(get_project_paths())
         self.assertEqual(tools["yt-dlp"], ROOT / "tools" / "bin" / "yt-dlp.exe")
@@ -187,6 +204,50 @@ class CoreTests(TestCase):
             self.assertTrue(result["success"])
             cdn_fallback.assert_called_once()
             self.assertEqual(len(result["command_results"]), 1)
+
+    def test_media_download_retries_403_with_no_token_embedded_client(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            task = root / "task"
+            calls: list[list[str]] = []
+
+            def execute(command, cwd=None, **kwargs):
+                values = [str(item) for item in command]
+                calls.append(values)
+                if len(calls) == 1:
+                    return {
+                        "success": False,
+                        "returncode": 1,
+                        "stdout": "",
+                        "stderr": "HTTP Error 403: Forbidden",
+                        "command": values,
+                    }
+                (task / "video" / "source.mp4").write_bytes(b"video")
+                return {
+                    "success": True,
+                    "returncode": 0,
+                    "stdout": "",
+                    "stderr": "",
+                    "command": values,
+                }
+
+            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
+                "src.download_core._download_via_alternate_cdn"
+            ) as legacy_fallback:
+                result = download_video_media(
+                    "https://youtu.be/id",
+                    task,
+                    fake_tools(root),
+                    stage2_config(),
+                    get_project_paths(root),
+                )
+
+            self.assertTrue(result["success"])
+            self.assertEqual(len(calls), 2)
+            self.assertIn("youtube:player_client=web_embedded", calls[1])
+            self.assertIn("--no-cookies", calls[1])
+            self.assertNotIn("--cookies", calls[1])
+            legacy_fallback.assert_not_called()
 
     def test_media_download_explains_persistent_tls_failure(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -352,6 +413,38 @@ class ResumeAndManualTests(TestCase):
             with mock.patch("src.download_video.load_download_config", return_value=stage2_config()), mock.patch("src.download_video.find_local_tools", return_value=fake_tools(ROOT)), mock.patch("src.download_video.download_one_video", side_effect=fake_download):
                 code = manual_main(["--url", "https://example.test/watch?v=abc&list=playlist", "--confirm-rights"])
             self.assertEqual(code, 0); self.assertEqual(captured["source_mode"], "manual"); self.assertEqual(candidate.read_bytes(), before)
+
+    def test_manual_entry_accepts_isolated_cookie_override(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            cookie_path = Path(name) / "job-cookie.txt"
+            cookie_path.write_text("# Netscape HTTP Cookie File\n", encoding="utf-8")
+            captured: dict = {}
+
+            def fake_download(url, **kwargs):
+                captured.update(kwargs)
+                return {"overall_status": "success", "already_complete": False, "task_dir": Path(name)}
+
+            with mock.patch(
+                "src.download_video.load_download_config",
+                return_value=stage2_config(),
+            ), mock.patch(
+                "src.download_video.find_local_tools",
+                return_value=fake_tools(ROOT),
+            ), mock.patch(
+                "src.download_video.download_one_video",
+                side_effect=fake_download,
+            ):
+                code = manual_main(
+                    [
+                        "--url",
+                        "https://youtu.be/abcdefghijk",
+                        "--confirm-rights",
+                        "--cookies-path",
+                        str(cookie_path),
+                    ]
+                )
+        self.assertEqual(code, 0)
+        self.assertEqual(captured["config"]["cookies_path"], str(cookie_path.resolve()))
 
     def test_metadata_command_has_no_playlist(self) -> None:
         with mock.patch("src.download_core.subprocess.run", return_value=subprocess.CompletedProcess([], 0, stdout=json.dumps({"id": "abc", "title": "T"}), stderr="")) as runner:

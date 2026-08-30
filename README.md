@@ -1,720 +1,556 @@
 # YouTube Workflow
 
-这是一个面向 Windows 的 YouTube 视频工作流，覆盖：候选视频发现与版权审核、视频/字幕/音频下载、英文滚动字幕清洗、本地 GPU 英文语音识别，以及 DeepSeek 中文字幕翻译。
-
-项目遵循以下原则：
-
-- 下载前必须经过 `selected` 和 `rights_status` 双重审核；
-- 不覆盖 YouTube 下载的原始字幕；
-- 本地语音识别只加载项目内模型，不会联网下载模型；
-- DeepSeek 密钥只保存在本地 `.env`，不会提交到 Git；
-- 下载的视频、音频、本地模型、虚拟环境和生成结果默认不会上传 GitHub。
-
-## 本地控制面板（推荐入口）
-
-完成首次配置后，双击：
+面向 Windows 的本地 YouTube 视频双语化工作流：从视频发现与下载，到英文字幕选择、
+Whisper 识别、AI 中文字幕、双语成片，再到可选的哔哩哔哩投稿，都在一个本地控制面板中完成。
 
 ```text
+YouTube URL / 关键词 / 智能发现
+                ↓
+      下载原视频、音频、字幕与元数据
+                ↓
+  YouTube 英文字幕 ↔ 本地 Whisper 识别
+                ↓
+      AI 翻译 / YouTube 自动中文
+                ↓
+ 双语 ASS / 软字幕 MKV / 硬字幕 MP4
+                ↓
+        人工确认后投稿哔哩哔哩
+```
+
+这个项目优先保证三件事：原始素材不被覆盖、耗时步骤可以断点续跑、任何下载和 API
+调用都必须经过明确授权。
+
+[便携版用户指南](PORTABLE_README.md) ·
+[下载 Releases](https://github.com/songsofdawn/youtubeworkflow/releases) ·
+[第三方组件说明](THIRD_PARTY_NOTICES.md)
+
+快速导航：
+[选择版本](#应该使用哪个版本) ·
+[源码安装](#源码安装) ·
+[首次配置](#首次配置) ·
+[完整工作流](#从下载到成片) ·
+[无人值守](#无人值守自动化) ·
+[哔哩哔哩投稿](#投稿哔哩哔哩) ·
+[输出文件](#输出文件) ·
+[常见问题](#常见问题)
+
+## 应该使用哪个版本
+
+| 你的情况 | 推荐版本 | 说明 |
+|---|---|---|
+| 只想直接使用软件 | Portable CPU | 无需安装 Python；兼容没有 NVIDIA 显卡的电脑 |
+| 有 NVIDIA 显卡，希望加快 Whisper | Portable GPU | 自带 CUDA/cuDNN 运行库，但仍需要兼容的 NVIDIA 驱动 |
+| 需要修改代码、配置或参与开发 | 源码版 | 使用项目 `.venv`，本地工具与 Whisper 模型需单独准备 |
+
+普通用户建议下载 Portable 压缩包，完整解压后双击 `START_HERE.bat`。便携版的 CPU/GPU
+选择、首次配置和日常操作见 [PORTABLE_README.md](PORTABLE_README.md)。
+
+## 核心能力
+
+- 直接粘贴单个或多个 YouTube URL / 视频 ID；
+- 使用 YouTube Data API 关键词搜索，或用 Ollama 做本地智能发现、排序和语义去重；
+- 下载最高 1080p 的源视频，并保留源音频、原字幕、封面、简介、视频 ID 与下载记录；
+- 在 YouTube 手工英文、YouTube 自动英文和本地 faster-whisper large-v3 之间选择；
+- 支持多家 AI API，按批保存翻译检查点，失败后只继续未完成字幕；
+- 输出双语 ASS、软字幕 MKV、硬字幕 MP4，并对过宽或闪读字幕先复核再编码；
+- 支持批量任务、资源并行、实时日志、终止、重试和安全删除；
+- 可选 biliup 登录与投稿，并提供限速、日上限、冷却和重复投稿保护；
+- 可配置“无人值守自动化”，自动处理到双语字幕、双语成片或完整投稿。
+
+## 使用前必须知道
+
+### 素材权利
+
+只有你明确确认拥有、已获许可或有权使用的素材才能进入下载队列。搜索结果和智能发现
+结果只代表候选内容，不代表你获得了下载、翻译、改编或投稿权。前端和后端都会检查权利
+确认，项目不会绕过该限制。
+
+### 外部服务与费用
+
+直接下载 URL 不需要 YouTube API Key。关键词搜索和智能发现需要 YouTube Data API Key；
+AI 翻译、云端投稿文案和哔哩哔哩投稿则分别需要对应服务。API 价格、免费额度和限流可能
+变化，以各供应商账户为准。项目不会在失败时自动切换到另一个可能收费的供应商。
+
+### 本地隐私
+
+控制面板只允许监听 `127.0.0.1` 或 `localhost`。API Key 保存在根目录 `.env`，YouTube
+Cookie 默认保存在 `private\cookies.txt`，哔哩哔哩账号文件保存在本机 biliup 目录。
+网页只显示“已配置/未配置”，不会回显密钥原文。
+
+## 源码安装
+
+### 1. 环境要求
+
+- 64 位 Windows；
+- Python 3.11；
+- 足够存放 Whisper large-v3、下载视频和成片的磁盘空间；
+- GPU 模式需要 NVIDIA 显卡和兼容驱动，CPU 模式不需要独立显卡；
+- 只有运行前端语法检查时才需要 Node.js，日常使用不需要。
+
+克隆项目：
+
+```bat
+git clone https://github.com/songsofdawn/youtubeworkflow.git
+cd youtubeworkflow
+```
+
+### 2. 创建 Python 环境
+
+GPU / 完整锁定环境：
+
+```bat
+py -3.11 -m venv .venv
+.venv\Scripts\python.exe -m pip install --upgrade pip
+.venv\Scripts\python.exe -m pip install -r requirements.lock.txt
+```
+
+`requirements.lock.txt` 包含 Windows 源码版所需的 CUDA 12 和 cuDNN 9 Python 运行库，
+不要求另外安装 CUDA Toolkit，但不会替代 NVIDIA 显卡驱动。
+
+只使用 CPU 时可安装较小的直接依赖清单：
+
+```bat
+py -3.11 -m venv .venv
+.venv\Scripts\python.exe -m pip install --upgrade pip
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+CPU 环境还需要把 `config\stage3_config.json` 中的 ASR 设置改为：
+
+```json
+"device": "cpu",
+"compute_type": "int8"
+```
+
+### 3. 准备本地组件
+
+这些大文件和第三方程序不会随 Git 仓库提交：
+
+| 组件 | 默认位置 | 用途 |
+|---|---|---|
+| yt-dlp | `tools\bin\yt-dlp.exe` | 视频、字幕和元数据下载 |
+| FFmpeg | `tools\bin\ffmpeg.exe` | 音频提取和成片 |
+| FFprobe | `tools\bin\ffprobe.exe` | 媒体结构与时长检查 |
+| Deno | `tools\bin\deno.exe` | yt-dlp 的 JavaScript 运行时 |
+| faster-whisper large-v3 | `models\faster-whisper-large-v3` | 本地英文语音识别 |
+| biliup / bbup | `biliup\bbup-app` | 可选的哔哩哔哩登录和投稿 |
+
+Whisper 模型目录至少应包含 `config.json`、`model.bin`、`tokenizer.json` 和
+`vocabulary.json`。项目只加载本地模型目录；文件缺失时会明确报错，不会按模型名静默
+联网下载。
+
+如果你不想手工准备这些组件，请使用 Portable 发行包。
+
+### 4. 创建本地配置并启动
+
+```bat
+if not exist .env copy .env.example .env
 start_panel.bat
 ```
 
-脚本会启动本地控制面板并打开浏览器，默认地址为
-`http://127.0.0.1:8765`。控制面板只监听本机，不会部署到公网。
-再次双击启动脚本时，如果检测到同一项目的旧版面板且没有活动任务，会自动
-替换旧进程；同版本面板已经运行时只会重新打开页面，避免端口占用后继续加载
-旧版后端。
+浏览器会自动打开 <http://127.0.0.1:8765>。如果没有自动打开，可手动访问该地址。
 
-第一版面板支持：
-
-- 输入自定义关键词和数量搜索 YouTube；
-- 输入一个或多个视频 ID/URL，直接加入下载队列；
-- 在下载前确认视频使用权，并将确认结果写入下载 manifest；
-- 自动扫描 `downloads` 下的现有任务，显示下载、英文字幕、中文翻译和
-  双语成片、哔哩哔哩投稿五阶段状态；
-- 批量处理到双语字幕，或一键继续到软字幕、硬字幕或两种成片；
-- 使用 biliup v1.2.2 将硬字幕 MP4 投稿到哔哩哔哩；
-- 查看近实时任务日志、重试失败任务和打开视频任务目录；
-- 从任务卡终止排队中或运行中的下载、翻译、成片和投稿进程，保留已生成文件；
-- 删除单条日志或一键清理所有非活动历史日志，运行中的日志不会被删除；
-- 永久删除视频任务目录及全部文件，同时移除关联作业记录和日志。删除前需要
-  二次确认并输入对应视频号，存在活动作业时会拒绝删除；
-- 面板重启后恢复未完成队列，底层阶段继续使用原有断点续跑机制。
-
-关键词搜索需要 `.env` 中存在 `YOUTUBE_API_KEY`。字幕翻译需要
-`DEEPSEEK_API_KEY`，并且每次加入翻译队列前都必须在面板上确认允许付费调用。
-本地 Whisper 与成片仍使用 `.venv_stage3`，下载和控制面板使用 `.venv`；
-这些环境由面板自动选择，无需手动切换。
-
-### 哔哩哔哩投稿
-
-项目不会复制或打包 biliup，而是调用本机已经安装的
-`E:\biliup\bbup-app\binaries\biliup.exe`。默认从
-`E:\biliup\bbup-app\data` 识别 bbup-app 保存的账号 JSON；面板只显示账号
-文件名，不向浏览器、任务参数或日志返回 Cookie 具体内容。需要使用其他安装
-位置时，可在本地 `.env` 设置：
-
-```dotenv
-BILIUP_EXE=E:\其他目录\biliup.exe
-BILIUP_COOKIE_FILE=E:\其他目录\账号.json
-```
-
-中文字幕完成后，任务右侧会出现 `↑` 投稿按钮。投稿前必须逐项核对：
-
-- 投稿账号、双语标题和智能标签；
-- DeepSeek 推荐的具体分区名称与 TID；面板下拉框使用
-  [biliup 分区表](https://biliup.github.io/tid-ref.html) 的完整小分区映射；
-- 自制/转载类型；转载时必须填写原视频来源；
-- 投稿接口、上传线路和并发数；
-- 是否仅自己可见、是否禁止转载及是否使用缩略图封面。
-
-字幕翻译成功后，工作流会额外执行一次轻量的投稿资料分析，并写入
-`stage3\publish_metadata.json`。DeepSeek 会根据原英文标题、原简介、原标签
-和字幕内容生成中文标题、逗号分隔的标签，以及一个限定在分区映射内的 TID。
-投稿标题自动组合为 `【中英双语】中文标题｜English title`，最长 80 个字符；
-投稿简介由固定免责声明和 `metadata\description.txt` 中的原视频简介组成，
-最长 2000 个哔哩哔哩计数字符。这些内容会直接加载到投稿窗口，同时仍允许
-人工修改。面板会同时检查网页字符数和 UTF-8 字节数，并保留安全余量，避免
-素材上传完成后才收到 `21010`“简介字数过长”错误。
-
-投稿资料拥有独立检查点和用量记录，不会因为补生成标题或分区而重复翻译整条
-字幕。DeepSeek 推荐失败时，字幕任务仍然成功，并回退到“生活 / 日常”，面板
-会醒目提示人工核对。升级前已经完成翻译的旧任务，只需在面板中再次运行一次
-“处理到双语字幕”；字幕检查点会直接复用，仅补生成投稿资料。
-
-首次投稿默认开启“仅自己可见”。如果硬字幕 MP4 尚未生成，队列会先运行阶段
-四的硬字幕模式，再调用 biliup。投稿成功后写入
-`stage5\publish_manifest.json`；为避免重复投稿，成功任务不能再次提交，失败的
-投稿任务也不能在日志卡片中一键重试，必须重新打开投稿窗口核对并确认。
-
-投稿功能基于
-[biliup v1.2.2](https://github.com/biliup/biliup/releases/tag/v1.2.2) 的
-`upload` 命令。请遵守素材版权、哔哩哔哩平台规则及 biliup 项目的使用声明。
-
-需要手动指定端口或不自动打开浏览器时，也可以运行：
+需要使用其他端口时：
 
 ```bat
-.venv\Scripts\python.exe src\run_control_panel.py --port 8765
-.venv\Scripts\python.exe src\run_control_panel.py --no-browser
+.venv\Scripts\python.exe -m src.run_control_panel --port 8877
 ```
 
-## 项目目录
-
-```text
-youtubeworkflow\
-├─config\                       配置文件
-├─src\                          Python 源代码
-├─tests\                        自动化测试
-├─candidates\                   候选视频清单（Git 忽略）
-├─downloads\                    下载任务与处理结果（Git 忽略）
-├─models\                       本地模型（Git 忽略）
-├─private\                      Cookies 等私密文件（Git 忽略）
-├─.venv\                        下载与翻译环境（Git 忽略）
-├─.venv_stage3\                 本地 GPU 识别环境（Git 忽略）
-├─start_panel.bat               本地控制面板（推荐入口）
-├─run_stage3.bat                字幕处理主菜单
-└─push_to_github.bat            推送当前已提交分支到 GitHub
-```
+重复启动时，程序会识别同一项目的面板进程：相同版本只重新打开页面；代码已更新且没有
+活动任务时自动替换旧进程；如果旧进程仍有任务，则保留旧进程以保护处理进度。
 
 ## 首次配置
 
-### 1. 创建本地环境变量文件
+第一次打开页面时，顶部会提示“按需要配置服务”。所有服务都是按功能选配：
 
-复制 `.env.example` 为 `.env`：
+| 配置 | 什么时候需要 | 不配置时仍可做什么 |
+|---|---|---|
+| YouTube API Key | 关键词搜索、智能发现 | 仍可直接粘贴 URL / 视频 ID 下载 |
+| YouTube Cookie | 登录验证、年龄限制、机器人验证 | 普通公开视频通常仍可下载 |
+| AI 翻译 API | AI 中文字幕、可选的云端投稿文案 | 可使用已有的 YouTube 自动中文 |
+| Ollama | 本地智能发现、可选的本地投稿文案 | 智能发现可退回规则评分 |
+| biliup 账号 | 投稿哔哩哔哩 | 下载、字幕和成片不受影响 |
 
-```bat
-copy .env.example .env
-```
+点击页面右上角“配置服务”可以随时修改。密钥输入框留空会保留已经保存的值。
 
-编辑 `.env`：
+### YouTube API Key
+
+1. 在 Google Cloud 创建或选择项目；
+2. 启用 YouTube Data API v3；
+3. 创建 API Key；
+4. 在控制面板中保存并重新检测。
+
+官方入口：[YouTube Data API 入门](https://developers.google.com/youtube/v3/getting-started) ·
+[Google Cloud 凭据](https://console.cloud.google.com/apis/credentials)
+
+### YouTube Cookie
+
+1. 在浏览器登录下载时要使用的 YouTube 账号；
+2. 只导出 `youtube.com` Cookie，格式选择 Mozilla/Netscape `cookies.txt`；
+3. 在“配置服务”中选择 TXT 文件并保存；
+4. 状态显示“已导入”后重试下载。
+
+参考：[yt-dlp Cookie 说明](https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp) ·
+[YouTube Cookie 导出建议](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
+
+Cookie 等同登录凭据。不要上传到 Issue、聊天或网盘，也不要把已经使用过的程序目录重新
+打包给别人。
+
+### AI 翻译供应商
+
+供应商、密钥变量和可选模型只在 `src\stage3\llm_providers.py` 中统一声明，控制面板会
+显示当前可用目录：
+
+| 供应商 | 密钥变量 | 内置模型示例 |
+|---|---|---|
+| DeepSeek | `DEEPSEEK_API_KEY` | DeepSeek V4 Flash / Pro |
+| 智谱 GLM | `ZHIPU_API_KEY` | GLM-4.7-Flash / FlashX / GLM-5.2 |
+| 阿里云百炼 / 通义千问 | `DASHSCOPE_API_KEY` | Qwen3.7 Flash / Plus / Qwen-MT-Plus |
+| Moonshot / Kimi | `MOONSHOT_API_KEY` | Kimi K2.6 / K2.5 |
+| MiniMax | `MINIMAX_API_KEY` | MiniMax M2.7 / Highspeed |
+| 火山方舟 / 豆包 | `ARK_API_KEY` | Doubao Seed 2.0 Lite |
+| OpenAI | `OPENAI_API_KEY` | GPT-5.6 Luna / Terra / Sol / GPT-4.1 mini |
+| Anthropic / Claude | `ANTHROPIC_API_KEY` | Claude Haiku 4.5 / Sonnet 5 / Opus 5 |
+| 自定义 OpenAI 兼容接口 | `CUSTOM_LLM_API_KEY` | 自定义模型与 Base URL |
+
+模型可用性、价格和免费政策由供应商决定；项目中的标签不构成长期价格承诺。最稳妥的做法
+是在控制面板保存后先检查账户额度，再处理较长视频。
+
+也可以手工编辑 `.env`：
 
 ```dotenv
-YOUTUBE_API_KEY=你的YouTube API密钥
-DEEPSEEK_API_KEY=你的DeepSeek API密钥
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MODEL=deepseek-v4-flash
+YOUTUBE_API_KEY=
+
+TRANSLATION_PROVIDER=deepseek
+TRANSLATION_MODEL=deepseek-v4-flash
+TRANSLATION_BASE_URL=https://api.deepseek.com
+TRANSLATION_THINKING=disabled
+TRANSLATION_BATCH_SIZE=32
+TRANSLATION_CONTEXT_BEFORE=2
+TRANSLATION_CONTEXT_AFTER=2
+TRANSLATION_MAX_OUTPUT_TOKENS=4096
+
+DEEPSEEK_API_KEY=
+ZHIPU_API_KEY=
+DASHSCOPE_API_KEY=
+MOONSHOT_API_KEY=
+MINIMAX_API_KEY=
+ARK_API_KEY=
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+CUSTOM_LLM_API_KEY=
 ```
 
-说明：
+不要提交填写过的 `.env`，也不要使用 `git add -f` 绕过忽略规则。
 
-- 只运行下载时，可以不填写 `DEEPSEEK_API_KEY`；
-- 只运行本地 GPU 语音识别时，不需要 DeepSeek 密钥；
-- `.env` 已由 `.gitignore` 排除，禁止使用 `git add -f .env` 强制提交。
+## 从下载到成片
 
-### 2. 安装下载和翻译环境
+### 1. 添加视频
 
-项目的常规命令使用 `.venv`：
+控制面板提供三种入口：
 
-```bat
-py -m venv .venv
-.venv\Scripts\python.exe -m pip install --upgrade pip
-.venv\Scripts\python.exe -m pip install -r requirements_stage1.txt
-.venv\Scripts\python.exe -m pip install -r requirements_stage3.txt
+- **视频 ID / URL**：每行一个地址或 ID，不需要 YouTube API Key；
+- **关键词搜索**：设置关键词、数量和排序，再从结果中选择；
+- **智能发现**：按领域和时间窗口深度召回，再做本地评分、去重和反馈学习。
+
+无论使用哪一种方式，下载前都必须勾选“确认拥有下载和使用权”。默认下载最高 1080p
+的源视频、源音频、可用中英文字幕、封面、简介和元数据；翻译与成片不会覆盖这些文件。
+
+智能发现完整功能默认使用 Ollama 的 `qwen3.5:9b` 和
+`qwen3-embedding:0.6b`：
+
+```powershell
+ollama pull qwen3.5:9b
+ollama pull qwen3-embedding:0.6b
 ```
 
-下载功能还需要项目本地工具：
+模型可在“配置服务 → Ollama 本地智能发现”中更换或停用。Ollama 不可用时，任务会给出
+警告并退回规则评分。模型只接收 YouTube 公开元数据和缩略图，不会收到 API Key、Cookie、
+本地视频或字幕。智能发现会消耗 YouTube Data API 配额，实际限制以 Google Cloud 为准。
+
+### 2. 生成英文字幕
+
+项目会根据任务设置使用以下来源：
+
+1. YouTube 手工英文字幕；
+2. YouTube 自动英文字幕；
+3. 本地 faster-whisper large-v3 识别。
+
+默认开启“自动英文字幕仍启用 Whisper 对比”，程序会比较覆盖率、时间轴、稳定性、可读性
+和来源可信度，再生成统一的 `subtitles\en.selected.srt`。关闭该选项后，已有 YouTube
+英文字幕时不会额外运行 Whisper；没有英文字幕时仍会用 Whisper 兜底。
+
+CPU 可以完成识别，但长视频可能很慢。GPU 版使用 `cuda + float16`。成片会自动检测
+NVENC；不可用时回退到 CPU x264。
+
+### 3. 生成中文字幕
+
+选中一个或多个任务，然后选择：
+
+- **AI API 翻译**：使用当前供应商和模型，加入队列前必须勾选“允许调用所选 AI API”；
+- **YouTube 自动中文**：不调用翻译 API，但视频必须存在可用的自动中文字幕。
+
+默认翻译策略是 Thinking 关闭、每批 32 条、前后各 2 条只读上下文、最大输出 4096
+Token。程序按批次保存结果，响应缺少 ID 时只重试待完成字幕，不重新发送已经成功的行。
+只有显式使用“整批润色”才会进行正常的第二次翻译。
+
+本地质检只验证 JSON、字幕 ID、非空译文、时间轴、非法控制字符和明显的单 ID 内容污染；
+不会用“翻译腔”“字符速度”或英文残留等主观启发式规则自动购买第二遍翻译。
+
+遇到 `429` 或智谱 `1305` 时，程序会先写入当前检查点，再按 5、15、30、60、120 秒明确
+等待。Key、余额或权限错误不会盲目重试，也不会自动切换供应商。
+
+### 4. 生成双语字幕或成片
+
+| 输出模式 | 适合场景 |
+|---|---|
+| 仅双语 ASS | 预览、继续编辑，不编码视频 |
+| 软字幕 MKV | 字幕轨可开关，适合归档和后期 |
+| 硬字幕 MP4 | 字幕压入画面，适合直接投稿 |
+| 两种都生成 | 同时生成 MKV 与 MP4 |
+
+成片保留原始配音。默认英文在上、中文在下，每种语言在任意时刻严格保持一行。1080p
+目标字号为中文 60px / 英文 44px；长句先缩小到可发布下限 54px / 40px，再进行轻微
+横向压缩或自然分页。
+
+如果字幕在安全字号下仍可能裁切，或分页会让画面闪读，任务会显示“需要复核”，只写入
+预览与质检报告，不启动 FFmpeg。点击任务卡右侧黄色“审”按钮，可以缩短成片专用文字，
+或明确选择只在成片中隐藏该条。保存后程序先重新预检，全部通过才继续编码。原英文、
+原中文、字幕 ID 和时间轴始终不被覆盖。
+
+### 5. 查看状态、停止或续跑
+
+任务卡按“下载 → 英文 → AI 翻译 → 成片 → 投稿”显示状态。并行调度 v0.5 默认提供：
+
+- 2 个下载槽；
+- 2 个 AI API 槽；
+- 1 个本地识别 / 成片重任务槽；
+- 1 个上传槽；
+- 全局上限：源码/GPU 版 4 个进程，Portable CPU 版 3 个进程。
+
+单个视频仍遵守内容依赖顺序，不同视频则可以交错推进。点击“终止”只停止当前子进程，
+不会删除已完成产物；修复问题后点击“重试”或重新执行相同操作，程序会校验检查点并继续。
+
+“清空历史记录”只删除已结束的作业记录和日志。“删除任务”或“批量删除”会永久删除目标
+视频的本地文件；运行中和排队中的任务必须先终止。
+
+## 无人值守自动化
+
+“无人值守自动化”可以把新下载任务自动处理到以下任一终点：
+
+- 双语字幕；
+- 双语成片；
+- 完整投稿。
+
+英文策略、中文策略、成片格式、无配音视频处理、异常处理和投稿资料模型都可独立选择。
+“始终 API 翻译”会忽略已有 YouTube 中文并重新翻译；“只用 YouTube 中文”则永远不会
+调用翻译 API。完整投稿要求生成硬字幕 MP4。
+
+普通的“AI 字幕尚未人工浏览”提示不会阻塞无人值守任务，但结构错误、时间轴错误、字幕
+裁切或闪读仍会阻止上传。默认异常策略会记录原因、跳过该视频并继续队列。自动化投稿
+默认公开；需要先检查稿件时，请主动开启“仅自己可见”。
+
+确认无配音且没有英文字幕的视频，可按设置保留原视频并生成“【无配音】”投稿信息，或
+直接跳过。该模式不会把无配音素材伪装成双语成片。
+
+## 投稿哔哩哔哩
+
+### 登录
+
+在“配置服务”中点击“打开登录工具”，使用 bbup/biliup 窗口登录自己的账号，再回到页面
+点击“登录后重新检测”。也可以双击：
 
 ```text
-tools\yt-dlp.exe
-tools\ffmpeg.exe
-tools\ffprobe.exe
+login_bilibili.bat
 ```
 
-运行以下命令检查下载环境：
+账号文件默认保存在 `biliup\bbup-app\data`。已有 biliup 账号 JSON 也可放在
+`private\biliup_accounts`。不要提交或分发这些文件。
 
-```bat
-setup_stage2.bat
-```
+### 投稿前检查
 
-### 3. 安装本地 GPU 语音识别环境
+手动投稿前需要核对账号、标题、标签、简介、分区、自制/转载类型、转载来源、可见性、
+禁止转载选项和封面。首次测试建议勾选“仅自己可见”。如果还没有硬字幕 MP4，投稿队列
+会先完成硬字幕成片。
 
-推荐使用 Python 3.11 单独创建环境：
+成功后任务会记录 BV 号和链接，防止重复投稿。默认最短投稿间隔为 10 分钟，每个本机
+自然日最多成功投稿 20 条；都可在“配置服务 → 哔哩哔哩账号”调整。平台返回
+`137022`“投稿过于频繁”时，当前任务会回到队列，全部上传暂停 6 小时；重启程序不会
+绕过冷却，页面会显示预计恢复时间。
 
-```bat
-py -3.11 -m venv .venv_stage3
-.venv_stage3\Scripts\python.exe -m pip install --upgrade pip
-.venv_stage3\Scripts\python.exe -m pip install -r requirements_stage3.txt
-```
+## 输出文件
 
-需要复现当前 Windows GPU 验证环境的精确版本时，最后一条命令可改为：
+每个视频位于 `downloads\日期\视频ID_标题\`。最方便的方式是点击任务卡右侧“打开任务
+目录”。以下路径均相对于单个视频任务目录：
 
-```bat
-.venv_stage3\Scripts\python.exe -m pip install -r requirements_stage3.lock.txt
-```
+| 相对路径 | 内容 |
+|---|---|
+| `video\source.mp4` | 下载的原视频 |
+| `audio\source_audio.wav` | 为 Whisper 准备的源音频 |
+| `metadata\info.json` | 原视频元数据 |
+| `metadata\description.txt` | 原视频简介 |
+| `metadata\thumbnail.jpg` | 下载封面 |
+| `subtitles\en.selected.srt` | 最终选定的英文字幕 |
+| `subtitles\zh.raw.srt` | AI 返回的原始中文结果 |
+| `subtitles\zh.clean.srt` | 结构检查通过的中文字幕 |
+| `subtitles\zh.reviewed.srt` | 可选的人工审核版中文字幕 |
+| `stage4\subtitles\bilingual.ass` | 正式双语 ASS |
+| `stage4\subtitles\bilingual_preview.ass` | 排版需要复核时的预览 |
+| `stage4\subtitles\en.layout_reviewed.srt` | 成片专用英文排版副本 |
+| `stage4\subtitles\zh.layout_reviewed.srt` | 成片专用中文排版副本 |
+| `stage4\video\final_bilingual_softsub.mkv` | 软字幕成片 |
+| `stage4\video\final_bilingual_hardsub.mp4` | 硬字幕成片与默认投稿文件 |
+| `download_manifest.json` | 下载状态与源文件记录 |
+| `stage3_manifest.json` | 字幕选择和翻译状态 |
+| `stage4\stage4_manifest.json` | 成片、质检与续跑状态 |
 
-默认配置使用：
+任务目录中的 JSON、检查点、QC 报告和日志用于断点续跑与旧任务兼容。不要手工删除或改名；
+需要释放空间时，使用面板的删除功能并核对视频 ID。
 
-- NVIDIA CUDA；
-- `float16`；
-- `faster-whisper 1.2.1`；
-- `ctranslate2 4.8.1`；
-- 英语识别、VAD 和词级时间戳。
-
-把已经准备好的 CTranslate2 格式 `large-v3` 模型放到：
+## 目录结构
 
 ```text
-models\faster-whisper-large-v3\
+youtubeworkflow\
+├─ START_HERE.bat             Portable 推荐入口，也可转到源码启动脚本
+├─ start_panel.bat            本地控制面板入口
+├─ login_bilibili.bat         哔哩哔哩登录工具
+├─ subtitle_tools.bat         高级字幕审核、润色与重译工具
+├─ build_portable.bat         构建 CPU/GPU Portable 包
+├─ verify_project.bat         完整离线验证
+├─ .env.example               本地密钥配置模板
+├─ config\                    下载、字幕、成片、发现与投稿配置
+├─ src\                       应用源码
+├─ tests\                     离线自动化测试
+├─ tools\bin\                FFmpeg、yt-dlp、Deno 等本地程序
+├─ models\                   本地 Whisper 模型
+├─ biliup\                   可选的哔哩哔哩工具
+├─ downloads\                视频任务与输出
+├─ private\                  Cookie 和可选账号文件
+├─ logs\                     任务日志
+└─ work\                     队列、发现数据库与临时状态
 ```
 
-目录至少必须包含：
+`downloads`、`private`、`logs`、`work`、`models`、`tools`、`biliup` 和虚拟环境均不应
+提交到 Git。
 
-```text
-config.json
-model.bin
-tokenizer.json
-vocabulary.json
-```
+## 常用配置文件
 
-程序会把这个目录解析为绝对路径并直接传给 `WhisperModel`。缺少文件时立即报错，不会使用 `large-v3` 模型名称联网下载。
+| 文件 | 负责内容 |
+|---|---|
+| `.env` | YouTube Key、AI 供应商、模型、Base URL 与密钥 |
+| `config\download_config.json` | 下载清晰度、字幕语言、Cookie 与重试 |
+| `config\stage3_config.json` | Whisper、英文选择、翻译批次与结构 QC |
+| `config\stage4_config.json` | 双语样式、排版安全线、编码器与音频策略 |
+| `config\trending_config.json` | 搜索、智能发现和 Ollama 参数 |
+| `config\discovery_keywords.json` | 智能发现领域、查询词和归类关键词 |
+| `config\publish_config.json` | biliup、投稿间隔、日上限和冷却策略 |
 
-识别配置位于 `config\stage3_config.json`。除非显卡不支持，否则建议保留：
+优先通过控制面板修改用户级设置。直接编辑 JSON 前先关闭面板并保留备份；错误类型、越界
+数值或错误路径会导致对应步骤拒绝运行。
 
-```json
-{
-  "asr_device": "cuda",
-  "asr_compute_type": "float16",
-  "asr_language": "en"
-}
-```
+## 高级字幕工具
 
-## 候选发现与版权审核
-
-1. 运行 `setup_stage1_fixed.bat`；
-2. 确认 `.env` 已填写 `YOUTUBE_API_KEY`；
-3. 运行 `run_fetch_candidates_fixed.bat`；
-4. 打开最新的 `candidates\YYYY-MM-DD_US_localization_top50.csv` 或 JSON；
-5. 人工审核并设置 `selected` 与 `rights_status`。
-
-允许下载的记录必须同时满足：
-
-- `selected` 为 `1`、`true` 或字符串 `"1"`；
-- `rights_status` 为 `APPROVED`、`OWNED`、`LICENSED` 或 `PERMISSION_GRANTED`。
-
-示例：
-
-```json
-{
-  "video_id": "VIDEO_ID",
-  "selected": 1,
-  "rights_status": "PERMISSION_GRANTED"
-}
-```
-
-`PENDING`、`REJECTED` 和 `selected=0` 始终跳过。`--video-ids` 只缩小候选范围，不能绕过审核。
-
-## 下载视频、字幕、元数据与音频
-
-批量下载已审核的候选视频：
+普通使用不需要离开控制面板。需要导出/导入人工审核表、整批润色、强制从头重译，或只
+测试前 30 秒 Whisper 时，可以运行：
 
 ```bat
-run_stage2_download_selected.bat
+subtitle_tools.bat "完整的视频任务目录"
 ```
 
-也可以把候选 JSON 拖到 BAT 上，或使用命令行：
+脚本会标明哪些操作会调用 AI API，并再次要求输入 `YES`。强制重译会忽略原翻译检查点，
+只应在明确需要替换整份译文时使用。
+
+命令行入口可先查看帮助：
 
 ```bat
-.venv\Scripts\python.exe src\download_selected_candidates.py
-.venv\Scripts\python.exe src\download_selected_candidates.py --input candidates\2026-07-21_US_localization_top50.json
-.venv\Scripts\python.exe src\download_selected_candidates.py --video-ids ID1 ID2
+.venv\Scripts\python.exe -m src.download_video --help
+.venv\Scripts\python.exe -m src.run_stage3 --help
+.venv\Scripts\python.exe -m src.run_stage4 --help
+.venv\Scripts\python.exe -m src.run_control_panel --help
 ```
 
-候选任务保存在：
+## 构建 Portable 发行包
 
-```text
-downloads\candidates\YYYY-MM-DD\排名_VIDEOID_安全标题\
-```
-
-每个完整任务通常包含：
-
-```text
-download_manifest.json
-audio\source_audio.wav
-metadata\candidate.json
-metadata\description.txt
-metadata\info.json
-metadata\thumbnail.jpg
-subtitles\...
-video\source.mp4
-```
-
-英文与中文字幕均采用“人工字幕优先、自动字幕回退”。原始字幕保留为备份，清洗过程不会覆盖它们。
-
-### 自由 URL 下载
-
-双击 `run_download_url.bat`，阅读版权提示、输入 URL，并输入 `Y` 确认。也可以运行：
+构建机需要已经准备好源码环境、本地工具、Whisper 模型和 biliup。首次构建还需要联网
+下载 Python 3.11 Embedded 运行时及对应 wheel。
 
 ```bat
-.venv\Scripts\python.exe src\download_video.py --url "https://www.youtube.com/watch?v=VIDEO_ID" --confirm-rights
-.venv\Scripts\python.exe src\download_video.py --url "URL" --output downloads\manual --confirm-rights
-.venv\Scripts\python.exe src\download_video.py --url "URL" --metadata-only --confirm-rights
-.venv\Scripts\python.exe src\download_video.py --url "URL" --subtitles-only --confirm-rights
-.venv\Scripts\python.exe src\download_video.py --url "URL" --no-audio-extract --confirm-rights
-.venv\Scripts\python.exe src\download_video.py --url "URL" --force --confirm-rights
+build_portable.bat
 ```
 
-自由下载结果位于：
-
-```text
-downloads\manual\YYYY-MM-DD\VIDEOID_安全标题\
-```
-
-所有下载均强制单视频模式。成功任务重复运行会跳过，部分完成任务只补缺失文件。
-
-### 修复失败的下载
-
-双击：
-
-```text
-run_repair_failed_downloads.bat
-```
-
-或执行：
+默认同时构建 CPU 和 GPU。也可以指定版本和发行类型：
 
 ```bat
-.venv\Scripts\python.exe src\repair_failed_downloads.py --dry-run
-.venv\Scripts\python.exe src\repair_failed_downloads.py
-.venv\Scripts\python.exe src\repair_failed_downloads.py --video-ids ID1 ID2
-.venv\Scripts\python.exe src\repair_failed_downloads.py --attempts 5 --retry-delay 5
+build_portable.bat all 0.4.0
+build_portable.bat cpu 0.4.0
+build_portable.bat gpu 0.4.0
+build_portable.bat all 0.4.0 --skip-archive
 ```
 
-修复程序只处理失败或关键文件缺失的任务，并重新验证版权审核字段。
+输出位于 `dist`。每个包都会：
 
-## 字幕处理主菜单
+- 包含独立 Python、FFmpeg、FFprobe、yt-dlp、Deno、Whisper 模型和 biliup；
+- 把 `PORTABLE_README.md` 复制为用户看到的根目录 `README.md`；
+- 使用干净的 `.env`，不包含 Cookie 或制作者账号；
+- 生成 `portable_manifest.json`、`PACKAGE_FILES.txt` 和 ZIP SHA256；
+- 检查 Python 导入、命令入口、本地程序、模型完整性和账号清洁度。
 
-双击 `run_stage3.bat`。当出现：
+更底层的 PowerShell 入口：
 
-```text
-Video task directory:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\build_portable.ps1 -Edition all -Version 0.4.0
 ```
 
-输入以下任意一种目录：
+## 验证
 
-- 单个视频任务目录：目录中直接存在 `download_manifest.json`；
-- 日期目录：程序会递归处理其中所有带 `download_manifest.json` 的视频任务。
-
-菜单功能如下：
-
-| 选项 | 作用 | 是否调用付费 API |
-|---|---|---|
-| 1 | 清洗并重建英文字幕 | 否 |
-| 2 | 检查翻译配置、字幕数量和预计批次数 | 否 |
-| 3 | 把最终选中的英文字幕翻译成中文，支持断点续跑 | 是 |
-| 4 | 先清洗英文字幕，再翻译成中文 | 是 |
-| 5 | 重新翻译并润色全部中文字幕 | 是 |
-| 6 | 忽略翻译断点，从头重新翻译 | 是 |
-| 7 | 使用本地 GPU 识别每个任务的前 30 秒 | 否 |
-| 8 | 完整生成 YouTube/Whisper 双源英文字幕，评分并选择 | 否 |
-| 9 | 完成双源英文评分选择，然后翻译中文 | 是 |
-| 10 | 导出人工审核 TSV 和只读 HTML | 否 |
-| 11 | 导入编辑后的审核 TSV，生成 `zh.reviewed.srt` | 否 |
-
-所有付费操作都会显示提示，并且只有输入 `YES` 才会开始调用 DeepSeek API。
-
-也可以直接指定 BAT 模式：
+完整离线验证：
 
 ```bat
-run_stage3.bat "downloads\candidates\2026-07-21" clean
-run_stage3.bat "downloads\candidates\2026-07-21" check
-run_stage3.bat "downloads\candidates\2026-07-21" translate
-run_stage3.bat "downloads\candidates\2026-07-21" full
-run_stage3.bat "downloads\candidates\2026-07-21" polish
-run_stage3.bat "downloads\candidates\2026-07-21" retranslate
-run_stage3.bat "单个视频任务目录" asr30
-run_stage3.bat "视频任务目录或日期目录" autoselect
-run_stage3.bat "视频任务目录或日期目录" autotranslate
-run_stage3.bat "视频任务目录" reviewexport
-run_stage3.bat "视频任务目录" reviewimport "stage3\review\review_export.tsv"
-```
-
-推荐的一键入口：
-
-- 只需要最终英文字幕：选择 `8`；
-- 需要最终英文字幕并继续翻译中文：选择 `9`，然后输入 `YES` 确认付费调用。
-
-选项 `8` 实际执行 `--steps select --subtitle-source auto`，选择步骤会确保 YouTube 和 Whisper 两套 clean 字幕都已准备。选项 `9` 先执行同一个双源准备与选择命令；成功后显示摘要，再要求输入 `YES`，最后执行 `--steps translate --allow-paid-api`。两者都使用 `.venv_stage3`。
-
-## 本地 GPU 英文语音识别
-
-### 第一次先验证 30 秒
-
-最简单的方法是运行 `run_stage3.bat` 并选择 `7`。
-
-等价命令：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py ^
-  --video-dir "单个视频任务目录" ^
-  --steps asr ^
-  --subtitle-source whisper ^
-  --asr-max-seconds 30 ^
-  --force
-```
-
-该命令不会裁剪或修改源音频，只限制识别到第 30 秒。菜单测试模式带有 `--force`，因此每次选择 `7` 都会重新运行测试。
-
-### 识别完整视频
-
-30 秒验证成功后，去掉时间限制和强制参数：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py ^
-  --video-dir "单个视频任务目录" ^
-  --steps asr ^
-  --subtitle-source whisper
-```
-
-重复执行相同命令时，如果音频哈希、模型配置和输出文件都匹配，程序会复用成功检查点。需要从头重新识别时添加：
-
-```text
---force
-```
-
-当前恢复粒度是“一个视频任务”，不是伪装的音频分块断点。
-
-### 打断恢复
-
-所有批处理命令默认启用 `--resume`。处理中断后，重新输入同一个日期目录并选择同一个菜单即可继续：
-
-- YouTube 清洗按单视频保存检查点，验证原始字幕哈希、配置哈希、代码版本和所有标准输出哈希；
-- Whisper 按单视频保存检查点，验证音频哈希、本地模型标识、识别配置和输出哈希；已经完成的视频不会重新识别，打断时正在识别的单个视频会从该视频开头重跑；
-- 双源评分和自动选择保存独立检查点，输入字幕、QC、模型报告、配置、选择策略和 `en.selected.srt` 哈希不变时直接复用；
-- DeepSeek 第一遍和问题返修均按批次保存检查点，每次 API 返回后立即保存已经收到的 ID；中断后只请求缺少的 ID；
-- 全部翻译完成后另有整视频完成检查点，字幕源、词汇表、配置、模型和输出均未变化时不会再次调用 API；
-- 所有检查点和产物均使用原子替换，未完成文件不会覆盖已有有效结果。
-
-只有显式使用 `--force`、对应的 `--force-youtube`、`--force-whisper`、`--force-selection` 或 `--force-translation`，或者输入、配置、模型、提示版本、输出哈希发生变化时，相关步骤才会重新执行。
-
-### 同时准备双源并自动选择
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py ^
-  --video-dir "视频任务目录或日期目录" ^
-  --steps prepare ^
-  --subtitle-source auto
-```
-
-`prepare` 等价于：
-
-```text
-youtube,whisper,select
-```
-
-当前版本会生成 YouTube clean 和 Whisper clean 两套完整英文字幕，再分别计算结构、时间轴、语音覆盖、稳定性、可读性和来源置信度六项分数。只有一套通过时选择该套；两套均通过且分差至少为 6 时选择高分来源。
-
-两套自动字幕分差不足 6 时不会再阻塞等待人工选择，而是按以下顺序自动决胜：
-
-1. 语音覆盖分相差至少 3 分时，选择覆盖分更高的来源；
-2. 覆盖分接近时，最长无字幕语音缺口相差至少 3 秒则选择缺口更小的来源；
-3. 再依次比较时间轴分、可读性分和最终总分；
-4. 全部相同则按配置默认选择 Whisper；
-5. 两套都低于 70、但至少一套通过硬性结构和时间轴检查时，自动选择安全来源中总分最高的一套并记录警告；
-6. 只有所有来源都存在空字幕、解析失败、时间错误、重叠或语音覆盖低于硬下限等问题时才停止该视频，且不会调用翻译 API。
-
-完全无人值守时使用 `8 → 2 → 9`，数字 `10` 和 `11` 仅为可选的人工中文审核工具，可以跳过。
-
-也可以强制指定：
-
-```text
---subtitle-source manual
---subtitle-source youtube
---subtitle-source whisper
-```
-
-强制指定的来源不存在时，程序会明确报错，不会静默换成其他来源。
-
-### 音频来源优先级
-
-程序按以下顺序选择输入：
-
-1. `audio\source_audio.wav`；
-2. 任务中的 M4A；
-3. 任务中的 MP3；
-4. `video\source.mp4` 或其他可用视频。
-
-识别前后都会计算输入文件 SHA256，源音频和视频不会被改写。
-
-### 识别完成后翻译中文
-
-推荐分两步使用不同环境：
-
-1. 使用 `.venv_stage3` 完成本地英文识别；
-2. 再运行 `run_stage3.bat`，输入同一任务目录并选择 `3`。
-
-翻译程序只允许读取 `subtitles\en.selected.srt`。缺少该文件时会返回 `EN_SELECTED_SUBTITLE_NOT_FOUND`，不会退回 raw、VTT 或旧版 `en.clean.srt`。只有第二步显式使用 `--allow-paid-api` 才会调用 DeepSeek API。
-
-### 人工审核
-
-先导出：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py ^
-  --video-dir "视频任务目录" ^
-  --steps review-export
-```
-
-修改 `stage3\review\review_export.tsv` 的 `reviewed_translation` 列后导入：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py ^
-  --video-dir "视频任务目录" ^
-  --steps review-import ^
-  --review-file "stage3\review\review_export.tsv"
-```
-
-导出不会生成 `zh.reviewed.srt`。导入会验证 ID、英文、时间轴和空译文；已有 reviewed 文件默认拒绝覆盖，只有显式添加 `--overwrite-reviewed` 才允许。
-
-## 字幕与报告文件
-
-单个任务的重要输出如下：
-
-```text
-subtitles\en.youtube.raw.srt       YouTube 解析调试字幕
-subtitles\en.youtube.clean.srt     清洗后的 YouTube/人工英文字幕
-subtitles\en.whisper.raw.srt       本地模型的原始识别片段
-subtitles\en.whisper.clean.srt     重新断句和修复时间轴后的识别字幕
-subtitles\en.selected.srt          最终选中的统一英文输入
-subtitles\zh.raw.srt               DeepSeek 原始翻译结果
-subtitles\zh.clean.srt             最终推荐使用的中文字幕
-subtitles\zh.reviewed.srt          显式人工导入后的字幕
-stage3\youtube\                    YouTube 清洗中间件、QC 与 checkpoint
-stage3\whisper\                    ASR 信息、词时间戳、QC 与 checkpoint
-stage3\selection\scoring.json      双源六维评分
-stage3\selection\comparison.json   分数和一致度比较
-stage3\selection\selection_report.json 最终选择、哈希和审核状态
-stage3\translation\               翻译 JSON、QC、用量和批次断点
-stage3\publish_metadata.json       中文标题、智能标签与推荐投稿分区
-stage3\review\review_export.tsv    人工审核工作表
-stage3\review\review_import_report.json 审核导入报告
-stage3\stage3_review.html          只读筛选审核页面
-stage3\migrations.json             旧文件迁移来源、目标、时间和哈希
-stage3_manifest.json              整体处理状态
-```
-
-旧版 `en.clean.srt`、`stage3\asr\` 和任务根部 `translation\` 不会被删除；缺少新命名时会原子复制并写入迁移记录。
-
-## 常见问题
-
-### 提示 `EN_SELECTED_SUBTITLE_NOT_FOUND`
-
-翻译前还没有完成双源评分与选择。先运行：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage3.py --video-dir "视频任务目录" --steps prepare --subtitle-source auto
-```
-
-或双击 BAT 并选择 `8`。生成 `en.selected.srt` 后再选择 `3` 翻译。
-
-### 提示缺少 `.venv_stage3`
-
-执行：
-
-```bat
-py -3.11 -m venv .venv_stage3
-.venv_stage3\Scripts\python.exe -m pip install -r requirements_stage3.txt
-```
-
-### 提示模型目录不完整
-
-检查以下文件是否都存在：
-
-```text
-models\faster-whisper-large-v3\config.json
-models\faster-whisper-large-v3\model.bin
-models\faster-whisper-large-v3\tokenizer.json
-models\faster-whisper-large-v3\vocabulary.json
-```
-
-不要把配置改成裸模型名称 `large-v3`，否则程序会拒绝启动。
-
-### 提示缺少 CUDA DLL 或看不到 GPU
-
-确认：
-
-- NVIDIA 驱动正常，`nvidia-smi` 可以识别显卡；
-- 命令使用的是 `.venv_stage3\Scripts\python.exe`；
-- `faster-whisper`、`ctranslate2`、CUDA runtime 和 cuDNN 依赖安装在同一个环境；
-- 没有在导入 `ctranslate2` 前绕过项目的 CUDA 注册模块。
-
-### 质量报告通过但存在字符速度警告
-
-字符速度属于可读性提示。空段、非法时间、倒序、重叠和重复等核心问题为零时，报告仍可通过。可以打开 `stage3\whisper\qc.txt` 查看具体字幕编号。
-
-## 运行测试
-
-完整测试：
-
-```bat
-.venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
-```
-
-本地语音识别相关自动化测试使用 mock，不需要 GPU、不访问网络，也不会调用付费 API。
-
-检查源代码语法：
-
-```bat
-.venv\Scripts\python.exe -m compileall -q src tests
-.venv_stage3\Scripts\python.exe -m compileall -q src
-```
-
-Windows 下也可以直接双击：
-
-```text
 verify_project.bat
 ```
 
-它会依次运行完整离线测试、两套环境的语法检查与依赖一致性检查、Git
-空白错误检查，以及私密/生成目录误入版本库检查。仓库的 GitHub Actions 会在
-每次推送和 Pull Request 时执行同等的离线质量门禁；测试使用 mock，不会访问
-YouTube、调用 DeepSeek、启动 FFmpeg 成片或产生投稿。
-
-## 上传 GitHub
-
-`.gitignore` 已排除以下内容：
-
-- `.env`、Cookies、私钥和本地凭据；
-- `.venv`、`.venv_stage3` 和 Python 缓存；
-- `downloads`、视频、音频、字幕和运行日志；
-- `models` 以及常见大模型权重；
-- 翻译断点、识别报告和临时文件。
-
-创建提交后，可以双击：
-
-```text
-push_to_github.bat
-```
-
-它只把当前已经提交的分支推送到 `origin`，不会自动执行 `git add` 或创建新提交。GitHub 首次认证时，Windows 可能弹出登录窗口。
-
-等价命令：
+主要检查命令：
 
 ```bat
-git push origin main
+.venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
+.venv\Scripts\python.exe -m compileall -q src tests
+node --check src\control_panel\static\app.js
+git diff --check
 ```
 
-上传前可自行复查：
+测试会模拟 AI、YouTube、FFmpeg 和投稿调用，不访问真实供应商，也不会读取或打印 API
+Key。`verify_project.bat` 还会检查本地工具、Whisper 模型、依赖一致性，以及私密/生成目录
+是否误入版本控制。
 
-```bat
-git status
-git status --ignored --short
-git ls-files .env models downloads .venv .venv_stage3
-```
+## 常见问题
 
-最后一条命令应当没有输出。不要使用 `git add -f` 强制添加被忽略的私密文件或大文件。
+| 现象 | 处理方法 |
+|---|---|
+| 双击后窗口立即关闭 | 在命令提示符运行 `start_panel.bat` 查看错误；通常是 `.venv`、本地工具或完整解压问题 |
+| 浏览器没有自动打开 | 手动访问 <http://127.0.0.1:8765>；端口占用时换用 `--port 8877` |
+| 路径过长或 FFmpeg 找不到文件 | 把项目移到较短的本地路径，例如 `D:\YouTubeWorkflow`；不要在 ZIP、网络盘或 OneDrive 占位目录运行 |
+| YouTube 要求登录、验证年龄或检查机器人 | 重新导出并导入有效的 YouTube Cookie |
+| 下载中途出现 `HTTP 403` | 程序会保留分片并尝试 `web_embedded` 续传；仍失败时更新 yt-dlp、切换网络，必要时参考 [PO Token 指南](https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide) |
+| 没有可用英文字幕 | 检查 Whisper 模型；GPU 版检查驱动，也可用 CPU 模式验证 |
+| AI 翻译报 `401/403` | 检查 Key、Base URL、模型和账户权限 |
+| AI 翻译报 `402` | 检查账户余额或计费状态 |
+| AI 翻译报 `429/1305` | 这是限流或拥堵；程序会保存检查点后等待，不要同时强制重开多个任务 |
+| 成片显示“需要复核” | 点击黄色“审”，缩短受影响字幕或明确隐藏该条；预检通过后自动继续 |
+| 没有投稿按钮 | 确认硬字幕成片已完成、没有排版复核，并已登录 biliup |
+| 投稿显示 `137022` | 不要重复新建投稿；等待页面显示的冷却结束，或调大投稿间隔 |
+| 重新运行是否重复付费 | 配置和提示版本不变时复用检查点，只请求缺失项；更换供应商、模型、Thinking 或强制重译会使相关检查点失效 |
 
-## 阶段四：原声双语字幕成片
+## 安全、版权与数据边界
 
-阶段四优先读取阶段三选定的 `subtitles\en.selected.srt`。存在
-`zh.reviewed.srt` 时始终使用人工审核版；不存在时，会对配置中的
-`zh.clean.srt`、`zh.raw.srt` 和其他候选执行严格 ID/时间轴校验，再按中文
-占比、英文泄漏、阅读速度、超长行、重复标点及阶段三翻译 QC 自动选择得分
-最高的字幕。如果阶段三精确配对不可用，但任务中存在独立的中英文
-VTT/SRT，阶段四会离线重新清洗并按时间重对齐，只有配对覆盖率至少 85%、
-中文字符占比至少 50% 才使用，生成
-`stage4\subtitles\en.recovered.srt` 和 `zh.recovered.srt`。该恢复不调用
-翻译 API，也不覆盖原字幕。选择依据写入
-`stage4\subtitles\chinese_selection_report.json`。自动选择通过全部 QC 后
-可以直接完成，不再仅因缺少人工审核而标记 `REVIEW_REQUIRED`；如需强制人工
-审核，增加 `--require-reviewed`。
+- 只下载、翻译、改编和投稿你拥有、已获许可或明确有权使用的内容；
+- `.env`、Cookie、账号文件和下载内容都可能包含敏感信息，不要提交或转发；
+- AI 翻译会把字幕文本和必要上下文发送给你选择的供应商；
+- Ollama 智能发现只使用 YouTube 公开元数据和缩略图；
+- 删除任务是不可恢复操作，确认视频 ID 和目录后再执行；
+- 已经泄露到聊天、Issue、日志或公开仓库的 Key 应立即在供应商后台吊销并重建；
+- 给别人分发软件时使用全新的构建产物，不要发送已经运行和配置过的目录。
 
-`--video-dir` 既可传入单个视频任务目录，也可直接传入日期/批次目录。批次
-模式会递归发现所有含 `download_manifest.json` 的视频任务，逐个生成成片。
-缺少可恢复英文或完全没有中文字幕的未就绪任务会记录为
-`SKIPPED_NOT_READY`，不会阻断其他任务；真正的渲染或 QC 错误仍会令批次
-返回失败。汇总写入日期目录的 `stage4\batch_summary.json`，Dry-run 汇总
-写入 `stage4\batch_dry_run_summary.json`。自动恢复字幕超出视频结尾时会
-安全裁剪到真实时长。硬字幕滤镜始终从字幕工作目录读取相对 ASS 路径，任务名
-含撇号、逗号、Emoji 或长标题也不会破坏 FFmpeg 路径解析。
-
-它不会生成中文 TTS，也不会替换或修改原始音频。双语字幕默认使用协调的
-1080p 字号比例（中文 48、英文 34）。竖屏保持该字号；横屏按画面比例自动
-放大，4:3 为 1.5 倍、16:9 为 1.6 倍、2:1 及以上为 1.75 倍，同时按相同比例
-增强描边。长句和三至四行片段会在配置的最小字号范围内自动缩小，中文始终略
-大于英文。
-
-常用命令：
-
-```bat
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode ass
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode softsub
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode hardsub
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "视频任务目录" --mode both --dry-run
-.venv_stage3\Scripts\python.exe src\run_stage4.py --video-dir "downloads\candidates\2026-07-21" --mode hardsub
-```
-
-也可以将单个视频任务目录或整个日期目录拖到 `run_stage4.bat`。默认推荐软
-字幕 MKV：视频流和全部音频流直接复制，并增加可开关、默认开启的
-`English / 中文` ASS 字幕轨。
-硬字幕 MP4 会重新编码视频；源音频兼容 MP4 时直接复制，否则转为 AAC 并在
-Manifest 中记录 `AUDIO_TRANSCODE_REQUIRED`。使用 `--require-audio-copy`
-可禁止该回退。
-
-阶段四输出全部位于任务目录的 `stage4\` 下，包括双语 ASS、软/硬字幕视频、
-媒体探测、字幕与渲染 QC、FFmpeg 日志和 `stage4_manifest.json`。所有正式
-成片先写临时文件，通过探测与 QC 后再原子替换，原视频及原字幕不会被覆盖。
-
-阶段四默认启用断点续跑。中断或批次部分失败后，直接用同一个任务/日期目录和
-同一种输出模式重新运行即可：已通过 QC 的成片会先校验源视频、双语 ASS、
-真正影响该成片的渲染参数和输出文件哈希，全部一致时显示“复用已有成片”，
-不会再次调用 FFmpeg；失败、缺失、损坏或在字幕恢复后变为可处理的任务会显示
-“本次新生成”并重新渲染。字幕候选与恢复策略等无关配置变化不会让正确成片
-失效，但 CRF/CQ、编码器、音频策略等实际成片参数变化会触发重建。旧版阶段四
-检查点会在首次续跑时自动迁移，不重新编码。只有明确需要全部重做时才使用
-`--force`，只重做硬字幕可使用 `--force-hardsub`。
-
-### 一键发布阶段四代码到 GitHub
-
-双击：
-
-```text
-publish_stage4_to_github.bat
-```
-
-脚本会依次运行全部离线测试、Python 语法检查和 Git whitespace 检查，只暂存
-阶段四源码、配置、测试、README 与 BAT 白名单，创建提交并把当前分支推送到
-`origin`。它不会暂存 `downloads`、`.env`、`private`、模型、工具、日志、
-成片或其他运行数据；如果运行前已经存在暂存区改动，脚本会停止，避免把其他
-工作混入提交。只检查而不提交、推送可运行：
-
-```bat
-publish_stage4_to_github.bat --check
-```
+项目提供的是本地处理工具，不授予任何视频、音乐、字幕或平台内容的版权与使用权。
+Portable 包包含多个独立授权的第三方组件；公开或商业分发前请阅读
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)，并自行核对所使用二进制文件和模型的
+上游许可义务。

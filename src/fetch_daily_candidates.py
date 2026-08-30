@@ -19,12 +19,20 @@ from zoneinfo import ZoneInfo
 import requests
 from dotenv import load_dotenv
 
-try:
-    from .candidate_analysis import assess_language, assign_event_groups, calculate_interest, calculate_topic_relevance, copyright_risk, metric_scores, phrase_hits
-    from .candidate_selection import select_candidates
-except ImportError:  # Direct execution: python src/fetch_daily_candidates.py
-    from candidate_analysis import assess_language, assign_event_groups, calculate_interest, calculate_topic_relevance, copyright_risk, metric_scores, phrase_hits
-    from candidate_selection import select_candidates
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from src.candidate_analysis import (
+    assess_language,
+    assign_event_groups,
+    calculate_interest,
+    calculate_topic_relevance,
+    copyright_risk,
+    metric_scores,
+    phrase_hits,
+)
+from src.candidate_selection import select_candidates
 
 API_BASE = "https://www.googleapis.com/youtube/v3"
 LOGGER = logging.getLogger("youtube_candidates")

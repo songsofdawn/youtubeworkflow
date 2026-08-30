@@ -22,12 +22,12 @@ from src.stage3.pipeline import Stage3Pipeline
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the recoverable Stage 3 subtitle workflow.")
+    parser = argparse.ArgumentParser(description="Run the recoverable subtitle selection and translation workflow.")
     parser.add_argument("--video-dir", required=True, type=Path)
     parser.add_argument(
         "--steps",
         default="clean,translate",
-        help="Comma-separated actions: youtube, whisper, select, prepare, translate, review-export, review-import",
+        help="Comma-separated actions: youtube, whisper, select, prepare, translate, metadata, review-export, review-import",
     )
     parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "config" / "stage3_config.json")
     parser.add_argument("--subtitle-source", choices=("auto", "manual", "youtube", "whisper"), default="auto")
@@ -39,8 +39,33 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--force-whisper", action="store_true")
     parser.add_argument("--force-selection", action="store_true")
     parser.add_argument("--force-translation", action="store_true")
+    parser.add_argument("--force-publish-metadata", action="store_true")
+    parser.add_argument(
+        "--whisper-for-auto-subtitles",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "Run Whisper for comparison when YouTube automatic English subtitles exist "
+            "(enabled by default; Whisper still runs as fallback when no YouTube English source exists)."
+        ),
+    )
     parser.add_argument("--polish-all", action="store_true")
-    parser.add_argument("--allow-paid-api", action="store_true")
+    parser.add_argument(
+        "--allow-paid-api",
+        action="store_true",
+        help="Allow calls to the selected translation API (legacy option name).",
+    )
+    parser.add_argument(
+        "--publish-metadata-provider",
+        choices=("auto", "translation_api", "local_ollama"),
+        default="auto",
+        help="Model used for Bilibili title, tags and category recommendation.",
+    )
+    parser.add_argument(
+        "--allow-no-subtitles",
+        action="store_true",
+        help="Generate publish metadata from video metadata when a no-speech video has no subtitles.",
+    )
     parser.add_argument("--overwrite-reviewed", action="store_true")
     return parser.parse_args(argv)
 
@@ -51,9 +76,9 @@ def load_config(path: Path) -> dict:
     config = normalize_stage3_config(raw)
     for key in ("minimum_acceptable_score", "selection_margin"):
         if not 0 <= float(config[key]) <= 100:
-            raise ValueError(f"stage3 config value must be between 0 and 100: {key}")
+            raise ValueError(f"subtitle config value must be between 0 and 100: {key}")
     if not 0 <= float(config["minimum_speech_coverage"]) <= 1:
-        raise ValueError("stage3 config minimum_speech_coverage must be between 0 and 1")
+        raise ValueError("subtitle config minimum_speech_coverage must be between 0 and 1")
     return config
 
 
@@ -83,7 +108,9 @@ def print_source_selection_summary(video_dir: Path, selection: dict[str, object]
     labels = {"youtube": "YouTube 字幕", "whisper": "Whisper"}
     whisper_started = bool(selection.get("whisper_started"))
     whisper_state = "是" if whisper_started else "否"
-    if selection.get("asr_checkpoint_reused"):
+    if selection.get("whisper_disabled_for_auto_subtitles"):
+        whisper_state = "否（已关闭：使用 YouTube 自动英文字幕）"
+    elif selection.get("asr_checkpoint_reused"):
         whisper_state = "否（复用现有检查点）"
     print("\n========== 英文字幕双源评分与选择 ==========", flush=True)
     print(f"YouTube clean 路径：{youtube.get('path') or '未生成'}", flush=True)
@@ -109,6 +136,7 @@ def _expand_steps(raw_steps: list[str]) -> list[str]:
         "asr": "whisper",
         "select": "select",
         "translate": "translate",
+        "metadata": "metadata",
         "review-export": "review-export",
         "review-import": "review-import",
         "p0": "youtube",
@@ -156,6 +184,7 @@ def run_video_actions(
             force_whisper=args.force_whisper,
             force_selection=args.force_selection,
             prepare_sources=not (ran_youtube and ran_whisper),
+            whisper_for_auto_subtitles=args.whisper_for_auto_subtitles,
         )
         result["english_source_selection"] = selection
         print_source_selection_summary(video_dir, selection)
@@ -172,6 +201,13 @@ def run_video_actions(
             allow_paid_api=args.allow_paid_api,
             force=args.force or args.force_translation or not args.resume,
             polish_all=args.polish_all,
+        )
+    if "metadata" in steps:
+        result["publish_metadata"] = pipeline.run_publish_metadata(
+            provider=args.publish_metadata_provider,
+            allow_paid_api=args.allow_paid_api,
+            allow_no_subtitles=args.allow_no_subtitles,
+            force=args.force or args.force_publish_metadata or not args.resume,
         )
     if "review-export" in steps:
         result["review_export"] = pipeline.run_review_export()

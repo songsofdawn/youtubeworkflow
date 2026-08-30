@@ -62,7 +62,13 @@ def configure_cuda_runtime(
     directories = discover_cuda_dll_directories(site_packages)
     missing = find_missing_cuda_dlls(directories)
     if require_dlls and missing:
-        raise CudaRuntimeError("CUDA_DLL_MISSING: " + ", ".join(missing))
+        raise CudaRuntimeError(
+            "CUDA_DLL_MISSING: "
+            + ", ".join(missing)
+            + "。当前 Python 环境缺少完整的 CUDA 12/cuDNN 9 运行库；"
+            "源码运行请执行 `python -m pip install -r requirements.lock.txt`，"
+            "GPU 便携版请重新完整解压发布 ZIP。"
+        )
 
     current_path = os.environ.get("PATH", "")
     path_parts = current_path.split(os.pathsep) if current_path else []

@@ -101,5 +101,103 @@ def translation_quality(source: list[SubtitleSegment], translations: list[Transl
     }
 
 
+def translation_payload_overflow(
+    source: SubtitleSegment,
+    translation: str,
+) -> dict[str, Any] | None:
+    """Describe obvious per-ID response contamination without judging wording."""
+    source_characters = sum(character.isalnum() for character in source.text)
+    translation_characters = sum(character.isalnum() for character in translation)
+    duration = max(0.05, float(source.duration))
+    length_ratio = translation_characters / max(1, source_characters)
+    characters_per_second = translation_characters / duration
+    reasons: list[str] = []
+    if translation_characters > 120:
+        reasons.append("ABSOLUTE_LENGTH")
+    if (
+        source_characters >= 24
+        and translation_characters >= 42
+        and length_ratio > 1.3
+    ):
+        reasons.append("SOURCE_LENGTH_RATIO")
+    if translation_characters >= 42 and characters_per_second > 22.0:
+        reasons.append("TIMELINE_DENSITY")
+    if not reasons:
+        return None
+    return {
+        "id": source.id,
+        "source_characters": source_characters,
+        "translation_characters": translation_characters,
+        "duration_seconds": round(duration, 3),
+        "length_ratio": round(length_ratio, 3),
+        "characters_per_second": round(characters_per_second, 3),
+        "reasons": reasons,
+    }
+
+
+def translation_structure_quality(
+    source: list[SubtitleSegment], translations: list[TranslationSegment]
+) -> dict[str, Any]:
+    """Validate file integrity and keep each translated payload inside its source cue.
+
+    This deliberately does not judge wording or semantic quality.  The payload
+    limits only catch structural response corruption such as several later
+    captions being concatenated into one ID.
+    """
+    source_ids = {item.id for item in source}
+    translated_ids = {item.id for item in translations}
+    missing = sorted(source_ids - translated_ids)
+    extra = sorted(translated_ids - source_ids)
+    empty = [item.id for item in translations if not item.translation.strip()]
+    overlaps = sum(
+        right.start < left.end for left, right in zip(translations, translations[1:])
+    )
+    changed_timeline = sum(
+        abs(source_item.start - translated.start) > 0.001
+        or abs(source_item.end - translated.end) > 0.001
+        for source_item, translated in zip(source, translations)
+        if source_item.id == translated.id
+    )
+    illegal_controls = [
+        item.id
+        for item in translations
+        if re.search(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", item.translation)
+    ]
+    source_by_id = {item.id: item for item in source}
+    payload_overflow_details: list[dict[str, Any]] = []
+    for translated in translations:
+        original = source_by_id.get(translated.id)
+        if original is None:
+            continue
+        detail = translation_payload_overflow(original, translated.translation)
+        if detail is not None:
+            payload_overflow_details.append(detail)
+    payload_overflow_ids = [item["id"] for item in payload_overflow_details]
+    passed = (
+        not missing
+        and not extra
+        and not empty
+        and overlaps == 0
+        and changed_timeline == 0
+        and not illegal_controls
+        and not payload_overflow_ids
+    )
+    return {
+        "status": "QC_PASSED" if passed else "REVIEW_REQUIRED",
+        "validation_mode": "structural_only",
+        "semantic_quality_checks": "disabled",
+        "english_ids": len(source_ids),
+        "chinese_ids": len(translated_ids),
+        "missing_ids": missing,
+        "extra_ids": extra,
+        "empty_translation_ids": empty,
+        "timeline_overlaps": overlaps,
+        "timeline_changed": changed_timeline,
+        "illegal_control_character_ids": illegal_controls,
+        "segment_payload_overflow_ids": payload_overflow_ids,
+        "segment_payload_overflow_details": payload_overflow_details,
+    }
+
+
 def qc_text(report: dict[str, Any]) -> str:
     return "\n".join(f"{key}: {value}" for key, value in report.items()) + "\n"

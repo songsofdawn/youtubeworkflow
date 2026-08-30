@@ -113,6 +113,34 @@ class SubtitleValidatorTests(unittest.TestCase):
                 1.0,
             )
 
+    def test_youtube_tail_cue_with_two_second_overshoot_tolerance_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            tail = ZH.replace("00:00:01,100 --> 00:00:02,000", "00:00:01,100 --> 00:00:03,485")
+            english_tail = EN.replace(
+                "00:00:01,100 --> 00:00:02,000",
+                "00:00:01,100 --> 00:00:03,485",
+            )
+            left, right = self.write_pair(
+                Path(temporary),
+                english=english_tail,
+                chinese=tail,
+            )
+            strict = validate_subtitles(
+                left,
+                right,
+                video_duration=2.0,
+                video_duration_tolerance_seconds=1.0,
+            )
+            tolerated = validate_subtitles(
+                left,
+                right,
+                video_duration=2.0,
+                video_duration_tolerance_seconds=2.0,
+            )
+            self.assertFalse(strict.passed)
+            self.assertEqual(strict.report["invalid_timestamp_ids"], ["2"])
+            self.assertTrue(tolerated.passed)
+
     def test_illegal_control_character_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             left, right = self.write_pair(Path(temporary), chinese=ZH.replace("你好", "你\x00好"))

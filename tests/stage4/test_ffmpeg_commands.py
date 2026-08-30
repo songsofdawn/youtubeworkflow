@@ -99,6 +99,7 @@ class FFmpegCommandTests(unittest.TestCase):
         self.assertTrue(detect_nvenc("ffmpeg"))
         command = run.call_args.args[0]
         self.assertIn("h264_nvenc", command)
+        self.assertIn("color=c=black:s=256x256:r=1:d=0.1", command)
         self.assertFalse(run.call_args.kwargs["shell"])
 
     @mock.patch("src.stage4.ffmpeg_runner.detect_nvenc", return_value=False)

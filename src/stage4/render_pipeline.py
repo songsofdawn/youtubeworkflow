@@ -20,6 +20,7 @@ from .ffmpeg_runner import (
     temporary_output_path,
 )
 from .input_resolver import resolve_inputs
+from .layout_review import apply_layout_review_override
 from .media_probe import probe_media, tool_version
 from .models import PipelineOptions, PipelineResult, Stage4Error
 from .quality_control import evaluate_render, write_render_qc
@@ -231,7 +232,7 @@ class Stage4Pipeline:
         temporary = temporary_output_path(destination)
         temporary.unlink(missing_ok=True)
         command = command_builder(temporary)
-        print(f"[stage4] {kind}: {readable_command(command)}", flush=True)
+        print(f"[render] {kind}: {readable_command(command)}", flush=True)
         result = runner.run(command)
         if not result.success:
             if not keep_temp:
@@ -347,6 +348,11 @@ class Stage4Pipeline:
                 resolved.chinese_selection_report[
                     "video_duration_adjustment"
                 ] = adjustment
+                # Recovery rewrites its generated SRT pair before clipping it to the
+                # real media duration.  A layout review is saved against the clipped
+                # pair, so re-check the override only after clipping has restored the
+                # exact source hashes recorded by the review.
+                resolved = apply_layout_review_override(root, resolved)
             english_hash = sha256_file(resolved.english_subtitle)
             chinese_hash = sha256_file(resolved.chinese_subtitle)
             atomic_write_json(paths["qc"] / "media_probe_before.json", source_probe)
@@ -408,7 +414,7 @@ class Stage4Pipeline:
                 video_duration_tolerance_seconds=float(
                     self.config.get("input", {}).get(
                         "subtitle_video_end_tolerance_seconds",
-                        1.0,
+                        2.0,
                     )
                 ),
             )
@@ -445,12 +451,39 @@ class Stage4Pipeline:
             )
             if layout_issues and not options.dry_run:
                 atomic_write_text(paths["subtitles"] / "bilingual_preview.ass", ass_text)
-            if layout_issues and options.strict_subtitle_layout:
-                raise Stage4Error(
-                    "BILINGUAL_TOO_MANY_LINES",
-                    "严格字幕排版模式检测到超过行数限制的片段。",
-                    details={"warnings": layout_issues},
+            if layout_issues and not options.dry_run:
+                issue_ids = list(dict.fromkeys(str(item.get("id") or "") for item in layout_issues))
+                issue_codes = sorted({str(item.get("code") or "") for item in layout_issues})
+                preview_path = paths["subtitles"] / "bilingual_preview.ass"
+                review_message = (
+                    f"{len(issue_ids)} 条字幕因内容过长或原时长不足，无法同时保证单行和可读，"
+                    "已在 FFmpeg 成片前停止；系统不会输出裁切或闪读的坏成片。"
                 )
+                manifest.update(
+                    {
+                        "subtitle_segment_count": len(validation.english),
+                        "status": "REVIEW_REQUIRED",
+                        "qc_status": "REVIEW_REQUIRED",
+                        "warnings": warnings,
+                        "review": {
+                            "code": "SUBTITLE_LAYOUT_REVIEW_REQUIRED",
+                            "message": review_message,
+                            "render_blocked_before_ffmpeg": True,
+                            "issue_count": len(layout_issues),
+                            "affected_segment_count": len(issue_ids),
+                            "issue_codes": issue_codes,
+                            "issue_ids": issue_ids,
+                            "subtitle_qc_path": str(paths["qc"] / "subtitle_qc.json"),
+                            "preview_ass_path": str(preview_path),
+                        },
+                    }
+                )
+                plan["render_blocked"] = {
+                    "reason": "SUBTITLE_LAYOUT_REVIEW_REQUIRED",
+                    "message": review_message,
+                    "issue_ids": issue_ids,
+                }
+                return self._finish(manifest, manifest_path, started, plan)
 
             style_hash = hash_json(self.config.get("subtitle_style", {}))
             config_hash = hash_json(self.config)
@@ -914,7 +947,7 @@ class Stage4Pipeline:
             ):
                 raise Stage4Error(
                     "SOURCE_FILE_MODIFIED",
-                    "阶段四运行期间检测到原始视频或字幕被修改。",
+                    "成片期间检测到原始视频或字幕被修改。",
                 )
             technical_passed = all(
                 report.get("qc_status") == "QC_PASSED" for report in reports.values()

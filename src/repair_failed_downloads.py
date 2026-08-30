@@ -8,19 +8,25 @@ import time
 from pathlib import Path
 from typing import Any
 
-try:
-    from .download_core import PROJECT_ROOT, download_one_video, find_local_tools, get_project_paths, load_download_config
-    from .download_selected_candidates import load_candidate_records, selected_for_download
-except ImportError:  # Direct execution: python src/repair_failed_downloads.py
-    from download_core import PROJECT_ROOT, download_one_video, find_local_tools, get_project_paths, load_download_config
-    from download_selected_candidates import load_candidate_records, selected_for_download
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from src.download_core import (
+    PROJECT_ROOT,
+    download_one_video,
+    find_local_tools,
+    get_project_paths,
+    load_download_config,
+)
+from src.download_selected_candidates import load_candidate_records, selected_for_download
 
 
 LOGGER = logging.getLogger("stage2_repair")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Resume incomplete Stage 2 candidate downloads from their manifests.")
+    parser = argparse.ArgumentParser(description="Resume incomplete video downloads from their saved manifests.")
     parser.add_argument("--root", type=Path, default=Path("downloads/candidates"), help="Candidate download root to scan.")
     parser.add_argument("--input", type=Path, help="Optional candidate JSON override when a manifest's candidate_file is unavailable.")
     parser.add_argument("--video-ids", nargs="+", help="Repair only these video IDs.")

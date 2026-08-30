@@ -6,10 +6,16 @@ import logging
 import sys
 from pathlib import Path
 
-try:
-    from .download_core import PROJECT_ROOT, download_one_video, find_local_tools, load_download_config
-except ImportError:  # Direct execution: python src/download_video.py
-    from download_core import PROJECT_ROOT, download_one_video, find_local_tools, load_download_config
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from src.download_core import (
+    PROJECT_ROOT,
+    download_one_video,
+    find_local_tools,
+    load_download_config,
+)
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -21,6 +27,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode.add_argument("--subtitles-only", action="store_true")
     parser.add_argument("--no-audio-extract", action="store_true")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument(
+        "--cookies-path",
+        type=Path,
+        help="Override the configured cookies.txt path (used by isolated portable workers).",
+    )
     parser.add_argument("--confirm-rights", action="store_true", help="Confirm you have permission to download and use this video.")
     parser.add_argument(
         "--rights-status",
@@ -39,6 +50,8 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     try:
         config = load_download_config()
+        if args.cookies_path is not None:
+            config["cookies_path"] = str(args.cookies_path.resolve())
         tools = find_local_tools()
         output = args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
         result = download_one_video(
@@ -49,7 +62,7 @@ def main(argv: list[str] | None = None) -> int:
             no_audio_extract=args.no_audio_extract, force=args.force,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
-        print(f"阶段二配置、工具或参数错误: {exc}", file=sys.stderr)
+        print(f"下载配置、工具或参数错误: {exc}", file=sys.stderr)
         return 2
     print(json.dumps({"overall_status": result["overall_status"], "already_complete": result.get("already_complete", False), "task_dir": str(result["task_dir"])}, ensure_ascii=False, indent=2))
     return 0 if result["overall_status"] in {"success", "skipped"} else 1

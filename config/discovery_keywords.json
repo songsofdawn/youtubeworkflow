@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "description": "智能发现领域关键词。深度发现会拆分 query 中以 | 分隔的短语，并在共享调用预算内轮转分页召回。",
+  "packs": [
+    {
+      "id": "ai_technology",
+      "label": "AI 与新科技",
+      "description": "新模型、AI 工具、机器人和新硬件实测",
+      "enabled": true,
+      "default_selected": true,
+      "query": "new AI model test|AI tool comparison|robotics experiment|new technology test|real world AI benchmark|open source AI demo",
+      "keywords": ["ai", "model", "chatgpt", "claude", "gemini", "robot", "technology"]
+    },
+    {
+      "id": "software_programming",
+      "label": "软件与编程",
+      "description": "编程项目、自动化、开发工具和软件工作流",
+      "enabled": true,
+      "default_selected": true,
+      "query": "programming project|Python automation|coding challenge|new software workflow|I built an app|developer tool test",
+      "keywords": ["programming", "python", "coding", "software", "developer", "automation"]
+    },
+    {
+      "id": "science",
+      "label": "科学",
+      "description": "科学发现、工程原理和可视化科普",
+      "enabled": true,
+      "default_selected": true,
+      "query": "science experiment|new scientific discovery|engineering explained|physics experiment|science breakthrough explained|real world engineering test",
+      "keywords": ["science", "scientific", "physics", "engineering", "discovery", "experiment"]
+    },
+    {
+      "id": "gaming",
+      "label": "游戏",
+      "description": "新游戏、更新、玩法实验和高质量挑战",
+      "enabled": true,
+      "default_selected": true,
+      "query": "new game gameplay|game update|gaming challenge|game experiment|game mechanics explained|I tested this game",
+      "keywords": ["game", "gameplay", "gaming", "update", "challenge"]
+    },
+    {
+      "id": "minecraft",
+      "label": "Minecraft",
+      "description": "Minecraft 生存、But、模组、建造与实验",
+      "enabled": true,
+      "default_selected": true,
+      "query": "Minecraft but|Minecraft challenge|Minecraft experiment|Minecraft survival|Minecraft 100 days|Minecraft mod test",
+      "keywords": ["minecraft", "hardcore", "survival", "mod", "build", "but"]
+    },
+    {
+      "id": "chemistry",
+      "label": "化学",
+      "description": "化学实验、材料反应和实验室演示",
+      "enabled": true,
+      "default_selected": true,
+      "query": "chemistry experiment|chemical reaction|laboratory experiment|materials science test|chemistry demonstration|new material discovery",
+      "keywords": ["chemistry", "chemical", "reaction", "laboratory", "material", "molecule"]
+    },
+    {
+      "id": "challenges_experiments",
+      "label": "挑战与实验",
+      "description": "30/100 天挑战、测试和意外结果",
+      "enabled": true,
+      "default_selected": true,
+      "query": "I tried for 30 days|100 days challenge|I tested|what happens if|before and after experiment|I built and tested",
+      "keywords": ["challenge", "experiment", "i tried", "i tested", "100 days", "30 days"]
+    },
+    {
+      "id": "entertainment",
+      "label": "娱乐",
+      "description": "高参与度娱乐内容、喜剧和有解说反应",
+      "enabled": true,
+      "default_selected": true,
+      "query": "funny challenge|comedy experiment|entertainment reaction|unexpected moments|creative competition|real life game challenge",
+      "keywords": ["funny", "comedy", "entertainment", "reaction", "unexpected"]
+    },
+    {
+      "id": "agriculture_gardening",
+      "label": "农业与园艺",
+      "description": "种植、收获、农场技术和园艺实验",
+      "enabled": true,
+      "default_selected": true,
+      "query": "garden harvest|growing experiment|farm technology|vegetable garden update|plant growth time lapse|gardening method test",
+      "keywords": ["garden", "growing", "harvest", "farm", "plant", "vegetable"]
+    },
+    {
+      "id": "food_cooking",
+      "label": "美食与烹饪",
+      "description": "烹饪实验、食谱测试和特色美食",
+      "enabled": true,
+      "default_selected": true,
+      "query": "food experiment|recipe test|cooking challenge|street food discovery|traditional cooking process|I tried this recipe",
+      "keywords": ["food", "recipe", "cooking", "chef", "kitchen", "street food"]
+    },
+    {
+      "id": "outdoor_travel",
+      "label": "户外与旅行",
+      "description": "露营、生存挑战、远途旅行和地点探索",
+      "enabled": true,
+      "default_selected": true,
+      "query": "outdoor adventure|survival challenge|camping experiment|remote travel discovery|expedition documentary|wild camping test",
+      "keywords": ["outdoor", "survival", "camping", "travel", "adventure", "remote"]
+    },
+    {
+      "id": "tutorials_skills",
+      "label": "教程与技能",
+      "description": "完整教程、技能学习和实用工作流",
+      "enabled": true,
+      "default_selected": true,
+      "query": "complete tutorial|beginner guide|how to build|new skill challenge|learned from scratch|step by step project",
+      "keywords": ["tutorial", "guide", "how to", "beginner", "skill", "build"]
+    },
+    {
+      "id": "art_creativity",
+      "label": "艺术与创意",
+      "description": "绘画、动画、3D 制作和创意挑战",
+      "enabled": true,
+      "default_selected": true,
+      "query": "art challenge|animation process|creative project|3D printing project|sculpture process|design experiment",
+      "keywords": ["art", "animation", "creative", "drawing", "3d", "design"]
+    },
+    {
+      "id": "social_experiments",
+      "label": "娱乐与社会实验",
+      "description": "社会实验、真人挑战和有叙事的互动内容",
+      "enabled": true,
+      "default_selected": true,
+      "query": "social experiment|public challenge|I asked strangers|human behavior experiment|community challenge|real people experiment",
+      "keywords": ["social experiment", "public", "strangers", "human behavior", "challenge"]
+    }
+  ]
+}

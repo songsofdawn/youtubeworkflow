@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import math
 import os
-import re
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +13,10 @@ from .publish_metadata import (
     PUBLISH_METADATA_PROMPT_VERSION,
     fallback_publish_metadata,
     load_category_mapping,
+)
+from .publish_metadata_ollama import (
+    OllamaPublishMetadataClient,
+    load_ollama_settings,
 )
 from .review_workflow import export_review, generate_review_html, import_review
 from .rolling_caption_cleaner import build_word_events
@@ -28,12 +31,12 @@ from .subtitle_writer import (
     temporary_sibling,
 )
 from .timeline_builder import rebuild_timeline
-from .translation_qc import estimate_translation, p0_quality, qc_text, translation_quality
+from .translation_qc import p0_quality, qc_text, translation_structure_quality
 from .translator_deepseek import (
     PROMPT_VERSION,
     DeepSeekTranslator,
     TranslationError,
-    load_deepseek_settings,
+    load_llm_settings,
 )
 from .youtube_vtt_parser import parse_youtube_vtt
 
@@ -109,29 +112,6 @@ def _atomic_text(path: Path, content: str) -> Path:
     return path
 
 
-def _translation_flags(item: TranslationSegment, glossary: dict[str, Any], config: dict[str, Any]) -> None:
-    estimate_translation(item, config)
-    for source, expected in glossary.get("fixed_terms", {}).items():
-        if source.casefold() in item.source_text.casefold() and str(expected) not in item.translation:
-            item.qc_flags.append(f"GLOSSARY_MISMATCH:{source}")
-    source_numbers = set(re.findall(r"\d+(?:[.,]\d+)?", item.source_text))
-    translated_numbers = set(re.findall(r"\d+(?:[.,]\d+)?", item.translation))
-    if source_numbers - translated_numbers:
-        item.qc_flags.append("NUMBER_MISMATCH")
-    source_has_negation = bool(re.search(r"\b(?:no|not|never|without|n't)\b", item.source_text, re.I))
-    translated_has_negation = bool(re.search(r"(不|没|无|未|别|从不)", item.translation))
-    if source_has_negation and not translated_has_negation:
-        item.qc_flags.append("NEGATION_MISMATCH")
-    english_characters = len(re.findall(r"[A-Za-z]", item.translation))
-    if english_characters > max(8, len(item.translation) * 0.35):
-        item.qc_flags.append("ENGLISH_LEAKAGE")
-    if re.search(r"(进行一个|对于.*来说|值得注意的是)", item.translation):
-        item.qc_flags.append("TRANSLATIONESE")
-    if re.search(r"([，。！？])\1{1,}", item.translation):
-        item.qc_flags.append("UNNATURAL_PUNCTUATION")
-    item.qc_flags = list(dict.fromkeys(item.qc_flags))
-
-
 class Stage3Pipeline:
     def __init__(self, video_dir: Path | str, config: dict[str, Any]) -> None:
         self.video_dir = Path(video_dir).resolve()
@@ -174,7 +154,8 @@ class Stage3Pipeline:
             "translation_status": "NOT_RUN",
             "translation_source_hash": "",
             "selection_report_hash": "",
-            "translation_model": load_deepseek_settings()["model"],
+            "translation_provider": load_llm_settings()["provider"],
+            "translation_model": load_llm_settings()["model"],
             "api_usage": {},
             "translation_qc": {},
             "review_status": "NOT_RUN",
@@ -483,36 +464,78 @@ class Stage3Pipeline:
         )
 
     def _speech_intervals(self) -> list[tuple[float, float]]:
-        path = self.whisper_dir / "raw_segments.json"
-        if not path.is_file():
-            return []
-        try:
-            rows = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            return []
-        return [
-            (float(row["start"]), float(row["end"]))
-            for row in rows
-            if float(row.get("end", 0)) > float(row.get("start", 0))
-            and float(row.get("no_speech_prob") or 0) <= 0.6
-        ]
+        def load_intervals(path: Path, *, filter_no_speech: bool) -> list[tuple[float, float]]:
+            if not path.is_file():
+                return []
+            try:
+                rows = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                return []
+            if not isinstance(rows, list):
+                return []
+            intervals: list[tuple[float, float]] = []
+            for row in rows:
+                if not isinstance(row, dict):
+                    continue
+                try:
+                    start = float(row.get("start"))
+                    end = float(row.get("end"))
+                    no_speech_probability = float(row.get("no_speech_prob") or 0.0)
+                except (TypeError, ValueError):
+                    continue
+                if (
+                    math.isfinite(start)
+                    and math.isfinite(end)
+                    and end > start
+                    and (not filter_no_speech or no_speech_probability <= 0.6)
+                ):
+                    intervals.append((start, end))
+            return sorted(intervals)
+
+        # Faster Whisper decoder segments are search windows, not VAD speech spans.
+        # A window may bridge minutes of silence or game audio.  The clean subtitle
+        # timeline is built from words, so its structural coverage must be checked
+        # against the same word timestamps.  Keep raw segments only as a legacy
+        # fallback for old checkpoints that predate words.json.
+        word_intervals = load_intervals(
+            self.whisper_dir / "words.json",
+            filter_no_speech=False,
+        )
+        if word_intervals:
+            return word_intervals
+        return load_intervals(
+            self.whisper_dir / "raw_segments.json",
+            filter_no_speech=True,
+        )
 
     @staticmethod
     def _hash_if_file(path: Path) -> str:
         return sha256_file(path) if path.is_file() else ""
 
-    def _selection_checkpoint_metadata(self, mode: str) -> dict[str, Any]:
+    def _selection_checkpoint_metadata(
+        self,
+        mode: str,
+        *,
+        whisper_enabled: bool = True,
+    ) -> dict[str, Any]:
         input_paths = {
             "youtube_clean": self.subtitle_dir / "en.youtube.clean.srt",
             "youtube_qc": self.youtube_dir / "qc.json",
-            "whisper_clean": self.subtitle_dir / "en.whisper.clean.srt",
-            "whisper_qc": self.whisper_dir / "qc.json",
-            "whisper_raw_segments": self.whisper_dir / "raw_segments.json",
-            "whisper_info": self.whisper_dir / "asr_info.json",
         }
+        if whisper_enabled:
+            input_paths.update(
+                {
+                    "whisper_clean": self.subtitle_dir / "en.whisper.clean.srt",
+                    "whisper_qc": self.whisper_dir / "qc.json",
+                    "whisper_words": self.whisper_dir / "words.json",
+                    "whisper_raw_segments": self.whisper_dir / "raw_segments.json",
+                    "whisper_info": self.whisper_dir / "asr_info.json",
+                }
+            )
         return {
             "selection_policy_version": SELECTION_POLICY_VERSION,
             "subtitle_source_mode": mode,
+            "whisper_enabled": whisper_enabled,
             "config_hash": self._selection_config_hash(),
             "input_hashes": {
                 name: self._hash_if_file(path) for name, path in input_paths.items()
@@ -622,22 +645,45 @@ class Stage3Pipeline:
         force_whisper: bool = False,
         force_selection: bool = False,
         prepare_sources: bool = True,
+        whisper_for_auto_subtitles: bool = True,
     ) -> dict[str, Any]:
         mode = subtitle_source.casefold()
         if mode == "manual":
             mode = "youtube"
         if prepare_sources:
             youtube_result = self.run_p0(force=force or force_youtube)
-            whisper_result = self.run_whisper(max_seconds=max_seconds, force=force or force_whisper)
         else:
             youtube_qc_path = self.youtube_dir / "qc.json"
-            whisper_info_path = self.whisper_dir / "asr_info.json"
-            whisper_qc_path = self.whisper_dir / "qc.json"
             youtube_result = (
                 json.loads(youtube_qc_path.read_text(encoding="utf-8"))
                 if youtube_qc_path.is_file()
                 else {"status": "NO_YOUTUBE_ENGLISH_SOURCE"}
             )
+        youtube_path = self.subtitle_dir / "en.youtube.clean.srt"
+        youtube_available = youtube_path.is_file() and youtube_path.stat().st_size > 0
+        skip_whisper_for_auto = bool(
+            mode == "auto"
+            and not whisper_for_auto_subtitles
+            and not force
+            and not force_whisper
+            and youtube_available
+            and youtube_result.get("source_type") == "auto"
+        )
+        if skip_whisper_for_auto:
+            whisper_result = {
+                "status": "DISABLED_FOR_YOUTUBE_AUTO_SUBTITLES",
+                "completed": False,
+                "skipped": False,
+                "disabled": True,
+            }
+        elif prepare_sources:
+            whisper_result = self.run_whisper(
+                max_seconds=max_seconds,
+                force=force or force_whisper,
+            )
+        else:
+            whisper_info_path = self.whisper_dir / "asr_info.json"
+            whisper_qc_path = self.whisper_dir / "qc.json"
             if self._last_whisper_result is not None:
                 whisper_result = self._last_whisper_result
             elif whisper_info_path.is_file() and whisper_qc_path.is_file():
@@ -650,11 +696,17 @@ class Stage3Pipeline:
                 }
             else:
                 whisper_result = {"status": "NO_AUDIO_SOURCE", "completed": False}
-        youtube_path = self.subtitle_dir / "en.youtube.clean.srt"
         whisper_path = self.subtitle_dir / "en.whisper.clean.srt"
-        youtube_available = youtube_path.is_file()
-        whisper_available = whisper_path.is_file() and whisper_result.get("status") != "NO_AUDIO_SOURCE"
-        selection_metadata = self._selection_checkpoint_metadata(mode)
+        whisper_available = bool(
+            not skip_whisper_for_auto
+            and whisper_path.is_file()
+            and whisper_path.stat().st_size > 0
+            and whisper_result.get("status") != "NO_AUDIO_SOURCE"
+        )
+        selection_metadata = self._selection_checkpoint_metadata(
+            mode,
+            whisper_enabled=not skip_whisper_for_auto,
+        )
         if not force and not force_selection:
             cached_report = self._load_selection_checkpoint(selection_metadata)
             if cached_report is not None:
@@ -673,23 +725,36 @@ class Stage3Pipeline:
                     "selected_path": cached_report.get("selected_output_path", ""),
                     "whisper_started": (
                         not bool(whisper_result.get("skipped"))
+                        and not bool(whisper_result.get("disabled"))
                         and whisper_result.get("status") == "ASR_COMPLETED"
                     ),
-                    "asr_checkpoint_reused": bool(whisper_result.get("skipped")),
+                    "asr_checkpoint_reused": bool(
+                        whisper_result.get("skipped")
+                        and not whisper_result.get("disabled")
+                    ),
+                    "whisper_disabled_for_auto_subtitles": skip_whisper_for_auto,
                     "selection_checkpoint_reused": True,
                 }
         agreement = subtitle_agreement(youtube_path, whisper_path) if youtube_available and whisper_available else 0.0
         metadata = _media_metadata(self.video_dir)
         asr_info_path = self.whisper_dir / "asr_info.json"
-        asr_info = json.loads(asr_info_path.read_text(encoding="utf-8")) if asr_info_path.is_file() else {}
+        asr_info = (
+            json.loads(asr_info_path.read_text(encoding="utf-8"))
+            if whisper_available and asr_info_path.is_file()
+            else {}
+        )
         audio_duration = float(asr_info.get("audio_duration") or metadata.get("duration") or 0.0)
-        speech_intervals = self._speech_intervals()
+        speech_intervals = self._speech_intervals() if whisper_available else []
         youtube_qc_path = self.youtube_dir / "qc.json"
         whisper_qc_path = self.whisper_dir / "qc.json"
         youtube_qc = json.loads(youtube_qc_path.read_text(encoding="utf-8")) if youtube_qc_path.is_file() else {}
-        whisper_qc = json.loads(whisper_qc_path.read_text(encoding="utf-8")) if whisper_qc_path.is_file() else {}
+        whisper_qc = (
+            json.loads(whisper_qc_path.read_text(encoding="utf-8"))
+            if whisper_available and whisper_qc_path.is_file()
+            else {}
+        )
         whisper_raw_path = self.whisper_dir / "raw_segments.json"
-        if whisper_raw_path.is_file():
+        if whisper_available and whisper_raw_path.is_file():
             raw_rows = json.loads(whisper_raw_path.read_text(encoding="utf-8"))
             log_probabilities = [
                 float(row["avg_logprob"]) for row in raw_rows if row.get("avg_logprob") is not None
@@ -767,8 +832,16 @@ class Stage3Pipeline:
             "selection_report": report,
             "source_comparison": report,
             "selected_path": report["selected_output_path"],
-            "whisper_started": not bool(whisper_result.get("skipped")) and whisper_result.get("status") == "ASR_COMPLETED",
-            "asr_checkpoint_reused": bool(whisper_result.get("skipped")),
+            "whisper_started": (
+                not bool(whisper_result.get("skipped"))
+                and not bool(whisper_result.get("disabled"))
+                and whisper_result.get("status") == "ASR_COMPLETED"
+            ),
+            "asr_checkpoint_reused": bool(
+                whisper_result.get("skipped")
+                and not whisper_result.get("disabled")
+            ),
+            "whisper_disabled_for_auto_subtitles": skip_whisper_for_auto,
             "selection_checkpoint_reused": False,
         }
 
@@ -784,7 +857,7 @@ class Stage3Pipeline:
         selected_path: Path,
         selection_report_path: Path,
         glossary_path: Path,
-        model: str,
+        settings: dict[str, Any],
         polish_all: bool,
     ) -> dict[str, Any]:
         return {
@@ -794,7 +867,13 @@ class Stage3Pipeline:
             "glossary_hash": sha256_file(glossary_path),
             "config_hash": hash_config(self.config),
             "prompt_version": PROMPT_VERSION,
-            "model": model,
+            "provider": settings["provider"],
+            "model": settings["model"],
+            "thinking": settings["thinking"],
+            "batch_size": settings["batch_size"],
+            "context_before": settings["context_before"],
+            "context_after": settings["context_after"],
+            "max_output_tokens": settings["max_output_tokens"],
             "polish_all": bool(polish_all),
         }
 
@@ -847,8 +926,8 @@ class Stage3Pipeline:
     def _publish_metadata_checkpoint_metadata(
         self,
         metadata: dict[str, Any],
-        selected_path: Path,
-        model: str,
+        selected_path: Path | None,
+        settings: dict[str, Any],
         category_mapping: dict[str, Any],
     ) -> dict[str, Any]:
         source_payload = {
@@ -857,9 +936,13 @@ class Stage3Pipeline:
         }
         return {
             "prompt_version": PUBLISH_METADATA_PROMPT_VERSION,
-            "model": model,
+            "provider": settings["provider"],
+            "model": settings["model"],
+            "thinking": settings["thinking"],
             "source_hash": hash_config(source_payload),
-            "selected_subtitle_hash": sha256_file(selected_path),
+            "selected_subtitle_hash": (
+                sha256_file(selected_path) if selected_path is not None else "NO_SUBTITLE"
+            ),
             "category_mapping_hash": sha256_file(Path(category_mapping["path"])),
         }
 
@@ -867,11 +950,12 @@ class Stage3Pipeline:
         self,
         source: list[SubtitleSegment],
         metadata: dict[str, Any],
-        selected_path: Path,
-        model: str,
+        selected_path: Path | None,
+        settings: dict[str, Any],
         *,
         force: bool,
         translator: DeepSeekTranslator | None = None,
+        translators: list[Any] | None = None,
     ) -> dict[str, Any]:
         category_mapping = load_category_mapping()
         output_path = self.stage3_dir / "publish_metadata.json"
@@ -880,7 +964,7 @@ class Stage3Pipeline:
         checkpoint_metadata = self._publish_metadata_checkpoint_metadata(
             metadata,
             selected_path,
-            model,
+            settings,
             category_mapping,
         )
         cached = None if force else self._load_output_checkpoint(
@@ -907,27 +991,40 @@ class Stage3Pipeline:
             return result
 
         response_path: Path | None = None
-        try:
-            active_translator = translator or DeepSeekTranslator(
-                self.config,
-                self.translation_dir,
-            )
-            response = active_translator.recommend_publish_metadata(
-                metadata,
-                source,
-                category_mapping,
-            )
-            recommendation = dict(response.get("recommendation") or {})
-            if recommendation.get("status") != "RECOMMENDED":
-                raise TranslationError("DeepSeek 没有返回可用的投稿元数据推荐")
-            usage = dict(response.get("usage") or {})
-            raw_response = str(response.get("response_path") or "")
-            response_path = Path(raw_response) if raw_response else None
-        except Exception as exc:
+        candidate_translators: list[Any]
+        if translators is not None:
+            candidate_translators = list(translators)
+        elif translator is not None:
+            candidate_translators = [translator]
+        else:
+            candidate_translators = [
+                DeepSeekTranslator(self.config, self.translation_dir)
+            ]
+        failures: list[str] = []
+        recommendation: dict[str, Any] | None = None
+        usage: dict[str, Any] = {}
+        for active_translator in candidate_translators:
+            try:
+                response = active_translator.recommend_publish_metadata(
+                    metadata,
+                    source,
+                    category_mapping,
+                )
+                candidate = dict(response.get("recommendation") or {})
+                if candidate.get("status") != "RECOMMENDED":
+                    raise TranslationError("模型没有返回可用的投稿元数据推荐")
+                recommendation = candidate
+                usage = dict(response.get("usage") or {})
+                raw_response = str(response.get("response_path") or "")
+                response_path = Path(raw_response) if raw_response else None
+                break
+            except Exception as exc:
+                failures.append(str(exc))
+        if recommendation is None:
             recommendation = fallback_publish_metadata(
                 metadata,
                 category_mapping,
-                warning=str(exc),
+                warning="；".join(failures) or "没有可用的投稿元数据模型",
             )
             usage = {
                 "prompt_tokens": 0,
@@ -939,7 +1036,8 @@ class Stage3Pipeline:
             "schema_version": 1,
             **recommendation,
             "prompt_version": PUBLISH_METADATA_PROMPT_VERSION,
-            "model": model,
+            "provider": settings["provider"],
+            "model": settings["model"],
             "generated_at": utc_now(),
         }
         atomic_write_json(output_path, result)
@@ -964,6 +1062,91 @@ class Stage3Pipeline:
             publish_metadata_category=result["category_path"],
             publish_metadata_usage=usage,
         )
+        return result
+
+    def run_publish_metadata(
+        self,
+        *,
+        provider: str = "auto",
+        allow_paid_api: bool = False,
+        allow_no_subtitles: bool = False,
+        force: bool = False,
+    ) -> dict[str, Any]:
+        """Generate publish copy without requiring a translation pass."""
+        if provider not in {"auto", "translation_api", "local_ollama"}:
+            raise ValueError(f"不支持的投稿元数据模型：{provider}")
+        selected_path = self.subtitle_dir / "en.selected.srt"
+        if not selected_path.is_file():
+            if not allow_no_subtitles:
+                raise FileNotFoundError(
+                    "EN_SELECTED_SUBTITLE_NOT_FOUND: run --steps select before metadata"
+                )
+            selected_path = None
+            source: list[SubtitleSegment] = []
+        else:
+            source = read_srt(selected_path)
+        if not source and not allow_no_subtitles:
+            raise ValueError("EN_SELECTED_SUBTITLE_EMPTY")
+
+        cloud_settings = load_llm_settings()
+        adapters: list[Any] = []
+        setting_models: list[str] = []
+        if provider in {"auto", "local_ollama"}:
+            downloads_root = next(
+                (
+                    path
+                    for path in (self.video_dir, *self.video_dir.parents)
+                    if path.name.casefold() == "downloads"
+                ),
+                None,
+            )
+            project_root = (
+                downloads_root.parent
+                if downloads_root is not None
+                else Path(__file__).resolve().parents[2]
+            )
+            local_settings = load_ollama_settings(project_root)
+            if local_settings.enabled:
+                adapters.append(
+                    OllamaPublishMetadataClient(
+                        local_settings,
+                        self.translation_dir / "responses",
+                    )
+                )
+                setting_models.append(f"ollama:{local_settings.model}")
+            elif provider == "local_ollama":
+                raise ValueError("Ollama 本地模型尚未启用")
+        if provider in {"auto", "translation_api"}:
+            if allow_paid_api and cloud_settings["api_key"]:
+                adapters.append(DeepSeekTranslator(self.config, self.translation_dir))
+                setting_models.append(
+                    f"{cloud_settings['provider']}:{cloud_settings['model']}"
+                )
+            elif provider == "translation_api":
+                if not allow_paid_api:
+                    raise ValueError("生成投稿信息会调用所选 AI API，请先明确允许")
+                raise TranslationError(
+                    f"{cloud_settings['key_env']} 尚未配置"
+                )
+
+        settings = {
+            "provider": f"publish_metadata:{provider}",
+            "model": " -> ".join(setting_models) or "fallback",
+            "thinking": (
+                "disabled"
+                if provider == "local_ollama"
+                else str(cloud_settings.get("thinking") or "disabled")
+            ),
+        }
+        result = self._ensure_publish_metadata(
+            source,
+            _media_metadata(self.video_dir),
+            selected_path,
+            settings,
+            force=force,
+            translators=adapters,
+        )
+        self._finish()
         return result
 
     def run_p1(
@@ -996,8 +1179,20 @@ class Stage3Pipeline:
             raise ValueError("EN_SELECTED_SUBTITLE_EMPTY")
         glossary = self._load_glossary()
         glossary_path = self.translation_dir / "glossary.json"
-        batch_count = math.ceil(len(source) / int(self.config["translation_batch_size"]))
-        settings = load_deepseek_settings()
+        settings = load_llm_settings()
+        settings["batch_size"] = int(
+            os.environ.get(
+                "TRANSLATION_BATCH_SIZE",
+                self.config["translation_batch_size"],
+            )
+        )
+        settings["context_before"] = int(
+            os.environ.get("TRANSLATION_CONTEXT_BEFORE", self.config["context_before"])
+        )
+        settings["context_after"] = int(
+            os.environ.get("TRANSLATION_CONTEXT_AFTER", self.config["context_after"])
+        )
+        batch_count = math.ceil(len(source) / settings["batch_size"])
         timeline_summary = {
             "first_start": source[0].start,
             "last_end": source[-1].end,
@@ -1009,7 +1204,9 @@ class Stage3Pipeline:
             "api_called": False,
             "paid_api_enabled": False,
             "api_key_configured": bool(settings["api_key"]),
+            "provider": settings["provider"],
             "model": settings["model"],
+            "thinking": settings["thinking"],
             "batch_count": batch_count,
             "estimated_translation_count": len(source),
             "estimated_publish_metadata_requests": 1,
@@ -1023,7 +1220,7 @@ class Stage3Pipeline:
             selected_path,
             selection_report_path,
             glossary_path,
-            settings["model"],
+            settings,
             polish_all,
         )
         if not allow_paid_api:
@@ -1058,7 +1255,9 @@ class Stage3Pipeline:
             self._finish()
             return preflight
         if not settings["api_key"]:
-            raise TranslationError("--allow-paid-api requires DEEPSEEK_API_KEY in the environment")
+            raise TranslationError(
+                f'--allow-paid-api requires {settings["key_env"]} in the environment'
+            )
 
         stage_checkpoint_path = self.translation_dir / "translation_checkpoint.json"
         cached_stage = None if force else self._load_output_checkpoint(
@@ -1080,7 +1279,7 @@ class Stage3Pipeline:
                 source,
                 metadata,
                 selected_path,
-                settings["model"],
+                settings,
                 force=force,
             )
             report["skipped"] = True
@@ -1091,11 +1290,16 @@ class Stage3Pipeline:
                 translation_status=report["status"],
                 translation_source_hash=translation_metadata["source_hash"],
                 selection_report_hash=translation_metadata["selection_report_hash"],
+                translation_provider=settings["provider"],
                 translation_model=settings["model"],
                 api_usage=usage,
                 translation_qc=report,
                 p1_status=report["status"],
-                clean_chinese_path=str(clean_path) if clean_path.is_file() else "",
+                clean_chinese_path=(
+                    str(clean_path)
+                    if report.get("status") == "QC_PASSED" and clean_path.is_file()
+                    else ""
+                ),
                 translation_count=len(source),
                 p1_qc=report,
             )
@@ -1109,8 +1313,6 @@ class Stage3Pipeline:
             TranslationSegment(item.id, item.start, item.end, item.text, raw_map.get(item.id, ""), raw_map.get(item.id, ""))
             for item in source
         ]
-        for item in translated:
-            _translation_flags(item, glossary, self.config)
         raw_json = atomic_write_json(self.translation_dir / "translation_raw.json", [item.to_dict() for item in translated])
         atomic_copy(raw_json, self.legacy_translation_dir / "translation_raw.json")
         atomic_write_srt(
@@ -1121,24 +1323,20 @@ class Stage3Pipeline:
             max_lines=int(self.config["max_lines"]),
         )
 
-        polish_ids = {item.id for item in translated if item.qc_flags} if not polish_all else {item.id for item in translated}
-        if polish_ids:
-            polish_targets = [item for item in source if item.id in polish_ids]
+        if polish_all:
             polished_map = translator.translate_all(
-                polish_targets, source, glossary, metadata, pass_name="polished", force=force
+                source, source, glossary, metadata, pass_name="polished", force=force
             )
             for item in translated:
                 if item.id in polished_map:
                     item.translation = polished_map[item.id]
                     item.repaired = True
-                    item.qc_flags = []
-                    _translation_flags(item, glossary, self.config)
         polished_json = atomic_write_json(
             self.translation_dir / "translation_polished.json",
             [item.to_dict() for item in translated],
         )
         atomic_copy(polished_json, self.legacy_translation_dir / "translation_polished.json")
-        report = translation_quality(source, translated, self.config)
+        report = translation_structure_quality(source, translated)
         qc_path = atomic_write_json(self.translation_dir / "translation_qc.json", report)
         atomic_copy(qc_path, self.legacy_translation_dir / "subtitle_qc.json")
         _atomic_text(self.translation_dir / "translation_qc.txt", qc_text(report))
@@ -1146,12 +1344,7 @@ class Stage3Pipeline:
         usage_path = atomic_write_json(self.translation_dir / "api_usage.json", usage)
         atomic_copy(usage_path, self.legacy_translation_dir / "api_usage.json")
         clean_chinese = ""
-        if (
-            not report["missing_ids"]
-            and not report["extra_ids"]
-            and not report["empty_translation_ids"]
-            and report["timeline_changed"] == 0
-        ):
+        if report["status"] == "QC_PASSED":
             clean_chinese = str(
                 atomic_write_srt(
                     self.subtitle_dir / "zh.clean.srt",
@@ -1165,6 +1358,7 @@ class Stage3Pipeline:
             translation_status=report["status"],
             translation_source_hash=sha256_file(selected_path),
             selection_report_hash=sha256_file(selection_report_path),
+            translation_provider=settings["provider"],
             translation_model=settings["model"],
             api_usage=usage,
             translation_qc=report,
@@ -1181,7 +1375,7 @@ class Stage3Pipeline:
             self.subtitle_dir / "zh.raw.srt",
         ]
         clean_path = self.subtitle_dir / "zh.clean.srt"
-        if clean_path.is_file():
+        if report["status"] == "QC_PASSED" and clean_path.is_file():
             stage_outputs.append(clean_path)
         self._write_output_checkpoint(
             stage_checkpoint_path,
@@ -1193,7 +1387,7 @@ class Stage3Pipeline:
             source,
             metadata,
             selected_path,
-            settings["model"],
+            settings,
             force=force,
             translator=translator,
         )

@@ -37,6 +37,25 @@ def _thumbnail_url(info: dict[str, Any]) -> str:
     return f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" if video_id else ""
 
 
+_AUTOMATION_SKIP_LABELS = {
+    "SUBTITLE_LAYOUT_REVIEW_REQUIRED": "字幕无法安全排版",
+    "NO_VALID_CHINESE_SUBTITLE": "没有通过校验的中文字幕",
+    "CHINESE_SUBTITLE_NOT_FOUND": "没有找到中文字幕",
+    "EN_SELECTED_SUBTITLE_NOT_FOUND": "没有找到可用英文字幕",
+    "SUBTITLE_VALIDATION_FAILED": "中英字幕结构校验未通过",
+    "YOUTUBE_CHINESE_SUBTITLE_NOT_FOUND": "没有 YouTube 中文字幕且自动翻译已关闭",
+    "HARDSUB_OUTPUT_NOT_READY": "硬字幕成片未生成",
+    "ENGLISH_SUBTITLE_STAGE_FAILED": "英文字幕处理未通过",
+    "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH": "没有英文字幕，音轨也未识别到英语语音",
+    "CHINESE_TRANSLATION_STAGE_FAILED": "中文字幕翻译未通过",
+    "STAGE4_RENDER_STAGE_FAILED": "成片安全检查未通过",
+}
+
+
+def _automation_skip_label(reason: str) -> str:
+    return _AUTOMATION_SKIP_LABELS.get(reason, reason or "未达到自动投稿条件")
+
+
 def deepseek_translation_ready(task_dir: Path) -> bool:
     stage3 = read_json(task_dir / "stage3_manifest.json")
     status = str(
@@ -44,15 +63,13 @@ def deepseek_translation_ready(task_dir: Path) -> bool:
         or stage3.get("p1_status")
         or ""
     ).upper()
-    if status not in {"QC_PASSED", "REVIEW_REQUIRED", "TRANSLATION_COMPLETED"}:
+    reviewed = task_dir / "subtitles" / "zh.reviewed.srt"
+    if reviewed.is_file() and reviewed.stat().st_size > 0:
+        return True
+    if status not in {"QC_PASSED", "TRANSLATION_COMPLETED"}:
         return False
-    return any(
-        path.is_file() and path.stat().st_size > 0
-        for path in (
-            task_dir / "subtitles" / "zh.reviewed.srt",
-            task_dir / "subtitles" / "zh.clean.srt",
-        )
-    )
+    clean = task_dir / "subtitles" / "zh.clean.srt"
+    return clean.is_file() and clean.stat().st_size > 0
 
 
 def youtube_auto_chinese_path(task_dir: Path) -> Path | None:
@@ -83,6 +100,52 @@ def youtube_auto_chinese_path(task_dir: Path) -> Path | None:
     return None
 
 
+def youtube_chinese_path(task_dir: Path) -> Path | None:
+    """Return any downloaded YouTube Chinese subtitle track.
+
+    The older ``youtube_auto_chinese_path`` helper intentionally remains strict
+    for the existing UI option.  Unattended routing accepts both creator-uploaded
+    and automatically generated Chinese tracks before deciding to buy a
+    translation pass.
+    """
+    download = read_json(task_dir / "download_manifest.json")
+    tracks = download.get("subtitle_tracks")
+    chinese_track = tracks.get("zh") if isinstance(tracks, dict) else {}
+    recorded_source = (
+        str(chinese_track.get("source") or "").casefold()
+        if isinstance(chinese_track, dict)
+        else ""
+    )
+    candidates = (
+        task_dir / "subtitles" / "zh.youtube.clean.srt",
+        task_dir / "subtitles" / "zh.manual.srt",
+        task_dir / "subtitles" / "zh.manual.vtt",
+        task_dir / "subtitles" / "zh.auto.srt",
+        task_dir / "subtitles" / "zh.auto.vtt",
+    )
+    if recorded_source not in {"manual", "auto"} and not any(
+        path.is_file() and path.stat().st_size > 0 for path in candidates[1:]
+    ):
+        return None
+    for path in candidates:
+        if path.is_file() and path.stat().st_size > 0:
+            return path
+    return None
+
+
+def no_english_subtitle_or_recognized_speech(task_dir: Path) -> bool:
+    """Return whether YouTube English is absent and Whisper found no speech."""
+    assessment = read_json(task_dir / "stage3" / "01_source_assessment.json")
+    asr_info = read_json(task_dir / "stage3" / "whisper" / "asr_info.json")
+    no_youtube_english = str(
+        assessment.get("route") or assessment.get("status") or ""
+    ) == "NO_YOUTUBE_ENGLISH_SOURCE"
+    return bool(asr_info) and no_youtube_english and (
+        int(asr_info.get("segment_count") or 0) == 0
+        and int(asr_info.get("word_count") or 0) == 0
+    )
+
+
 class WorkflowScanner:
     def __init__(self, project_root: Path) -> None:
         self.project_root = project_root.resolve()
@@ -110,60 +173,151 @@ class WorkflowScanner:
         task_dir = manifest_path.parent.resolve()
         download = read_json(manifest_path)
         stage3 = read_json(task_dir / "stage3_manifest.json")
-        stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        stage4_path = task_dir / "stage4" / "stage4_manifest.json"
+        automation_path = task_dir / "stage5" / "automation_manifest.json"
+        stage4 = read_json(stage4_path)
         stage5 = read_json(task_dir / "stage5" / "publish_manifest.json")
+        automation = read_json(automation_path)
         info = read_json(task_dir / "metadata" / "info.json")
 
         download_status = str(download.get("overall_status") or "unknown")
         selected_path = task_dir / "subtitles" / "en.selected.srt"
         auto_chinese = youtube_auto_chinese_path(task_dir)
+        youtube_chinese = youtube_chinese_path(task_dir)
         stage4_status = str(stage4.get("status") or "")
         stage4_qc = str(stage4.get("qc_status") or "")
+        translation_status = str(stage3.get("translation_status") or "")
+        translation_qc = (
+            stage3.get("translation_qc")
+            if isinstance(stage3.get("translation_qc"), dict)
+            else {}
+        )
+        translation_review = translation_status.upper() == "REVIEW_REQUIRED"
+        stage4_review = (
+            stage4.get("review") if isinstance(stage4.get("review"), dict) else {}
+        )
+        layout_warning_count = sum(
+            str(item).startswith(
+                (
+                    "BILINGUAL_LINE_TOO_WIDE:",
+                    "BILINGUAL_TOO_MANY_LINES:",
+                    "BILINGUAL_FRAGMENT_DURATION_TOO_SHORT:",
+                )
+            )
+            for item in stage4.get("warnings") or []
+        )
+        review_summary = ""
+        if stage4_status == "REVIEW_REQUIRED" or stage4_qc == "REVIEW_REQUIRED":
+            review_summary = str(stage4_review.get("message") or "")
+            if not review_summary and layout_warning_count:
+                review_summary = f"字幕排版异常 {layout_warning_count} 条，请勿投稿"
+            if not review_summary:
+                review_summary = "成片需要复核，请查看成片质检报告"
+        elif translation_review:
+            overflow_count = len(
+                translation_qc.get("segment_payload_overflow_ids") or []
+            )
+            review_summary = (
+                f"翻译结构异常 {overflow_count} 条，暂不能成片"
+                if overflow_count
+                else "中文字幕需要复核，暂不能成片"
+            )
         publish_status = str(stage5.get("status") or "")
+        automation_status = str(automation.get("status") or "")
+        automation_reason = str(automation.get("reason") or "")
+        automation_display_reason = automation_reason
+        if (
+            automation_reason == "ENGLISH_SUBTITLE_STAGE_FAILED"
+            and no_english_subtitle_or_recognized_speech(task_dir)
+        ):
+            automation_display_reason = "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH"
+        published = publish_status == "PUBLISHED"
+        if published:
+            # Publishing is terminal in the dashboard. A later experimental
+            # rerender may leave a REVIEW_REQUIRED Stage 4 manifest, but that
+            # must not make an already published card request another review.
+            review_summary = ""
 
         download_complete = download_status in {"success", "skipped"}
         english_complete = selected_path.is_file() and selected_path.stat().st_size > 0
         translation_complete = deepseek_translation_ready(task_dir)
-        render_complete = stage4_status == "STAGE4_COMPLETED"
-        render_review = stage4_status == "REVIEW_REQUIRED" or stage4_qc == "REVIEW_REQUIRED"
+        render_complete = stage4_status == "STAGE4_COMPLETED" or published
+        render_review = not published and (
+            stage4_status == "REVIEW_REQUIRED" or stage4_qc == "REVIEW_REQUIRED"
+        )
+        successful_render_supersedes_skip = (
+            render_complete
+            and stage4_path.is_file()
+            and automation_path.is_file()
+            and stage4_path.stat().st_mtime > automation_path.stat().st_mtime
+        )
+        automation_skip_active = (
+            automation_status == "SKIPPED"
+            and publish_status not in {"RUNNING", "PUBLISHED"}
+            and not successful_render_supersedes_skip
+        )
+        automation_skip_summary = (
+            f"已自动跳过：{_automation_skip_label(automation_display_reason)}"
+            if automation_skip_active
+            else ""
+        )
+        if automation_skip_active:
+            review_summary = automation_skip_summary
 
         stages = {
             "download": self._stage_state(
                 download_complete,
                 download_status in {"failed", "partial_success"},
-                download_status,
+                "下载完成" if download_complete else "下载失败" if download_status in {"failed", "partial_success"} else "等待下载",
             ),
             "english": self._stage_state(
                 english_complete,
                 self._stage3_failed(stage3, "selection"),
-                str(stage3.get("selected_source") or "等待处理"),
+                "英文字幕已就绪" if english_complete else "等待处理",
             ),
             "translation": self._stage_state(
                 translation_complete,
                 self._stage3_failed(stage3, "translation"),
-                str(stage3.get("translation_status") or "未运行 DeepSeek"),
-            ),
+                "中文字幕已就绪" if translation_complete else "未运行 AI 翻译",
+            ) if not translation_review else {
+                "state": "review",
+                "detail": review_summary,
+            },
             "render": (
-                {"state": "review", "detail": stage4_status}
+                {"state": "review", "detail": review_summary or stage4_status}
                 if render_review
                 else self._stage_state(
                     render_complete,
                     stage4_status == "FAILED",
-                    stage4_status or "等待处理",
+                    "双语成片已完成" if render_complete else "成片失败" if stage4_status == "FAILED" else "等待处理",
                 )
             ),
             "publish": (
-                {"state": "active", "detail": publish_status}
+                {"state": "active", "detail": "正在投稿"}
                 if publish_status == "RUNNING"
+                else {"state": "complete", "detail": "投稿完成"}
+                if publish_status == "PUBLISHED"
+                else {
+                    "state": "skipped",
+                    "detail": automation_skip_summary,
+                }
+                if automation_skip_active
                 else self._stage_state(
-                    publish_status == "PUBLISHED",
+                    False,
                     publish_status == "FAILED",
-                    publish_status or "等待投稿",
+                    "投稿失败" if publish_status == "FAILED" else "等待投稿",
                 )
             ),
         }
+        if automation_skip_active:
+            for stage_name, stage in stages.items():
+                if stage["state"] != "complete":
+                    stages[stage_name] = {
+                        "state": "skipped",
+                        "detail": automation_skip_summary,
+                    }
         completed_count = sum(
-            stages[name]["state"] in {"complete", "review"}
+            stages[name]["state"] in {"complete", "review", "skipped"}
             for name in ("download", "english", "translation", "render", "publish")
         )
         relative = task_dir.relative_to(self.downloads_root).as_posix()
@@ -174,6 +328,7 @@ class WorkflowScanner:
                 task_dir / "stage3_manifest.json",
                 task_dir / "stage4" / "stage4_manifest.json",
                 task_dir / "stage5" / "publish_manifest.json",
+                task_dir / "stage5" / "automation_manifest.json",
             )
             if path.is_file()
         )
@@ -189,13 +344,20 @@ class WorkflowScanner:
                 newest_mtime, tz=timezone.utc
             ).isoformat(),
             "overall": overall,
-            "progress": completed_count * 20,
+            "progress": 100 if automation_skip_active else completed_count * 20,
             "stages": stages,
             "stage3_status": str(stage3.get("translation_status") or ""),
             "chinese_auto_available": auto_chinese is not None,
             "chinese_auto_name": auto_chinese.name if auto_chinese else "",
+            "chinese_youtube_available": youtube_chinese is not None,
+            "chinese_youtube_name": youtube_chinese.name if youtube_chinese else "",
             "stage4_status": stage4_status,
+            "review_summary": review_summary,
+            "review": stage4_review,
             "publish_status": publish_status,
+            "automation_status": automation_status,
+            "automation_reason": automation_reason,
+            "automation_skipped": automation_skip_active,
             "bvid": str(stage5.get("bvid") or ""),
             "bilibili_url": str(stage5.get("url") or ""),
             "output_path": str(
@@ -239,10 +401,14 @@ class WorkflowScanner:
             return "正在投稿"
         if stages["publish"]["state"] == "failed":
             return "投稿失败"
+        if stages["publish"]["state"] == "skipped":
+            return "无人值守已跳过此视频"
         if stages["render"]["state"] == "complete":
             return "成片完成，等待投稿"
         if stages["render"]["state"] == "review":
             return "需要复核"
+        if stages["translation"]["state"] == "review":
+            return "中文字幕需要复核"
         if "failed" in states:
             return "处理失败"
         if states[2] == "complete":
@@ -257,6 +423,8 @@ class WorkflowScanner:
 __all__ = [
     "WorkflowScanner",
     "deepseek_translation_ready",
+    "no_english_subtitle_or_recognized_speech",
     "read_json",
     "youtube_auto_chinese_path",
+    "youtube_chinese_path",
 ]

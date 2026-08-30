@@ -75,6 +75,16 @@ def normalize_stage3_config(raw: dict[str, Any]) -> dict[str, Any]:
         temperature=float(translation["temperature"]),
         max_retries=int(translation["max_retries"]),
         retry_delays_seconds=list(translation["retry_delays_seconds"]),
+        overload_max_retries=int(translation.get("overload_max_retries", 5)),
+        overload_retry_delays_seconds=list(
+            translation.get("overload_retry_delays_seconds", [5, 15, 30, 60, 120])
+        ),
+        retry_jitter_seconds=float(translation.get("retry_jitter_seconds", 3.0)),
+        response_max_retries=int(translation.get("response_max_retries", 6)),
+        response_retry_delays_seconds=list(
+            translation.get("response_retry_delays_seconds", [1, 2, 4, 8, 16, 30])
+        ),
+        degraded_batch_size=int(translation.get("degraded_batch_size", 16)),
         chinese_chars_per_second=float(translation["chinese_chars_per_second"]),
         tts_warning_ratio=float(translation["tts_warning_ratio"]),
         tts_rewrite_ratio=float(translation["tts_rewrite_ratio"]),
@@ -144,6 +154,16 @@ def _sections_from_legacy(legacy: dict[str, Any]) -> dict[str, Any]:
             "temperature": legacy["temperature"],
             "max_retries": legacy["max_retries"],
             "retry_delays_seconds": legacy["retry_delays_seconds"],
+            "overload_max_retries": legacy.get("overload_max_retries", 5),
+            "overload_retry_delays_seconds": legacy.get(
+                "overload_retry_delays_seconds", [5, 15, 30, 60, 120]
+            ),
+            "retry_jitter_seconds": legacy.get("retry_jitter_seconds", 3.0),
+            "response_max_retries": legacy.get("response_max_retries", 6),
+            "response_retry_delays_seconds": legacy.get(
+                "response_retry_delays_seconds", [1, 2, 4, 8, 16, 30]
+            ),
+            "degraded_batch_size": legacy.get("degraded_batch_size", 16),
             "chinese_chars_per_second": legacy["chinese_chars_per_second"],
             "tts_warning_ratio": legacy["tts_warning_ratio"],
             "tts_rewrite_ratio": legacy["tts_rewrite_ratio"],

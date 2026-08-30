@@ -45,7 +45,7 @@ class PublishMetadataTests(TestCase):
         )
         self.assertEqual(
             result["tags"],
-            "中英双语,中文翻译,软件工程,系统设计,Programming",
+            "软件工程,系统设计,Programming",
         )
 
     def test_title_and_description_respect_bilibili_limits(self) -> None:
@@ -55,11 +55,21 @@ class PublishMetadataTests(TestCase):
             disclaimer="【免责声明】\n测试声明",
             original_heading="【原视频简介】",
         )
-        self.assertLessEqual(len(title), 80)
+        self.assertLessEqual(utf16_code_units(title), 80)
         self.assertTrue(title.startswith("【中英双语】"))
         self.assertLessEqual(utf16_code_units(description), 2000)
         self.assertLessEqual(utf8_bytes(description), 1900)
         self.assertIn("【原视频简介】", description)
+
+    def test_title_with_emoji_respects_bilibili_utf16_limit(self) -> None:
+        title = compose_bilingual_title(
+            "印度乡村制作炸秋葵片条食谱",
+            "#React test# 🤣🤣LADY FINGER CHIPS | Fried Lady Finger Recipe "
+            "Cooking in Village | Okra Recipe",
+        )
+        self.assertLessEqual(utf16_code_units(title), 80)
+        self.assertTrue(title.endswith("…"))
+        self.assertIn("🤣🤣", title)
 
     def test_description_limit_matches_bilibili_utf16_counting(self) -> None:
         description = build_publish_description(
@@ -74,8 +84,12 @@ class PublishMetadataTests(TestCase):
         self.assertEqual(truncate_utf8("中abcd", 6), "中…")
 
     def test_tags_are_comma_separated_deduplicated_and_bounded(self) -> None:
-        tags = normalize_tags(["#Roblox", "Roblox", "非常长的标签" * 10])
+        tags = normalize_tags(
+            ["中英双语", "中文翻译", "#Roblox", "Roblox", "非常长的标签" * 10]
+        )
         rows = tags.split(",")
-        self.assertEqual(rows[:3], ["中英双语", "中文翻译", "Roblox"])
+        self.assertEqual(rows[0], "Roblox")
+        self.assertNotIn("中英双语", rows)
+        self.assertNotIn("中文翻译", rows)
         self.assertLessEqual(len(rows), 10)
         self.assertTrue(all(len(row) <= 20 for row in rows))
