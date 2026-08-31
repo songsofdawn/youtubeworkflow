@@ -1,0 +1,5 @@
+# Optional isolated runtime for Chinese AI dubbing.
+# Install a CUDA-compatible PyTorch build first, then install this file.
+demucs==4.0.1
+voxcpm==2.0.3
+soundfile>=0.13,<1

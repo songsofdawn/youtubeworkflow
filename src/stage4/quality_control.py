@@ -24,6 +24,7 @@ def evaluate_render(
     ffmpeg_returncode: int | None = 0,
     audio_transcoded: bool = False,
     temporary_cleaned: bool = True,
+    subtitle_title: str = "English / 中文",
 ) -> dict[str, Any]:
     path = Path(output_path)
     checks: dict[str, bool] = {
@@ -58,7 +59,7 @@ def evaluate_render(
         added = [
             item
             for item in output_probe.get("subtitle_streams", [])
-            if item.get("tags", {}).get("title") == "English / 中文"
+            if item.get("tags", {}).get("title") == subtitle_title
             and item.get("tags", {}).get("language") == "mul"
         ]
         checks.update(

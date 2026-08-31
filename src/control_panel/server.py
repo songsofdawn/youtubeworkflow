@@ -15,6 +15,15 @@ from .youtube import YouTubeAPIError
 MAX_REQUEST_BYTES = 6 * 1024 * 1024
 
 
+def _optional_float(value: Any, label: str) -> float | None:
+    if value is None or value == "":
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{label}必须是数字") from exc
+
+
 def make_handler(
     app: ControlPanelApp,
     static_root: Path,
@@ -164,6 +173,26 @@ def make_handler(
                             body.get("automation_silent_video_policy")
                             or "publish_original"
                         ),
+                        dubbing_enabled=body.get("dubbing_enabled") is True,
+                        dubbing_reference_mode=str(
+                            body.get("dubbing_reference_mode") or "auto"
+                        ),
+                        dubbing_reference_start=(
+                            _optional_float(
+                                body.get("dubbing_reference_start"),
+                                "参考声音开始时间",
+                            )
+                        ),
+                        dubbing_reference_end=(
+                            _optional_float(
+                                body.get("dubbing_reference_end"),
+                                "参考声音结束时间",
+                            )
+                        ),
+                        dubbing_subtitle_display=str(
+                            body.get("dubbing_subtitle_display") or "chinese"
+                        ),
+                        force_dubbing=body.get("force_dubbing") is True,
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})
                     return
@@ -269,7 +298,10 @@ def make_handler(
                     )
                     return
                 if parsed.path == "/api/open-folder":
-                    app.open_task_folder(str(body.get("task") or ""))
+                    app.open_task_folder(
+                        str(body.get("task") or ""),
+                        subfolder=str(body.get("subfolder") or ""),
+                    )
                     self._json(HTTPStatus.OK, {"opened": True})
                     return
                 self._error(HTTPStatus.NOT_FOUND, "接口不存在")

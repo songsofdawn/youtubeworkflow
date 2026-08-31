@@ -176,6 +176,8 @@ class WorkflowScanner:
         stage4_path = task_dir / "stage4" / "stage4_manifest.json"
         automation_path = task_dir / "stage5" / "automation_manifest.json"
         stage4 = read_json(stage4_path)
+        dubbing_path = task_dir / "dubbing" / "manifest.json"
+        dubbing = read_json(dubbing_path)
         stage5 = read_json(task_dir / "stage5" / "publish_manifest.json")
         automation = read_json(automation_path)
         info = read_json(task_dir / "metadata" / "info.json")
@@ -193,6 +195,16 @@ class WorkflowScanner:
             else {}
         )
         translation_review = translation_status.upper() == "REVIEW_REQUIRED"
+        dubbing_status = str(dubbing.get("status") or "").upper()
+        dubbed_audio_path = task_dir / "dubbing" / "dubbed_audio.wav"
+        dubbing_audio_ready = (
+            dubbed_audio_path.is_file() and dubbed_audio_path.stat().st_size > 44
+        )
+        dubbing_complete = (
+            dubbing_status in {"COMPLETED", "COMPLETED_WITH_REVIEW"}
+            and dubbing_audio_ready
+        )
+        dubbing_review = dubbing_status == "COMPLETED_WITH_REVIEW"
         stage4_review = (
             stage4.get("review") if isinstance(stage4.get("review"), dict) else {}
         )
@@ -222,6 +234,8 @@ class WorkflowScanner:
                 if overflow_count
                 else "中文字幕需要复核，暂不能成片"
             )
+        elif dubbing_review:
+            review_summary = "中文配音有超出字幕时槽的片段，请试听并复核"
         publish_status = str(stage5.get("status") or "")
         automation_status = str(automation.get("status") or "")
         automation_reason = str(automation.get("reason") or "")
@@ -283,6 +297,23 @@ class WorkflowScanner:
                 "state": "review",
                 "detail": review_summary,
             },
+            "dubbing": (
+                {"state": "active", "detail": "正在生成中文 AI 配音"}
+                if dubbing_status == "RUNNING"
+                else {"state": "review", "detail": review_summary}
+                if dubbing_review
+                else self._stage_state(
+                    dubbing_complete,
+                    dubbing_status == "FAILED",
+                    "中文配音已完成"
+                    if dubbing_complete
+                    else "中文配音失败"
+                    if dubbing_status == "FAILED"
+                    else "未启用中文配音",
+                )
+                if dubbing_status
+                else {"state": "skipped", "detail": "未启用中文配音"}
+            ),
             "render": (
                 {"state": "review", "detail": review_summary or stage4_status}
                 if render_review
@@ -316,9 +347,12 @@ class WorkflowScanner:
                         "state": "skipped",
                         "detail": automation_skip_summary,
                     }
+        progress_stage_names = ["download", "english", "translation", "render", "publish"]
+        if dubbing_status:
+            progress_stage_names.insert(3, "dubbing")
         completed_count = sum(
             stages[name]["state"] in {"complete", "review", "skipped"}
-            for name in ("download", "english", "translation", "render", "publish")
+            for name in progress_stage_names
         )
         relative = task_dir.relative_to(self.downloads_root).as_posix()
         newest_mtime = max(
@@ -326,6 +360,7 @@ class WorkflowScanner:
             for path in (
                 manifest_path,
                 task_dir / "stage3_manifest.json",
+                dubbing_path,
                 task_dir / "stage4" / "stage4_manifest.json",
                 task_dir / "stage5" / "publish_manifest.json",
                 task_dir / "stage5" / "automation_manifest.json",
@@ -344,7 +379,11 @@ class WorkflowScanner:
                 newest_mtime, tz=timezone.utc
             ).isoformat(),
             "overall": overall,
-            "progress": 100 if automation_skip_active else completed_count * 20,
+            "progress": (
+                100
+                if automation_skip_active
+                else round(100 * completed_count / len(progress_stage_names))
+            ),
             "stages": stages,
             "stage3_status": str(stage3.get("translation_status") or ""),
             "chinese_auto_available": auto_chinese is not None,
@@ -352,6 +391,10 @@ class WorkflowScanner:
             "chinese_youtube_available": youtube_chinese is not None,
             "chinese_youtube_name": youtube_chinese.name if youtube_chinese else "",
             "stage4_status": stage4_status,
+            "dubbing_status": dubbing_status,
+            "dubbing_available": dubbing_path.is_file(),
+            "dubbing_audio_ready": dubbing_audio_ready,
+            "dubbing_needs_review": dubbing_review,
             "review_summary": review_summary,
             "review": stage4_review,
             "publish_status": publish_status,
@@ -370,6 +413,10 @@ class WorkflowScanner:
                 for item in (
                     list(download.get("errors") or [])
                     + list(stage3.get("errors") or [])
+                    + [
+                        item.get("message") if isinstance(item, dict) else item
+                        for item in (dubbing.get("errors") or [])
+                    ]
                     + list(stage4.get("errors") or [])
                     + list(stage5.get("errors") or [])
                 )
@@ -403,19 +450,27 @@ class WorkflowScanner:
             return "投稿失败"
         if stages["publish"]["state"] == "skipped":
             return "无人值守已跳过此视频"
+        if stages["dubbing"]["state"] == "failed":
+            return "中文配音失败"
         if stages["render"]["state"] == "complete":
+            if stages["dubbing"]["state"] == "review":
+                return "中文配音需要复核"
             return "成片完成，等待投稿"
         if stages["render"]["state"] == "review":
             return "需要复核"
         if stages["translation"]["state"] == "review":
             return "中文字幕需要复核"
+        if stages["dubbing"]["state"] == "review":
+            return "中文配音需要复核"
+        if stages["dubbing"]["state"] == "active":
+            return "正在生成中文配音"
         if "failed" in states:
             return "处理失败"
-        if states[2] == "complete":
+        if stages["translation"]["state"] == "complete":
             return "双语字幕完成"
-        if states[1] == "complete":
+        if stages["english"]["state"] == "complete":
             return "英文字幕完成"
-        if states[0] == "complete":
+        if stages["download"]["state"] == "complete":
             return "等待字幕处理"
         return "等待下载"
 

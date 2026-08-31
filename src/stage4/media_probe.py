@@ -111,7 +111,12 @@ def summarize_probe(data: dict[str, Any], path: Path | str) -> dict[str, Any]:
     }
 
 
-def probe_media(ffprobe_path: Path | str, media_path: Path | str) -> dict[str, Any]:
+def probe_media(
+    ffprobe_path: Path | str,
+    media_path: Path | str,
+    *,
+    require_video: bool = True,
+) -> dict[str, Any]:
     path = Path(media_path)
     if not path.is_file() or path.stat().st_size <= 0:
         raise Stage4Error("MEDIA_NOT_FOUND", f"媒体文件不存在或为空：{path}")
@@ -149,7 +154,7 @@ def probe_media(ffprobe_path: Path | str, media_path: Path | str) -> dict[str, A
     except json.JSONDecodeError as exc:
         raise Stage4Error("FFPROBE_JSON_INVALID", f"FFprobe 返回无效 JSON：{exc}") from exc
     summary = summarize_probe(data, path)
-    if not summary["video_stream_count"]:
+    if require_video and not summary["video_stream_count"]:
         raise Stage4Error("SOURCE_VIDEO_STREAM_NOT_FOUND", f"媒体缺少视频轨：{path}")
     if not summary["audio_stream_count"]:
         raise Stage4Error("SOURCE_AUDIO_STREAM_NOT_FOUND", f"媒体缺少原始音频轨：{path}")
@@ -172,4 +177,3 @@ def tool_version(tool_path: Path | str) -> str:
     except OSError:
         return ""
     return (completed.stdout or completed.stderr or "").splitlines()[0].strip()
-

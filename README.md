@@ -1,7 +1,8 @@
 # YouTube Workflow
 
 面向 Windows 的本地 YouTube 视频双语化工作流：从视频发现与下载，到英文字幕选择、
-Whisper 识别、AI 中文字幕、双语成片，再到可选的哔哩哔哩投稿，都在一个本地控制面板中完成。
+Whisper 识别、AI 中文字幕、可选的单主播中文 AI 配音、成片，再到可选的哔哩哔哩投稿，
+都在一个本地控制面板中完成。
 
 ```text
 YouTube URL / 关键词 / 智能发现
@@ -12,7 +13,9 @@ YouTube URL / 关键词 / 智能发现
                 ↓
       AI 翻译 / YouTube 自动中文
                 ↓
- 双语 ASS / 软字幕 MKV / 硬字幕 MP4
+  可选 Demucs + VoxCPM2 中文配音
+                ↓
+ ASS / 软字幕 MKV / 硬字幕 MP4
                 ↓
         人工确认后投稿哔哩哔哩
 ```
@@ -52,6 +55,7 @@ YouTube URL / 关键词 / 智能发现
 - 下载最高 1080p 的源视频，并保留源音频、原字幕、封面、简介、视频 ID 与下载记录；
 - 在 YouTube 手工英文、YouTube 自动英文和本地 faster-whisper large-v3 之间选择；
 - 支持多家 AI API，按批保存翻译检查点，失败后只继续未完成字幕；
+- 可选使用 Demucs 分离人声、VoxCPM2 克隆单主播音色并生成中文配音；
 - 输出双语 ASS、软字幕 MKV、硬字幕 MP4，并对过宽或闪读字幕先复核再编码；
 - 支持批量任务、资源并行、实时日志、终止、重试和安全删除；
 - 可选 biliup 登录与投稿，并提供限速、日上限、冷却和重复投稿保护；
@@ -133,6 +137,7 @@ CPU 环境还需要把 `config\stage3_config.json` 中的 ASR 设置改为：
 | FFprobe | `tools\bin\ffprobe.exe` | 媒体结构与时长检查 |
 | Deno | `tools\bin\deno.exe` | yt-dlp 的 JavaScript 运行时 |
 | faster-whisper large-v3 | `models\faster-whisper-large-v3` | 本地英文语音识别 |
+| VoxCPM2 | `models\VoxCPM2` | 可选的本地中文音色克隆与 TTS |
 | biliup / bbup | `biliup\bbup-app` | 可选的哔哩哔哩登录和投稿 |
 
 Whisper 模型目录至少应包含 `config.json`、`model.bin`、`tokenizer.json` 和
@@ -140,6 +145,77 @@ Whisper 模型目录至少应包含 `config.json`、`model.bin`、`tokenizer.jso
 联网下载。
 
 如果你不想手工准备这些组件，请使用 Portable 发行包。
+
+中文配音是独立的可选运行时，不会改变已有 Whisper/翻译环境，也不会在未勾选时运行。
+第一次使用需要一次性安装配音环境和 VoxCPM2 模型；只使用原有下载、字幕和成片功能时，
+不需要安装以下内容。
+
+#### 中文配音首次安装速查
+
+1. 在项目根目录创建独立 Python 3.11 环境，不要把 VoxCPM2 装进主 `.venv`：
+
+```bat
+py -3.11 -m venv .venv_dubbing
+.venv_dubbing\Scripts\python.exe -m pip install --upgrade pip
+```
+
+2. 安装支持 CUDA 的 PyTorch。下面是 2026-08 在 Windows/NVIDIA 上核对过的 CUDA 12.8
+组合，适合本项目当前测试机的 RTX 5060 Ti；以后更换显卡或版本时，先到
+[PyTorch 官方安装页](https://pytorch.org/get-started/locally/)重新确认命令：
+
+```bat
+.venv_dubbing\Scripts\python.exe -m pip install torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+```
+
+VoxCPM2 要求 Python 3.10–3.12、PyTorch 2.5 以上和 CUDA 12 以上。不要安装 CPU 版
+PyTorch 冒充 GPU 环境；本项目默认也不会在用户不知情时退回极慢的 CPU TTS。
+
+3. 安装配音依赖：
+
+```bat
+.venv_dubbing\Scripts\python.exe -m pip install -r requirements_dubbing.txt
+```
+
+4. 明确下载一次 VoxCPM2，或者从模型页面手工下载，并放到固定目录。以下命令会下载约
+5 GB 大模型，只有确认磁盘和网络条件后才执行：
+
+```bat
+.venv_dubbing\Scripts\hf.exe download openbmb/VoxCPM2 --local-dir models\VoxCPM2
+```
+
+模型目录最终至少应包含：
+
+```text
+models\VoxCPM2\config.json
+models\VoxCPM2\audiovae.pth
+models\VoxCPM2\model.safetensors
+models\VoxCPM2\tokenizer.json
+models\VoxCPM2\tokenizer_config.json
+```
+
+如果 `hf.exe` 不存在，可从 [OpenBMB/VoxCPM2 模型页](https://huggingface.co/openbmb/VoxCPM2)
+手工下载完整仓库。程序只加载这个本地目录，不会用模型名静默联网下载。
+
+5. 验证独立环境确实能看到 CUDA：
+
+```bat
+.venv_dubbing\Scripts\python.exe -c "import torch,demucs,voxcpm; print('torch=',torch.__version__); print('cuda=',torch.cuda.is_available()); print('gpu=',torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'NONE')"
+```
+
+应看到 `cuda=True` 和实际显卡名称。随后运行 `start_panel.bat`，页面应显示“配音环境已
+就绪”。VoxCPM2 官方给出的典型显存需求约为 8 GB，实际占用随文本长度和优化选项变化；
+除模型外还应给 Python 环境、Demucs 缓存和任务 WAV 预留充足磁盘空间。
+
+Demucs 的 `htdemucs` 权重由其运行时缓存在
+`%USERPROFILE%\.cache\torch\hub\checkpoints`；第一次明确执行配音时若缓存不存在，Demucs
+可能联网准备权重，进度会显示在任务日志中。配音路径、设备、时长阈值和背景压低量见
+`config\dubbing_config.json`。
+
+> 给后续 Codex：中配入口是 `src\run_dubbing.py`，核心实现位于 `src\dubbing\`，配置是
+> `config\dubbing_config.json`，独立依赖是 `requirements_dubbing.txt`。必须继续遵守：只读
+> `zh.reviewed.srt` / `zh.clean.srt`、不在配音阶段运行 Whisper、不静默下载 VoxCPM2、每个
+> 任务只加载一次模型、复用现有 `gpu_heavy=1` 调度和 Stage 4 renderer。修改前同时阅读根
+> 目录 `AGENTS.md`。
 
 ### 4. 创建本地配置并启动
 
@@ -318,9 +394,50 @@ Token。程序按批次保存结果，响应缺少 ID 时只重试待完成字�
 或明确选择只在成片中隐藏该条。保存后程序先重新预检，全部通过才继续编码。原英文、
 原中文、字幕 ID 和时间轴始终不被覆盖。
 
-### 5. 查看状态、停止或续跑
+### 5. 生成中文 AI 配音（可选）
 
-任务卡按“下载 → 英文 → AI 翻译 → 成片 → 投稿”显示状态。并行调度 v0.5 默认提供：
+先完成 AI 中文字幕，使任务中存在 `subtitles\zh.reviewed.srt`（优先）或
+`subtitles\zh.clean.srt`。配音阶段不会运行 Whisper，也不会使用 YouTube 自动中文字幕
+代替这两个输入。
+
+选中任务后勾选“启用中文 AI 配音（VoxCPM2）”，可自动选取 5–10 秒参考人声，或手工填写
+原视频开始/结束秒数；成片字幕可选“仅中文”或“中英双语”。流程固定为：
+
+```text
+原视频音轨 → Demucs vocals / background → reference.wav
+中文字幕逐句 → VoxCPM2（每个任务只加载一次模型）→ 单句 WAV
+单句时长适配 → 按字幕绝对时间轴拼接 → 背景音 duck/mix → Stage 4 成片
+```
+
+程序优先保留自然语速：生成音频不超过可用时槽约 110% 时直接使用；轻微超长时最多加速到
+1.3 倍；仍超长则保留结果并在任务卡标为“配音需要复核”，不会静默截断句子。每句完成后
+立即写入 `dubbing\manifest.json`；中途失败、进程终止或显存不足后重试，只重做缺失或输入
+哈希已变化的句子。修改某句中文字幕只会使对应句的配音缓存失效。“重新生成中配”会显式
+强制重做全部 TTS 片段。
+
+V1 仅支持一个主播音色和一个参考片段，不做说话人分离、多人声角色映射、lip sync、
+自动情绪分析、自动翻译或自动发布决策。音色克隆与发布前请确认已取得声音与素材使用授权。
+
+实际操作顺序：
+
+1. 正常下载视频并处理到中文字幕，确认任务目录已有 `subtitles\zh.reviewed.srt` 或
+   `subtitles\zh.clean.srt`。
+2. 在任务列表勾选要处理的视频。
+3. 勾选“启用中文 AI 配音（VoxCPM2）”。环境提示必须显示已就绪。
+4. 第一次建议使用“自动选取 5–10 秒”；若音色不理想，再改为手动时间段，选择只有主播
+   清晰说话、音乐和杂音较少的连续片段。
+5. 选择配音成片显示“仅中文”或“中英双语”，点击“一键生成成片”。
+6. 任务卡会依次显示分离人声、参考声音、逐句进度、时长处理、混音和成片。完成后点击
+   “音”打开中配目录，或打开任务目录查看 `stage4\video\final_chinese_dubbed_*.mp4`。
+
+普通重试会校验缓存，只继续失败或变化的句子；“重新生成中配”会强制重做所有 TTS 句子，
+但仍可复用有效的 Demucs 分离结果。首次运行通常最慢，因为需要生成 Demucs 缓存、分离
+整段音频并首次加载 VoxCPM2；之后同一任务的重试会明显更快。
+
+### 6. 查看状态、停止或续跑
+
+任务卡按“下载 → 英文 → AI 翻译 → 配音 → 成片 → 投稿”显示状态。未启用配音的旧任务会
+把该阶段显示为跳过，并保持原来的进度计算。并行调度 v0.5 默认提供：
 
 - 2 个下载槽；
 - 2 个 AI API 槽；
@@ -394,12 +511,22 @@ login_bilibili.bat
 | `subtitles\zh.raw.srt` | AI 返回的原始中文结果 |
 | `subtitles\zh.clean.srt` | 结构检查通过的中文字幕 |
 | `subtitles\zh.reviewed.srt` | 可选的人工审核版中文字幕 |
+| `dubbing\source.wav` | 从原视频提取的源音频 |
+| `dubbing\vocals.wav` / `dubbing\background.wav` | Demucs 人声与背景声 |
+| `dubbing\reference.wav` | 自动或手工选择的音色参考片段 |
+| `dubbing\segments\*.wav` | 按字幕编号保存的原始单句 TTS |
+| `dubbing\chinese_voice.wav` | 按原字幕绝对时间轴拼接的中文人声 |
+| `dubbing\dubbed_audio.wav` | 中文人声与原背景混合后的最终音轨 |
+| `dubbing\manifest.json` | 配音设置、逐句输入哈希、时长与续跑状态 |
 | `stage4\subtitles\bilingual.ass` | 正式双语 ASS |
+| `stage4\subtitles\chinese_dubbed.ass` | 中文配音成片的仅中文 ASS |
 | `stage4\subtitles\bilingual_preview.ass` | 排版需要复核时的预览 |
 | `stage4\subtitles\en.layout_reviewed.srt` | 成片专用英文排版副本 |
 | `stage4\subtitles\zh.layout_reviewed.srt` | 成片专用中文排版副本 |
 | `stage4\video\final_bilingual_softsub.mkv` | 软字幕成片 |
 | `stage4\video\final_bilingual_hardsub.mp4` | 硬字幕成片与默认投稿文件 |
+| `stage4\video\final_chinese_dubbed_hardsub.mp4` | 仅中文字幕的中文配音硬字幕成片 |
+| `stage4\video\final_chinese_dubbed_bilingual_hardsub.mp4` | 中英双语字幕的中文配音硬字幕成片 |
 | `download_manifest.json` | 下载状态与源文件记录 |
 | `stage3_manifest.json` | 字幕选择和翻译状态 |
 | `stage4\stage4_manifest.json` | 成片、质检与续跑状态 |
@@ -422,7 +549,7 @@ youtubeworkflow\
 ├─ src\                       应用源码
 ├─ tests\                     离线自动化测试
 ├─ tools\bin\                FFmpeg、yt-dlp、Deno 等本地程序
-├─ models\                   本地 Whisper 模型
+├─ models\                   本地 Whisper 与可选 VoxCPM2 模型
 ├─ biliup\                   可选的哔哩哔哩工具
 ├─ downloads\                视频任务与输出
 ├─ private\                  Cookie 和可选账号文件
@@ -441,6 +568,7 @@ youtubeworkflow\
 | `config\download_config.json` | 下载清晰度、字幕语言、Cookie 与重试 |
 | `config\stage3_config.json` | Whisper、英文选择、翻译批次与结构 QC |
 | `config\stage4_config.json` | 双语样式、排版安全线、编码器与音频策略 |
+| `config\dubbing_config.json` | VoxCPM2 路径、Demucs、参考音频、时长和混音策略 |
 | `config\trending_config.json` | 搜索、智能发现和 Ollama 参数 |
 | `config\discovery_keywords.json` | 智能发现领域、查询词和归类关键词 |
 | `config\publish_config.json` | biliup、投稿间隔、日上限和冷却策略 |
@@ -489,7 +617,8 @@ build_portable.bat all 0.4.0 --skip-archive
 
 输出位于 `dist`。每个包都会：
 
-- 包含独立 Python、FFmpeg、FFprobe、yt-dlp、Deno、Whisper 模型和 biliup；
+- 包含独立 Python、FFmpeg、FFprobe、yt-dlp、Deno、Whisper 模型和 biliup；中文配音的
+  VoxCPM2 权重与独立运行时不打入默认包，需要用户按上述可选步骤准备；
 - 把 `PORTABLE_README.md` 复制为用户看到的根目录 `README.md`；
 - 使用干净的 `.env`，不包含 Cookie 或制作者账号；
 - 生成 `portable_manifest.json`、`PACKAGE_FILES.txt` 和 ZIP SHA256；
@@ -536,6 +665,8 @@ Key。`verify_project.bat` 还会检查本地工具、Whisper 模型、依赖一
 | AI 翻译报 `402` | 检查账户余额或计费状态 |
 | AI 翻译报 `429/1305` | 这是限流或拥堵；程序会保存检查点后等待，不要同时强制重开多个任务 |
 | 成片显示“需要复核” | 点击黄色“审”，缩短受影响字幕或明确隐藏该条；预检通过后自动继续 |
+| 中文配音显示环境未就绪 | 检查 `.venv_dubbing`、Demucs/VoxCPM2 包、PyTorch CUDA、NVIDIA 驱动和 `models\VoxCPM2` |
+| 某句配音失败或显存不足 | 修复运行环境后点重试；已完成单句不会重做。需要全部重做时点“重新生成中配” |
 | 没有投稿按钮 | 确认硬字幕成片已完成、没有排版复核，并已登录 biliup |
 | 投稿显示 `137022` | 不要重复新建投稿；等待页面显示的冷却结束，或调大投稿间隔 |
 | 重新运行是否重复付费 | 配置和提示版本不变时复用检查点，只请求缺失项；更换供应商、模型、Thinking 或强制重译会使相关检查点失效 |

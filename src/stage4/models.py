@@ -106,6 +106,8 @@ class PipelineOptions:
     keep_temp: bool = False
     dry_run: bool = False
     chinese_source: str = "auto"
+    audio_source: Path | None = None
+    subtitle_display: str = "bilingual"
 
 
 @dataclass

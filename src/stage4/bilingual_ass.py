@@ -659,3 +659,170 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         + width_warnings
     )
     return header + "\n".join(events) + ("\n" if events else ""), scaled, warnings
+
+
+def build_chinese_ass(
+    chinese: list[SubtitleCue],
+    style: dict[str, Any],
+    *,
+    width: int,
+    height: int,
+) -> tuple[str, dict[str, Any], list[dict[str, Any]]]:
+    """Build the Chinese-only display used by the optional dubbed render.
+
+    It intentionally shares the Stage 4 sizing, pagination and publishable font
+    floors so dubbed videos receive the same crop/flash protections.
+    """
+    scaled = scaled_style(style, width, height)
+    chinese_font = str(scaled.get("chinese_font", "Microsoft YaHei"))
+    chinese_bold = 1 if bool(scaled.get("chinese_bold", False)) else 0
+    header = f"""[Script Info]
+Title: 中文
+ScriptType: v4.00+
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+PlayResX: {scaled["play_res_x"]}
+PlayResY: {scaled["play_res_y"]}
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,{chinese_font},{scaled["chinese_font_size"]},{scaled.get("primary_color", "&H00FFFFFF")},&H000000FF,{scaled.get("outline_color", "&H00000000")},{scaled.get("shadow_color", "&H80000000")},{chinese_bold},0,0,0,100,100,0,0,1,{scaled["outline"]},{scaled["shadow"]},{int(scaled.get("alignment", 2))},{scaled["margin_lr"]},{scaled["margin_lr"]},{scaled["margin_v"]},1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+    events: list[str] = []
+    warnings: list[dict[str, Any]] = []
+    adjustments: list[dict[str, Any]] = []
+    fragmentation: list[dict[str, Any]] = []
+    available_width = scaled["play_res_x"] - 2 * scaled["margin_lr"]
+    safe_width = available_width * float(scaled.get("max_line_width_ratio", 0.88))
+    minimum_scale = max(
+        75,
+        min(100, int(scaled.get("minimum_horizontal_scale_percent", 92))),
+    )
+    minimum_page_duration = max(
+        0.1,
+        float(scaled.get("minimum_fragment_duration_seconds", 1.0)),
+    )
+    for cue in chinese:
+        display = single_line_text(cue.text)
+        duration = max(0.0, cue.end - cue.start)
+        selected_tier = "base"
+        pages = [display]
+        floor = scaled["chinese_font_size"]
+        for tier, candidate_floor in (
+            ("base", scaled["chinese_font_size"]),
+            ("readable_minimum", scaled["chinese_min_font_size"]),
+        ):
+            capacity = max(
+                0.1,
+                available_width / max(1.0, candidate_floor * minimum_scale / 100)
+                - 1.0,
+            )
+            candidate_pages = split_text_to_width(display, capacity)
+            selected_tier, floor, pages = tier, candidate_floor, candidate_pages
+            if len(pages) == 1 or duration / len(pages) >= minimum_page_duration:
+                break
+        page_count = max(1, len(pages))
+        if page_count > 1:
+            seconds_per_page = duration / page_count
+            record = {
+                "id": cue.identifier,
+                "chinese_page_count": page_count,
+                "generated_event_count": page_count,
+                "seconds_per_event": round(seconds_per_page, 3),
+                "font_tier": selected_tier,
+                "chinese_font_floor": floor,
+            }
+            fragmentation.append(record)
+            if seconds_per_page < minimum_page_duration:
+                warnings.append(
+                    {
+                        "code": "BILINGUAL_FRAGMENT_DURATION_TOO_SHORT",
+                        "id": cue.identifier,
+                        "generated_event_count": page_count,
+                        "seconds_per_event": round(seconds_per_page, 3),
+                        "minimum_seconds_per_event": minimum_page_duration,
+                    }
+                )
+        for page_index, page in enumerate(pages):
+            size = adaptive_font_size(
+                cue,
+                base_size=scaled["chinese_font_size"],
+                minimum_size=floor,
+                safe_width=safe_width,
+                combined_line_count=1,
+                text=page,
+            )
+            horizontal_scale = adaptive_horizontal_scale(
+                page,
+                font_size=size,
+                safe_width=safe_width,
+                minimum_percent=minimum_scale,
+            )
+            estimated_width = _line_width_units(page) * size * horizontal_scale / 100
+            if estimated_width > available_width:
+                warnings.append(
+                    {
+                        "code": "BILINGUAL_LINE_TOO_WIDE",
+                        "id": cue.identifier,
+                        "page": page_index + 1,
+                        "language": "chinese",
+                        "estimated_width": round(estimated_width, 1),
+                        "available_width": round(available_width, 1),
+                        "width_ratio": round(estimated_width / max(1.0, available_width), 3),
+                        "text_length": len(page),
+                        "font_size": size,
+                        "horizontal_scale": horizontal_scale,
+                    }
+                )
+            if size != scaled["chinese_font_size"] or horizontal_scale != 100:
+                adjustments.append(
+                    {
+                        "id": cue.identifier,
+                        "page": page_index + 1,
+                        "chinese_font_size": size,
+                        "chinese_horizontal_scale": horizontal_scale,
+                    }
+                )
+            event_start = cue.start + duration * page_index / page_count
+            event_end = (
+                cue.end
+                if page_index == page_count - 1
+                else cue.start + duration * (page_index + 1) / page_count
+            )
+            payload = (
+                rf"{{\fn{chinese_font}\fs{size}\fscx{horizontal_scale}\b{chinese_bold}}}"
+                + escape_ass_text(page)
+            )
+            events.append(
+                "Dialogue: 0,"
+                f"{ass_timestamp(event_start)},{ass_timestamp(event_end)},"
+                f"Chinese,,0,0,0,,{payload}"
+            )
+    scaled["adaptive_font_size_summary"] = {
+        "adjusted_segment_count": len({item["id"] for item in adjustments}),
+        "chinese_min_used": min(
+            (item["chinese_font_size"] for item in adjustments),
+            default=scaled["chinese_font_size"],
+        ),
+        "chinese_max_used": scaled["chinese_font_size"],
+        "single_line_per_language": True,
+        "horizontally_compressed_segment_count": len(
+            {
+                item["id"]
+                for item in adjustments
+                if item["chinese_horizontal_scale"] != 100
+            }
+        ),
+        "fragmented_segment_count": len(fragmentation),
+        "generated_event_count": len(events),
+        "maximum_fragment_count": max(
+            (item["generated_event_count"] for item in fragmentation),
+            default=1,
+        ),
+        "fragmentation": fragmentation,
+    }
+    return header + "\n".join(events) + ("\n" if events else ""), scaled, warnings

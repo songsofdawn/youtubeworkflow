@@ -16,6 +16,7 @@ const state = {
   llmInitialized: false,
   discoveryInitialized: false,
   publishingSettingsInitialized: false,
+  dubbingInitialized: false,
   discoveryJobId: null,
   discoveryAutoRestorePending: true,
   automationAccountId: "",
@@ -314,6 +315,8 @@ function renderHealth(health) {
     discovery_llm: "Ollama 本地智能发现（选配）",
     biliup: "biliup 投稿工具",
     biliup_account: "哔哩哔哩账号（投稿选配）",
+    dubbing_runtime: "中文配音独立运行时（选配）",
+    voxcpm2_model: "VoxCPM2 本地模型（选配）",
   };
   $("#healthChecks").innerHTML = Object.entries(labels)
     .map(([key, label]) => `
@@ -325,6 +328,27 @@ function renderHealth(health) {
   const badge = $("#readinessBadge");
   badge.textContent = health.ready ? "核心环境就绪" : "需要配置";
   badge.classList.toggle("ready", health.ready);
+  const dubbing = health.dubbing || {};
+  const dubbingHint = $("#dubbingHealthHint");
+  if (dubbingHint) {
+    const dubbingMissing = dubbing.config_error
+      || (!dubbing.runtime_ready
+        ? "缺少独立 Python 运行时"
+        : (!dubbing.demucs_ready || !dubbing.voxcpm_ready)
+          ? "运行时缺少 Demucs / VoxCPM2 包"
+          : !dubbing.device_ready
+            ? `PyTorch / ${dubbing.device || "cuda"} 不可用${dubbing.runtime_error ? `：${dubbing.runtime_error}` : ""}`
+          : `缺少本地模型 ${dubbing.model_path || "models/VoxCPM2"}`);
+    dubbingHint.textContent = dubbing.configured
+      ? `配音环境已就绪 · ${dubbing.device || "cuda"} · ${dubbing.model_path || "VoxCPM2"}`
+      : `配音环境未就绪：${dubbingMissing}`;
+    dubbingHint.classList.toggle("ready", Boolean(dubbing.configured));
+  }
+  if (!state.dubbingInitialized) {
+    $("#dubbingEnabled").checked = Boolean(dubbing.enabled_by_default);
+    updateDubbingControls();
+    state.dubbingInitialized = true;
+  }
   const automationAccount = $("#automationAccount");
   if (automationAccount) {
     const previous = automationAccount.value || state.automationAccountId;
@@ -459,7 +483,7 @@ function updateLlmProviderFields(providerId, modelId = "", baseUrl = "", resetTh
   }
 }
 
-const stageNames = { download: "下载", english: "英文", translation: "AI 翻译", render: "成片", publish: "投稿" };
+const stageNames = { download: "下载", english: "英文", translation: "AI 翻译", dubbing: "配音", render: "成片", publish: "投稿" };
 
 function renderTasks(tasks) {
   const taskKeys = new Set(tasks.map((task) => task.task));
@@ -554,6 +578,9 @@ function renderTasks(tasks) {
             : ""}
           ${publishAction}
           ${renderAction}
+          ${task.dubbing_available
+            ? '<button class="icon-button open-dubbing-folder" type="button" title="打开中文配音目录" aria-label="打开中文配音目录">音</button>'
+            : ""}
           <button class="icon-button open-folder" type="button" title="打开任务目录" aria-label="打开任务目录">↗</button>
           <button class="icon-button danger delete-task" type="button" title="${active ? "请先终止运行中的任务" : "删除视频任务及全部文件"}" aria-label="删除视频任务及全部文件" ${active ? "disabled" : ""}>×</button>
         </div>
@@ -590,7 +617,7 @@ function renderJobs(jobs) {
           : "PIPELINE";
     const resource = {
       network: "下载槽",
-      gpu_heavy: job.kind === "discovery" ? "本地 AI 槽" : "识别/成片槽",
+      gpu_heavy: job.kind === "discovery" ? "本地 AI 槽" : "本地重任务槽",
       paid_api: "AI API 槽",
       upload: "投稿槽",
     }[job.resource_class] || "";
@@ -1157,6 +1184,17 @@ $("#taskList").addEventListener("click", async (event) => {
       toast(error.message, true);
     }
   }
+  if (event.target.closest(".open-dubbing-folder")) {
+    try {
+      await api("/api/open-folder", {
+        method: "POST",
+        body: JSON.stringify({ task: row.dataset.task, subfolder: "dubbing" }),
+      });
+    } catch (error) {
+      toast(error.message, true);
+    }
+    return;
+  }
   if (event.target.closest(".review-task")) {
     await openRenderReview(row.dataset.task);
     return;
@@ -1338,9 +1376,10 @@ $("#deleteSelectedTasks").addEventListener("click", async () => {
 $$("[data-workflow]").forEach((button) => {
   button.addEventListener("click", () => queueWorkflow(button.dataset.workflow));
 });
+$("#regenerateDubbing").addEventListener("click", () => queueWorkflow("dubbing", false, true));
 $("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true));
 
-async function queueWorkflow(workflow, autoPublish = false) {
+async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false) {
   const tasks = [...state.selectedTasks];
   if (!tasks.length) return toast("请先选择至少一个视频任务", true);
   const automation = automationSettingsSnapshot();
@@ -1350,6 +1389,14 @@ async function queueWorkflow(workflow, autoPublish = false) {
   const chineseSource = autoPublish
     ? automation.chinesePolicy === "api_always" ? "deepseek" : "auto"
     : $("#chineseSubtitleSource").value;
+  const dubbingEnabled = !autoPublish
+    && (workflow === "dubbing" || $("#dubbingEnabled").checked);
+  if (dubbingEnabled && chineseSource === "youtube_auto") {
+    return toast("中文配音只使用现有 zh.reviewed.srt 或 AI 翻译生成的 zh.clean.srt", true);
+  }
+  if (dubbingEnabled && !state.dashboard?.health?.dubbing?.configured) {
+    return toast("中文配音环境未就绪，请先配置独立运行时和本地 VoxCPM2 模型", true);
+  }
   const needsApi = chineseSource === "deepseek"
     && (effectiveWorkflow === "subtitles" || effectiveWorkflow === "complete");
   if (!autoPublish && needsApi && !$("#paidApiConfirm").checked) {
@@ -1380,6 +1427,12 @@ async function queueWorkflow(workflow, autoPublish = false) {
         whisper_for_auto_subtitles: autoPublish
           ? automation.englishPolicy !== "youtube_first"
           : true,
+        dubbing_enabled: dubbingEnabled,
+        dubbing_reference_mode: $("#dubbingReferenceMode").value,
+        dubbing_reference_start: $("#dubbingReferenceStart").value,
+        dubbing_reference_end: $("#dubbingReferenceEnd").value,
+        dubbing_subtitle_display: $("#dubbingSubtitleDisplay").value,
+        force_dubbing: Boolean(forceDubbing),
         ...automationRequestValues(autoPublish),
       }),
     });
@@ -1391,6 +1444,21 @@ async function queueWorkflow(workflow, autoPublish = false) {
     await refreshDashboard();
   } catch (error) {
     toast(error.message, true);
+  }
+}
+
+function updateDubbingControls() {
+  const enabled = $("#dubbingEnabled").checked;
+  const manual = enabled && $("#dubbingReferenceMode").value === "manual";
+  $("#dubbingReferenceMode").disabled = !enabled;
+  $("#dubbingSubtitleDisplay").disabled = !enabled;
+  $("#dubbingReferenceStartField").classList.toggle("hidden", !manual);
+  $("#dubbingReferenceEndField").classList.toggle("hidden", !manual);
+  $("#dubbingReferenceStart").disabled = !manual;
+  $("#dubbingReferenceEnd").disabled = !manual;
+  if (enabled && $("#chineseSubtitleSource").value === "youtube_auto") {
+    $("#chineseSubtitleSource").value = "deepseek";
+    updateChineseSourceControls();
   }
 }
 
@@ -1407,6 +1475,8 @@ function updateChineseSourceControls() {
 }
 
 $("#chineseSubtitleSource").addEventListener("change", updateChineseSourceControls);
+$("#dubbingEnabled").addEventListener("change", updateDubbingControls);
+$("#dubbingReferenceMode").addEventListener("change", updateDubbingControls);
 
 const automationControls = [
   "#autoPublishAfterDownload",
@@ -1427,6 +1497,7 @@ for (const selector of automationControls) {
   });
 }
 updateChineseSourceControls();
+updateDubbingControls();
 
 $("#jobList").addEventListener("click", async (event) => {
   const resultButton = event.target.closest(".show-discovery-result");

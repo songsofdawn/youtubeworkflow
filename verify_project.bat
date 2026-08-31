@@ -15,7 +15,7 @@ echo [2/7] Checking source syntax...
 if errorlevel 1 goto :failed
 
 echo [3/7] Checking application entrypoints...
-for %%M in (src.download_video src.run_stage3 src.run_stage4 src.run_control_panel) do (
+for %%M in (src.download_video src.run_stage3 src.run_dubbing src.run_stage4 src.run_control_panel) do (
   "%PYTHON_EXE%" -m %%M --help >nul
   if errorlevel 1 goto :failed
 )

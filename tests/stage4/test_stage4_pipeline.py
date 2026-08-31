@@ -140,6 +140,36 @@ class Stage4PipelineTests(unittest.TestCase):
             self.assertIn("softsub", result.plan["commands"])
             self.assertIn("hardsub", result.plan["commands"])
 
+    @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
+    @mock.patch("src.stage4.render_pipeline.resolve_video_encoder", return_value="libx264")
+    @mock.patch(
+        "src.stage4.render_pipeline.probe_media",
+        side_effect=lambda _, path, **kwargs: source_probe(),
+    )
+    def test_dubbed_dry_run_reuses_stage4_with_replacement_audio_and_chinese_ass(
+        self, _probe: mock.Mock, _encoder: mock.Mock, _version: mock.Mock
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            pipeline, task, _, _ = self.prepare(Path(temporary))
+            audio = task / "dubbing" / "dubbed_audio.wav"
+            audio.parent.mkdir()
+            audio.write_bytes(b"audio" * 100)
+            result = pipeline.run(
+                task,
+                PipelineOptions(
+                    mode="hardsub",
+                    dry_run=True,
+                    audio_source=audio,
+                    subtitle_display="chinese",
+                ),
+            )
+            command = result.plan["commands"]["hardsub"]
+            self.assertEqual(result.status, "DRY_RUN_COMPLETED")
+            self.assertIn(str(audio.resolve()), command)
+            self.assertIn("1:a:0", command)
+            self.assertTrue(str(command[-1]).endswith("final_chinese_dubbed_hardsub.mp4"))
+            self.assertTrue(str(result.plan["ass"]["path"]).endswith("chinese_dubbed.ass"))
+
     @mock.patch("src.stage4.render_pipeline.FFmpegRunner", FakeRunner)
     @mock.patch("src.stage4.render_pipeline.tool_version", return_value="test")
     @mock.patch("src.stage4.render_pipeline.probe_media", side_effect=lambda _, path: source_probe())

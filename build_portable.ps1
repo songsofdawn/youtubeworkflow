@@ -174,6 +174,7 @@ Never send a used copy of this folder to another person.
         "START_HERE.bat",
         "login_bilibili.bat",
         ".env.example",
+        "requirements_dubbing.txt",
         "THIRD_PARTY_NOTICES.md"
     )
     foreach ($name in $rootFiles) {
@@ -219,7 +220,7 @@ print('portable-imports-ok', ctranslate2.__version__, cfg['asr']['device'], cfg[
 "@
     Invoke-External $PythonExe @("-c", $importScript)
     Invoke-External $PythonExe @("-m", "compileall", "-q", (Join-Path $PackageRoot "src"))
-    foreach ($module in @("src.download_video", "src.run_stage3", "src.run_stage4", "src.run_control_panel")) {
+    foreach ($module in @("src.download_video", "src.run_stage3", "src.run_dubbing", "src.run_stage4", "src.run_control_panel")) {
         Invoke-External $PythonExe @("-m", $module, "--help")
     }
     Invoke-External (Join-Path $PackageRoot "tools\bin\yt-dlp.exe") @("--version")

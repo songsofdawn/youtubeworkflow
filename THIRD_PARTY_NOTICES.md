@@ -9,6 +9,8 @@ Their upstream license terms continue to apply.
 - Deno: MIT License — https://github.com/denoland/deno
 - faster-whisper and CTranslate2: MIT License — https://github.com/SYSTRAN/faster-whisper and https://github.com/OpenNMT/CTranslate2
 - OpenAI Python SDK: Apache-2.0 — https://github.com/openai/openai-python
+- Demucs (optional dubbing runtime): MIT License — https://github.com/facebookresearch/demucs
+- VoxCPM / VoxCPM2 code and model weights (optional, not bundled by default): Apache-2.0 — https://github.com/OpenBMB/VoxCPM
 - biliup: see the license shipped under `biliup/bbup-app/binaries/_internal/biliup-1.2.2.dist-info/licenses/`.
 - NVIDIA CUDA runtime and cuDNN files in the GPU edition: NVIDIA license terms apply.
 - Whisper/CTranslate2 model files: retain and review the model repository's accompanying README and metadata before public redistribution.

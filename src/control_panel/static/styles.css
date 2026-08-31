@@ -1462,7 +1462,7 @@ input[type="checkbox"] {
 }
 
 .batch-bar .batch-buttons {
-  grid-column: 3;
+  grid-column: 1 / -1;
   justify-content: flex-end;
 }
 
@@ -1472,6 +1472,37 @@ input[type="checkbox"] {
 
 .paid-confirm.disabled {
   opacity: 0.55;
+}
+
+.dubbing-options {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px 14px;
+  padding: 10px 12px;
+  border: 1px solid #263038;
+  border-radius: 9px;
+  background: #111619;
+}
+
+.dubbing-options .field {
+  min-width: 150px;
+}
+
+.dubbing-options .dubbing-time {
+  min-width: 92px;
+  max-width: 110px;
+}
+
+.dubbing-options small {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.dubbing-options small.ready {
+  color: var(--lime);
 }
 
 .task-title small {
@@ -1548,7 +1579,7 @@ input[type="checkbox"] {
 
 .stage-track {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 4px;
 }
 

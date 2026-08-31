@@ -52,6 +52,9 @@ def build_softsub_command(
     preserve_existing_subtitles: bool = True,
     preserve_metadata: bool = True,
     preserve_chapters: bool = True,
+    audio_source: Path | str | None = None,
+    replacement_audio_bitrate: str = "192k",
+    subtitle_title: str = "English / 中文",
 ) -> list[str]:
     command = [
         str(ffmpeg_path),
@@ -59,22 +62,26 @@ def build_softsub_command(
         "-y",
         "-i",
         str(source_video),
-        "-i",
-        str(ass_path),
-        "-map",
-        "0:v?",
-        "-map",
-        "0:a?",
     ]
+    if audio_source is not None:
+        command.extend(["-i", str(audio_source)])
+    ass_input_index = 2 if audio_source is not None else 1
+    command.extend(["-i", str(ass_path), "-map", "0:v?"])
+    command.extend(["-map", "1:a:0"] if audio_source is not None else ["-map", "0:a?"])
     if preserve_existing_subtitles:
         command.extend(["-map", "0:s?"])
-    command.extend(["-map", "1:0"])
+    command.extend(["-map", f"{ass_input_index}:0"])
     if preserve_metadata:
         command.extend(["-map_metadata", "0"])
     if preserve_chapters:
         command.extend(["-map_chapters", "0"])
     new_index = existing_subtitle_count if preserve_existing_subtitles else 0
-    command.extend(["-c:v", "copy", "-c:a", "copy", "-c:s", "copy"])
+    command.extend(["-c:v", "copy"])
+    if audio_source is not None:
+        command.extend(["-c:a", "aac", "-b:a", str(replacement_audio_bitrate)])
+    else:
+        command.extend(["-c:a", "copy"])
+    command.extend(["-c:s", "copy"])
     command.extend([f"-c:s:{new_index}", "ass"])
     for index in range(new_index):
         command.extend([f"-disposition:s:{index}", "0"])
@@ -83,7 +90,7 @@ def build_softsub_command(
             f"-metadata:s:s:{new_index}",
             "language=mul",
             f"-metadata:s:s:{new_index}",
-            "title=English / 中文",
+            f"title={subtitle_title}",
             f"-disposition:s:{new_index}",
             "default",
             str(output_path),
@@ -127,6 +134,7 @@ def build_hardsub_command(
     video_encoder: str,
     audio_mode: str,
     render_config: dict[str, Any],
+    audio_source: Path | str | None = None,
 ) -> list[str]:
     filter_value = f"ass=filename='{escape_filter_path(ass_path)}'"
     command = [
@@ -135,17 +143,21 @@ def build_hardsub_command(
         "-y",
         "-i",
         str(source_video),
-        "-map",
-        "0:v:0",
-        "-map",
-        "0:a?",
-        "-map_metadata",
-        "0",
-        "-map_chapters",
-        "0",
-        "-vf",
-        filter_value,
     ]
+    if audio_source is not None:
+        command.extend(["-i", str(audio_source)])
+    command.extend(["-map", "0:v:0"])
+    command.extend(["-map", "1:a:0"] if audio_source is not None else ["-map", "0:a?"])
+    command.extend(
+        [
+            "-map_metadata",
+            "0",
+            "-map_chapters",
+            "0",
+            "-vf",
+            filter_value,
+        ]
+    )
     if video_encoder == "h264_nvenc":
         command.extend(
             [

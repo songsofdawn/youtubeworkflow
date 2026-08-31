@@ -463,9 +463,39 @@
             <input id="paidApiConfirm" type="checkbox">
             <span id="paidApiLabel">允许调用所选 AI API</span>
           </label>
+          <div class="dubbing-options" id="dubbingOptions">
+            <label class="confirm-line dubbing-toggle" title="仅在主动勾选后运行；VoxCPM2 模型必须已放在本地。首次分离人声时 Demucs 可能需要准备模型缓存。">
+              <input id="dubbingEnabled" type="checkbox">
+              <span>启用中文 AI 配音（VoxCPM2）</span>
+            </label>
+            <label class="field compact-field">
+              <span>参考声音</span>
+              <select id="dubbingReferenceMode">
+                <option value="auto">自动选取 5–10 秒</option>
+                <option value="manual">手动时间段</option>
+              </select>
+            </label>
+            <label class="field compact-field dubbing-time hidden" id="dubbingReferenceStartField">
+              <span>开始秒</span>
+              <input id="dubbingReferenceStart" type="number" min="0" step="0.1" placeholder="10.0">
+            </label>
+            <label class="field compact-field dubbing-time hidden" id="dubbingReferenceEndField">
+              <span>结束秒</span>
+              <input id="dubbingReferenceEnd" type="number" min="0.1" step="0.1" placeholder="18.0">
+            </label>
+            <label class="field compact-field">
+              <span>配音成片字幕</span>
+              <select id="dubbingSubtitleDisplay">
+                <option value="chinese">仅中文（默认）</option>
+                <option value="bilingual">中英双语</option>
+              </select>
+            </label>
+            <small id="dubbingHealthHint">配音为可选本地 GPU 阶段，不会在未勾选时运行。</small>
+          </div>
           <div class="batch-buttons">
             <button class="button button-secondary" type="button" data-workflow="subtitles">处理到双语字幕</button>
             <button class="button button-primary" type="button" data-workflow="complete">一键生成成片</button>
+            <button class="button button-secondary" id="regenerateDubbing" type="button">重新生成中配</button>
             <button class="button button-primary" id="autoPublishSelected" type="button">全自动到投稿</button>
             <button class="button button-danger" id="deleteSelectedTasks" type="button" disabled>批量删除</button>
           </div>

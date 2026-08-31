@@ -8,6 +8,7 @@ from typing import Any
 from .bilingual_ass import (
     ass_generator_version,
     build_bilingual_ass,
+    build_chinese_ass,
     resolve_fonts,
 )
 from .ffmpeg_runner import (
@@ -41,8 +42,12 @@ from .subtitle_validator import validate_subtitles
 OUTPUT_FINGERPRINT_VERSION = "stage4-output-v2"
 
 
-def _softsub_render_dependencies(render_config: dict[str, Any]) -> dict[str, Any]:
-    return {
+def _softsub_render_dependencies(
+    render_config: dict[str, Any],
+    *,
+    replacement_audio: bool = False,
+) -> dict[str, Any]:
+    dependencies = {
         "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
         "preserve_existing_subtitle_tracks": bool(
             render_config.get("preserve_existing_subtitle_tracks", True)
@@ -50,6 +55,14 @@ def _softsub_render_dependencies(render_config: dict[str, Any]) -> dict[str, Any
         "preserve_metadata": bool(render_config.get("preserve_metadata", True)),
         "preserve_chapters": bool(render_config.get("preserve_chapters", True)),
     }
+    if replacement_audio:
+        dependencies.update(
+            {
+                "replacement_audio": True,
+                "aac_bitrate": str(render_config.get("aac_bitrate", "192k")),
+            }
+        )
+    return dependencies
 
 
 def _hardsub_render_dependencies(
@@ -89,16 +102,21 @@ def _output_fingerprint(
     source_hash: str,
     ass_hash: str,
     render_dependencies: dict[str, Any],
+    audio_hash: str = "",
+    subtitle_display: str = "bilingual",
 ) -> str:
-    return hash_json(
-        {
-            "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
-            "source": source_hash,
-            "ass": ass_hash,
-            "render_dependencies": render_dependencies,
-            "kind": kind,
-        }
-    )
+    payload = {
+        "fingerprint_version": OUTPUT_FINGERPRINT_VERSION,
+        "source": source_hash,
+        "ass": ass_hash,
+        "render_dependencies": render_dependencies,
+        "kind": kind,
+    }
+    if audio_hash:
+        payload["replacement_audio"] = audio_hash
+    if subtitle_display != "bilingual":
+        payload["subtitle_display"] = subtitle_display
+    return hash_json(payload)
 
 
 def _legacy_output_fingerprint(
@@ -176,6 +194,7 @@ class Stage4Pipeline:
         command_returncode: int | None,
         audio_transcoded: bool,
         duration_tolerance: float,
+        subtitle_title: str = "English / 中文",
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         output_probe = probe_media(self.ffprobe_path, output_path)
         report = evaluate_render(
@@ -187,6 +206,7 @@ class Stage4Pipeline:
             ffmpeg_returncode=command_returncode,
             audio_transcoded=audio_transcoded,
             temporary_cleaned=True,
+            subtitle_title=subtitle_title,
         )
         return output_probe, report
 
@@ -206,6 +226,7 @@ class Stage4Pipeline:
         audio_transcoded: bool,
         runner: FFmpegRunner,
         keep_temp: bool,
+        subtitle_title: str = "English / 中文",
     ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], bool]:
         if (
             resume
@@ -226,6 +247,7 @@ class Stage4Pipeline:
                 command_returncode=0,
                 audio_transcoded=audio_transcoded,
                 duration_tolerance=duration_tolerance,
+                subtitle_title=subtitle_title,
             )
             return output_probe, report, dict(checkpoint or {}), True
 
@@ -253,6 +275,7 @@ class Stage4Pipeline:
                 command_returncode=result.returncode,
                 audio_transcoded=audio_transcoded,
                 duration_tolerance=duration_tolerance,
+                subtitle_title=subtitle_title,
             )
             if report["qc_status"] != "QC_PASSED":
                 raise Stage4Error(
@@ -325,6 +348,43 @@ class Stage4Pipeline:
         probes_after: dict[str, Any] = load_manifest(paths["qc"] / "media_probe_after.json")
         warnings: list[str] = []
         source_hash = english_hash = chinese_hash = ""
+        subtitle_display = str(options.subtitle_display or "bilingual").strip().casefold()
+        if subtitle_display not in {"bilingual", "chinese"}:
+            raise Stage4Error(
+                "SUBTITLE_DISPLAY_INVALID",
+                f"不支持的字幕显示模式：{options.subtitle_display}",
+            )
+        audio_source = Path(options.audio_source).resolve() if options.audio_source else None
+        if subtitle_display == "chinese" and audio_source is None:
+            raise Stage4Error(
+                "CHINESE_ONLY_REQUIRES_DUBBED_AUDIO",
+                "仅中文字幕模式只用于中文配音成片，必须同时提供替换音轨。",
+            )
+        audio_hash = ""
+        profile_suffix = ""
+        if audio_source is not None:
+            try:
+                audio_source.relative_to(root)
+            except ValueError as exc:
+                raise Stage4Error(
+                    "DUBBED_AUDIO_OUTSIDE_TASK",
+                    "替换音轨必须位于当前视频任务目录内。",
+                ) from exc
+            if not audio_source.is_file() or audio_source.stat().st_size <= 44:
+                raise Stage4Error(
+                    "DUBBED_AUDIO_NOT_FOUND",
+                    f"中文配音音轨不存在或为空：{audio_source}",
+                )
+            audio_hash = sha256_file(audio_source)
+            profile_suffix = (
+                "chinese_dubbed"
+                if subtitle_display == "chinese"
+                else "chinese_dubbed_bilingual"
+            )
+        ass_checkpoint_key = "ass" if not profile_suffix else f"ass_{profile_suffix}"
+        soft_checkpoint_key = "softsub" if not profile_suffix else f"softsub_{profile_suffix}"
+        hard_checkpoint_key = "hardsub" if not profile_suffix else f"hardsub_{profile_suffix}"
+        subtitle_title = "中文" if subtitle_display == "chinese" else "English / 中文"
 
         try:
             self._check_tools()
@@ -336,6 +396,36 @@ class Stage4Pipeline:
             )
             source_hash = sha256_file(resolved.source_video)
             source_probe = probe_media(self.ffprobe_path, resolved.source_video)
+            qc_source_probe = source_probe
+            replacement_audio_probe: dict[str, Any] = {}
+            if audio_source is not None:
+                replacement_audio_probe = probe_media(
+                    self.ffprobe_path,
+                    audio_source,
+                    require_video=False,
+                )
+                if int(replacement_audio_probe.get("audio_stream_count") or 0) < 1:
+                    raise Stage4Error(
+                        "DUBBED_AUDIO_INVALID",
+                        f"中文配音音轨无法读取：{audio_source}",
+                    )
+                qc_source_probe = {
+                    **source_probe,
+                    "audio_stream_count": 1,
+                    "audio_streams": [
+                        {
+                            "index": 0,
+                            "codec": "aac",
+                            "duration": float(source_probe.get("duration") or 0),
+                            "channels": int(
+                                (replacement_audio_probe.get("audio_streams") or [{}])[0].get(
+                                    "channels", 2
+                                )
+                                or 2
+                            ),
+                        }
+                    ],
+                }
             if (
                 resolved.chinese_selection_report.get("selection_mode")
                 == "auto_recovered_aligned_bilingual"
@@ -396,6 +486,10 @@ class Stage4Pipeline:
                         resolved.chinese_subtitle_selection_score
                     ),
                     "chinese_selection_report_path": str(chinese_selection_report_path),
+                    "subtitle_display": subtitle_display,
+                    "replacement_audio_path": str(audio_source or ""),
+                    "replacement_audio_hash": audio_hash,
+                    "replacement_audio_probe": replacement_audio_probe,
                     "original_audio_codec": [
                         item.get("codec") for item in source_probe.get("audio_streams", [])
                     ],
@@ -431,13 +525,21 @@ class Stage4Pipeline:
                 dict(self.config.get("subtitle_style", {}))
             )
             warnings.extend(font_warnings)
-            ass_text, scaled_style, layout_issues = build_bilingual_ass(
-                validation.english,
-                validation.chinese,
-                style_config,
-                width=int(source_probe["display_width"]),
-                height=int(source_probe["display_height"]),
-            )
+            if subtitle_display == "chinese":
+                ass_text, scaled_style, layout_issues = build_chinese_ass(
+                    validation.chinese,
+                    style_config,
+                    width=int(source_probe["display_width"]),
+                    height=int(source_probe["display_height"]),
+                )
+            else:
+                ass_text, scaled_style, layout_issues = build_bilingual_ass(
+                    validation.english,
+                    validation.chinese,
+                    style_config,
+                    width=int(source_probe["display_width"]),
+                    height=int(source_probe["display_height"]),
+                )
             subtitle_qc = {
                 **validation.report,
                 "layout_warnings": layout_issues,
@@ -449,12 +551,19 @@ class Stage4Pipeline:
             warnings.extend(
                 f"{item['code']}:{item['id']}" for item in layout_issues
             )
+            preview_name = (
+                "chinese_dubbed_preview.ass"
+                if profile_suffix and subtitle_display == "chinese"
+                else "chinese_dubbed_bilingual_preview.ass"
+                if profile_suffix
+                else "bilingual_preview.ass"
+            )
             if layout_issues and not options.dry_run:
-                atomic_write_text(paths["subtitles"] / "bilingual_preview.ass", ass_text)
+                atomic_write_text(paths["subtitles"] / preview_name, ass_text)
             if layout_issues and not options.dry_run:
                 issue_ids = list(dict.fromkeys(str(item.get("id") or "") for item in layout_issues))
                 issue_codes = sorted({str(item.get("code") or "") for item in layout_issues})
-                preview_path = paths["subtitles"] / "bilingual_preview.ass"
+                preview_path = paths["subtitles"] / preview_name
                 review_message = (
                     f"{len(issue_ids)} 条字幕因内容过长或原时长不足，无法同时保证单行和可读，"
                     "已在 FFmpeg 成片前停止；系统不会输出裁切或闪读的坏成片。"
@@ -485,14 +594,22 @@ class Stage4Pipeline:
                 }
                 return self._finish(manifest, manifest_path, started, plan)
 
-            style_hash = hash_json(self.config.get("subtitle_style", {}))
+            style_hash = (
+                hash_json(self.config.get("subtitle_style", {}))
+                if subtitle_display == "bilingual"
+                else hash_json(
+                    {
+                        "style": self.config.get("subtitle_style", {}),
+                        "subtitle_display": subtitle_display,
+                    }
+                )
+            )
             config_hash = hash_json(self.config)
             generator_version = ass_generator_version(
                 int(source_probe["display_width"]),
                 int(source_probe["display_height"]),
             )
-            ass_fingerprint = hash_json(
-                {
+            ass_fingerprint_payload = {
                     "english": english_hash,
                     "chinese": chinese_hash,
                     "style": style_hash,
@@ -502,10 +619,19 @@ class Stage4Pipeline:
                     ],
                     "generator": generator_version,
                 }
+            if subtitle_display != "bilingual":
+                ass_fingerprint_payload["subtitle_display"] = subtitle_display
+            ass_fingerprint = hash_json(ass_fingerprint_payload)
+            ass_name = (
+                "chinese_dubbed.ass"
+                if profile_suffix and subtitle_display == "chinese"
+                else "chinese_dubbed_bilingual.ass"
+                if profile_suffix
+                else "bilingual.ass"
             )
-            ass_path = paths["subtitles"] / "bilingual.ass"
+            ass_path = paths["subtitles"] / ass_name
             ass_force = options.force or options.force_ass
-            ass_checkpoint = manifest["checkpoints"].get("ass", {})
+            ass_checkpoint = manifest["checkpoints"].get(ass_checkpoint_key, {})
             ass_reused = (
                 options.resume
                 and not ass_force
@@ -518,7 +644,7 @@ class Stage4Pipeline:
             if not options.dry_run:
                 if not ass_reused:
                     atomic_write_text(ass_path, ass_text)
-                    manifest["checkpoints"]["ass"] = {
+                    manifest["checkpoints"][ass_checkpoint_key] = {
                         "fingerprint": ass_fingerprint,
                         "output_hash": sha256_file(ass_path),
                         "qc_status": "QC_PASSED",
@@ -526,8 +652,16 @@ class Stage4Pipeline:
                     }
                 manifest.update(
                     {
-                        "bilingual_ass_path": str(ass_path),
-                        "bilingual_ass_hash": sha256_file(ass_path),
+                        (
+                            "bilingual_ass_path"
+                            if not profile_suffix
+                            else "dubbed_ass_path"
+                        ): str(ass_path),
+                        (
+                            "bilingual_ass_hash"
+                            if not profile_suffix
+                            else "dubbed_ass_hash"
+                        ): sha256_file(ass_path),
                     }
                 )
             plan["ass"] = {
@@ -546,13 +680,24 @@ class Stage4Pipeline:
 
             render_config = dict(self.config.get("render", {}))
             preserve_existing = bool(render_config.get("preserve_existing_subtitle_tracks", True))
-            soft_path = paths["video"] / "final_bilingual_softsub.mkv"
-            hard_path = paths["video"] / "final_bilingual_hardsub.mp4"
+            soft_path = paths["video"] / (
+                f"final_{profile_suffix}_softsub.mkv"
+                if profile_suffix
+                else "final_bilingual_softsub.mkv"
+            )
+            hard_path = paths["video"] / (
+                f"final_{profile_suffix}_hardsub.mp4"
+                if profile_suffix
+                else "final_bilingual_hardsub.mp4"
+            )
             if self._render_requested(options.mode, "hardsub"):
-                audio_mode, audio_transcoded, audio_warnings = select_audio_mode(
-                    source_probe,
-                    require_audio_copy=options.require_audio_copy,
-                )
+                if audio_source is not None:
+                    audio_mode, audio_transcoded, audio_warnings = "aac", True, []
+                else:
+                    audio_mode, audio_transcoded, audio_warnings = select_audio_mode(
+                        source_probe,
+                        require_audio_copy=options.require_audio_copy,
+                    )
             else:
                 audio_mode, audio_transcoded, audio_warnings = "copy", False, []
             warnings.extend(audio_warnings)
@@ -569,6 +714,9 @@ class Stage4Pipeline:
                 preserve_existing_subtitles=preserve_existing,
                 preserve_metadata=bool(render_config.get("preserve_metadata", True)),
                 preserve_chapters=bool(render_config.get("preserve_chapters", True)),
+                audio_source=audio_source,
+                replacement_audio_bitrate=str(render_config.get("aac_bitrate", "192k")),
+                subtitle_title=subtitle_title,
             )
             hard_plan = (
                 build_hardsub_command(
@@ -579,6 +727,7 @@ class Stage4Pipeline:
                     video_encoder=selected_encoder,
                     audio_mode=audio_mode,
                     render_config=render_config,
+                    audio_source=audio_source,
                 )
                 if selected_encoder
                 else []
@@ -593,6 +742,8 @@ class Stage4Pipeline:
                     "ffmpeg_working_directory": str(paths["subtitles"]),
                     "video_encoder": selected_encoder,
                     "audio_mode": audio_mode,
+                    "replacement_audio": bool(audio_source),
+                    "subtitle_display": subtitle_display,
                     "warnings": warnings,
                 }
             )
@@ -634,13 +785,18 @@ class Stage4Pipeline:
             )
             duration_tolerance = float(render_config.get("duration_tolerance_seconds", 0.5))
             ass_hash = sha256_file(ass_path)
-            soft_render_dependencies = _softsub_render_dependencies(render_config)
+            soft_render_dependencies = _softsub_render_dependencies(
+                render_config,
+                replacement_audio=audio_source is not None,
+            )
             soft_render_config_hash = hash_json(soft_render_dependencies)
             soft_fingerprint = _output_fingerprint(
                 "softsub",
                 source_hash=source_hash,
                 ass_hash=ass_hash,
                 render_dependencies=soft_render_dependencies,
+                audio_hash=audio_hash,
+                subtitle_display=subtitle_display,
             )
             hard_render_dependencies: dict[str, Any] = {}
             hard_render_config_hash = ""
@@ -656,6 +812,8 @@ class Stage4Pipeline:
                             audio_mode=audio_mode,
                         )
                     ),
+                    audio_hash=audio_hash,
+                    subtitle_display=subtitle_display,
                 )
                 if selected_encoder
                 else ""
@@ -670,7 +828,7 @@ class Stage4Pipeline:
                     ass_hash=ass_hash,
                     config_hash=previous_config_hash,
                 )
-                if previous_config_hash
+                if previous_config_hash and not profile_suffix
                 else ""
             )
             soft_resume_allowed = (
@@ -682,17 +840,17 @@ class Stage4Pipeline:
             )
             soft_checkpoint, soft_is_current, soft_checkpoint_migrated = (
                 self._checkpoint_for_resume(
-                    manifest["checkpoints"].get("softsub"),
+                    manifest["checkpoints"].get(soft_checkpoint_key),
                     current_fingerprint=soft_fingerprint,
                     legacy_fingerprint=soft_legacy_fingerprint,
                     output_path=soft_path,
                 )
                 if soft_resume_allowed
-                else (manifest["checkpoints"].get("softsub"), False, False)
+                else (manifest["checkpoints"].get(soft_checkpoint_key), False, False)
             )
             if soft_checkpoint_migrated:
-                manifest["checkpoints"]["softsub"] = soft_checkpoint
-            previous_hard_checkpoint = manifest["checkpoints"].get("hardsub")
+                manifest["checkpoints"][soft_checkpoint_key] = soft_checkpoint
+            previous_hard_checkpoint = manifest["checkpoints"].get(hard_checkpoint_key)
             previous_encoder = str(
                 (previous_hard_checkpoint or {}).get("video_encoder")
                 or previous.get("video_encoder")
@@ -724,6 +882,8 @@ class Stage4Pipeline:
                     source_hash=source_hash,
                     ass_hash=ass_hash,
                     render_dependencies=preserved_hard_dependencies,
+                    audio_hash=audio_hash,
+                    subtitle_display=subtitle_display,
                 )
                 if preserved_hard_dependencies
                 else ""
@@ -738,6 +898,7 @@ class Stage4Pipeline:
                     audio_mode=effective_hard_audio_mode,
                 )
                 if previous_config_hash
+                and not profile_suffix
                 and effective_hard_encoder
                 and effective_hard_audio_mode
                 else ""
@@ -760,7 +921,7 @@ class Stage4Pipeline:
                 else (previous_hard_checkpoint, False, False)
             )
             if hard_checkpoint_migrated:
-                manifest["checkpoints"]["hardsub"] = hard_checkpoint
+                manifest["checkpoints"][hard_checkpoint_key] = hard_checkpoint
             manifest.update(
                 {
                     "softsub_render_config_hash": soft_render_config_hash,
@@ -783,12 +944,13 @@ class Stage4Pipeline:
             if not self._render_requested(options.mode, "softsub"):
                 if soft_is_current:
                     soft_probe, soft_report = self._probe_and_qc(
-                        source_probe,
+                        qc_source_probe,
                         soft_path,
                         mode="softsub",
                         command_returncode=0,
                         audio_transcoded=False,
                         duration_tolerance=duration_tolerance,
+                        subtitle_title=subtitle_title,
                     )
                     probes_after["softsub"] = soft_probe
                     reports["softsub"] = soft_report
@@ -808,12 +970,13 @@ class Stage4Pipeline:
                         )
                     )
                     hard_probe, hard_report = self._probe_and_qc(
-                        source_probe,
+                        qc_source_probe,
                         hard_path,
                         mode="hardsub",
                         command_returncode=0,
                         audio_transcoded=preserved_transcoded,
                         duration_tolerance=duration_tolerance,
+                        subtitle_title=subtitle_title,
                     )
                     probes_after["hardsub"] = hard_probe
                     reports["hardsub"] = hard_report
@@ -839,22 +1002,28 @@ class Stage4Pipeline:
                         preserve_existing_subtitles=preserve_existing,
                         preserve_metadata=bool(render_config.get("preserve_metadata", True)),
                         preserve_chapters=bool(render_config.get("preserve_chapters", True)),
+                        audio_source=audio_source,
+                        replacement_audio_bitrate=str(
+                            render_config.get("aac_bitrate", "192k")
+                        ),
+                        subtitle_title=subtitle_title,
                     ),
                     fingerprint=soft_fingerprint,
                     force=options.force or options.force_softsub,
                     resume=options.resume,
                     checkpoint=soft_checkpoint,
                     checkpoint_verified=soft_is_current,
-                    source_probe=source_probe,
+                    source_probe=qc_source_probe,
                     duration_tolerance=duration_tolerance,
-                    audio_transcoded=False,
+                    audio_transcoded=audio_source is not None,
                     runner=runner,
                     keep_temp=options.keep_temp,
+                    subtitle_title=subtitle_title,
                 )
                 soft_report["reused"] = reused
                 probes_after["softsub"] = soft_probe
                 reports["softsub"] = soft_report
-                manifest["checkpoints"]["softsub"] = checkpoint
+                manifest["checkpoints"][soft_checkpoint_key] = checkpoint
                 manifest["softsub_output_path"] = str(soft_path)
                 manifest["softsub_output_hash"] = checkpoint["output_hash"]
                 plan["softsub"] = {
@@ -875,17 +1044,19 @@ class Stage4Pipeline:
                         video_encoder=selected_encoder,
                         audio_mode=audio_mode,
                         render_config=render_config,
+                        audio_source=audio_source,
                     ),
                     fingerprint=hard_fingerprint,
                     force=options.force or options.force_hardsub,
                     resume=options.resume,
                     checkpoint=hard_checkpoint,
                     checkpoint_verified=hard_is_current,
-                    source_probe=source_probe,
+                    source_probe=qc_source_probe,
                     duration_tolerance=duration_tolerance,
                     audio_transcoded=audio_transcoded,
                     runner=runner,
                     keep_temp=options.keep_temp,
+                    subtitle_title=subtitle_title,
                 )
                 hard_report["reused"] = reused
                 probes_after["hardsub"] = hard_probe
@@ -897,7 +1068,7 @@ class Stage4Pipeline:
                         "audio_transcoded": audio_transcoded,
                     }
                 )
-                manifest["checkpoints"]["hardsub"] = checkpoint
+                manifest["checkpoints"][hard_checkpoint_key] = checkpoint
                 manifest["hardsub_output_path"] = str(hard_path)
                 manifest["hardsub_output_hash"] = checkpoint["output_hash"]
                 plan["hardsub"] = {
@@ -914,7 +1085,7 @@ class Stage4Pipeline:
                     reports,
                 )
             last_probe = next(reversed(probes_after.values()), source_probe)
-            hard_checkpoint = manifest["checkpoints"].get("hardsub", {})
+            hard_checkpoint = manifest["checkpoints"].get(hard_checkpoint_key, {})
             effective_encoder = selected_encoder or str(
                 hard_checkpoint.get("video_encoder") or previous.get("video_encoder") or ""
             )

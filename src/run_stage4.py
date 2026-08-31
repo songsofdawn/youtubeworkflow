@@ -81,6 +81,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="中文字幕来源：自动择优、AI API 翻译或 YouTube 自动中文",
     )
     parser.add_argument(
+        "--audio-source",
+        type=Path,
+        help="可选替换音轨；中文配音使用任务目录中的 dubbing/dubbed_audio.wav",
+    )
+    parser.add_argument(
+        "--subtitle-display",
+        choices=("bilingual", "chinese"),
+        default="bilingual",
+        help="成片显示双语字幕或仅中文字幕",
+    )
+    parser.add_argument(
         "--config",
         default="config/stage4_config.json",
         help="相对于项目根目录的成片配置路径",
@@ -141,6 +152,8 @@ def _options_from_args(
         require_audio_copy=args.require_audio_copy,
         keep_temp=args.keep_temp,
         dry_run=args.dry_run,
+        audio_source=args.audio_source,
+        subtitle_display=args.subtitle_display,
     )
 
 

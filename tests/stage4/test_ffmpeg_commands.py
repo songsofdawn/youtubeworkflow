@@ -59,6 +59,36 @@ class FFmpegCommandTests(unittest.TestCase):
         self.assertEqual(command[command.index("-c:v") + 1], "libx264")
         self.assertEqual(command[command.index("-c:a") + 1], "copy")
 
+    def test_hardsub_replaces_source_audio_for_dubbed_output(self) -> None:
+        command = build_hardsub_command(
+            "ffmpeg",
+            "source.mp4",
+            "chinese.ass",
+            "out.mp4",
+            video_encoder="libx264",
+            audio_mode="aac",
+            render_config={},
+            audio_source="dubbed_audio.wav",
+        )
+        self.assertEqual(command.count("-i"), 2)
+        self.assertIn("dubbed_audio.wav", command)
+        self.assertIn("1:a:0", command)
+        self.assertNotIn("0:a?", command)
+
+    def test_softsub_replaces_audio_and_keeps_subtitle_as_third_input(self) -> None:
+        command = build_softsub_command(
+            "ffmpeg",
+            "source.mp4",
+            "chinese.ass",
+            "out.mkv",
+            audio_source="dubbed_audio.wav",
+            subtitle_title="中文",
+        )
+        self.assertIn("1:a:0", command)
+        self.assertIn("2:0", command)
+        self.assertEqual(command[command.index("-c:a") + 1], "aac")
+        self.assertIn("title=中文", command)
+
     def test_filter_path_escapes_sensitive_characters(self) -> None:
         value = escape_filter_path(Path("C:/folder/name [x]'s.ass"))
         self.assertIn(r"\:", value)

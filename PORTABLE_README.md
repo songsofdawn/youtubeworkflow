@@ -223,9 +223,25 @@ AI 翻译只做结构验证：确保 JSON 可读、字幕 ID 完整、译文非�
 复核只创建成片专用副本，不修改原字幕、字幕 ID 或时间轴。选择忽略时，也只从成片显示
 副本中移除该条。
 
+### 中文 AI 配音（V1，可选）
+
+默认 Portable 包不包含 VoxCPM2 大模型和配音专用依赖，因此不开启时原有流程完全不变。
+需要此功能时，请在当前目录额外准备 `.venv_dubbing`（Python 3.11、匹配显卡的 PyTorch、
+`requirements_dubbing.txt`）并把完整模型放到 `models\VoxCPM2`。控制面板会检查 Demucs、
+VoxCPM2、本地模型和 CUDA；缺项时拒绝加入配音队列，不会静默下载 VoxCPM2 权重。
+
+先用 AI 翻译生成 `zh.clean.srt`，或准备人工审核的 `zh.reviewed.srt`。勾选“启用中文 AI
+配音”后，可自动选取 5–10 秒参考人声，或手工填写原视频时间段；配音成片可以只显示中文
+或继续显示中英双语。此阶段只读取现有中文字幕，不运行 Whisper，也不自动翻译。
+
+每句 TTS 都会单独保存，进程终止或某句失败后重试只继续缺失句；轻微超时会有限加速，
+明显超时会标记复核，不会直接截断。V1 只支持单主播音色，不支持多人声分离。Demucs 首次
+明确运行时可能准备自己的 `htdemucs` 模型缓存；VoxCPM2 权重必须由用户预先放到本地。
+
 ## 批量任务与断点续跑
 
-任务卡按“下载 → 英文 → AI 翻译 → 成片 → 投稿”显示状态。并行调度 v0.5 提供：
+任务卡按“下载 → 英文 → AI 翻译 → 配音 → 成片 → 投稿”显示状态；未启用配音时该阶段
+为跳过。并行调度 v0.5 提供：
 
 - 最多 2 个并发下载；
 - 最多 2 个不同视频并发调用 AI API；
@@ -295,10 +311,16 @@ AI 翻译只做结构验证：确保 JSON 可读、字幕 ID 完整、译文非�
 | `subtitles\en.selected.srt` | 最终英文字幕 |
 | `subtitles\zh.clean.srt` | 最终中文字幕 |
 | `subtitles\zh.reviewed.srt` | 可选的人工审核中文字幕 |
+| `dubbing\reference.wav` | 用于单主播音色克隆的参考人声 |
+| `dubbing\segments\*.wav` | 可断点续跑的逐句中文 TTS |
+| `dubbing\chinese_voice.wav` | 按原字幕绝对时间轴拼接的中文人声 |
+| `dubbing\dubbed_audio.wav` | 与原背景声混合后的最终中文配音音轨 |
+| `dubbing\manifest.json` | 逐句输入哈希、时长、失败与复核状态 |
 | `stage4\subtitles\bilingual.ass` | 双语 ASS |
 | `stage4\subtitles\bilingual_preview.ass` | 需要复核时的预览 |
 | `stage4\video\final_bilingual_hardsub.mp4` | 硬字幕成片与默认投稿文件 |
 | `stage4\video\final_bilingual_softsub.mkv` | 软字幕成片 |
+| `stage4\video\final_chinese_dubbed_hardsub.mp4` | 仅中文字幕的中文配音成片 |
 
 下载、日志、队列状态和账号分别保存在根目录的 `downloads`、`logs`、`work`、`private`
 和 `biliup\bbup-app\data`。这些目录属于你的本地数据。
@@ -318,6 +340,8 @@ AI 翻译只做结构验证：确保 JSON 可读、字幕 ID 完整、译文非�
 | AI 翻译报 `402` | 检查余额或计费状态 |
 | AI 翻译报 `429/1305` | 供应商限流或拥堵；程序会保存检查点后等待，请不要反复强制重开 |
 | 成片显示“需要复核” | 点击黄色“审”，缩短或明确隐藏受影响字幕；预检通过后自动继续 |
+| 中文配音环境未就绪 | 检查 `.venv_dubbing`、PyTorch CUDA、NVIDIA 驱动、Demucs/VoxCPM2 包和 `models\VoxCPM2` |
+| 中文配音中途失败 | 修复后点重试即可续跑；点“重新生成中配”才会强制重做全部句子 |
 | 没有投稿按钮 | 确认硬字幕成片完成、没有排版复核，并已登录 biliup |
 | 投稿显示 `137022` | 不要重复新建任务；等待页面显示的冷却结束 |
 | 重新运行是否重复付费 | 配置和提示版本不变时会复用检查点，只请求缺失项；更换模型、Thinking 或强制重译会使相关检查点失效 |

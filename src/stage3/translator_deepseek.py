@@ -18,7 +18,7 @@ from .subtitle_writer import atomic_write_json
 from .translation_qc import translation_payload_overflow
 
 
-PROMPT_VERSION = "stage3-translation-v4"
+PROMPT_VERSION = "stage3-translation-v5-dubbing-duration"
 TRANSLATION_CHECKPOINT_VERSION = "stage3-translation-checkpoint-v2"
 USAGE_KEYS = (
     "prompt_tokens", "completion_tokens", "total_tokens",
@@ -157,7 +157,8 @@ def build_messages(
         "你是视频字幕译者。" + action
         + "目标数组=[ID,秒数,英文]；上下文只用于理解，不得输出。"
         + "逐个ID独立翻译：每条translation只能翻译同一ID的英文，禁止把相邻目标、上下文或后续内容合并进该ID。"
-        + "译文应适合原字幕时长，禁止解释、总结或扩写。必须保留每个目标ID且只输出 JSON："
+        + "译文可能用于视频中文配音；请自然、简洁、口语化，并尽量保持与原句接近的朗读时长，避免不必要的扩写。"
+        + "禁止解释或总结。必须保留每个目标ID且只输出 JSON："
         + '{"segments":[{"id":1,"translation":"译文"}]}'
     )
     payload = {

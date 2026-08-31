@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from ..dubbing.config import public_dubbing_health
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from ..stage4.layout_review import load_layout_review, save_layout_review
 from ..stage3.llm_providers import (
@@ -98,6 +99,7 @@ class ControlPanelApp:
         cookie_path = self.project_root / "private" / "cookies.txt"
         cookie_status = youtube_cookie_status(cookie_path)
         publishing = self.publisher.health()
+        dubbing = public_dubbing_health(self.project_root)
         profile = load_portable_manifest(self.project_root)
         stage3_config = read_json(self.project_root / "config" / "stage3_config.json")
         asr_config = stage3_config.get("asr") if isinstance(stage3_config.get("asr"), dict) else {}
@@ -122,6 +124,13 @@ class ControlPanelApp:
             "deepseek_api": translation_api_ready,
             "biliup": publishing["available"],
             "biliup_account": publishing["account_ready"],
+            "dubbing_runtime": bool(
+                dubbing["runtime_ready"]
+                and dubbing["demucs_ready"]
+                and dubbing["voxcpm_ready"]
+                and dubbing["device_ready"]
+            ),
+            "voxcpm2_model": bool(dubbing["model_ready"]),
         }
         discovery = self.searcher.discovery_health()
         checks["discovery_llm"] = bool(
@@ -139,6 +148,7 @@ class ControlPanelApp:
             "checks": checks,
             "tools": tools,
             "publishing": publishing,
+            "dubbing": dubbing,
             "youtube_cookies": cookie_status,
             "llm": llm,
             "discovery": discovery,
@@ -542,6 +552,12 @@ class ControlPanelApp:
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
         automation_silent_video_policy: str = "publish_original",
+        dubbing_enabled: bool = False,
+        dubbing_reference_mode: str = "auto",
+        dubbing_reference_start: float | None = None,
+        dubbing_reference_end: float | None = None,
+        dubbing_subtitle_display: str = "chinese",
+        force_dubbing: bool = False,
     ) -> list[dict[str, Any]]:
         normalized_target = str(automation_target or "publish").strip().casefold()
         normalized_english_policy = str(
@@ -573,7 +589,7 @@ class ControlPanelApp:
             )
             auto_translate_missing = normalized_chinese_policy != "youtube_only"
             whisper_for_auto_subtitles = normalized_english_policy != "youtube_first"
-        if workflow not in {"subtitles", "render", "complete"}:
+        if workflow not in {"subtitles", "render", "complete", "dubbing"}:
             raise ValueError("不支持的处理流程")
         if render_mode not in {"ass", "softsub", "hardsub", "both"}:
             raise ValueError("不支持的成片模式")
@@ -583,6 +599,51 @@ class ControlPanelApp:
             raise ValueError("请至少选择一个已下载的视频")
         if len(tasks) > 50:
             raise ValueError("一次最多加入 50 个视频")
+        dubbing_enabled = bool(dubbing_enabled or workflow == "dubbing")
+        dubbing_reference_mode = str(dubbing_reference_mode or "auto").strip().casefold()
+        dubbing_subtitle_display = str(
+            dubbing_subtitle_display or "chinese"
+        ).strip().casefold()
+        if dubbing_enabled:
+            if workflow == "subtitles":
+                raise ValueError("仅生成字幕的流程不能同时生成中文配音")
+            if render_mode == "ass":
+                raise ValueError("中文配音需要生成带音轨的 MP4 或 MKV，不能只生成 ASS")
+            if dubbing_reference_mode not in {"auto", "manual"}:
+                raise ValueError("中文配音参考声音模式只支持自动或手动")
+            if dubbing_subtitle_display not in {"chinese", "bilingual"}:
+                raise ValueError("中文配音字幕显示只支持中文或中英双语")
+            if chinese_subtitle_source == "youtube_auto":
+                raise ValueError(
+                    "中文配音只读取 zh.reviewed.srt 或 AI 翻译生成的 zh.clean.srt"
+                )
+            if dubbing_reference_mode == "manual":
+                if dubbing_reference_start is None or dubbing_reference_end is None:
+                    raise ValueError("手动参考声音必须填写开始和结束时间")
+                if (
+                    float(dubbing_reference_start) < 0
+                    or float(dubbing_reference_end) <= float(dubbing_reference_start)
+                ):
+                    raise ValueError("手动参考声音时间范围无效")
+            dubbing_health = self.health()["dubbing"]
+            if not (
+                dubbing_health["runtime_ready"]
+                and dubbing_health["demucs_ready"]
+                and dubbing_health["voxcpm_ready"]
+            ):
+                raise ValueError(
+                    "中文配音运行时缺少 Demucs / VoxCPM2；"
+                    "请先按 requirements_dubbing.txt 创建 .venv_dubbing"
+                )
+            if not dubbing_health["device_ready"]:
+                raise ValueError(
+                    "中文配音运行时的 PyTorch / CUDA 不可用；"
+                    "请检查独立运行时与 NVIDIA 驱动"
+                )
+            if not dubbing_health["model_ready"]:
+                raise ValueError(
+                    f"VoxCPM2 本地模型未就绪：{dubbing_health['model_path']}"
+                )
         if (
             auto_publish
             and normalized_target == "publish"
@@ -596,6 +657,22 @@ class ControlPanelApp:
             task_dirs[task] = self.scanner.resolve_task(task)
             if task not in validated:
                 validated.append(task)
+        if workflow in {"render", "dubbing"} and dubbing_enabled:
+            missing_dubbing_subtitles = [
+                task
+                for task in validated
+                if not any(
+                    (task_dirs[task] / "subtitles" / name).is_file()
+                    and (task_dirs[task] / "subtitles" / name).stat().st_size > 0
+                    for name in ("zh.reviewed.srt", "zh.clean.srt")
+                )
+            ]
+            if missing_dubbing_subtitles:
+                labels = "、".join(Path(task).name for task in missing_dubbing_subtitles[:5])
+                raise ValueError(
+                    f"以下视频没有可用于配音的 zh.reviewed.srt 或 zh.clean.srt：{labels}。"
+                    "请先完成中文字幕翻译。"
+                )
         automatic_missing = [
             task for task in validated
             if chinese_subtitle_source == "auto"
@@ -673,6 +750,12 @@ class ControlPanelApp:
                     ),
                     "english_subtitle_policy": normalized_english_policy,
                     "auto_translate_missing": bool(auto_translate_missing),
+                    "dubbing_enabled": dubbing_enabled,
+                    "dubbing_reference_mode": dubbing_reference_mode,
+                    "dubbing_reference_start": dubbing_reference_start,
+                    "dubbing_reference_end": dubbing_reference_end,
+                    "dubbing_subtitle_display": dubbing_subtitle_display,
+                    "force_dubbing": bool(force_dubbing),
                     **automation,
                 },
                 resource_class="gpu_heavy",
@@ -962,8 +1045,14 @@ class ControlPanelApp:
         self.worker.wake()
         return job
 
-    def open_task_folder(self, task: str) -> None:
+    def open_task_folder(self, task: str, *, subfolder: str = "") -> None:
         path = self.scanner.resolve_task(task)
+        if subfolder:
+            if subfolder != "dubbing":
+                raise ValueError("不支持打开这个子目录")
+            path = (path / subfolder).resolve()
+            if path.parent != self.scanner.resolve_task(task) or not path.is_dir():
+                raise ValueError("中文配音目录尚未生成")
         if os.name == "nt":
             subprocess.Popen(
                 ["explorer.exe", str(path)],

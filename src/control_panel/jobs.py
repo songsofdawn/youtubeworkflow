@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterator
 
+from ..dubbing.config import load_dubbing_config, resolve_dubbing_python
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from .publishing import BiliupIntegration
 from .tasks import (
@@ -958,7 +959,13 @@ class WorkflowWorker:
                     log_path,
                 )
             else:
-                exit_code = self._run_command(job_id, command, log_path)
+                exit_code = self._run_command(
+                    job_id,
+                    command,
+                    log_path,
+                    stage_progress_start=stage_index / total * 100,
+                    stage_progress_span=100 / total,
+                )
             self._raise_if_cancelled(job_id)
             if exit_code != 0:
                 if job["kind"] == "pipeline" and self._automation_enabled(
@@ -1715,25 +1722,66 @@ class WorkflowWorker:
                 commands.append(
                     ("自动生成投稿标题、标签与分区", metadata_command)
                 )
-        if steps in {"render", "complete"}:
+        dubbing_enabled = bool(payload.get("dubbing_enabled") or steps == "dubbing")
+        if dubbing_enabled and steps in {"render", "complete", "dubbing"}:
+            dubbing_config = load_dubbing_config(self.project_root)
+            dubbing_python = resolve_dubbing_python(
+                self.project_root,
+                dubbing_config,
+            )
+            dubbing_command = [
+                str(dubbing_python),
+                "-m",
+                "src.run_dubbing",
+                "--video-dir",
+                str(task_dir),
+                "--reference-mode",
+                str(payload.get("dubbing_reference_mode") or "auto"),
+            ]
+            if str(payload.get("dubbing_reference_mode") or "auto") == "manual":
+                dubbing_command.extend(
+                    [
+                        "--reference-start",
+                        str(payload.get("dubbing_reference_start")),
+                        "--reference-end",
+                        str(payload.get("dubbing_reference_end")),
+                    ]
+                )
+            if payload.get("force_dubbing"):
+                dubbing_command.append("--force-tts")
+            commands.append(("生成中文 AI 配音", dubbing_command))
+        if steps in {"render", "complete", "dubbing"}:
             mode = str(payload.get("render_mode") or "hardsub")
             if mode not in {"ass", "softsub", "hardsub", "both"}:
                 raise ValueError("不支持的成片模式")
+            render_chinese_source = "auto" if steps == "dubbing" else chinese_source
+            render_command = [
+                str(stage3_python),
+                "-m",
+                "src.run_stage4",
+                "--video-dir",
+                str(task_dir),
+                "--mode",
+                mode,
+                "--chinese-source",
+                render_chinese_source,
+                "--resume",
+            ]
+            if dubbing_enabled:
+                render_command.extend(
+                    [
+                        "--audio-source",
+                        str(task_dir / "dubbing" / "dubbed_audio.wav"),
+                        "--subtitle-display",
+                        str(payload.get("dubbing_subtitle_display") or "chinese"),
+                    ]
+                )
             commands.append(
                 (
-                    "生成并质检双语成片",
-                    [
-                        str(stage3_python),
-                        "-m",
-                        "src.run_stage4",
-                        "--video-dir",
-                        str(task_dir),
-                        "--mode",
-                        mode,
-                        "--chinese-source",
-                        chinese_source,
-                        "--resume",
-                    ],
+                    "生成并质检中文配音成片"
+                    if dubbing_enabled
+                    else "生成并质检双语成片",
+                    render_command,
                 )
             )
         return commands
@@ -1762,7 +1810,15 @@ class WorkflowWorker:
             if candidate.is_file():
                 candidate.unlink(missing_ok=True)
 
-    def _run_command(self, job_id: str, command: list[str], log_path: Path) -> int:
+    def _run_command(
+        self,
+        job_id: str,
+        command: list[str],
+        log_path: Path,
+        *,
+        stage_progress_start: float = 0.0,
+        stage_progress_span: float = 100.0,
+    ) -> int:
         executable = Path(command[0])
         if not executable.is_file():
             raise FileNotFoundError(f"缺少运行环境：{executable}")
@@ -1799,6 +1855,25 @@ class WorkflowWorker:
                     )
                     handle.write(line)
                     handle.flush()
+                    if line.startswith("[DUBBING_PROGRESS] "):
+                        try:
+                            progress = json.loads(line.split(" ", 1)[1])
+                            step = str(progress.get("step") or "中文配音处理中")
+                            stage_value = max(
+                                0,
+                                min(float(progress.get("progress") or 0), 100),
+                            )
+                            overall_value = round(
+                                stage_progress_start
+                                + stage_progress_span * stage_value / 100
+                            )
+                            self.store.update(
+                                job_id,
+                                step=step[:300],
+                                progress=max(0, min(overall_value, 99)),
+                            )
+                        except (json.JSONDecodeError, AttributeError, TypeError):
+                            pass
             return process.wait()
         finally:
             with self._process_lock:
