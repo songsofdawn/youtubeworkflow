@@ -18,7 +18,11 @@ def token_key(value: str) -> str:
 def _overlap_size(previous: list[str], current: list[str]) -> int:
     maximum = min(len(previous), len(current))
     for size in range(maximum, 1, -1):
-        if previous[-size:] == current[:size] and all(current[:size]):
+        # YouTube uses punctuation-only tokens such as ``>>`` as speaker
+        # markers.  They are stripped to an empty comparison key, but must not
+        # make an otherwise exact rolling-window overlap ineligible.  Requiring
+        # at least one meaningful token still prevents punctuation-only matches.
+        if previous[-size:] == current[:size] and any(current[:size]):
             return size
     return 0
 

@@ -150,7 +150,10 @@ def extract_new_content(previous: str, current: str) -> tuple[str, int]:
     current_keys = [_token_key(token) for token in current_tokens]
     maximum = min(len(previous_keys), len(current_keys))
     for size in range(maximum, 1, -1):
-        if previous_keys[-size:] == current_keys[:size] and all(previous_keys[-size:]):
+        # Speaker markers such as ``>>`` intentionally normalize to an empty
+        # key.  They can occur inside a valid rolling-caption overlap, so only
+        # reject a candidate when the entire overlap is punctuation.
+        if previous_keys[-size:] == current_keys[:size] and any(previous_keys[-size:]):
             return smart_join(current_tokens[size:]), size
 
     if _contains_cjk(previous + current):

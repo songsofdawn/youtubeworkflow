@@ -84,6 +84,18 @@ class SubtitleCleanerTests(TestCase):
         finally:
             temporary.cleanup()
 
+    def test_speaker_marker_does_not_block_rolling_overlap(self) -> None:
+        temporary, _, result = self._clean(vtt(
+            ("00:00:00.000", "00:00:02.000", ">> No mixer. >> I'm trying to find one."),
+            ("00:00:02.000", "00:00:04.000", ">> I'm trying to find one. >> got the whisk."),
+        ))
+        try:
+            text = " ".join(cue.text for cue in parse_srt(result["clean_srt"]))
+            self.assertEqual(text.count("I'm trying to find one."), 1)
+            self.assertIn(">> got the whisk.", text)
+        finally:
+            temporary.cleanup()
+
     def test_fixed_timeline_never_overlaps(self) -> None:
         raw = parse_webvtt(self._write_temp(vtt(
             ("00:00:00.000", "00:00:02.000", "First sentence."),

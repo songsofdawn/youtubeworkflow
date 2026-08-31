@@ -120,7 +120,11 @@ def translation_payload_overflow(
         and length_ratio > 1.3
     ):
         reasons.append("SOURCE_LENGTH_RATIO")
-    if translation_characters >= 42 and characters_per_second > 22.0:
+    # A real task exposed a 41-character multi-caption payload attached to the
+    # 0.34-second source cue "anime.".  It was one character below the old
+    # absolute gate even though the timeline density made the structural
+    # contamination unambiguous.
+    if translation_characters >= 40 and characters_per_second > 22.0:
         reasons.append("TIMELINE_DENSITY")
     if not reasons:
         return None

@@ -343,6 +343,39 @@
             <option value="youtube_only">中文字幕仅用 YouTube，不调用翻译 API</option>
           </select>
         </label>
+        <label class="automation-setting automation-toggle-setting">
+          <span><strong>中文 AI 配音</strong><small id="automationDubbingHint">默认关闭；启用后使用本地 VoxCPM2 替换音轨</small></span>
+          <input id="automationDubbingEnabled" type="checkbox">
+        </label>
+        <label class="automation-setting field automation-dubbing-option">
+          <span>中配参考声音</span>
+          <select id="automationDubbingReferenceMode">
+            <option value="auto">自动选取 5–10 秒</option>
+            <option value="manual">手动时间段</option>
+          </select>
+        </label>
+        <label class="automation-setting field automation-dubbing-option hidden" id="automationDubbingReferenceStartField">
+          <span>参考声音开始秒</span>
+          <input id="automationDubbingReferenceStart" type="number" min="0" step="0.1" placeholder="10.0">
+        </label>
+        <label class="automation-setting field automation-dubbing-option hidden" id="automationDubbingReferenceEndField">
+          <span>参考声音结束秒</span>
+          <input id="automationDubbingReferenceEnd" type="number" min="0.1" step="0.1" placeholder="18.0">
+        </label>
+        <label class="automation-setting field automation-dubbing-option">
+          <span>中配成片字幕</span>
+          <select id="automationDubbingSubtitleDisplay">
+            <option value="chinese">仅中文（默认）</option>
+            <option value="bilingual">中英双语</option>
+          </select>
+        </label>
+        <label class="automation-setting field automation-dubbing-option">
+          <span>中配需要复核时</span>
+          <select id="automationDubbingReviewPolicy">
+            <option value="block">阻止成片/投稿并按异常策略处理</option>
+            <option value="continue">仍继续成片与投稿</option>
+          </select>
+        </label>
         <label class="automation-setting field">
           <span>自动成片格式</span>
           <select id="automationRenderMode">
@@ -388,9 +421,10 @@
         <article><b>01</b><span><strong>下载素材</strong><small>保留源视频、音频、元数据和原始字幕</small></span></article>
         <article><b>02</b><span><strong>选择英文字幕</strong><small id="automationEnglishFlow">YouTube 字幕与 Whisper 自动比较，选择质量更高者</small></span></article>
         <article><b>03</b><span><strong>生成中文字幕</strong><small id="automationChineseFlow">优先可靠的 YouTube 中文；缺少或不可用时调用翻译 API</small></span></article>
-        <article data-automation-stage="render"><b>04</b><span><strong>成片与硬性质检</strong><small id="automationRenderFlow">生成硬字幕 MP4；时间轴、结构或排版不安全时自动跳过</small></span></article>
-        <article data-automation-stage="metadata"><b>05</b><span><strong>生成投稿信息</strong><small id="automationMetadataFlow">自动填写标题、标签、简介和分区</small></span></article>
-        <article data-automation-stage="publish"><b>06</b><span><strong>投稿 B 站</strong><small id="automationPublishFlow">使用所选账号公开投稿；瞬时网络错误自动重试</small></span></article>
+        <article data-automation-stage="dubbing"><b>04</b><span><strong>生成中文配音</strong><small id="automationDubbingFlow">选配；默认保留原始音轨</small></span></article>
+        <article data-automation-stage="render"><b>05</b><span><strong>成片与硬性质检</strong><small id="automationRenderFlow">生成硬字幕 MP4；时间轴、结构或排版不安全时自动跳过</small></span></article>
+        <article data-automation-stage="metadata"><b>06</b><span><strong>生成投稿信息</strong><small id="automationMetadataFlow">自动填写标题、标签、简介和分区</small></span></article>
+        <article data-automation-stage="publish"><b>07</b><span><strong>投稿 B 站</strong><small id="automationPublishFlow">使用所选账号公开投稿；瞬时网络错误自动重试</small></span></article>
       </div>
       <p class="automation-footnote" id="automationFailureFlow">默认异常策略：无法安全完成字幕或成片时，记录原因并自动跳过该视频，其他视频继续执行。</p>
     </section>

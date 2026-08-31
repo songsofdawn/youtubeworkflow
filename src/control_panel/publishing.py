@@ -258,12 +258,40 @@ class BiliupIntegration:
     def expected_source_video(task_dir: Path) -> Path:
         return task_dir / "video" / "source.mp4"
 
+    @staticmethod
+    def _task_scoped_media_path(task_dir: Path, value: str) -> Path:
+        root = task_dir.resolve()
+        candidate = Path(str(value))
+        if candidate.is_absolute():
+            resolved = candidate.resolve()
+            try:
+                resolved.relative_to(root)
+            except ValueError:
+                # Absolute manifest paths become stale when a portable task is moved.
+                # Only recover the known output basename inside this task.
+                resolved = (root / "stage4" / "video" / candidate.name).resolve()
+        else:
+            resolved = (root / candidate).resolve()
+        try:
+            resolved.relative_to(root)
+        except ValueError as exc:
+            raise ValueError("投稿视频路径必须位于当前视频任务目录内") from exc
+        return resolved
+
+    def current_hardsub(self, task_dir: Path) -> Path:
+        manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        recorded = str(manifest.get("hardsub_output_path") or "").strip()
+        if recorded:
+            return self._task_scoped_media_path(task_dir, recorded)
+        return self.expected_hardsub(task_dir)
+
     def media_for_payload(self, task_dir: Path, payload: dict[str, Any]) -> Path:
-        return (
-            self.expected_source_video(task_dir)
-            if payload.get("publish_original_video") is True
-            else self.expected_hardsub(task_dir)
-        )
+        if payload.get("publish_original_video") is True:
+            return self.expected_source_video(task_dir)
+        pinned = str(payload.get("media_relpath") or "").strip()
+        if pinned:
+            return self._task_scoped_media_path(task_dir, pinned)
+        return self.current_hardsub(task_dir)
 
     def defaults(
         self,
@@ -339,11 +367,14 @@ class BiliupIntegration:
         )
         cover = task_dir / "metadata" / "thumbnail.jpg"
         accounts = self.accounts()
-        media = (
-            self.expected_source_video(task_dir)
-            if original_media
-            else self.expected_hardsub(task_dir)
+        media = self.media_for_payload(
+            task_dir,
+            {"publish_original_video": original_media},
         )
+        try:
+            media_relpath = media.resolve().relative_to(task_dir.resolve()).as_posix()
+        except ValueError:
+            media_relpath = ""
         translated = deepseek_translation_ready(task_dir)
         metadata_status = str(recommendation.get("status") or "MISSING")
         return {
@@ -385,6 +416,17 @@ class BiliupIntegration:
             "media_ready": media.is_file() and media.stat().st_size > 0,
             "translation_ready": translated,
             "media_name": media.name,
+            "media_relpath": media_relpath,
+            "media_hash": (
+                ""
+                if original_media
+                else str(
+                    read_json(task_dir / "stage4" / "stage4_manifest.json").get(
+                        "hardsub_output_hash"
+                    )
+                    or ""
+                )
+            ),
             "publish_original_video": original_media,
             "accounts": accounts,
             "account_id": accounts[0]["id"] if accounts else "",
@@ -469,8 +511,21 @@ class BiliupIntegration:
         translated = deepseek_translation_ready(task_dir)
         media = self.media_for_payload(
             task_dir,
-            {"publish_original_video": publish_original_video},
+            {
+                "publish_original_video": publish_original_video,
+                "media_relpath": values.get("media_relpath"),
+            },
         )
+        stage4_manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        if (
+            not publish_original_video
+            and str(stage4_manifest.get("replacement_audio_path") or "").strip()
+            and not (media.is_file() and media.stat().st_size > 0)
+        ):
+            raise ValueError(
+                "中文配音成片不存在或为空；请先重新生成中配成片，"
+                "系统不会静默改用原音轨双语成片"
+            )
         if not publish_original_video and not translated and not (
             media.is_file() and media.stat().st_size > 0
         ):
@@ -481,6 +536,7 @@ class BiliupIntegration:
             raise ValueError("原始视频不存在或为空，无法按无配音模式投稿")
         if values.get("confirm_publish") is not True:
             raise ValueError("投稿前必须确认版权、分区、标题和来源均已核对")
+        media_relpath = media.resolve().relative_to(task_dir.resolve()).as_posix()
 
         return {
             "title": title,
@@ -506,6 +562,8 @@ class BiliupIntegration:
             "account_id": account["id"],
             "account_label": account["label"],
             "prepare_hardsub": not (media.is_file() and media.stat().st_size > 0),
+            "media_relpath": media_relpath,
+            "media_hash": str(values.get("media_hash") or ""),
             "publish_original_video": publish_original_video,
         }
 
@@ -869,7 +927,11 @@ class BiliupIntegration:
             "media_path": str(media),
             "media_size": media.stat().st_size if media.is_file() else 0,
             "media_hash": (
-                str(stage4.get("hardsub_output_hash") or "")
+                str(
+                    payload.get("media_hash")
+                    or stage4.get("hardsub_output_hash")
+                    or ""
+                )
                 if not payload.get("publish_original_video")
                 else self._sha256_file(media)
             ),
@@ -892,6 +954,7 @@ class BiliupIntegration:
                     "no_reprint",
                     "is_only_self",
                     "use_cover",
+                    "media_relpath",
                     "publish_original_video",
                 )
             },

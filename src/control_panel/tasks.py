@@ -8,7 +8,11 @@ from typing import Any
 
 def read_json(path: Path) -> dict[str, Any]:
     try:
-        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        # Keep Windows manifest handles as short-lived as possible. In
+        # particular, dubbing/manifest.json is atomically replaced after every
+        # completed TTS segment while the dashboard scans it frequently.
+        with path.open("r", encoding="utf-8-sig") as handle:
+            payload = json.load(handle)
         return payload if isinstance(payload, dict) else {}
     except (OSError, json.JSONDecodeError):
         return {}

@@ -23,6 +23,22 @@ class RollingCaptionCleanerTests(TestCase):
     def test_suffix_prefix_overlap_is_removed(self) -> None:
         self.assertEqual(extract_increment("we like Roblox", "like Roblox today")[0], "today")
 
+    def test_speaker_marker_does_not_block_rolling_overlap(self) -> None:
+        previous = ">> No mixer. >> I'm trying to find one."
+        current = ">> I'm trying to find one. >> got the whisk."
+        self.assertEqual(extract_increment(previous, current)[0], ">> got the whisk.")
+
+    def test_speaker_marker_overlap_is_removed_from_word_events(self) -> None:
+        events, _ = build_word_events(
+            [
+                cue(1, 0, 1, ">> No mixer. >> I'm trying to find one."),
+                cue(2, 1, 2, ">> I'm trying to find one. >> got the whisk."),
+            ]
+        )
+        text = " ".join(item.text for item in events)
+        self.assertEqual(text.count("I'm trying to find one."), 1)
+        self.assertIn(">> got the whisk.", text)
+
     def test_spoken_repetition_is_preserved(self) -> None:
         events, _ = build_word_events([cue(1, 0, 1, "No, no, no.")])
         self.assertEqual([item.text for item in events], ["No,", "no,", "no."])

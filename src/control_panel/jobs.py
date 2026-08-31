@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterator
 
 from ..dubbing.config import load_dubbing_config, resolve_dubbing_python
+from ..dubbing.runtime import build_dubbing_subprocess_env
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from .publishing import BiliupIntegration
 from .tasks import (
@@ -944,6 +945,13 @@ class WorkflowWorker:
                 log_path,
                 f"\n===== {label} [{resource_class}] =====\n",
             )
+            if (
+                job["kind"] == "pipeline"
+                and self._automation_enabled(job["payload"])
+                and label == "生成并质检中文配音成片"
+                and self._handle_unattended_dubbing_review(job, log_path=log_path)
+            ):
+                return
             if job["kind"] == "publish" and resource_class == "upload":
                 assert publish_task is not None
                 media = self.publisher.media_for_payload(
@@ -1031,6 +1039,14 @@ class WorkflowWorker:
                         )
                     )
                 raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
+
+            if (
+                job["kind"] == "pipeline"
+                and self._automation_enabled(job["payload"])
+                and label == "生成中文 AI 配音"
+                and self._handle_unattended_dubbing_review(job, log_path=log_path)
+            ):
+                return
 
             completed_progress = int((stage_index + 1) / total * 100)
             self.store.update(job_id, progress=completed_progress)
@@ -1285,6 +1301,7 @@ class WorkflowWorker:
         """
         task_dir = self.scanner.resolve_task(str(job["target"]))
         stage3 = read_json(task_dir / "stage3_manifest.json")
+        dubbing = read_json(task_dir / "dubbing" / "manifest.json")
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
         review = stage4.get("review") if isinstance(stage4.get("review"), dict) else {}
         reason = str(review.get("code") or "").strip()
@@ -1300,6 +1317,8 @@ class WorkflowWorker:
             reason_by_label = {
                 "生成并选择最佳英文字幕": "ENGLISH_SUBTITLE_STAGE_FAILED",
                 "翻译并检查中文字幕": "CHINESE_TRANSLATION_STAGE_FAILED",
+                "生成中文 AI 配音": "DUBBING_STAGE_FAILED",
+                "生成并质检中文配音成片": "STAGE4_DUBBED_RENDER_STAGE_FAILED",
                 "生成并质检双语成片": "STAGE4_RENDER_STAGE_FAILED",
             }
             reason = reason_by_label.get(label, "UNATTENDED_PIPELINE_STAGE_FAILED")
@@ -1310,6 +1329,8 @@ class WorkflowWorker:
                 stage3.get("translation_status") or ""
             ),
             "stage3_errors": list(stage3.get("errors") or []),
+            "dubbing_status": str(dubbing.get("status") or ""),
+            "dubbing_errors": list(dubbing.get("errors") or []),
             "stage4_status": str(stage4.get("status") or ""),
             "stage4_qc_status": str(stage4.get("qc_status") or ""),
             "stage4_errors": list(stage4.get("errors") or []),
@@ -1330,6 +1351,89 @@ class WorkflowWorker:
             error="",
             finished_at=utc_now(),
         )
+
+    def _handle_unattended_dubbing_review(
+        self,
+        job: dict[str, Any],
+        *,
+        log_path: Path,
+    ) -> bool:
+        """Apply the explicit unattended policy before a reviewed dub is rendered."""
+        payload = dict(job.get("payload") or {})
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        details = self._dubbing_review_details(task_dir)
+        if details is None:
+            return False
+        summary = str(details["message"])
+        policy = str(
+            payload.get("automation_dubbing_review_policy") or "block"
+        ).strip().casefold()
+        if policy == "continue":
+            self._append_log(
+                log_path,
+                f"\n[无人值守中配策略] {summary}；已按设置继续成片。\n",
+            )
+            return False
+
+        failure_policy = str(
+            payload.get("automation_failure_policy") or "skip"
+        ).strip().casefold()
+        if failure_policy != "skip":
+            raise RuntimeError(
+                f"{summary}；已阻止成片和投稿，并按设置保留失败状态"
+            )
+
+        self.publisher.mark_automation_skipped(
+            task_dir,
+            "DUBBING_TIMING_REVIEW_REQUIRED",
+            details=details,
+        )
+        message = "中文配音需要复核，已阻止成片和投稿并继续队列"
+        self._append_log(
+            log_path,
+            f"\n[无人值守自动跳过] {message}：{summary}\n",
+        )
+        self.store.update(
+            str(job["id"]),
+            status="completed",
+            step=message,
+            progress=100,
+            exit_code=0,
+            error="",
+            finished_at=utc_now(),
+        )
+        return True
+
+    @staticmethod
+    def _dubbing_review_details(task_dir: Path) -> dict[str, Any] | None:
+        manifest = read_json(task_dir / "dubbing" / "manifest.json")
+        needs_review = bool(
+            manifest.get("needs_review")
+            or str(manifest.get("status") or "").upper()
+            == "COMPLETED_WITH_REVIEW"
+        )
+        if not needs_review:
+            return None
+
+        review_rows = [
+            row
+            for row in manifest.get("segments") or []
+            if isinstance(row, dict) and row.get("needs_review")
+        ]
+        review_count = len(review_rows)
+        segment_count = int(manifest.get("segment_count") or 0)
+        summary = (
+            f"中文配音有 {review_count} / {segment_count} 个片段需要复核"
+            if segment_count
+            else "中文配音存在需要复核的时槽超限片段"
+        )
+        return {
+            "message": summary,
+            "dubbing_status": str(manifest.get("status") or ""),
+            "segment_count": segment_count,
+            "review_segment_count": review_count,
+            "warnings": list(manifest.get("warnings") or [])[-20:],
+        }
 
     def _queue_post_download_automation(self, job: dict[str, Any]) -> str:
         payload = dict(job["payload"])
@@ -1395,6 +1499,19 @@ class WorkflowWorker:
                     payload.get("automation_silent_video_policy")
                     or "publish_original"
                 ),
+                "automation_dubbing_review_policy": str(
+                    payload.get("automation_dubbing_review_policy") or "block"
+                ),
+                "dubbing_enabled": bool(payload.get("dubbing_enabled")),
+                "dubbing_reference_mode": str(
+                    payload.get("dubbing_reference_mode") or "auto"
+                ),
+                "dubbing_reference_start": payload.get("dubbing_reference_start"),
+                "dubbing_reference_end": payload.get("dubbing_reference_end"),
+                "dubbing_subtitle_display": str(
+                    payload.get("dubbing_subtitle_display") or "chinese"
+                ),
+                "force_dubbing": bool(payload.get("force_dubbing")),
             },
             resource_class="gpu_heavy",
         )
@@ -1410,6 +1527,28 @@ class WorkflowWorker:
         publish_original_video = bool(
             job["payload"].get("publish_original_video")
         )
+        dubbing_review = (
+            self._dubbing_review_details(task_dir)
+            if job["payload"].get("dubbing_enabled")
+            and str(
+                job["payload"].get("automation_dubbing_review_policy") or "block"
+            ).strip().casefold()
+            != "continue"
+            else None
+        )
+        if dubbing_review is not None and not publish_original_video:
+            if str(
+                job["payload"].get("automation_failure_policy") or "skip"
+            ).strip().casefold() != "skip":
+                raise RuntimeError(
+                    f"{dubbing_review['message']}；已阻止自动投稿并保留失败状态"
+                )
+            self.publisher.mark_automation_skipped(
+                task_dir,
+                "DUBBING_TIMING_REVIEW_REQUIRED",
+                details=dubbing_review,
+            )
+            return "中文配音需要复核，已阻止自动投稿并继续队列"
         manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
         media = self.publisher.media_for_payload(task_dir, job["payload"])
         review = manifest.get("review") if isinstance(manifest.get("review"), dict) else {}
@@ -1822,7 +1961,7 @@ class WorkflowWorker:
         executable = Path(command[0])
         if not executable.is_file():
             raise FileNotFoundError(f"缺少运行环境：{executable}")
-        environment = os.environ.copy()
+        environment = build_dubbing_subprocess_env(self.project_root)
         environment["PYTHONUTF8"] = "1"
         environment["PYTHONIOENCODING"] = "utf-8"
         if executable.name.casefold() == "biliup.exe":

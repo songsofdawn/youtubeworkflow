@@ -140,6 +140,12 @@ function automationSettingsSnapshot() {
     target: $("#automationTarget").value,
     englishPolicy: $("#automationEnglishPolicy").value,
     chinesePolicy: $("#automationChinesePolicy").value,
+    dubbingEnabled: $("#automationDubbingEnabled").checked,
+    dubbingReferenceMode: $("#automationDubbingReferenceMode").value,
+    dubbingReferenceStart: $("#automationDubbingReferenceStart").value,
+    dubbingReferenceEnd: $("#automationDubbingReferenceEnd").value,
+    dubbingSubtitleDisplay: $("#automationDubbingSubtitleDisplay").value,
+    dubbingReviewPolicy: $("#automationDubbingReviewPolicy").value,
     renderMode: $("#automationRenderMode").value,
     failurePolicy: $("#automationFailurePolicy").value,
     silentVideoPolicy: $("#automationSilentVideoPolicy").value,
@@ -180,6 +186,18 @@ function restoreAutomationSettings() {
   $("#automationTarget").value = target;
   $("#automationEnglishPolicy").value = englishPolicy;
   $("#automationChinesePolicy").value = chinesePolicy;
+  $("#automationDubbingEnabled").checked = settings.dubbingEnabled === true;
+  if (["auto", "manual"].includes(settings.dubbingReferenceMode)) {
+    $("#automationDubbingReferenceMode").value = settings.dubbingReferenceMode;
+  }
+  $("#automationDubbingReferenceStart").value = settings.dubbingReferenceStart ?? "";
+  $("#automationDubbingReferenceEnd").value = settings.dubbingReferenceEnd ?? "";
+  if (["chinese", "bilingual"].includes(settings.dubbingSubtitleDisplay)) {
+    $("#automationDubbingSubtitleDisplay").value = settings.dubbingSubtitleDisplay;
+  }
+  if (["block", "continue"].includes(settings.dubbingReviewPolicy)) {
+    $("#automationDubbingReviewPolicy").value = settings.dubbingReviewPolicy;
+  }
   if (["ass", "softsub", "hardsub", "both"].includes(settings.renderMode)) {
     $("#automationRenderMode").value = settings.renderMode;
   }
@@ -197,8 +215,18 @@ function restoreAutomationSettings() {
 }
 
 function updateAutomationFlow() {
+  const target = $("#automationTarget").value;
+  const dubbingToggle = $("#automationDubbingEnabled");
+  if (target === "subtitles") dubbingToggle.checked = false;
+  const dubbingEnabled = dubbingToggle.checked;
+  if (dubbingEnabled) {
+    $("#automationChinesePolicy").value = "api_always";
+    if ($("#automationRenderMode").value === "ass") {
+      $("#automationRenderMode").value = "hardsub";
+    }
+  }
   if (
-    $("#automationTarget").value === "publish"
+    target === "publish"
     && !["hardsub", "both"].includes($("#automationRenderMode").value)
   ) {
     $("#automationRenderMode").value = "hardsub";
@@ -207,8 +235,10 @@ function updateAutomationFlow() {
   const enabled = settings.enabled;
   const targetLabels = {
     subtitles: "双语字幕",
-    render: "双语成片",
-    publish: settings.onlySelf ? "仅自己可见投稿" : "公开投稿",
+    render: settings.dubbingEnabled ? "中文配音成片" : "双语成片",
+    publish: settings.onlySelf
+      ? `${settings.dubbingEnabled ? "中配·" : ""}仅自己可见投稿`
+      : `${settings.dubbingEnabled ? "中配·" : ""}公开投稿`,
   };
   $("#automationStateBadge").textContent = enabled ? "已启用" : "已关闭";
   $("#automationStateBadge").classList.toggle("enabled", enabled);
@@ -232,12 +262,18 @@ function updateAutomationFlow() {
   };
   const renderDescriptions = {
     ass: "只生成双语 ASS 字幕文件，不编码视频",
-    softsub: "生成可开关字幕的 MKV，并执行时间轴、结构和排版硬性质检",
-    hardsub: "生成投稿用硬字幕 MP4，并执行时间轴、结构和排版硬性质检",
-    both: "同时生成硬字幕 MP4 和软字幕 MKV，并执行时间轴、结构和排版硬性质检",
+    softsub: `生成可开关字幕的 MKV${settings.dubbingEnabled ? "并替换为中文配音音轨" : "并保留原音轨"}；执行硬性质检`,
+    hardsub: `生成投稿用硬字幕 MP4${settings.dubbingEnabled ? "并替换为中文配音音轨" : "并保留原音轨"}；执行硬性质检`,
+    both: `同时生成硬字幕 MP4 和软字幕 MKV${settings.dubbingEnabled ? "，两者使用中文配音音轨" : "，两者保留原音轨"}；执行硬性质检`,
   };
   $("#automationEnglishFlow").textContent = englishDescriptions[settings.englishPolicy];
   $("#automationChineseFlow").textContent = chineseDescriptions[settings.chinesePolicy];
+  const referenceDescription = settings.dubbingReferenceMode === "manual"
+    ? `${settings.dubbingReferenceStart || "?"}–${settings.dubbingReferenceEnd || "?"} 秒参考声音`
+    : "自动选取 5–10 秒参考声音";
+  $("#automationDubbingFlow").textContent = settings.dubbingEnabled
+    ? `VoxCPM2 · ${referenceDescription} · ${settings.dubbingSubtitleDisplay === "chinese" ? "仅中文字幕" : "中英双语字幕"}`
+    : "本流程不生成中配，成片保留原始音轨";
   $("#automationRenderFlow").textContent = renderDescriptions[settings.renderMode];
   const metadataLabel = $("#automationMetadataProvider").selectedOptions[0]?.textContent || "自动模型";
   const silentFlow = settings.silentVideoPolicy === "publish_original"
@@ -247,14 +283,37 @@ function updateAutomationFlow() {
   const accountLabel = $("#automationAccount").selectedOptions[0]?.textContent || "自动选择账号";
   $("#automationPublishFlow").textContent = `${accountLabel} · ${settings.onlySelf ? "仅自己可见" : "公开投稿"}；瞬时网络错误自动重试并切换线路`;
   const omittedStages = settings.target === "subtitles"
-    ? new Set(["render", "metadata", "publish"])
+    ? new Set(["dubbing", "render", "metadata", "publish"])
     : settings.target === "render" ? new Set(["metadata", "publish"]) : new Set();
+  if (!settings.dubbingEnabled) omittedStages.add("dubbing");
   for (const stage of $$('[data-automation-stage]')) {
     stage.classList.toggle("omitted", omittedStages.has(stage.dataset.automationStage));
   }
   const renderDisabled = settings.target === "subtitles";
   $("#automationRenderMode").closest(".automation-setting").classList.toggle("is-disabled", renderDisabled);
   $("#automationRenderMode").disabled = renderDisabled;
+  const dubbingAvailable = settings.target !== "subtitles";
+  $("#automationDubbingEnabled").disabled = !dubbingAvailable;
+  $("#automationDubbingEnabled").closest(".automation-setting").classList.toggle("is-disabled", !dubbingAvailable);
+  const manualReference = settings.dubbingEnabled && settings.dubbingReferenceMode === "manual";
+  $("#automationDubbingReferenceStartField").classList.toggle("hidden", !manualReference);
+  $("#automationDubbingReferenceEndField").classList.toggle("hidden", !manualReference);
+  for (const selector of ["#automationDubbingReferenceMode", "#automationDubbingSubtitleDisplay", "#automationDubbingReviewPolicy"]) {
+    const control = $(selector);
+    control.disabled = !settings.dubbingEnabled;
+    control.closest(".automation-setting").classList.toggle("is-disabled", !settings.dubbingEnabled);
+  }
+  $("#automationDubbingReferenceStart").disabled = !manualReference;
+  $("#automationDubbingReferenceEnd").disabled = !manualReference;
+  const chinesePolicyLocked = settings.dubbingEnabled;
+  $("#automationChinesePolicy").disabled = chinesePolicyLocked;
+  $("#automationChinesePolicy").closest(".automation-setting").classList.toggle("is-disabled", chinesePolicyLocked);
+  const dubbingReady = Boolean(state.dashboard?.health?.dubbing?.configured);
+  $("#automationDubbingHint").textContent = settings.dubbingEnabled
+    ? dubbingReady
+      ? "环境已就绪；中配会在翻译后、成片前运行"
+      : "环境未就绪；加入队列前会阻止并提示配置"
+    : "默认关闭；启用后使用本地 VoxCPM2 替换音轨";
   for (const selector of ["#automationMetadataProvider", "#automationAccount", "#automationOnlySelf", "#automationSilentVideoPolicy"]) {
     const control = $(selector);
     const disabled = settings.target !== "publish";
@@ -267,9 +326,16 @@ function updateAutomationFlow() {
     publish: "按设置全自动投稿",
   };
   $("#autoPublishSelected").textContent = automationButtonLabels[settings.target];
-  $("#automationFailureFlow").textContent = settings.failurePolicy === "skip"
-    ? "异常策略：无法安全完成字幕或成片时，记录原因并自动跳过该视频；其他视频继续执行。无配音视频按上方专用策略处理。"
-    : "异常策略：无法安全完成字幕或成片时，将该视频保留为失败状态；不会上传不合格成片。无配音视频按上方专用策略处理。";
+  const reviewOutcome = !settings.dubbingEnabled
+    ? ""
+    : settings.dubbingReviewPolicy === "continue"
+      ? " 中配时槽超限时仍会继续成片与投稿，请仅在接受重叠风险时使用。"
+      : ` 中配时槽超限会在成片前阻止；随后${settings.failurePolicy === "skip" ? "自动跳过并继续队列" : "保留失败状态"}。`;
+  $("#automationFailureFlow").textContent = (settings.failurePolicy === "skip"
+    ? "异常策略：无法安全完成字幕或成片时，记录原因并自动跳过该视频；其他视频继续执行。"
+    : "异常策略：无法安全完成字幕或成片时，将该视频保留为失败状态；不会上传不合格成片。")
+    + reviewOutcome
+    + " 无可靠语音的视频按上方专用策略处理。";
 }
 
 function renderScheduler(scheduler) {
@@ -336,9 +402,13 @@ function renderHealth(health) {
         ? "缺少独立 Python 运行时"
         : (!dubbing.demucs_ready || !dubbing.voxcpm_ready)
           ? "运行时缺少 Demucs / VoxCPM2 包"
-          : !dubbing.device_ready
-            ? `PyTorch / ${dubbing.device || "cuda"} 不可用${dubbing.runtime_error ? `：${dubbing.runtime_error}` : ""}`
-          : `缺少本地模型 ${dubbing.model_path || "models/VoxCPM2"}`);
+          : dubbing.entrypoint_ready === false
+            ? `配音入口无法加载${dubbing.runtime_error ? `：${dubbing.runtime_error}` : ""}`
+            : dubbing.torchcodec_ready === false
+              ? (dubbing.preflight_error || "TorchCodec / FFmpeg Shared 预检失败")
+              : !dubbing.device_ready
+                ? `PyTorch / ${dubbing.device || "cuda"} 不可用${dubbing.runtime_error ? `：${dubbing.runtime_error}` : ""}`
+                : `缺少本地模型 ${dubbing.model_path || "models/VoxCPM2"}`);
     dubbingHint.textContent = dubbing.configured
       ? `配音环境已就绪 · ${dubbing.device || "cuda"} · ${dubbing.model_path || "VoxCPM2"}`
       : `配音环境未就绪：${dubbingMissing}`;
@@ -380,6 +450,15 @@ function automationRequestValues(autoPublish) {
     automation_render_mode: settings.renderMode,
     automation_failure_policy: settings.failurePolicy,
     automation_silent_video_policy: settings.silentVideoPolicy,
+    automation_dubbing_review_policy: settings.dubbingReviewPolicy,
+    ...(autoPublish ? {
+      dubbing_enabled: settings.dubbingEnabled,
+      dubbing_reference_mode: settings.dubbingReferenceMode,
+      dubbing_reference_start: settings.dubbingReferenceStart,
+      dubbing_reference_end: settings.dubbingReferenceEnd,
+      dubbing_subtitle_display: settings.dubbingSubtitleDisplay,
+      force_dubbing: false,
+    } : {}),
   };
 }
 
@@ -1389,8 +1468,21 @@ async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false
   const chineseSource = autoPublish
     ? automation.chinesePolicy === "api_always" ? "deepseek" : "auto"
     : $("#chineseSubtitleSource").value;
-  const dubbingEnabled = !autoPublish
-    && (workflow === "dubbing" || $("#dubbingEnabled").checked);
+  const dubbingEnabled = autoPublish
+    ? automation.dubbingEnabled
+    : (workflow === "dubbing" || $("#dubbingEnabled").checked);
+  const dubbingReferenceMode = autoPublish
+    ? automation.dubbingReferenceMode
+    : $("#dubbingReferenceMode").value;
+  const dubbingReferenceStart = autoPublish
+    ? automation.dubbingReferenceStart
+    : $("#dubbingReferenceStart").value;
+  const dubbingReferenceEnd = autoPublish
+    ? automation.dubbingReferenceEnd
+    : $("#dubbingReferenceEnd").value;
+  const dubbingSubtitleDisplay = autoPublish
+    ? automation.dubbingSubtitleDisplay
+    : $("#dubbingSubtitleDisplay").value;
   if (dubbingEnabled && chineseSource === "youtube_auto") {
     return toast("中文配音只使用现有 zh.reviewed.srt 或 AI 翻译生成的 zh.clean.srt", true);
   }
@@ -1428,10 +1520,10 @@ async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false
           ? automation.englishPolicy !== "youtube_first"
           : true,
         dubbing_enabled: dubbingEnabled,
-        dubbing_reference_mode: $("#dubbingReferenceMode").value,
-        dubbing_reference_start: $("#dubbingReferenceStart").value,
-        dubbing_reference_end: $("#dubbingReferenceEnd").value,
-        dubbing_subtitle_display: $("#dubbingSubtitleDisplay").value,
+        dubbing_reference_mode: dubbingReferenceMode,
+        dubbing_reference_start: dubbingReferenceStart,
+        dubbing_reference_end: dubbingReferenceEnd,
+        dubbing_subtitle_display: dubbingSubtitleDisplay,
         force_dubbing: Boolean(forceDubbing),
         ...automationRequestValues(autoPublish),
       }),
@@ -1483,6 +1575,12 @@ const automationControls = [
   "#automationTarget",
   "#automationEnglishPolicy",
   "#automationChinesePolicy",
+  "#automationDubbingEnabled",
+  "#automationDubbingReferenceMode",
+  "#automationDubbingReferenceStart",
+  "#automationDubbingReferenceEnd",
+  "#automationDubbingSubtitleDisplay",
+  "#automationDubbingReviewPolicy",
   "#automationRenderMode",
   "#automationFailurePolicy",
   "#automationSilentVideoPolicy",

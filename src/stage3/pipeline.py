@@ -47,7 +47,7 @@ GLOSSARY_DEFAULT = {
     "preferred_translations": {},
     "notes": [],
 }
-YOUTUBE_CLEANER_VERSION = "stage3-youtube-clean-v2"
+YOUTUBE_CLEANER_VERSION = "stage3-youtube-clean-v3"
 TRANSLATION_STAGE_VERSION = "stage3-translation-stage-v2"
 
 

@@ -16,6 +16,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.dubbing.runtime import activate_project_tools
+
+
+# This mutates only this process and descendants. It never changes the Windows
+# user/system PATH, and it happens before optional audio libraries are imported.
+activate_project_tools(PROJECT_ROOT)
+
 from src.dubbing.config import load_dubbing_config
 from src.dubbing.pipeline import DubbingError, DubbingPipeline
 

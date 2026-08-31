@@ -89,6 +89,26 @@ class TranslationStructureTests(TestCase):
             report["segment_payload_overflow_details"][0]["reasons"],
         )
 
+    def test_sub_second_cue_with_41_character_payload_requires_review(self) -> None:
+        source = [SubtitleSegment(154, 492.52, 492.86, "anime.")]
+        translated = [
+            TranslationSegment(
+                154,
+                492.52,
+                492.86,
+                source[0].text,
+                "好吧，所以明确地说，这两个是我目前最喜欢 的模型，原因就是我说的那些，但让我们给其他几个排名。",
+                "",
+            )
+        ]
+        report = translation_structure_quality(source, translated)
+        self.assertEqual(report["status"], "REVIEW_REQUIRED")
+        self.assertEqual(report["segment_payload_overflow_ids"], [154])
+        self.assertIn(
+            "TIMELINE_DENSITY",
+            report["segment_payload_overflow_details"][0]["reasons"],
+        )
+
 
 class Stage3PipelineTests(TestCase):
     def test_publish_metadata_can_use_video_metadata_without_subtitles(self) -> None:

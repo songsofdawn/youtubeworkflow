@@ -11,14 +11,19 @@ from ..stage3.subtitle_writer import read_srt
 from ..stage4.input_resolver import resolve_source_video
 from ..stage4.media_probe import probe_media
 from ..stage4.stage4_manifest import (
-    atomic_write_json,
     hash_json,
     sha256_file,
     utc_now,
 )
 from .config import resolve_model_path
 from .demucs import DemucsSeparator, run_checked, valid_wav
+from .manifest import ManifestSaveError, load_manifest, save_manifest, save_segment_metadata
 from .mixer import build_chinese_voice_track, mix_background
+from .runtime import (
+    DubbingPreflightError,
+    build_dubbing_subprocess_env,
+    ensure_dubbing_runtime,
+)
 from .timing import adapt_segment, plan_duration, wav_duration
 from .voxcpm import VoxCPM2Synthesizer
 
@@ -127,6 +132,7 @@ class DubbingPipeline:
         synthesizer_factory: Callable[..., Any] = VoxCPM2Synthesizer,
         separator_factory: Callable[..., Any] = DemucsSeparator,
         command_runner: Callable[..., None] = run_checked,
+        runtime_preflight: Callable[[Path, Path], Any] = ensure_dubbing_runtime,
     ) -> None:
         self.project_root = Path(project_root).resolve()
         self.config = dict(config)
@@ -141,14 +147,30 @@ class DubbingPipeline:
         self.synthesizer_factory = synthesizer_factory
         self.separator_factory = separator_factory
         self.command_runner = command_runner
+        self.runtime_preflight = runtime_preflight
+        self.subprocess_env = build_dubbing_subprocess_env(self.project_root)
 
     @staticmethod
     def _load_manifest(path: Path) -> dict[str, Any]:
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8-sig"))
-        except (OSError, json.JSONDecodeError):
-            return {}
-        return payload if isinstance(payload, dict) else {}
+        return load_manifest(path)
+
+    def _save_manifest(self, path: Path, manifest: dict[str, Any]) -> None:
+        save_manifest(path, manifest, log=self._log)
+
+    def _run_command(
+        self,
+        command: list[Path | str],
+        *,
+        cwd: Path | str | None = None,
+        log: Callable[[str], None] | None = None,
+        **_: Any,
+    ) -> None:
+        self.command_runner(
+            command,
+            cwd=cwd,
+            log=log,
+            env=self.subprocess_env,
+        )
 
     @staticmethod
     def _relative(path: Path, root: Path) -> str:
@@ -181,7 +203,7 @@ class DubbingPipeline:
         temporary = reference.with_name(f".{reference.stem}-{os.getpid()}.tmp.wav")
         temporary.unlink(missing_ok=True)
         try:
-            self.command_runner(
+            self._run_command(
                 [
                     self.ffmpeg_path,
                     "-hide_banner",
@@ -306,6 +328,15 @@ class DubbingPipeline:
         root = Path(video_dir).resolve()
         if not root.is_dir():
             raise DubbingError("VIDEO_DIR_NOT_FOUND", f"视频任务目录不存在：{root}")
+        try:
+            self.runtime_preflight(self.project_root, self.python_executable)
+        except DubbingPreflightError as exc:
+            if exc.details:
+                self._log(
+                    "[DUBBING] Preflight detail: "
+                    + json.dumps(exc.details, ensure_ascii=False)
+                )
+            raise DubbingError(exc.code, exc.message, details=exc.details) from exc
         if not self.ffmpeg_path.is_file():
             raise DubbingError("FFMPEG_NOT_FOUND", f"FFmpeg 不存在：{self.ffmpeg_path}")
         if not self.ffprobe_path.is_file():
@@ -313,9 +344,11 @@ class DubbingPipeline:
         work_dir = root / "dubbing"
         work_dir.mkdir(parents=True, exist_ok=True)
         (work_dir / "segments" / "adapted").mkdir(parents=True, exist_ok=True)
+        metadata_dir = work_dir / "segments" / "metadata"
+        metadata_dir.mkdir(parents=True, exist_ok=True)
         manifest_path = work_dir / "manifest.json"
-        manifest = self._load_manifest(manifest_path)
-        existing_segments = manifest.get("segments")
+        loaded_manifest = self._load_manifest(manifest_path)
+        existing_segments = loaded_manifest.get("segments")
         if not isinstance(existing_segments, list):
             existing_segments = []
         previous_segments: dict[int, dict[str, Any]] = {}
@@ -332,36 +365,36 @@ class DubbingPipeline:
             "version": 1,
             "tts_backend": "voxcpm2",
             "status": "RUNNING",
-            "started_at": manifest.get("started_at") or utc_now(),
+            "started_at": loaded_manifest.get("started_at") or utc_now(),
             "updated_at": utc_now(),
             "warnings": (
-                list(manifest.get("warnings") or [])
-                if isinstance(manifest.get("warnings"), list)
+                list(loaded_manifest.get("warnings") or [])
+                if isinstance(loaded_manifest.get("warnings"), list)
                 else []
             ),
             "errors": (
-                list(manifest.get("errors") or [])
-                if isinstance(manifest.get("errors"), list)
+                list(loaded_manifest.get("errors") or [])
+                if isinstance(loaded_manifest.get("errors"), list)
                 else []
             ),
             "error_history": (
-                list(manifest.get("error_history") or [])
-                if isinstance(manifest.get("error_history"), list)
+                list(loaded_manifest.get("error_history") or [])
+                if isinstance(loaded_manifest.get("error_history"), list)
                 else []
             ),
             "reference": (
-                manifest.get("reference")
-                if isinstance(manifest.get("reference"), dict)
+                loaded_manifest.get("reference")
+                if isinstance(loaded_manifest.get("reference"), dict)
                 else {}
             ),
             "checkpoints": (
-                manifest.get("checkpoints")
-                if isinstance(manifest.get("checkpoints"), dict)
+                loaded_manifest.get("checkpoints")
+                if isinstance(loaded_manifest.get("checkpoints"), dict)
                 else {}
             ),
             "segments": list(previous_segments.values()),
         }
-        atomic_write_json(manifest_path, manifest)
+        self._save_manifest(manifest_path, manifest)
 
         try:
             self._notify("准备音频", 2)
@@ -391,7 +424,7 @@ class DubbingPipeline:
                     "media_duration": media_duration,
                 }
             )
-            atomic_write_json(manifest_path, manifest)
+            self._save_manifest(manifest_path, manifest)
 
             self._notify("分离人声", 8)
             separator = self.separator_factory(
@@ -400,6 +433,7 @@ class DubbingPipeline:
                 config=dict(self.config.get("demucs") or {}),
                 log=self._log,
                 command_runner=self.command_runner,
+                subprocess_env=self.subprocess_env,
             )
             separation = separator.prepare(
                 source_video,
@@ -410,7 +444,7 @@ class DubbingPipeline:
                 "reused": bool(separation.get("reused")),
                 "checkpoint": separation.get("checkpoint") or {},
             }
-            atomic_write_json(manifest_path, manifest)
+            self._save_manifest(manifest_path, manifest)
 
             self._notify("准备参考声音", 24)
             reference, reference_record = self._prepare_reference(
@@ -425,7 +459,7 @@ class DubbingPipeline:
                 force=force_separation,
             )
             manifest["reference"] = reference_record
-            atomic_write_json(manifest_path, manifest)
+            self._save_manifest(manifest_path, manifest)
 
             model_path = resolve_model_path(self.project_root, self.config)
             tts_settings = dict(self.config.get("tts") or {})
@@ -454,7 +488,23 @@ class DubbingPipeline:
                     ],
                 }
             )
-            prepared: list[dict[str, Any]] = []
+            tts_context_fingerprint = hash_json(
+                {
+                    "version": 1,
+                    "subtitle_hash": manifest["subtitle_hash"],
+                    "reference_hash": reference_hash,
+                    "model": model_identifier,
+                    "tts": tts_settings,
+                }
+            )
+            manifest["tts_context"] = {
+                "fingerprint": tts_context_fingerprint,
+                "model": model_identifier,
+                "reference_hash": reference_hash,
+            }
+            self._save_manifest(manifest_path, manifest)
+
+            candidates: list[dict[str, Any]] = []
             pending_count = 0
             for row in segments:
                 input_hash = hash_json(
@@ -470,22 +520,99 @@ class DubbingPipeline:
                 )
                 raw_path = work_dir / "segments" / f"{int(row['index']):06d}.wav"
                 previous = previous_segments.get(int(row["index"]), {})
-                raw_reusable = (
-                    not force_tts
-                    and previous.get("input_hash") == input_hash
-                    and valid_wav(raw_path)
-                    and previous.get("wav_hash") == sha256_file(raw_path)
-                )
-                if not raw_reusable:
-                    pending_count += 1
-                prepared.append(
+                candidates.append(
                     {
                         **row,
                         "input_hash": input_hash,
                         "raw_path": raw_path,
-                        "raw_reusable": raw_reusable,
+                        "metadata_path": metadata_dir / f"{int(row['index']):06d}.json",
                         "previous": previous,
                     }
+                )
+
+            loaded_reference = (
+                loaded_manifest.get("reference")
+                if isinstance(loaded_manifest.get("reference"), dict)
+                else {}
+            )
+            loaded_context = (
+                loaded_manifest.get("tts_context")
+                if isinstance(loaded_manifest.get("tts_context"), dict)
+                else {}
+            )
+            global_resume_match = bool(
+                str(loaded_manifest.get("status") or "").upper()
+                in {"RUNNING", "FAILED"}
+                and loaded_manifest.get("subtitle_hash") == manifest["subtitle_hash"]
+                and loaded_reference.get("output_hash") == reference_hash
+            )
+            context_witness = any(
+                item["previous"].get("input_hash") == item["input_hash"]
+                for item in candidates
+                if item["previous"]
+            )
+            orphan_recovery_allowed = bool(
+                global_resume_match
+                and (
+                    loaded_context.get("fingerprint") == tts_context_fingerprint
+                    or context_witness
+                )
+            )
+
+            prepared: list[dict[str, Any]] = []
+            recovered_from_disk = 0
+            for item in candidates:
+                raw_path = Path(item["raw_path"])
+                previous = item["previous"]
+                metadata = load_manifest(item["metadata_path"])
+                raw_valid = valid_wav(raw_path)
+                raw_hash = sha256_file(raw_path) if raw_valid else ""
+                raw_duration = wav_duration(raw_path) if raw_valid else 0.0
+                manifest_reusable = (
+                    not force_tts
+                    and previous.get("input_hash") == item["input_hash"]
+                    and raw_valid
+                    and raw_duration > 0
+                    and previous.get("wav_hash") == raw_hash
+                )
+                metadata_reusable = (
+                    not force_tts
+                    and metadata.get("input_hash") == item["input_hash"]
+                    and raw_valid
+                    and raw_duration > 0
+                    and metadata.get("wav_hash") == raw_hash
+                )
+                orphan_reusable = (
+                    not force_tts
+                    and not previous
+                    and not metadata
+                    and orphan_recovery_allowed
+                    and raw_valid
+                    and raw_duration > 0
+                )
+                raw_reusable = bool(
+                    manifest_reusable or metadata_reusable or orphan_reusable
+                )
+                if not raw_reusable:
+                    pending_count += 1
+                elif metadata_reusable:
+                    item["recovered_from"] = "segment_metadata"
+                elif orphan_reusable:
+                    item["recovered_from"] = "validated_disk_scan"
+                    recovered_from_disk += 1
+                else:
+                    item["recovered_from"] = "manifest"
+                item.update(
+                    raw_reusable=raw_reusable,
+                    raw_hash=raw_hash,
+                    raw_duration=raw_duration,
+                )
+                prepared.append(item)
+
+            if recovered_from_disk:
+                self._log(
+                    "[DUBBING] Resume scan recovered "
+                    f"{recovered_from_disk} valid segment WAV file(s) newer than manifest.json."
                 )
 
             synthesizer: Any | None = None
@@ -532,29 +659,56 @@ class DubbingPipeline:
                                 updated_at=utc_now(),
                                 segments=current,
                             )
-                            atomic_write_json(manifest_path, manifest)
+                            self._save_manifest(manifest_path, manifest)
                             raise DubbingError(
                                 "TTS_SEGMENT_FAILED",
                                 f"第 {index} 句中文配音生成失败；已保存前面完成的片段，重试会从此句继续。",
                                 details={"index": index, "error": str(exc)},
                             ) from exc
+                        generated_duration = wav_duration(raw_path)
+                        wav_hash = sha256_file(raw_path)
+                        segment_metadata = {
+                            "version": 1,
+                            "index": index,
+                            "input_hash": str(item["input_hash"]),
+                            "wav": self._relative(raw_path, work_dir),
+                            "wav_hash": wav_hash,
+                            "generated_duration": generated_duration,
+                            "completed_at": utc_now(),
+                        }
+                        save_segment_metadata(item["metadata_path"], segment_metadata)
                         entry.update(
                             status="generated",
-                            wav_hash=sha256_file(raw_path),
-                            generated_duration=wav_duration(raw_path),
+                            wav_hash=wav_hash,
+                            generated_duration=generated_duration,
                             generated_at=utc_now(),
                         )
                         manifest.update(
                             updated_at=utc_now(),
                             segments=[*completed_rows, entry],
                         )
-                        atomic_write_json(manifest_path, manifest)
+                        self._save_manifest(manifest_path, manifest)
                     else:
+                        if item.get("recovered_from") == "validated_disk_scan":
+                            save_segment_metadata(
+                                item["metadata_path"],
+                                {
+                                    "version": 1,
+                                    "index": index,
+                                    "input_hash": str(item["input_hash"]),
+                                    "wav": self._relative(raw_path, work_dir),
+                                    "wav_hash": str(item["raw_hash"]),
+                                    "generated_duration": float(item["raw_duration"]),
+                                    "completed_at": utc_now(),
+                                    "recovered_from": "validated_disk_scan",
+                                },
+                            )
                         entry.update(
                             status="generated",
-                            wav_hash=sha256_file(raw_path),
-                            generated_duration=wav_duration(raw_path),
+                            wav_hash=str(item["raw_hash"]),
+                            generated_duration=float(item["raw_duration"]),
                             reused=True,
+                            recovered_from=str(item.get("recovered_from") or "manifest"),
                         )
 
                     self._notify(f"时长处理：{offset} / {total}", progress, offset, total)
@@ -605,7 +759,7 @@ class DubbingPipeline:
                                 plan,
                                 ffmpeg_path=self.ffmpeg_path,
                                 log=self._log,
-                                command_runner=self.command_runner,
+                        command_runner=self._run_command,
                             )
                         )
                     else:
@@ -622,7 +776,7 @@ class DubbingPipeline:
                             f"Segment {index} exceeds target duration significantly; marked for review."
                         )
                         warnings.append(warning)
-                        self._log(f"[DUBBING] {warning}")
+                        self._log(f"[DUBBING] WARNING: {warning}")
                     entry.update(
                         status="done",
                         timing=plan.to_dict(),
@@ -640,7 +794,7 @@ class DubbingPipeline:
                         segments=completed_rows,
                         warnings=sorted(set(list(manifest.get("warnings") or []) + warnings)),
                     )
-                    atomic_write_json(manifest_path, manifest)
+                    self._save_manifest(manifest_path, manifest)
             finally:
                 if synthesizer is not None:
                     close = getattr(synthesizer, "close", None)
@@ -689,7 +843,7 @@ class DubbingPipeline:
                         (self.config.get("mix") or {}).get("sample_rate", 48000)
                     ),
                     log=self._log,
-                    command_runner=self.command_runner,
+                    command_runner=self._run_command,
                 )
             checkpoints["timeline"] = {
                 "fingerprint": timeline_fingerprint,
@@ -698,7 +852,7 @@ class DubbingPipeline:
                 "reused": timeline_reused,
                 "completed_at": utc_now(),
             }
-            atomic_write_json(manifest_path, manifest)
+            self._save_manifest(manifest_path, manifest)
 
             self._notify("混合背景音", 92)
             self._log("[DUBBING] Mixing background audio...")
@@ -732,7 +886,7 @@ class DubbingPipeline:
                     limiter=float(mix_settings.get("limiter", 0.95)),
                     media_duration=media_duration,
                     log=self._log,
-                    command_runner=self.command_runner,
+                    command_runner=self._run_command,
                 )
             checkpoints["mix"] = {
                 "fingerprint": mix_fingerprint,
@@ -763,7 +917,7 @@ class DubbingPipeline:
                     )[-20:],
                 }
             )
-            atomic_write_json(manifest_path, manifest)
+            self._save_manifest(manifest_path, manifest)
             self._notify("中文配音完成", 100, len(completed_rows), len(completed_rows))
             self._log("[DUBBING] Completed.")
             return DubbingResult(
@@ -773,12 +927,28 @@ class DubbingPipeline:
                 needs_review=needs_review,
                 warnings=list(manifest["warnings"]),
             )
+        except ManifestSaveError as exc:
+            raise DubbingError(
+                "DUBBING_MANIFEST_SAVE_FAILED",
+                str(exc),
+                details={"path": str(exc.path), "attempts": exc.attempts},
+            ) from exc
         except DubbingError as exc:
             manifest.update(status="FAILED", updated_at=utc_now())
             errors = list(manifest.get("errors") or [])
             errors.append(exc.to_dict())
             manifest["errors"] = errors[-20:]
-            atomic_write_json(manifest_path, manifest)
+            try:
+                self._save_manifest(manifest_path, manifest)
+            except ManifestSaveError as save_exc:
+                raise DubbingError(
+                    "DUBBING_MANIFEST_SAVE_FAILED",
+                    str(save_exc),
+                    details={
+                        "path": str(save_exc.path),
+                        "attempts": save_exc.attempts,
+                    },
+                ) from save_exc
             raise
         except (OSError, RuntimeError, ValueError) as exc:
             wrapped = DubbingError("DUBBING_FAILED", str(exc))
@@ -786,7 +956,17 @@ class DubbingPipeline:
             errors = list(manifest.get("errors") or [])
             errors.append(wrapped.to_dict())
             manifest["errors"] = errors[-20:]
-            atomic_write_json(manifest_path, manifest)
+            try:
+                self._save_manifest(manifest_path, manifest)
+            except ManifestSaveError as save_exc:
+                raise DubbingError(
+                    "DUBBING_MANIFEST_SAVE_FAILED",
+                    str(save_exc),
+                    details={
+                        "path": str(save_exc.path),
+                        "attempts": save_exc.attempts,
+                    },
+                ) from save_exc
             raise wrapped from exc
 
 

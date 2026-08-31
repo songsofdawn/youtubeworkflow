@@ -129,6 +129,7 @@ class ControlPanelApp:
                 and dubbing["demucs_ready"]
                 and dubbing["voxcpm_ready"]
                 and dubbing["device_ready"]
+                and dubbing["torchcodec_ready"]
             ),
             "voxcpm2_model": bool(dubbing["model_ready"]),
         }
@@ -479,6 +480,13 @@ class ControlPanelApp:
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
         automation_silent_video_policy: str = "publish_original",
+        automation_dubbing_review_policy: str = "block",
+        dubbing_enabled: bool = False,
+        dubbing_reference_mode: str = "auto",
+        dubbing_reference_start: float | None = None,
+        dubbing_reference_end: float | None = None,
+        dubbing_subtitle_display: str = "chinese",
+        force_dubbing: bool = False,
     ) -> list[dict[str, Any]]:
         if not confirm_rights:
             raise ValueError("下载前必须确认拥有下载和使用这些视频的权利")
@@ -491,6 +499,32 @@ class ControlPanelApp:
                     self.searcher.record_discovery_feedback(item, "selected")
         else:
             normalized = normalize_video_inputs(raw_input)
+        dubbing = self._dubbing_payload(
+            enabled=dubbing_enabled,
+            reference_mode=dubbing_reference_mode,
+            reference_start=dubbing_reference_start,
+            reference_end=dubbing_reference_end,
+            subtitle_display=dubbing_subtitle_display,
+            force=force_dubbing,
+        )
+        if auto_publish and dubbing["dubbing_enabled"]:
+            normalized_target = str(automation_target or "publish").strip().casefold()
+            normalized_render_mode = str(
+                automation_render_mode or "hardsub"
+            ).strip().casefold()
+            normalized_chinese_policy = str(
+                automation_chinese_policy
+                or ("youtube_preferred" if auto_translate_missing else "youtube_only")
+            ).strip().casefold()
+            if normalized_target == "subtitles":
+                raise ValueError("仅生成字幕的自动化流程不能同时生成中文配音")
+            if normalized_render_mode == "ass":
+                raise ValueError("中文配音需要生成带音轨的 MP4 或 MKV，不能只生成 ASS")
+            if normalized_chinese_policy != "api_always":
+                raise ValueError(
+                    "无人值守中文配音必须选择“始终使用 API 翻译”，"
+                    "因为配音不会直接使用 YouTube 自动中文字幕"
+                )
         automation = self._automation_payload(
             enabled=auto_publish,
             publish_metadata_provider=publish_metadata_provider,
@@ -516,6 +550,7 @@ class ControlPanelApp:
                 or ("youtube_preferred" if auto_translate_missing else "youtube_only")
             ),
             silent_video_policy=automation_silent_video_policy,
+            dubbing_review_policy=automation_dubbing_review_policy,
         )
         jobs = [
             self.store.enqueue(
@@ -524,6 +559,7 @@ class ControlPanelApp:
                 {
                     "url": item["url"],
                     "video_id": item["video_id"],
+                    **dubbing,
                     **automation,
                 },
                 resource_class="network",
@@ -552,6 +588,7 @@ class ControlPanelApp:
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
         automation_silent_video_policy: str = "publish_original",
+        automation_dubbing_review_policy: str = "block",
         dubbing_enabled: bool = False,
         dubbing_reference_mode: str = "auto",
         dubbing_reference_start: float | None = None,
@@ -599,50 +636,27 @@ class ControlPanelApp:
             raise ValueError("请至少选择一个已下载的视频")
         if len(tasks) > 50:
             raise ValueError("一次最多加入 50 个视频")
-        dubbing_enabled = bool(dubbing_enabled or workflow == "dubbing")
-        dubbing_reference_mode = str(dubbing_reference_mode or "auto").strip().casefold()
-        dubbing_subtitle_display = str(
-            dubbing_subtitle_display or "chinese"
-        ).strip().casefold()
-        if dubbing_enabled:
+        dubbing = self._dubbing_payload(
+            enabled=bool(dubbing_enabled or workflow == "dubbing"),
+            reference_mode=dubbing_reference_mode,
+            reference_start=dubbing_reference_start,
+            reference_end=dubbing_reference_end,
+            subtitle_display=dubbing_subtitle_display,
+            force=force_dubbing,
+        )
+        if dubbing["dubbing_enabled"]:
             if workflow == "subtitles":
                 raise ValueError("仅生成字幕的流程不能同时生成中文配音")
             if render_mode == "ass":
                 raise ValueError("中文配音需要生成带音轨的 MP4 或 MKV，不能只生成 ASS")
-            if dubbing_reference_mode not in {"auto", "manual"}:
-                raise ValueError("中文配音参考声音模式只支持自动或手动")
-            if dubbing_subtitle_display not in {"chinese", "bilingual"}:
-                raise ValueError("中文配音字幕显示只支持中文或中英双语")
             if chinese_subtitle_source == "youtube_auto":
                 raise ValueError(
                     "中文配音只读取 zh.reviewed.srt 或 AI 翻译生成的 zh.clean.srt"
                 )
-            if dubbing_reference_mode == "manual":
-                if dubbing_reference_start is None or dubbing_reference_end is None:
-                    raise ValueError("手动参考声音必须填写开始和结束时间")
-                if (
-                    float(dubbing_reference_start) < 0
-                    or float(dubbing_reference_end) <= float(dubbing_reference_start)
-                ):
-                    raise ValueError("手动参考声音时间范围无效")
-            dubbing_health = self.health()["dubbing"]
-            if not (
-                dubbing_health["runtime_ready"]
-                and dubbing_health["demucs_ready"]
-                and dubbing_health["voxcpm_ready"]
-            ):
+            if auto_publish and normalized_chinese_policy != "api_always":
                 raise ValueError(
-                    "中文配音运行时缺少 Demucs / VoxCPM2；"
-                    "请先按 requirements_dubbing.txt 创建 .venv_dubbing"
-                )
-            if not dubbing_health["device_ready"]:
-                raise ValueError(
-                    "中文配音运行时的 PyTorch / CUDA 不可用；"
-                    "请检查独立运行时与 NVIDIA 驱动"
-                )
-            if not dubbing_health["model_ready"]:
-                raise ValueError(
-                    f"VoxCPM2 本地模型未就绪：{dubbing_health['model_path']}"
+                    "无人值守中文配音必须选择“始终使用 API 翻译”，"
+                    "因为配音不会直接使用 YouTube 自动中文字幕"
                 )
         if (
             auto_publish
@@ -657,7 +671,7 @@ class ControlPanelApp:
             task_dirs[task] = self.scanner.resolve_task(task)
             if task not in validated:
                 validated.append(task)
-        if workflow in {"render", "dubbing"} and dubbing_enabled:
+        if workflow in {"render", "dubbing"} and dubbing["dubbing_enabled"]:
             missing_dubbing_subtitles = [
                 task
                 for task in validated
@@ -735,6 +749,7 @@ class ControlPanelApp:
             english_policy=normalized_english_policy,
             chinese_policy=normalized_chinese_policy,
             silent_video_policy=automation_silent_video_policy,
+            dubbing_review_policy=automation_dubbing_review_policy,
         )
         jobs = [
             self.store.enqueue(
@@ -750,12 +765,7 @@ class ControlPanelApp:
                     ),
                     "english_subtitle_policy": normalized_english_policy,
                     "auto_translate_missing": bool(auto_translate_missing),
-                    "dubbing_enabled": dubbing_enabled,
-                    "dubbing_reference_mode": dubbing_reference_mode,
-                    "dubbing_reference_start": dubbing_reference_start,
-                    "dubbing_reference_end": dubbing_reference_end,
-                    "dubbing_subtitle_display": dubbing_subtitle_display,
-                    "force_dubbing": bool(force_dubbing),
+                    **dubbing,
                     **automation,
                 },
                 resource_class="gpu_heavy",
@@ -764,6 +774,81 @@ class ControlPanelApp:
         ]
         self.worker.wake()
         return jobs
+
+    def _dubbing_payload(
+        self,
+        *,
+        enabled: bool = False,
+        reference_mode: str = "auto",
+        reference_start: float | None = None,
+        reference_end: float | None = None,
+        subtitle_display: str = "chinese",
+        force: bool = False,
+    ) -> dict[str, Any]:
+        normalized_enabled = bool(enabled)
+        normalized_reference_mode = str(reference_mode or "auto").strip().casefold()
+        normalized_subtitle_display = str(
+            subtitle_display or "chinese"
+        ).strip().casefold()
+        normalized_reference_start = (
+            float(reference_start) if reference_start is not None else None
+        )
+        normalized_reference_end = (
+            float(reference_end) if reference_end is not None else None
+        )
+        if normalized_enabled:
+            if normalized_reference_mode not in {"auto", "manual"}:
+                raise ValueError("中文配音参考声音模式只支持自动或手动")
+            if normalized_subtitle_display not in {"chinese", "bilingual"}:
+                raise ValueError("中文配音字幕显示只支持中文或中英双语")
+            if normalized_reference_mode == "manual":
+                if normalized_reference_start is None or normalized_reference_end is None:
+                    raise ValueError("手动参考声音必须填写开始和结束时间")
+                if (
+                    normalized_reference_start < 0
+                    or normalized_reference_end <= normalized_reference_start
+                ):
+                    raise ValueError("手动参考声音时间范围无效")
+            dubbing_health = self.health()["dubbing"]
+            if not (
+                dubbing_health["runtime_ready"]
+                and dubbing_health["demucs_ready"]
+                and dubbing_health["voxcpm_ready"]
+            ):
+                raise ValueError(
+                    "中文配音运行时缺少 Demucs / VoxCPM2；"
+                    "请先按 requirements_dubbing.txt 创建 .venv_dubbing"
+                )
+            if dubbing_health.get("entrypoint_ready") is False:
+                detail = str(dubbing_health.get("runtime_error") or "").strip()
+                raise ValueError(
+                    "中文配音入口无法加载"
+                    + (f"：{detail}" if detail else "；请检查独立运行时依赖")
+                )
+            if dubbing_health.get("torchcodec_ready") is False:
+                detail = str(
+                    dubbing_health.get("preflight_error")
+                    or dubbing_health.get("runtime_error")
+                    or ""
+                ).strip()
+                raise ValueError(detail or "中文配音 TorchCodec / FFmpeg Shared 预检失败")
+            if not dubbing_health["device_ready"]:
+                raise ValueError(
+                    "中文配音运行时的 PyTorch / CUDA 不可用；"
+                    "请检查独立运行时与 NVIDIA 驱动"
+                )
+            if not dubbing_health["model_ready"]:
+                raise ValueError(
+                    f"VoxCPM2 本地模型未就绪：{dubbing_health['model_path']}"
+                )
+        return {
+            "dubbing_enabled": normalized_enabled,
+            "dubbing_reference_mode": normalized_reference_mode,
+            "dubbing_reference_start": normalized_reference_start,
+            "dubbing_reference_end": normalized_reference_end,
+            "dubbing_subtitle_display": normalized_subtitle_display,
+            "force_dubbing": bool(force),
+        }
 
     def _automation_payload(
         self,
@@ -779,6 +864,7 @@ class ControlPanelApp:
         english_policy: str,
         chinese_policy: str,
         silent_video_policy: str,
+        dubbing_review_policy: str,
     ) -> dict[str, Any]:
         if not enabled:
             return {}
@@ -816,6 +902,11 @@ class ControlPanelApp:
         ).strip().casefold()
         if normalized_silent_video_policy not in {"publish_original", "skip"}:
             raise ValueError("不支持的无配音视频处理策略")
+        normalized_dubbing_review_policy = str(
+            dubbing_review_policy or "block"
+        ).strip().casefold()
+        if normalized_dubbing_review_policy not in {"block", "continue"}:
+            raise ValueError("不支持的中文配音复核策略")
         health = self.health()
         api_ready = bool(health["checks"]["translation_api"])
         local_ready = bool(
@@ -865,6 +956,7 @@ class ControlPanelApp:
             "render_mode": normalized_render_mode,
             "automation_failure_policy": normalized_failure_policy,
             "automation_silent_video_policy": normalized_silent_video_policy,
+            "automation_dubbing_review_policy": normalized_dubbing_review_policy,
             "allow_paid_api": bool(
                 api_ready
                 and (

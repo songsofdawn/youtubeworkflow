@@ -7,7 +7,7 @@ import sys
 import tempfile
 import wave
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Mapping
 
 from ..stage4.stage4_manifest import atomic_write_json, sha256_file, utc_now
 
@@ -31,6 +31,7 @@ def run_checked(
     *,
     cwd: Path | str | None = None,
     log: LogCallback | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> None:
     args = [str(item) for item in command]
     try:
@@ -44,6 +45,7 @@ def run_checked(
             encoding="utf-8",
             errors="replace",
             shell=False,
+            env=dict(env) if env is not None else None,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
     except OSError as exc:
@@ -83,15 +85,22 @@ class DemucsSeparator:
         config: dict[str, Any] | None = None,
         log: LogCallback | None = None,
         command_runner: Callable[..., None] = run_checked,
+        subprocess_env: Mapping[str, str] | None = None,
     ) -> None:
         self.ffmpeg_path = Path(ffmpeg_path)
         self.python_executable = Path(python_executable or sys.executable)
         self.config = dict(config or {})
         self.log = log
         self.command_runner = command_runner
+        self.subprocess_env = dict(subprocess_env) if subprocess_env is not None else None
 
     def _run(self, command: list[Path | str], *, cwd: Path | None = None) -> None:
-        self.command_runner(command, cwd=cwd, log=self.log)
+        self.command_runner(
+            command,
+            cwd=cwd,
+            log=self.log,
+            env=self.subprocess_env,
+        )
 
     def _extract_source(self, source_video: Path, destination: Path) -> None:
         temporary = destination.with_name(f".{destination.stem}-{os.getpid()}.tmp.wav")

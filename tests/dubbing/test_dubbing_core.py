@@ -1,16 +1,22 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 import wave
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+import src.dubbing.config as dubbing_config
 from src.dubbing.config import load_dubbing_config, public_dubbing_health
 from src.dubbing.mixer import build_timeline_filter
 from src.dubbing.pipeline import DubbingError, DubbingPipeline, subtitle_segments
 from src.dubbing.timing import calculate_available_end, plan_duration
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def write_wav(path: Path, duration: float = 0.5, rate: int = 16000) -> None:
@@ -77,6 +83,83 @@ def fake_command_runner(command: list[object], **_: object) -> None:
 
 
 class DubbingCoreTests(unittest.TestCase):
+    def test_isolated_dubbing_import_does_not_load_stage3_or_discovery_pipeline(self) -> None:
+        script = (
+            "import sys;"
+            "import src.dubbing.config;"
+            "assert 'src.dubbing.pipeline' not in sys.modules;"
+            "import src.dubbing.pipeline;"
+            "assert 'src.stage3.pipeline' not in sys.modules;"
+            "assert 'src.discovery' not in sys.modules"
+        )
+        completed = subprocess.run(
+            [sys.executable, "-c", script],
+            cwd=PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+            timeout=20,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr or completed.stdout)
+
+    def test_runtime_probe_imports_the_real_dubbing_entrypoint(self) -> None:
+        completed = Mock(
+            returncode=0,
+            stdout=json.dumps(
+                {
+                    "torch_ready": True,
+                    "torch_version": "test",
+                    "entrypoint_ready": True,
+                    "cuda_available": True,
+                    "cuda_version": "test",
+                    "cuda_device_count": 1,
+                }
+            ),
+            stderr="",
+        )
+        dubbing_config._RUNTIME_PROBE_CACHE.clear()
+        with patch("src.dubbing.config.subprocess.run", return_value=completed) as run:
+            result = dubbing_config.probe_dubbing_runtime(
+                PROJECT_ROOT / ".venv_dubbing" / "Scripts" / "python.exe",
+                PROJECT_ROOT,
+            )
+        command = run.call_args.args[0]
+        self.assertIn("import src.dubbing.pipeline", command[2])
+        self.assertIn(repr(str(PROJECT_ROOT)), command[2])
+        self.assertTrue(result["entrypoint_ready"])
+
+    def test_health_rejects_a_runtime_whose_entrypoint_cannot_import(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "config").mkdir()
+            (root / "config" / "dubbing_config.json").write_text(
+                json.dumps({"voxcpm_model_path": "models/VoxCPM2"}),
+                encoding="utf-8",
+            )
+            runtime = root / "python.exe"
+            runtime.write_bytes(b"python")
+            with (
+                patch("src.dubbing.config.resolve_dubbing_python", return_value=runtime),
+                patch("src.dubbing.config.runtime_package_ready", return_value=True),
+                patch("src.dubbing.config.voxcpm_model_ready", return_value=True),
+                patch(
+                    "src.dubbing.config.probe_dubbing_runtime",
+                    return_value={
+                        "torch_ready": True,
+                        "entrypoint_ready": False,
+                        "cuda_available": True,
+                        "error": "No module named 'dependency'",
+                    },
+                ),
+            ):
+                health = public_dubbing_health(root)
+        self.assertFalse(health["configured"])
+        self.assertFalse(health["entrypoint_ready"])
+        self.assertFalse(health["device_ready"])
+        self.assertIn("dependency", health["runtime_error"])
+
     def test_srt_is_converted_to_ordered_segments(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "zh.clean.srt"
@@ -209,6 +292,7 @@ class DubbingResumeTests(unittest.TestCase):
             synthesizer_factory=factory,
             separator_factory=FakeSeparator,
             command_runner=fake_command_runner,
+            runtime_preflight=lambda *_: None,
         )
 
     @patch("src.dubbing.pipeline.probe_media")
@@ -278,6 +362,37 @@ class DubbingResumeTests(unittest.TestCase):
         changed = FakeSynthesizerFactory()
         self._pipeline(changed).run(self.task)
         self.assertEqual(changed.calls, ["修改后的第二句。"])
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_resume_recovers_valid_wav_that_manifest_did_not_record(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        initial = FakeSynthesizerFactory()
+        self._pipeline(initial).run(self.task)
+        self.assertEqual(initial.calls, ["第一句。", "第二句。"])
+
+        work_dir = self.task / "dubbing"
+        manifest_path = work_dir / "manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["status"] = "FAILED"
+        manifest["segments"] = manifest["segments"][:1]
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        (work_dir / "segments" / "metadata" / "000002.json").unlink()
+
+        resumed = FakeSynthesizerFactory()
+        self._pipeline(resumed).run(self.task)
+
+        self.assertEqual(resumed.calls, [])
+        recovered = json.loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            recovered["segments"][1]["recovered_from"],
+            "validated_disk_scan",
+        )
 
 
 if __name__ == "__main__":

@@ -2520,6 +2520,69 @@ class PublishingTests(TestCase):
         self.assertEqual(command[-1], str(publishing.expected_hardsub(task)))
         self.assertTrue(payload["prepare_hardsub"])
 
+    def test_dubbed_stage4_output_is_selected_and_pinned_for_publish(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
+            dubbed = task / "stage4" / "video" / "final_chinese_dubbed_hardsub.mp4"
+            dubbed.parent.mkdir(parents=True)
+            dubbed.write_bytes(b"dubbed-video")
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {
+                    "status": "STAGE4_COMPLETED",
+                    "hardsub_output_path": str(dubbed),
+                    "hardsub_output_hash": "dubbed-hash",
+                    "replacement_audio_path": str(task / "dubbing" / "dubbed_audio.wav"),
+                },
+            )
+            publishing = BiliupIntegration(project)
+            defaults = publishing.defaults(task)
+            payload = publishing.validate_submission(
+                task,
+                defaults | {"confirm_publish": True},
+            )
+            command = publishing.build_upload_command(task, payload)
+
+        self.assertEqual(defaults["media_name"], dubbed.name)
+        self.assertEqual(
+            payload["media_relpath"],
+            "stage4/video/final_chinese_dubbed_hardsub.mp4",
+        )
+        self.assertEqual(payload["media_hash"], "dubbed-hash")
+        self.assertFalse(payload["prepare_hardsub"])
+        self.assertEqual(command[-1], str(dubbed))
+
+    def test_missing_dubbed_output_never_falls_back_to_original_audio_render(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
+            missing = task / "stage4" / "video" / "final_chinese_dubbed_hardsub.mp4"
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {
+                    "status": "STAGE4_COMPLETED",
+                    "hardsub_output_path": str(missing),
+                    "replacement_audio_path": str(task / "dubbing" / "dubbed_audio.wav"),
+                },
+            )
+            publishing = BiliupIntegration(project)
+            defaults = publishing.defaults(task)
+
+            with self.assertRaisesRegex(ValueError, "不会静默改用原音轨"):
+                publishing.validate_submission(
+                    task,
+                    defaults | {"confirm_publish": True},
+                )
+
     def test_automatic_submission_accepts_generated_title_with_emoji(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
