@@ -7,6 +7,7 @@ from src.stage3.publish_metadata import (
     compose_bilingual_title,
     load_category_mapping,
     normalize_ai_recommendation,
+    normalize_title_prefix,
     normalize_tags,
     truncate_utf8,
     truncate_utf16,
@@ -40,8 +41,9 @@ class PublishMetadataTests(TestCase):
             mapping,
         )
         self.assertEqual(result["category_path"], "科技 / 计算机技术")
-        self.assertTrue(
-            result["upload_title"].startswith("【中英双语】如何构建可靠的软件系统｜")
+        self.assertEqual(
+            result["upload_title"],
+            "如何构建可靠的软件系统｜How to Build Reliable Software Systems",
         )
         self.assertEqual(
             result["tags"],
@@ -56,7 +58,7 @@ class PublishMetadataTests(TestCase):
             original_heading="【原视频简介】",
         )
         self.assertLessEqual(utf16_code_units(title), 80)
-        self.assertTrue(title.startswith("【中英双语】"))
+        self.assertFalse(title.startswith("【中英双语】"))
         self.assertLessEqual(utf16_code_units(description), 2000)
         self.assertLessEqual(utf8_bytes(description), 1900)
         self.assertIn("【原视频简介】", description)
@@ -70,6 +72,15 @@ class PublishMetadataTests(TestCase):
         self.assertLessEqual(utf16_code_units(title), 80)
         self.assertTrue(title.endswith("…"))
         self.assertIn("🤣🤣", title)
+
+    def test_title_prefix_is_optional_and_can_be_customized(self) -> None:
+        self.assertEqual(normalize_title_prefix("  【教程】\n"), "【教程】")
+        title = compose_bilingual_title(
+            "可靠的软件系统",
+            "Reliable Software Systems",
+            prefix="【教程】",
+        )
+        self.assertEqual(title, "【教程】可靠的软件系统｜Reliable Software Systems")
 
     def test_description_limit_matches_bilibili_utf16_counting(self) -> None:
         description = build_publish_description(

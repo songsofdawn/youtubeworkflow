@@ -18,7 +18,7 @@ from .subtitle_writer import atomic_write_json
 from .translation_qc import translation_payload_overflow
 
 
-PROMPT_VERSION = "stage3-translation-v5-dubbing-duration"
+PROMPT_VERSION = "stage3-translation-v6-dubbing-oral"
 TRANSLATION_CHECKPOINT_VERSION = "stage3-translation-checkpoint-v2"
 USAGE_KEYS = (
     "prompt_tokens", "completion_tokens", "total_tokens",
@@ -147,17 +147,25 @@ def build_messages(
     metadata: dict[str, str],
     *,
     polish: bool = False,
+    for_dubbing: bool = False,
 ) -> list[dict[str, str]]:
     action = (
-        "润色现有中文字幕；忠实原文，不新增事实，改成自然简洁的中文口语。"
+        "润色现有中文字幕；忠实原文，不新增事实，改成自然、简洁、适合字幕阅读的中文。"
         if polish else
-        "将目标英文字幕忠实翻译成自然简洁的中文口语；保留事实、语气、专名、梗和讽刺，不增不漏。"
+        "将目标英文字幕忠实翻译成自然、简洁、适合字幕阅读的中文；保留事实、语气、专名、梗和讽刺，不增不漏。"
+    )
+    dubbing_instruction = (
+        "由于译文将用于中文配音，优先使用日常说话时会用的自然口语和短句；"
+        "少用书面连接词、被动句和冗长名词化表达，按自然口播节奏组织句子；"
+        "在不损失事实、条件、否定、因果、语气和专名的前提下，避免不必要的扩写，"
+        "让中文朗读时长尽量不要明显长于原句。"
+        if for_dubbing else ""
     )
     system = (
         "你是视频字幕译者。" + action
         + "目标数组=[ID,秒数,英文]；上下文只用于理解，不得输出。"
         + "逐个ID独立翻译：每条translation只能翻译同一ID的英文，禁止把相邻目标、上下文或后续内容合并进该ID。"
-        + "译文可能用于视频中文配音；请自然、简洁、口语化，并尽量保持与原句接近的朗读时长，避免不必要的扩写。"
+        + dubbing_instruction
         + "禁止解释或总结。必须保留每个目标ID且只输出 JSON："
         + '{"segments":[{"id":1,"translation":"译文"}]}'
     )
@@ -587,6 +595,7 @@ class LLMTranslator:
         *,
         pass_name: str = "raw",
         force: bool = False,
+        for_dubbing: bool = False,
     ) -> dict[int, str]:
         checkpoint = self._checkpoint_path(batch_id, pass_name)
         expected = [item.id for item in targets]
@@ -594,6 +603,17 @@ class LLMTranslator:
             {"id": item.id, "start": item.start, "end": item.end, "text": item.text}
             for item in all_segments
         ]
+        translation_config = {
+            "temperature": self.config.get("temperature"),
+            "context_before": self.context_before,
+            "context_after": self.context_after,
+            "translation_batch_size": self.batch_size,
+            "pass_name": pass_name,
+        }
+        if for_dubbing:
+            # Keep the regular translation hash compatible with existing
+            # checkpoints; the dedicated dubbing mode must never reuse one.
+            translation_config["for_dubbing"] = True
         checkpoint_metadata = {
             "source_hash": hashlib.sha256(json.dumps(
                 source_payload, ensure_ascii=False, sort_keys=True
@@ -606,13 +626,7 @@ class LLMTranslator:
             "model": self.settings["model"],
             "thinking": self.settings["thinking"],
             "max_output_tokens": self.max_output_tokens,
-            "translation_config_hash": hash_config({
-                "temperature": self.config.get("temperature"),
-                "context_before": self.context_before,
-                "context_after": self.context_after,
-                "translation_batch_size": self.batch_size,
-                "pass_name": pass_name,
-            }),
+            "translation_config_hash": hash_config(translation_config),
             "checkpoint_version": TRANSLATION_CHECKPOINT_VERSION,
         }
         completed = self._load_completed(checkpoint, expected, force, checkpoint_metadata)
@@ -734,6 +748,7 @@ class LLMTranslator:
                         glossary,
                         metadata,
                         polish=pass_name == "polished",
+                        for_dubbing=for_dubbing,
                     ),
                     degraded=degraded,
                 )
@@ -864,6 +879,7 @@ class LLMTranslator:
         *,
         pass_name: str = "raw",
         force: bool = False,
+        for_dubbing: bool = False,
     ) -> dict[int, str]:
         merged: dict[int, str] = {}
         for offset in range(0, len(targets), self.batch_size):
@@ -871,7 +887,9 @@ class LLMTranslator:
             merged.update(self.translate_batch(
                 offset // self.batch_size + 1,
                 batch, all_segments, glossary, metadata,
-                pass_name=pass_name, force=force,
+                pass_name=pass_name,
+                force=force,
+                for_dubbing=for_dubbing,
             ))
         return merged
 

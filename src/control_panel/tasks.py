@@ -53,11 +53,20 @@ _AUTOMATION_SKIP_LABELS = {
     "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH": "没有英文字幕，音轨也未识别到英语语音",
     "CHINESE_TRANSLATION_STAGE_FAILED": "中文字幕翻译未通过",
     "STAGE4_RENDER_STAGE_FAILED": "成片安全检查未通过",
+    "DUBBING_TIMING_REVIEW_REQUIRED": "配音时槽超限",
+}
+
+_AUTOMATION_FAILURE_LABELS = {
+    "DUBBING_RUNTIME_PREFLIGHT_FAILED": "中文配音运行时预检失败",
 }
 
 
 def _automation_skip_label(reason: str) -> str:
     return _AUTOMATION_SKIP_LABELS.get(reason, reason or "未达到自动投稿条件")
+
+
+def _automation_failure_label(reason: str) -> str:
+    return _AUTOMATION_FAILURE_LABELS.get(reason, reason or "自动化处理失败")
 
 
 def deepseek_translation_ready(task_dir: Path) -> bool:
@@ -256,6 +265,9 @@ class WorkflowScanner:
             # must not make an already published card request another review.
             review_summary = ""
 
+        automation_failure_active = (
+            automation_status == "FAILED" and not published
+        )
         download_complete = download_status in {"success", "skipped"}
         english_complete = selected_path.is_file() and selected_path.stat().st_size > 0
         translation_complete = deepseek_translation_ready(task_dir)
@@ -344,6 +356,15 @@ class WorkflowScanner:
                 )
             ),
         }
+        if automation_failure_active and automation_reason in _AUTOMATION_FAILURE_LABELS:
+            failure_summary = (
+                f"自动化失败：{_automation_failure_label(automation_reason)}"
+            )
+            stages["dubbing"] = {
+                "state": "failed",
+                "detail": failure_summary,
+            }
+            review_summary = failure_summary
         if automation_skip_active:
             for stage_name, stage in stages.items():
                 if stage["state"] != "complete":

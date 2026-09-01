@@ -51,6 +51,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--polish-all", action="store_true")
     parser.add_argument(
+        "--for-dubbing",
+        action="store_true",
+        help="Use a more conversational, duration-conscious Chinese translation for dubbing.",
+    )
+    parser.add_argument(
         "--allow-paid-api",
         action="store_true",
         help="Allow calls to the selected translation API (legacy option name).",
@@ -201,6 +206,7 @@ def run_video_actions(
             allow_paid_api=args.allow_paid_api,
             force=args.force or args.force_translation or not args.resume,
             polish_all=args.polish_all,
+            for_dubbing=args.for_dubbing,
         )
     if "metadata" in steps:
         result["publish_metadata"] = pipeline.run_publish_metadata(

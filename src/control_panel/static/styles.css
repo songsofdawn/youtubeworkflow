@@ -1653,6 +1653,15 @@ input[type="checkbox"] {
 .status-cell strong,
 .status-cell small {
   display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-cell,
+.task-actions {
+  min-width: 0;
 }
 
 .status-cell small.review-summary {
@@ -1701,7 +1710,9 @@ input[type="checkbox"] {
 
 .task-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  align-content: center;
   gap: 5px;
 }
 

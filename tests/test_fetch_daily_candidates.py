@@ -20,8 +20,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class Response:
-    def __init__(self, status: int, payload: dict | None = None) -> None:
+    def __init__(
+        self,
+        status: int,
+        payload: dict | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> None:
         self.status_code, self._payload = status, payload or {}
+        self.headers = headers or {}
 
     def json(self) -> dict:
         return self._payload
@@ -161,9 +167,46 @@ class DiscoveryTests(TestCase):
     def test_temporary_429_is_retried(self) -> None:
         session = mock.Mock(); session.headers = {}
         session.get.side_effect = [Response(429, {"error": {"message": "Too many requests", "errors": [{"reason": "rateLimitExceeded"}]}}), Response(200, {"items": []})]
-        with mock.patch("src.fetch_daily_candidates.time.sleep"):
+        with mock.patch("src.fetch_daily_candidates.time.sleep") as sleep, mock.patch(
+            "src.fetch_daily_candidates.random.uniform", return_value=0.0
+        ):
             self.assertEqual(YouTubeClient("secret", max_retries=1, session=session).get("search", {}), {"items": []})
+        sleep.assert_called_once_with(1.0)
         self.assertEqual(session.get.call_count, 2)
+
+    def test_temporary_http_errors_use_exponential_backoff(self) -> None:
+        session = mock.Mock(); session.headers = {}
+        temporary = Response(503, {"error": {"message": "Unavailable"}})
+        session.get.side_effect = [temporary, temporary, temporary, Response(200, {"items": []})]
+        with mock.patch("src.fetch_daily_candidates.time.sleep") as sleep, mock.patch(
+            "src.fetch_daily_candidates.random.uniform", return_value=0.0
+        ):
+            self.assertEqual(
+                YouTubeClient("secret", max_retries=3, session=session).get("videos", {}),
+                {"items": []},
+            )
+        self.assertEqual(sleep.call_args_list, [mock.call(1.0), mock.call(2.0), mock.call(4.0)])
+
+    def test_retry_after_header_is_honored(self) -> None:
+        session = mock.Mock(); session.headers = {}
+        session.get.side_effect = [
+            Response(429, {"error": {"message": "Too many requests"}}, {"Retry-After": "7"}),
+            Response(200, {"items": []}),
+        ]
+        with mock.patch("src.fetch_daily_candidates.time.sleep") as sleep, mock.patch(
+            "src.fetch_daily_candidates.random.uniform", return_value=0.0
+        ):
+            self.assertEqual(YouTubeClient("secret", max_retries=1, session=session).get("videos", {}), {"items": []})
+        sleep.assert_called_once_with(7.0)
+
+    def test_temporary_errors_stop_after_max_retries(self) -> None:
+        session = mock.Mock(); session.headers = {}
+        session.get.return_value = Response(503, {"error": {"message": "Unavailable"}})
+        with mock.patch("src.fetch_daily_candidates.time.sleep"), mock.patch(
+            "src.fetch_daily_candidates.random.uniform", return_value=0.0
+        ), self.assertRaises(YouTubeAPIError):
+            YouTubeClient("secret", max_retries=2, session=session).get("videos", {})
+        self.assertEqual(session.get.call_count, 3)
 
     def test_partial_search_results_are_checkpointed_on_quota_exhaustion(self) -> None:
         cfg = config(); cfg["topic_groups"] = {"gaming": {"queries": ["Minecraft challenge|Minecraft but"]}}; cfg["topic_quotas"] = {"gaming": 1, "wildcard_popular": 0}; cfg["search_core_query_groups_per_day"] = 1

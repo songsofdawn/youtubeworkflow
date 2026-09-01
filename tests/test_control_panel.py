@@ -7,6 +7,7 @@ import tempfile
 import threading
 import urllib.request
 from datetime import datetime, timedelta, timezone
+from http import HTTPStatus
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from unittest import TestCase, mock
@@ -201,6 +202,8 @@ class StaticPanelContractTests(TestCase):
         self.assertIn('id="publishMinIntervalMinutes"', page)
         self.assertIn('value="3"', page)
         self.assertIn("publish_min_interval_minutes", script)
+        self.assertIn('id="defaultPublishTitlePrefix"', page)
+        self.assertIn("publish_title_prefix", script)
 
     def test_unattended_publishing_defaults_to_public(self) -> None:
         page = (ROOT / "src" / "control_panel" / "static" / "index.html").read_text(
@@ -213,6 +216,17 @@ class StaticPanelContractTests(TestCase):
         self.assertIsNotNone(checkbox)
         self.assertNotIn("checked", checkbox.group(0))
         self.assertIn("默认关闭，即公开投稿", page)
+
+    def test_task_status_and_actions_cannot_overlap(self) -> None:
+        script = (ROOT / "src" / "control_panel" / "static" / "app.js").read_text(
+            encoding="utf-8"
+        )
+        styles = (ROOT / "src" / "control_panel" / "static" / "styles.css").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('title="${escapeHtml(task.overall)}"', script)
+        self.assertIn(".status-cell,\n.task-actions {\n  min-width: 0;", styles)
+        self.assertIn(".task-actions {\n  display: flex;\n  flex-wrap: wrap;", styles)
 
     def test_batch_delete_and_automation_flow_are_visible(self) -> None:
         page = (ROOT / "src" / "control_panel" / "static" / "index.html").read_text(
@@ -342,6 +356,40 @@ class SettingsTests(TestCase):
                     with self.subTest(value=value):
                         with self.assertRaisesRegex(ValueError, "投稿最短间隔"):
                             app.save_settings({"publish_min_interval_minutes": value})
+            finally:
+                app.close()
+
+    def test_app_saves_optional_publish_title_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            try:
+                response = app.save_settings({"publish_title_prefix": "  【教程】\n"})
+                prefix = app.publisher.default_title_prefix()
+                defaults = app.publisher.health()["default_title_prefix"]
+            finally:
+                app.close()
+            config = json.loads(
+                (project / "config" / "publish_config.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertEqual(response["saved"], ["publish_title_prefix"])
+        self.assertEqual(config["default_title_prefix"], "【教程】")
+        self.assertEqual(prefix, "【教程】")
+        self.assertEqual(defaults, "【教程】")
+
+    def test_app_rejects_invalid_publish_title_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            try:
+                with self.assertRaisesRegex(ValueError, "标题前缀"):
+                    app.save_settings({"publish_title_prefix": "x" * 33})
+                with self.assertRaisesRegex(ValueError, "标题前缀"):
+                    app.save_settings({"publish_title_prefix": 123})
             finally:
                 app.close()
 
@@ -962,6 +1010,44 @@ class ScannerTests(TestCase):
         self.assertEqual(row["stages"]["publish"]["state"], "skipped")
         self.assertEqual(row["review_summary"], "已自动跳过：字幕无法安全排版")
 
+    def test_dubbing_skip_reason_is_translated_for_dashboard(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "dubbing" / "manifest.json",
+                {"status": "COMPLETED_WITH_REVIEW", "needs_review": True},
+            )
+            write_json(
+                task / "stage5" / "automation_manifest.json",
+                {
+                    "status": "SKIPPED",
+                    "reason": "DUBBING_TIMING_REVIEW_REQUIRED",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+
+        self.assertEqual(row["overall"], "无人值守已跳过此视频")
+        self.assertEqual(row["review_summary"], "已自动跳过：配音时槽超限")
+        self.assertNotIn("DUBBING_TIMING_REVIEW_REQUIRED", row["review_summary"])
+
+    def test_dubbing_runtime_failure_is_visible_on_dashboard(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "stage5" / "automation_manifest.json",
+                {
+                    "status": "FAILED",
+                    "reason": "DUBBING_RUNTIME_PREFLIGHT_FAILED",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+
+        self.assertEqual(row["overall"], "中文配音失败")
+        self.assertEqual(row["stages"]["dubbing"]["state"], "failed")
+        self.assertEqual(row["review_summary"], "自动化失败：中文配音运行时预检失败")
+
     def test_empty_audio_transcript_has_specific_unattended_skip_message(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
@@ -1421,6 +1507,81 @@ class QueueTests(TestCase):
         self.assertEqual(automation["status"], "SKIPPED")
         self.assertEqual(automation["reason"], "NO_VALID_CHINESE_SUBTITLE")
         self.assertEqual(automation["details"]["process_exit_code"], 2)
+
+    def test_unattended_dubbing_preflight_timeout_retries_then_stays_failed(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            publisher = mock.Mock()
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                publisher,
+            )
+            reference = task.relative_to(project / "downloads").as_posix()
+            queued = store.enqueue(
+                "pipeline",
+                reference,
+                {
+                    "workflow": "complete",
+                    "automation_enabled": True,
+                    "automation_failure_policy": "skip",
+                    "_stage_index": 3,
+                },
+                resource_class="gpu_heavy",
+            )
+            first = store.claim_next({"pipeline"}, {"gpu_heavy"})
+            diagnostic = (
+                "[DUBBING] Preflight detail: TorchCodec WAV 编码自检超时\n"
+                "中文配音失败：中文配音预检失败：TorchCodec WAV 编码自检超时\n"
+            )
+            Path(first["log_path"]).write_text(diagnostic, encoding="utf-8")
+            try:
+                handled_first = worker._handle_unattended_dubbing_preflight_failure(
+                    first,
+                    label="生成中文 AI 配音",
+                    exit_code=2,
+                    log_path=Path(first["log_path"]),
+                    stage_index=3,
+                    total=5,
+                    resource_class="gpu_heavy",
+                )
+                retried = store.get(queued["id"])
+                second = store.claim_next({"pipeline"}, {"gpu_heavy"})
+                handled_second = worker._handle_unattended_dubbing_preflight_failure(
+                    second,
+                    label="生成中文 AI 配音",
+                    exit_code=2,
+                    log_path=Path(second["log_path"]),
+                    stage_index=3,
+                    total=5,
+                    resource_class="gpu_heavy",
+                )
+                failed = store.get(queued["id"])
+                automation = publisher.mark_automation_failed.call_args
+            finally:
+                worker.close()
+
+        self.assertTrue(handled_first)
+        self.assertEqual(retried["status"], "queued")
+        self.assertEqual(retried["payload"]["_dubbing_preflight_retry_count"], 1)
+        self.assertTrue(handled_second)
+        self.assertEqual(failed["status"], "failed")
+        self.assertEqual(failed["exit_code"], 2)
+        self.assertEqual(failed["error"], "DUBBING_RUNTIME_PREFLIGHT_FAILED")
+        self.assertIsNotNone(automation)
+        automation_details = automation.kwargs
+        self.assertEqual(
+            automation.args[1],
+            "DUBBING_RUNTIME_PREFLIGHT_FAILED",
+        )
+        self.assertEqual(
+            automation_details["details"]["retry_count"],
+            1,
+        )
+        publisher.mark_automation_skipped.assert_not_called()
 
     def test_unattended_no_speech_video_requeues_metadata_only_original_publish(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -2226,6 +2387,68 @@ class QueueTests(TestCase):
         self.assertFalse(has_publish_job)
         self.assertEqual(automation["reason"], "SUBTITLE_LAYOUT_REVIEW_REQUIRED")
 
+    def test_dubbing_fallback_uses_original_video_when_subtitle_render_is_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            source = task / "video" / "source.mp4"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"original-video")
+            write_json(
+                task / "stage3" / "publish_metadata.json",
+                {
+                    "status": "RECOMMENDED",
+                    "title_zh": "可靠的软件系统",
+                    "tags": "软件工程,系统设计,编程",
+                    "tid": 231,
+                },
+            )
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {
+                    "status": "REVIEW_REQUIRED",
+                    "qc_status": "REVIEW_REQUIRED",
+                    "review": {"render_blocked_before_ffmpeg": True},
+                },
+            )
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            publisher = BiliupIntegration(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                publisher,
+            )
+            message = worker._queue_automatic_publish(
+                {
+                    "target": task.relative_to(project / "downloads").as_posix(),
+                    "payload": {
+                        "automation_enabled": True,
+                        "automation_target": "publish",
+                        "account_id": publisher.accounts()[0]["id"],
+                        "dubbing_fallback": True,
+                        "media_variant": "subtitled_original_audio",
+                    },
+                }
+            )
+            publish_job = next(job for job in store.list() if job["kind"] == "publish")
+            command = publisher.build_upload_command(task, publish_job["payload"])
+            automation = json.loads(
+                (task / "stage5" / "automation_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+        self.assertIn("已改用原视频", message)
+        self.assertTrue(publish_job["payload"]["publish_original_video"])
+        self.assertEqual(publish_job["payload"]["media_variant"], "original")
+        self.assertEqual(command[-1], str(source))
+        self.assertEqual(
+            automation["reason"],
+            "DUBBING_FALLBACK_RENDER_REVIEW_REQUIRED",
+        )
+
     def test_queued_job_can_be_cancelled(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
@@ -2445,6 +2668,42 @@ class DestructiveActionTests(TestCase):
 
 
 class PublishingTests(TestCase):
+    def test_original_audio_subtitle_fallback_has_truthful_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text(
+                "中文", encoding="utf-8"
+            )
+            mark_deepseek_translation(task)
+            media = task / "stage4" / "video" / "final_bilingual_hardsub.mp4"
+            media.parent.mkdir(parents=True)
+            media.write_bytes(b"original-audio-subtitled-video")
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {
+                    "status": "STAGE4_COMPLETED",
+                    "hardsub_output_path": str(media),
+                    "hardsub_output_hash": "fallback-hash",
+                },
+            )
+            publishing = BiliupIntegration(project)
+            payload = publishing.automatic_submission(
+                task,
+                account_id=publishing.accounts()[0]["id"],
+                media_variant="subtitled_original_audio",
+            )
+
+        self.assertFalse(payload["title"].startswith("【原声中字】"))
+        self.assertIn("原声", payload["tags"])
+        self.assertIn("中文字幕", payload["tags"])
+        self.assertNotIn("中文配音", payload["tags"])
+        self.assertIn("保留原始音轨", payload["description"])
+        self.assertFalse(payload["publish_original_video"])
+        self.assertEqual(payload["media_variant"], "subtitled_original_audio")
+
     def test_no_speech_original_video_can_be_published_without_hardsub(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
@@ -2480,12 +2739,45 @@ class PublishingTests(TestCase):
 
         self.assertTrue(payload["publish_original_video"])
         self.assertFalse(payload["prepare_hardsub"])
-        self.assertTrue(payload["title"].startswith("【无配音】"))
+        self.assertFalse(payload["title"].startswith("【无配音】"))
         self.assertIn("无配音", payload["tags"])
         self.assertNotIn("中英双语", payload["tags"])
         self.assertNotIn("中文翻译", payload["tags"])
         self.assertNotIn("--is-only-self", command)
         self.assertEqual(command[-1], str(source))
+
+    def test_submission_accepts_custom_non_bilingual_prefix_and_no_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text("中文", encoding="utf-8")
+            mark_deepseek_translation(task)
+            publishing = BiliupIntegration(project)
+            defaults = publishing.defaults(task)
+            payload = publishing.validate_submission(
+                task,
+                defaults
+                | {
+                    "title": "【自定义】可靠的软件系统｜Reliable Software Systems",
+                    "title_prefix": "【自定义】",
+                    "confirm_publish": True,
+                },
+            )
+            no_prefix = publishing.validate_submission(
+                task,
+                defaults
+                | {
+                    "title": "可靠的软件系统｜Reliable Software Systems",
+                    "title_prefix": "",
+                    "confirm_publish": True,
+                },
+            )
+        self.assertEqual(payload["title_prefix"], "【自定义】")
+        self.assertEqual(payload["title"].split("】", 1)[0], "【自定义")
+        self.assertEqual(no_prefix["title_prefix"], "")
+        self.assertEqual(no_prefix["title"], "可靠的软件系统｜Reliable Software Systems")
 
     def test_detects_account_without_returning_cookie_contents(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -2652,15 +2944,35 @@ class PublishingTests(TestCase):
                 },
             )
             defaults = BiliupIntegration(project).defaults(task)
-        self.assertEqual(
-            defaults["title"],
-            "【中英双语】从零构建可靠的软件系统｜Test video",
-        )
+        self.assertEqual(defaults["title"], "从零构建可靠的软件系统｜Test video")
+        self.assertEqual(defaults["title_prefix"], "")
         self.assertEqual(defaults["category_path"], "科技 / 计算机技术")
         self.assertEqual(defaults["tid"], 231)
         self.assertIn("软件工程", defaults["tags"])
         self.assertIn("【免责声明】", defaults["description"])
         self.assertIn("This is the original metadata description.", defaults["description"])
+
+    def test_configured_title_prefix_is_used_for_generated_submission_defaults(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            config_path = project / "config" / "publish_config.json"
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            config["default_title_prefix"] = "【教程】"
+            write_json(config_path, config)
+            task = make_task(project)
+            write_json(
+                task / "stage3" / "publish_metadata.json",
+                {
+                    "status": "RECOMMENDED",
+                    "title_zh": "可靠的软件系统",
+                    "tags": "软件工程,系统设计,编程",
+                    "tid": 231,
+                },
+            )
+            defaults = BiliupIntegration(project).defaults(task)
+        self.assertEqual(defaults["title_prefix"], "【教程】")
+        self.assertTrue(defaults["title"].startswith("【教程】可靠的软件系统｜"))
 
     def test_submission_requires_explicit_final_confirmation(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -3006,6 +3318,68 @@ class RenderReviewFlowTests(TestCase):
 
 
 class ServerSmokeTests(TestCase):
+    def _handler(self, app: mock.Mock | None = None):
+        return object.__new__(make_handler(app or mock.Mock(), Path(".")))
+
+    def test_client_disconnect_does_not_trigger_second_response(self) -> None:
+        handler = self._handler()
+        handler.close_connection = False
+        handler.send_response = mock.Mock(side_effect=ConnectionAbortedError())
+        handler.send_header = mock.Mock()
+        handler.end_headers = mock.Mock()
+        handler.wfile = mock.Mock()
+
+        handler._error(HTTPStatus.INTERNAL_SERVER_ERROR, "not sent")
+
+        self.assertTrue(handler.close_connection)
+        handler.send_response.assert_called_once_with(HTTPStatus.INTERNAL_SERVER_ERROR)
+        handler.send_header.assert_not_called()
+        handler.end_headers.assert_not_called()
+        handler.wfile.write.assert_not_called()
+
+    def test_do_get_does_not_send_error_after_client_disconnect(self) -> None:
+        app = mock.Mock()
+        app.dashboard.return_value = {"ok": True}
+        handler = self._handler(app)
+        handler.path = "/api/dashboard"
+        handler.close_connection = False
+        handler._json = mock.Mock(side_effect=ConnectionResetError())
+        handler._error = mock.Mock()
+
+        handler.do_GET()
+
+        self.assertTrue(handler.close_connection)
+        handler._error.assert_not_called()
+
+    def test_client_disconnect_while_writing_body_is_normal(self) -> None:
+        handler = self._handler()
+        handler.close_connection = False
+        handler.send_response = mock.Mock()
+        handler.send_header = mock.Mock()
+        handler.end_headers = mock.Mock()
+        handler.wfile = mock.Mock()
+        handler.wfile.write.side_effect = BrokenPipeError()
+
+        handler._json(HTTPStatus.OK, {"ok": True})
+
+        self.assertTrue(handler.close_connection)
+
+    def test_response_writer_does_not_swallow_real_server_errors(self) -> None:
+        handler = self._handler()
+        handler.close_connection = False
+        handler.send_response = mock.Mock(side_effect=RuntimeError("server bug"))
+        handler.send_header = mock.Mock()
+        handler.end_headers = mock.Mock()
+        handler.wfile = mock.Mock()
+
+        with self.assertRaisesRegex(RuntimeError, "server bug"):
+            handler._json(HTTPStatus.OK, {"ok": True})
+
+    def test_dashboard_polling_guard_prevents_overlapping_requests(self) -> None:
+        script = (ROOT / "src" / "control_panel" / "static" / "app.js").read_text(encoding="utf-8")
+        self.assertIn("if (state.refreshBusy) return;", script)
+        self.assertIn("setInterval(() => refreshDashboard(false), 2500);", script)
+
     def test_dashboard_endpoint_and_static_page(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)

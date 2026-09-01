@@ -13,6 +13,11 @@ from .youtube import YouTubeAPIError
 
 
 MAX_REQUEST_BYTES = 6 * 1024 * 1024
+CLIENT_DISCONNECT_ERRORS = (
+    BrokenPipeError,
+    ConnectionResetError,
+    ConnectionAbortedError,
+)
 
 
 def _optional_float(value: Any, label: str) -> float | None:
@@ -85,6 +90,8 @@ def make_handler(
                 self._static(parsed.path)
             except KeyError:
                 self._error(HTTPStatus.NOT_FOUND, "任务不存在")
+            except CLIENT_DISCONNECT_ERRORS:
+                self.close_connection = True
             except (ValueError, OSError) as exc:
                 self._error(HTTPStatus.BAD_REQUEST, str(exc))
 
@@ -174,7 +181,8 @@ def make_handler(
                             or "publish_original"
                         ),
                         automation_dubbing_review_policy=str(
-                            body.get("automation_dubbing_review_policy") or "block"
+                            body.get("automation_dubbing_review_policy")
+                            or "auto_fallback"
                         ),
                         dubbing_enabled=body.get("dubbing_enabled") is True,
                         dubbing_reference_mode=str(
@@ -238,7 +246,8 @@ def make_handler(
                             or "publish_original"
                         ),
                         automation_dubbing_review_policy=str(
-                            body.get("automation_dubbing_review_policy") or "block"
+                            body.get("automation_dubbing_review_policy")
+                            or "auto_fallback"
                         ),
                         dubbing_enabled=body.get("dubbing_enabled") is True,
                         dubbing_reference_mode=str(
@@ -333,6 +342,8 @@ def make_handler(
                 self._error(HTTPStatus.NOT_FOUND, "接口不存在")
             except YouTubeAPIError as exc:
                 self._error(HTTPStatus.BAD_GATEWAY, str(exc))
+            except CLIENT_DISCONNECT_ERRORS:
+                self.close_connection = True
             except KeyError:
                 self._error(HTTPStatus.NOT_FOUND, "任务不存在")
             except (ValueError, OSError, RuntimeError) as exc:
@@ -378,31 +389,55 @@ def make_handler(
                 return
             content_type = mimetypes.guess_type(candidate.name)[0] or "application/octet-stream"
             data = candidate.read_bytes()
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", f"{content_type}; charset=utf-8")
-            self.send_header("Content-Length", str(len(data)))
-            self.send_header("Cache-Control", "no-cache")
-            self.send_header(
-                "Content-Security-Policy",
-                "default-src 'self'; img-src 'self' https://i.ytimg.com https://*.googleusercontent.com data:; "
-                "style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'",
+            self._write_response(
+                HTTPStatus.OK,
+                {
+                    "Content-Type": f"{content_type}; charset=utf-8",
+                    "Content-Length": str(len(data)),
+                    "Cache-Control": "no-cache",
+                    "Content-Security-Policy": (
+                        "default-src 'self'; img-src 'self' https://i.ytimg.com "
+                        "https://*.googleusercontent.com data:; style-src 'self'; "
+                        "script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
+                    ),
+                    "X-Content-Type-Options": "nosniff",
+                },
+                data,
             )
-            self.send_header("X-Content-Type-Options", "nosniff")
-            self.end_headers()
-            self.wfile.write(data)
 
         def _json(self, status: HTTPStatus, payload: Any) -> None:
             data = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
-            self.send_response(status)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(data)))
-            self.send_header("Cache-Control", "no-store")
-            self.send_header("X-Content-Type-Options", "nosniff")
-            self.end_headers()
-            self.wfile.write(data)
+            self._write_response(
+                status,
+                {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Content-Length": str(len(data)),
+                    "Cache-Control": "no-store",
+                    "X-Content-Type-Options": "nosniff",
+                },
+                data,
+            )
+
+        def _write_response(
+            self,
+            status: HTTPStatus,
+            headers: dict[str, str],
+            data: bytes,
+        ) -> None:
+            try:
+                self.send_response(status)
+                for name, value in headers.items():
+                    self.send_header(name, value)
+                self.end_headers()
+                self.wfile.write(data)
+            except CLIENT_DISCONNECT_ERRORS:
+                self.close_connection = True
 
         def _error(self, status: HTTPStatus, message: str) -> None:
-            self._json(status, {"error": message})
+            try:
+                self._json(status, {"error": message})
+            except CLIENT_DISCONNECT_ERRORS:
+                self.close_connection = True
 
         def log_message(self, format: str, *args: Any) -> None:
             return
@@ -410,4 +445,4 @@ def make_handler(
     return PanelRequestHandler
 
 
-__all__ = ["make_handler"]
+__all__ = ["CLIENT_DISCONNECT_ERRORS", "make_handler"]

@@ -87,6 +87,22 @@ class TranslatorTests(TestCase):
         self.assertIn("context_before_read_only", combined)
         self.assertIn("Roblox", combined)
 
+    def test_dubbing_messages_prioritize_conversational_short_speech(self) -> None:
+        items = [SubtitleSegment(1, 0, 2, "We need to fix this now.")]
+        regular = "\n".join(
+            item["content"]
+            for item in build_messages(items, [], [], {}, {}, for_dubbing=False)
+        )
+        dubbing = "\n".join(
+            item["content"]
+            for item in build_messages(items, [], [], {}, {}, for_dubbing=True)
+        )
+
+        self.assertNotIn("用于中文配音", regular)
+        self.assertIn("用于中文配音", dubbing)
+        self.assertIn("日常说话", dubbing)
+        self.assertIn("朗读时长", dubbing)
+
     def test_publish_metadata_recommends_valid_mapped_category(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             client = mock.Mock()

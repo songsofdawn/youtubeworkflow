@@ -133,6 +133,38 @@ class WorkerDubbingCommandTests(unittest.TestCase):
         source_index = commands[1][1].index("--chinese-source")
         self.assertEqual(commands[1][1][source_index + 1], "auto")
 
+    @mock.patch("src.control_panel.jobs.resolve_dubbing_python")
+    @mock.patch("src.control_panel.jobs.load_dubbing_config")
+    @mock.patch("src.control_panel.jobs.resolve_python_executable")
+    def test_complete_dubbing_workflow_uses_conversational_translation_mode(
+        self,
+        runtime: mock.Mock,
+        load_config: mock.Mock,
+        dubbing_runtime: mock.Mock,
+    ) -> None:
+        runtime.return_value = self.python
+        load_config.return_value = {}
+        dubbing_runtime.return_value = self.python
+        commands = self.worker._build_commands(
+            {
+                "kind": "pipeline",
+                "target": "task",
+                "payload": {
+                    "workflow": "complete",
+                    "render_mode": "hardsub",
+                    "chinese_subtitle_source": "deepseek",
+                    "dubbing_enabled": True,
+                },
+            }
+        )
+
+        translation = next(
+            command
+            for label, command in commands
+            if label == "翻译并检查中文字幕"
+        )
+        self.assertIn("--for-dubbing", translation)
+
     @mock.patch("src.control_panel.jobs.subprocess.Popen")
     def test_worker_passes_project_tools_path_to_spawned_process(
         self,
@@ -440,6 +472,68 @@ class ControlPanelDubbingQueueTests(unittest.TestCase):
             "DUBBING_TIMING_REVIEW_REQUIRED",
         )
         self.assertFalse(should_stop)
+
+    def test_unattended_review_auto_fallback_requeues_original_audio_render(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            task = root / "downloads" / "task"
+            (task / "dubbing").mkdir(parents=True)
+            (task / "download_manifest.json").write_text("{}", encoding="utf-8")
+            (task / "dubbing" / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "status": "COMPLETED_WITH_REVIEW",
+                        "needs_review": True,
+                        "segment_count": 2,
+                        "segments": [
+                            {"index": 1, "needs_review": True},
+                            {"index": 2, "needs_review": False},
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            publisher = mock.Mock()
+            worker = WorkflowWorker(root, store, WorkflowScanner(root), publisher)
+            try:
+                queued = store.enqueue(
+                    "pipeline",
+                    "task",
+                    {
+                        "workflow": "complete",
+                        "automation_enabled": True,
+                        "automation_target": "publish",
+                        "dubbing_enabled": True,
+                        "automation_dubbing_review_policy": "auto_fallback",
+                    },
+                )
+                running = store.claim_id(str(queued["id"]))
+                self.assertIsNotNone(running)
+                with mock.patch.object(
+                    worker,
+                    "_build_stages",
+                    return_value=[
+                        ("生成并质检双语成片", ["python", "stage4"], "gpu_heavy")
+                    ],
+                ):
+                    handled = worker._handle_unattended_dubbing_review(
+                        running,
+                        log_path=Path(running["log_path"]),
+                    )
+                rerouted = store.get(str(queued["id"]))
+            finally:
+                worker.close()
+
+        self.assertTrue(handled)
+        self.assertEqual(rerouted["status"], "queued")
+        self.assertFalse(rerouted["payload"]["dubbing_enabled"])
+        self.assertTrue(rerouted["payload"]["dubbing_fallback"])
+        self.assertEqual(
+            rerouted["payload"]["media_variant"],
+            "subtitled_original_audio",
+        )
+        publisher.mark_automation_fallback.assert_called_once()
 
 
 class ServerDubbingRoutingTests(unittest.TestCase):

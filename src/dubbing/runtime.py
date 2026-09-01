@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import threading
 import time
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Iterator, Mapping
 
 
 WINDOWS_SHARED_DLL_PATTERNS = (
@@ -15,6 +17,8 @@ WINDOWS_SHARED_DLL_PATTERNS = (
     "swresample-*.dll",
 )
 _PREFLIGHT_CACHE: dict[str, tuple[float, dict[str, Any]]] = {}
+_PREFLIGHT_LOCK = threading.Lock()
+_PREFLIGHT_PROCESS_LOCK_TIMEOUT_SECONDS = 130.0
 _DLL_DIRECTORY_HANDLES: list[Any] = []
 
 
@@ -159,7 +163,87 @@ def _preflight_cache_key(project_root: Path, python_path: Path) -> str:
     return json.dumps(signatures, ensure_ascii=False, separators=(",", ":"))
 
 
+@contextmanager
+def _preflight_process_lock(root: Path) -> Iterator[None]:
+    """Serialize probes across the panel and its separate dubbing worker process."""
+
+    lock_path = root / "work" / "control_panel" / "dubbing_preflight.lock"
+    try:
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        handle = lock_path.open("a+b")
+    except OSError:
+        # The lock is a reliability aid, not a prerequisite for a valid
+        # installation.  Fall back to the in-process lock if its directory is
+        # temporarily unavailable.
+        yield
+        return
+
+    with handle:
+        handle.seek(0)
+        if not handle.read(1):
+            handle.seek(0)
+            handle.write(b"0")
+            handle.flush()
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+
+            deadline = time.monotonic() + _PREFLIGHT_PROCESS_LOCK_TIMEOUT_SECONDS
+            while True:
+                try:
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError:
+                    if time.monotonic() >= deadline:
+                        # Do not turn a stale or unavailable lock into a
+                        # permanent workflow stop.  The subprocess timeout
+                        # and retry still provide the final containment.
+                        yield
+                        return
+                    time.sleep(0.1)
+            try:
+                yield
+            finally:
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+
+        import fcntl
+
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        except OSError:
+            yield
+            return
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
 def preflight_dubbing_runtime(
+    project_root: Path | str,
+    python_path: Path | str | None,
+    *,
+    use_cache: bool = False,
+    cache_seconds: float = 60.0,
+) -> dict[str, Any]:
+    """Run one serialized runtime preflight and reuse recent results when asked."""
+
+    # Health requests can arrive concurrently in the panel process.  Without
+    # this guard, overlapping torch/FFmpeg DLL probes can make a transient
+    # loader stall look like a broken installation.
+    with _PREFLIGHT_LOCK:
+        with _preflight_process_lock(Path(project_root).resolve()):
+            return _preflight_dubbing_runtime(
+                project_root,
+                python_path,
+                use_cache=use_cache,
+                cache_seconds=cache_seconds,
+            )
+
+
+def _preflight_dubbing_runtime(
     project_root: Path | str,
     python_path: Path | str | None,
     *,
@@ -239,33 +323,58 @@ def preflight_dubbing_runtime(
         "--tools-bin",
         str(project_tools_bin(root)),
     ]
-    try:
-        completed = subprocess.run(
-            command,
-            cwd=root,
-            env=environment,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            check=False,
-            timeout=60,
-            shell=False,
-            creationflags=(
-                getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
-            ),
-        )
-    except subprocess.TimeoutExpired as exc:
-        result = _failure(
-            "TORCHCODEC_DEPENDENCY_FAILED",
-            "中文配音预检失败：TorchCodec WAV 编码自检超时。",
-            details={"error": str(exc)},
-        )
-    except OSError as exc:
+    completed: subprocess.CompletedProcess[str] | None = None
+    timeout_errors: list[dict[str, str]] = []
+    process_error: OSError | None = None
+    for attempt in range(1, 3):
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                check=False,
+                timeout=60,
+                shell=False,
+                creationflags=(
+                    getattr(subprocess, "CREATE_NO_WINDOW", 0)
+                    if os.name == "nt"
+                    else 0
+                ),
+            )
+            break
+        except subprocess.TimeoutExpired as exc:
+            partial = exc.stdout or exc.output or ""
+            if isinstance(partial, bytes):
+                partial = partial.decode("utf-8", errors="replace")
+            timeout_errors.append(
+                {
+                    "attempt": str(attempt),
+                    "error": str(exc),
+                    "partial_output": str(partial)[-2000:],
+                }
+            )
+            if attempt < 2:
+                # A fresh process is important: a stuck TorchCodec loader
+                # cannot be recovered by waiting on the same child process.
+                time.sleep(1.0)
+        except OSError as exc:
+            process_error = exc
+            break
+    if process_error is not None:
         result = _failure(
             "TORCHCODEC_DEPENDENCY_FAILED",
             "中文配音预检失败：无法启动 TorchCodec WAV 编码自检。",
-            details={"error": str(exc)},
+            details={"error": str(process_error)},
+        )
+    elif completed is None:
+        result = _failure(
+            "TORCHCODEC_PREFLIGHT_TIMEOUT",
+            "中文配音预检失败：TorchCodec WAV 编码自检连续两次超时。",
+            details={"attempts": timeout_errors},
         )
     else:
         payload: dict[str, Any] = {}

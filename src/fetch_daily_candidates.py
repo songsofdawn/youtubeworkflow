@@ -5,13 +5,16 @@ import csv
 import html
 import json
 import logging
+import math
 import os
+import random
 import re
 import sys
 import time
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import date, datetime, time as dt_time, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Any, Iterable
 from zoneinfo import ZoneInfo
@@ -36,6 +39,8 @@ from src.candidate_selection import select_candidates
 
 API_BASE = "https://www.googleapis.com/youtube/v3"
 LOGGER = logging.getLogger("youtube_candidates")
+MAX_BACKOFF_SECONDS = 300.0
+RETRY_JITTER_SECONDS = 0.25
 
 
 class YouTubeAPIError(RuntimeError):
@@ -149,7 +154,7 @@ class YouTubeClient:
             if response.status_code == 429 and endpoint == "search" and self._is_daily_search_quota(response):
                 raise SearchQuotaExceeded("Search Queries per day quota exceeded. Partial discovery will be saved; do not retry today. " + detail)
             if response.status_code in {429, 500, 502, 503, 504} and attempt < self.max_retries:
-                self._backoff(attempt, f"HTTP {response.status_code}"); continue
+                self._backoff(attempt, f"HTTP {response.status_code}", response); continue
             if response.status_code == 403:
                 raise YouTubeAPIError("YouTube API returned HTTP 403. Check API enablement, key validity, quota, and key restrictions. " + detail, status_code=403, endpoint=endpoint)
             raise YouTubeAPIError(f"YouTube API HTTP {response.status_code}: {detail}", status_code=response.status_code, endpoint=endpoint)
@@ -171,9 +176,48 @@ class YouTubeClient:
         return "search quer" in payload_text and ("per day" in payload_text or "daily" in payload_text)
 
     @staticmethod
-    def _backoff(attempt: int, reason: str) -> None:
-        delay = min(2**attempt, 30)
-        LOGGER.warning("Temporary %s; retrying in %d second(s)", reason, delay)
+    def _retry_after_seconds(response: requests.Response | None) -> float | None:
+        if response is None:
+            return None
+        headers = getattr(response, "headers", None) or {}
+        raw_value: Any = None
+        try:
+            for name, value in headers.items():
+                if str(name).casefold() == "retry-after":
+                    raw_value = value
+                    break
+        except AttributeError:
+            return None
+        if raw_value is None:
+            return None
+        try:
+            numeric = float(str(raw_value).strip())
+            if math.isfinite(numeric):
+                return max(0.0, numeric)
+        except (TypeError, ValueError):
+            pass
+        try:
+            retry_at = parsedate_to_datetime(str(raw_value))
+            if retry_at.tzinfo is None:
+                retry_at = retry_at.replace(tzinfo=timezone.utc)
+            return max(0.0, (retry_at - datetime.now(timezone.utc)).total_seconds())
+        except (TypeError, ValueError, OverflowError):
+            return None
+
+    @classmethod
+    def _backoff(
+        cls,
+        attempt: int,
+        reason: str,
+        response: requests.Response | None = None,
+    ) -> None:
+        base_delay = float(min(2 ** max(0, int(attempt)), 16))
+        retry_after = cls._retry_after_seconds(response)
+        delay = max(base_delay, retry_after) if retry_after is not None else base_delay
+        delay += random.uniform(0.0, RETRY_JITTER_SECONDS)
+        if retry_after is None:
+            delay = min(delay, MAX_BACKOFF_SECONDS)
+        LOGGER.warning("Temporary %s; retrying in %.2f second(s)", reason, delay)
         time.sleep(delay)
 
 

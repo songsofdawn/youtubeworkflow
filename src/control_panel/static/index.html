@@ -183,6 +183,11 @@
             <input id="publishMinIntervalMinutes" type="number" min="1" max="1440" step="1" value="3" required>
           </label>
           <small>默认 3 分钟；保存后立即用于全部自动和手动投稿队列。</small>
+          <label class="field">
+            <span>默认投稿标题前缀（可选）</span>
+            <input id="defaultPublishTitlePrefix" maxlength="32" placeholder="留空则不加前缀">
+          </label>
+          <small>可填写任意标题前缀，例如“【教程】”；不要求中英双语。留空对正常投稿没有额外限制。</small>
           <small>账号文件保存在本机 <code>biliup\bbup-app\data</code>，转发软件时请使用原始 ZIP。</small>
         </article>
 
@@ -372,6 +377,7 @@
         <label class="automation-setting field automation-dubbing-option">
           <span>中配需要复核时</span>
           <select id="automationDubbingReviewPolicy">
+            <option value="auto_fallback">自动改发原声字幕版（推荐）</option>
             <option value="block">阻止成片/投稿并按异常策略处理</option>
             <option value="continue">仍继续成片与投稿</option>
           </select>
@@ -646,8 +652,13 @@
 
         <div class="publish-grid">
           <label class="field span-2">
-            <span>投稿标题（中文 + 英文）</span>
+            <span>投稿标题（可直接编辑）</span>
             <input id="publishTitle" maxlength="80" required>
+          </label>
+          <label class="field span-2">
+            <span>标题前缀（可选，默认无前缀）</span>
+            <input id="publishTitlePrefix" maxlength="32" placeholder="例如【教程】；留空则不加前缀">
+            <small>修改前缀会同步更新标题开头；标题框仍可单独编辑，投稿不要求固定前缀。</small>
           </label>
           <label class="field">
             <span>账号</span>

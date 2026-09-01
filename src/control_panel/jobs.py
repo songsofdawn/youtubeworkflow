@@ -16,6 +16,11 @@ from typing import Any, Callable, Iterator
 from ..dubbing.config import load_dubbing_config, resolve_dubbing_python
 from ..dubbing.runtime import build_dubbing_subprocess_env
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
+from .dubbing_worker import (
+    DubbingWorkerCrashed,
+    DubbingWorkerStartError,
+    PersistentDubbingWorkerClient,
+)
 from .publishing import BiliupIntegration
 from .tasks import (
     WorkflowScanner,
@@ -304,6 +309,58 @@ class JobStore:
             )
             connection.commit()
         return self.get(str(row["id"]))
+
+    def queued(
+        self,
+        *,
+        resource_class: str | None = None,
+        limit: int = 500,
+    ) -> list[dict[str, Any]]:
+        clause = "AND resource_class = ?" if resource_class else ""
+        parameters: tuple[Any, ...] = (str(resource_class),) if resource_class else ()
+        with self._connect() as connection:
+            rows = connection.execute(
+                f"""
+                SELECT * FROM jobs
+                WHERE status = 'queued' {clause}
+                ORDER BY created_at
+                LIMIT {max(1, min(int(limit), 2000))}
+                """,
+                parameters,
+            ).fetchall()
+        return [self._serialize(row) for row in rows]
+
+    def claim_id(self, job_id: str) -> dict[str, Any] | None:
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute(
+                """
+                SELECT queued.id
+                FROM jobs AS queued
+                WHERE queued.id = ? AND queued.status = 'queued'
+                  AND NOT EXISTS (
+                      SELECT 1 FROM jobs AS running
+                      WHERE running.status = 'running'
+                        AND running.target = queued.target
+                  )
+                """,
+                (str(job_id),),
+            ).fetchone()
+            if row is None:
+                connection.commit()
+                return None
+            connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'running', step = '正在准备',
+                    started_at = CASE WHEN started_at = '' THEN ? ELSE started_at END,
+                    finished_at = '', error = '', exit_code = NULL
+                WHERE id = ? AND status = 'queued'
+                """,
+                (utc_now(), str(job_id)),
+            )
+            connection.commit()
+        return self.get(str(job_id))
 
     def cancel_if_queued(self, job_id: str) -> dict[str, Any] | None:
         with self._connect() as connection:
@@ -638,6 +695,7 @@ class WorkflowWorker:
         self._process_lock = threading.Lock()
         self._processes: dict[str, subprocess.Popen[bytes]] = {}
         self._cancel_requested: set[str] = set()
+        self._dubbing_worker_client: PersistentDubbingWorkerClient | None = None
         self._cookie_work_dir = self.project_root / "work" / "cookies"
         self._cleanup_stale_cookie_copies()
 
@@ -817,6 +875,7 @@ class WorkflowWorker:
     def close(self) -> None:
         self._stop_event.set()
         self._wake_event.set()
+        self._shutdown_dubbing_worker("Control panel is shutting down; releasing VoxCPM2.")
         with self._process_lock:
             processes = list(self._processes.values())
         for process in processes:
@@ -867,10 +926,92 @@ class WorkflowWorker:
                 self._wake_event.clear()
                 continue
             try:
-                self._execute(job)
+                current_job: dict[str, Any] | None = job
+                while current_job is not None:
+                    self._execute(current_job)
+                    if resource_classes != {"gpu_heavy"} or not self._dubbing_model_warm():
+                        current_job = None
+                        continue
+                    next_job = self._claim_next_warm_dubbing_job()
+                    if next_job is None:
+                        queued_gpu = self.store.queued(
+                            resource_class="gpu_heavy",
+                            limit=1,
+                        )
+                        reason = (
+                            "Next GPU-heavy task is not dubbing; releasing VoxCPM2."
+                            if queued_gpu
+                            else "No consecutive dubbing job is queued; releasing VoxCPM2."
+                        )
+                        self._shutdown_dubbing_worker(reason)
+                        current_job = None
+                        continue
+                    self._append_log(
+                        Path(current_job["log_path"]),
+                        "\n[DUBBING] Keeping VoxCPM2 warm for next dubbing job.\n",
+                    )
+                    self._append_log(
+                        Path(next_job["log_path"]),
+                        "\n[DUBBING] Reusing the persistent dubbing worker while the "
+                        "GPU-heavy slot remains acquired.\n",
+                    )
+                    current_job = next_job
             finally:
                 self._global_slots.release()
                 self._wake_event.set()
+
+    def _dubbing_model_warm(self) -> bool:
+        client = self._dubbing_worker_client
+        return bool(client is not None and client.alive and client.loaded_model)
+
+    def _shutdown_dubbing_worker(self, reason: str) -> None:
+        client = self._dubbing_worker_client
+        self._dubbing_worker_client = None
+        if client is None:
+            return
+        try:
+            client.shutdown(reason)
+        except Exception:
+            client.terminate()
+
+    def _job_is_current_dubbing_stage(self, job: dict[str, Any]) -> bool:
+        current = self._current_job_stage(job)
+        return bool(
+            current is not None
+            and current[0] == "生成中文 AI 配音"
+            and current[2] == "gpu_heavy"
+        )
+
+    def _current_job_stage(
+        self,
+        job: dict[str, Any],
+    ) -> tuple[str, list[str], str] | None:
+        if job.get("kind") != "pipeline" or job.get("resource_class") != "gpu_heavy":
+            return None
+        try:
+            stages = self._build_stages(job)
+            stage_index = max(0, int(job.get("payload", {}).get("_stage_index") or 0))
+        except (OSError, RuntimeError, ValueError, IndexError):
+            return None
+        return stages[stage_index] if stage_index < len(stages) else None
+
+    def _claim_next_warm_dubbing_job(self) -> dict[str, Any] | None:
+        for candidate in self.store.queued(resource_class="gpu_heavy"):
+            stage = self._current_job_stage(candidate)
+            if stage is None:
+                return None
+            if stage[0] == "生成并质检中文配音成片":
+                # A completed dub's own render continuation is deliberately
+                # deferred until the consecutive dubbing batch releases VoxCPM2.
+                continue
+            if stage[0] != "生成中文 AI 配音":
+                # Do not jump over Whisper, discovery, encoding, or another
+                # GPU-heavy stage merely to keep the model resident.
+                return None
+            claimed = self.store.claim_id(str(candidate["id"]))
+            if claimed is not None:
+                return claimed
+        return None
 
     def _execute(self, job: dict[str, Any]) -> None:
         job_id = str(job["id"])
@@ -979,6 +1120,16 @@ class WorkflowWorker:
                 if job["kind"] == "pipeline" and self._automation_enabled(
                     job["payload"]
                 ):
+                    if self._handle_unattended_dubbing_preflight_failure(
+                        job,
+                        label=label,
+                        exit_code=exit_code,
+                        log_path=log_path,
+                        stage_index=stage_index,
+                        total=total,
+                        resource_class=resource_class,
+                    ):
+                        return
                     if self._continue_unattended_original_media_publish(
                         job,
                         label=label,
@@ -1140,6 +1291,31 @@ class WorkflowWorker:
             )
         except Exception as exc:  # Worker must survive individual task failures.
             self._append_log(log_path, f"\n[任务失败] {exc}\n")
+            current_stage = self._current_job_stage(job)
+            current_stage_total = 1
+            if current_stage is not None:
+                try:
+                    current_stage_total = max(1, len(self._build_stages(job)))
+                except (OSError, RuntimeError, ValueError, IndexError):
+                    current_stage = None
+            if (
+                job["kind"] == "pipeline"
+                and self._automation_enabled(job["payload"])
+                and current_stage is not None
+                and self._handle_unattended_dubbing_preflight_failure(
+                    job,
+                    label=current_stage[0],
+                    exit_code=1,
+                    log_path=log_path,
+                    stage_index=max(
+                        0,
+                        int(job.get("payload", {}).get("_stage_index") or 0),
+                    ),
+                    total=current_stage_total,
+                    resource_class=current_stage[2],
+                )
+            ):
+                return
             if (
                 job["kind"] == "pipeline"
                 and self._automation_enabled(job["payload"])
@@ -1238,6 +1414,111 @@ class WorkflowWorker:
         )
         return True
 
+    @staticmethod
+    def _dubbing_preflight_diagnostic(log_path: Path) -> str:
+        try:
+            text = log_path.read_text(encoding="utf-8", errors="replace")[-12000:]
+        except OSError:
+            return ""
+        lines = [
+            line
+            for line in text.splitlines()
+            if any(
+                marker in line.casefold()
+                for marker in (
+                    "[dubbing] preflight",
+                    "torchcodec",
+                    "ffmpeg shared",
+                    "中文配音预检",
+                    "persistent dubbing worker",
+                )
+            )
+        ]
+        return "\n".join(lines)[-4000:]
+
+    def _handle_unattended_dubbing_preflight_failure(
+        self,
+        job: dict[str, Any],
+        *,
+        label: str,
+        exit_code: int,
+        log_path: Path,
+        stage_index: int,
+        total: int,
+        resource_class: str,
+    ) -> bool:
+        """Retry transient runtime probes and keep permanent infra failures visible."""
+        if label != "生成中文 AI 配音":
+            return False
+        diagnostic = self._dubbing_preflight_diagnostic(log_path)
+        if not diagnostic:
+            return False
+        normalized = diagnostic.casefold()
+        is_preflight = any(
+            marker in normalized
+            for marker in (
+                "preflight",
+                "torchcodec",
+                "ffmpeg shared",
+                "中文配音预检",
+            )
+        )
+        if not is_preflight:
+            return False
+
+        payload = dict(job.get("payload") or {})
+        try:
+            retry_count = max(
+                0,
+                int(payload.get("_dubbing_preflight_retry_count") or 0),
+            )
+        except (TypeError, ValueError):
+            retry_count = 0
+        if "超时" in diagnostic or "timed out" in normalized:
+            if retry_count < 1:
+                payload["_dubbing_preflight_retry_count"] = retry_count + 1
+                self.store.requeue_stage(
+                    str(job["id"]),
+                    payload=payload,
+                    resource_class=resource_class,
+                    step="配音运行时自检超时，正在自动重试",
+                    progress=int(stage_index / max(1, total) * 100),
+                )
+                self._append_log(
+                    log_path,
+                    "\n[自动恢复] TorchCodec 配音运行时自检超时；"
+                    "已启动一次全新自检进程并重新排队。\n",
+                )
+                return True
+
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        reason = "DUBBING_RUNTIME_PREFLIGHT_FAILED"
+        message = "中文配音运行时预检失败，任务已保留为失败状态，等待修复后重试"
+        self.publisher.mark_automation_failed(
+            task_dir,
+            reason,
+            details={
+                "stage_label": label,
+                "process_exit_code": int(exit_code),
+                "retry_count": retry_count,
+                "diagnostic": diagnostic,
+            },
+        )
+        self._append_log(
+            log_path,
+            f"\n[配音运行时失败] {message}：{reason}（退出代码 {exit_code}）。\n",
+        )
+        self.store.update(
+            str(job["id"]),
+            status="failed",
+            step=message,
+            progress=int(stage_index / max(1, total) * 100),
+            exit_code=int(exit_code),
+            error=reason,
+            finished_at=utc_now(),
+        )
+        return True
+
     def _continue_unattended_original_media_publish(
         self,
         job: dict[str, Any],
@@ -1246,23 +1527,31 @@ class WorkflowWorker:
         exit_code: int,
         log_path: Path,
     ) -> bool:
-        """Reroute a verified no-speech video to metadata-only original upload."""
+        """Reroute a safe unattended fallback to metadata-only original upload."""
         payload = dict(job.get("payload") or {})
-        if (
-            label != "生成并选择最佳英文字幕"
-            or self._automation_target(payload) != "publish"
-            or str(
+        no_speech_fallback = bool(
+            label == "生成并选择最佳英文字幕"
+            and str(
                 payload.get("automation_silent_video_policy") or "publish_original"
             ).strip().casefold()
-            != "publish_original"
+            == "publish_original"
+        )
+        dubbing_render_fallback = bool(
+            payload.get("dubbing_fallback")
+            and label == "生成并质检双语成片"
+        )
+        if self._automation_target(payload) != "publish" or not (
+            no_speech_fallback or dubbing_render_fallback
         ):
             return False
         task_dir = self.scanner.resolve_task(str(job["target"]))
-        if not no_english_subtitle_or_recognized_speech(task_dir):
+        if no_speech_fallback and not no_english_subtitle_or_recognized_speech(task_dir):
             return False
 
         payload["silent_video_mode"] = True
         payload["publish_original_video"] = True
+        payload["media_variant"] = "original"
+        payload["dubbing_enabled"] = False
         payload["_stage_index"] = 0
         metadata_provider = str(
             payload.get("publish_metadata_provider") or "auto"
@@ -1270,7 +1559,20 @@ class WorkflowWorker:
         resource_class = (
             "paid_api" if metadata_provider == "translation_api" else "gpu_heavy"
         )
-        self.publisher.mark_automation_original_media(task_dir)
+        if dubbing_render_fallback:
+            reason = "DUBBING_FALLBACK_RENDER_FAILED"
+            message = (
+                "中文配音无法安全适配，原声字幕版成片也未通过检查；"
+                "最终保留原始视频并继续无人值守投稿"
+            )
+        else:
+            reason = "NO_NARRATION_OR_BACKGROUND_MUSIC"
+            message = "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息"
+        self.publisher.mark_automation_original_media(
+            task_dir,
+            reason=reason,
+            message=message,
+        )
         self.store.requeue_stage(
             str(job["id"]),
             payload=payload,
@@ -1280,8 +1582,8 @@ class WorkflowWorker:
         )
         self._append_log(
             log_path,
-            "\n[无人值守无配音分支] 未检测到英文字幕或可识别语音"
-            f"（原退出码 {exit_code}）。将保留原画面与音轨，仅生成中文投稿信息后投稿。\n",
+            "\n[无人值守原视频降级] "
+            f"{message}（原退出码 {exit_code}）。\n",
         )
         return True
 
@@ -1366,7 +1668,7 @@ class WorkflowWorker:
             return False
         summary = str(details["message"])
         policy = str(
-            payload.get("automation_dubbing_review_policy") or "block"
+            payload.get("automation_dubbing_review_policy") or "auto_fallback"
         ).strip().casefold()
         if policy == "continue":
             self._append_log(
@@ -1374,6 +1676,50 @@ class WorkflowWorker:
                 f"\n[无人值守中配策略] {summary}；已按设置继续成片。\n",
             )
             return False
+        if policy == "auto_fallback":
+            payload.update(
+                dubbing_enabled=False,
+                force_dubbing=False,
+                dubbing_fallback=True,
+                media_variant="subtitled_original_audio",
+                publish_original_video=False,
+            )
+            payload.pop("silent_video_mode", None)
+            fallback_job = dict(job)
+            fallback_job["payload"] = payload
+            stages = self._build_stages(fallback_job)
+            render_index = next(
+                (
+                    index
+                    for index, stage in enumerate(stages)
+                    if stage[0] == "生成并质检双语成片"
+                ),
+                -1,
+            )
+            if render_index < 0:
+                raise RuntimeError("无法为配音复核任务建立原声字幕版成片阶段")
+            label, _, resource_class = stages[render_index]
+            payload["_stage_index"] = render_index
+            self.publisher.mark_automation_fallback(
+                task_dir,
+                "DUBBING_TIMING_REVIEW_REQUIRED",
+                media_variant="subtitled_original_audio",
+                details=details,
+            )
+            self.store.requeue_stage(
+                str(job["id"]),
+                payload=payload,
+                resource_class=resource_class,
+                step=f"自动降级：等待{label}",
+                progress=int(render_index / max(1, len(stages)) * 100),
+            )
+            self._append_log(
+                log_path,
+                "\n[无人值守中配自动降级] "
+                f"{summary}；不会使用存在风险的中文配音，"
+                "已改为生成保留原始音轨的中文字幕成片。\n",
+            )
+            return True
 
         failure_policy = str(
             payload.get("automation_failure_policy") or "skip"
@@ -1500,7 +1846,8 @@ class WorkflowWorker:
                     or "publish_original"
                 ),
                 "automation_dubbing_review_policy": str(
-                    payload.get("automation_dubbing_review_policy") or "block"
+                    payload.get("automation_dubbing_review_policy")
+                    or "auto_fallback"
                 ),
                 "dubbing_enabled": bool(payload.get("dubbing_enabled")),
                 "dubbing_reference_mode": str(
@@ -1531,7 +1878,8 @@ class WorkflowWorker:
             self._dubbing_review_details(task_dir)
             if job["payload"].get("dubbing_enabled")
             and str(
-                job["payload"].get("automation_dubbing_review_policy") or "block"
+                job["payload"].get("automation_dubbing_review_policy")
+                or "auto_fallback"
             ).strip().casefold()
             != "continue"
             else None
@@ -1566,6 +1914,37 @@ class WorkflowWorker:
                 if render_blocked or status == "REVIEW_REQUIRED"
                 else "HARDSUB_OUTPUT_NOT_READY"
             )
+            if (
+                job["payload"].get("dubbing_fallback")
+                and self._automation_target(job["payload"]) == "publish"
+            ):
+                original_payload = self.publisher.automatic_submission(
+                    task_dir,
+                    account_id=str(job["payload"].get("account_id") or ""),
+                    is_only_self=bool(
+                        job["payload"].get("publish_only_self", False)
+                    ),
+                    publish_original_video=True,
+                    media_variant="original",
+                )
+                self.publisher.mark_automation_original_media(
+                    task_dir,
+                    reason="DUBBING_FALLBACK_RENDER_REVIEW_REQUIRED",
+                    message=(
+                        "中文配音无法安全适配，原声字幕版也未达到可投稿条件；"
+                        "已自动改用原始视频"
+                    ),
+                )
+                if not self.store.has_active("publish", target):
+                    self.store.enqueue(
+                        "publish",
+                        target,
+                        original_payload,
+                        resource_class=self.initial_resource(
+                            "publish", original_payload
+                        ),
+                    )
+                return "原声字幕版未通过成片检查，已改用原视频加入投稿队列"
             if str(
                 job["payload"].get("automation_failure_policy") or "skip"
             ) != "skip":
@@ -1590,6 +1969,14 @@ class WorkflowWorker:
             account_id=str(job["payload"].get("account_id") or ""),
             is_only_self=bool(job["payload"].get("publish_only_self", False)),
             publish_original_video=publish_original_video,
+            media_variant=str(
+                job["payload"].get("media_variant")
+                or (
+                    "dubbed"
+                    if job["payload"].get("dubbing_enabled")
+                    else "localized"
+                )
+            ),
         )
         self.store.enqueue(
             "publish",
@@ -1600,6 +1987,8 @@ class WorkflowWorker:
         return (
             "无配音视频投稿信息完成，已使用原视频加入投稿队列"
             if publish_original_video
+            else "中配未通过结构检查，原声字幕版已自动加入投稿队列"
+            if job["payload"].get("media_variant") == "subtitled_original_audio"
             else "成片完成，已自动加入投稿队列"
         )
 
@@ -1820,22 +2209,20 @@ class WorkflowWorker:
                 )
             )
             if chinese_source == "deepseek":
-                commands.append(
-                    (
-                        "翻译并检查中文字幕",
-                        [
-                            str(stage3_python),
-                            "-m",
-                            "src.run_stage3",
-                            "--video-dir",
-                            str(task_dir),
-                            "--steps",
-                            "translate",
-                            "--resume",
-                            "--allow-paid-api",
-                        ],
-                    )
-                )
+                translation_command = [
+                    str(stage3_python),
+                    "-m",
+                    "src.run_stage3",
+                    "--video-dir",
+                    str(task_dir),
+                    "--steps",
+                    "translate",
+                    "--resume",
+                    "--allow-paid-api",
+                ]
+                if payload.get("dubbing_enabled"):
+                    translation_command.append("--for-dubbing")
+                commands.append(("翻译并检查中文字幕", translation_command))
             metadata_provider = str(
                 payload.get("publish_metadata_provider") or "translation_api"
             )
@@ -1950,6 +2337,190 @@ class WorkflowWorker:
                 candidate.unlink(missing_ok=True)
 
     def _run_command(
+        self,
+        job_id: str,
+        command: list[str],
+        log_path: Path,
+        *,
+        stage_progress_start: float = 0.0,
+        stage_progress_span: float = 100.0,
+    ) -> int:
+        if len(command) >= 3 and command[1:3] == ["-m", "src.run_dubbing"]:
+            try:
+                config = load_dubbing_config(self.project_root)
+            except (OSError, ValueError):
+                config = {}
+            performance = (
+                config.get("performance")
+                if isinstance(config.get("performance"), dict)
+                else {}
+            )
+            keep_warm = bool(performance.get("keep_voxcpm_warm", False))
+            if not keep_warm and getattr(self, "_dubbing_worker_client", None) is not None:
+                self._shutdown_dubbing_worker(
+                    "Persistent VoxCPM2 reuse was disabled; releasing the model."
+                )
+            if keep_warm:
+                try:
+                    return self._run_persistent_dubbing_command(
+                        job_id,
+                        command,
+                        log_path,
+                        config=config,
+                        stage_progress_start=stage_progress_start,
+                        stage_progress_span=stage_progress_span,
+                    )
+                except DubbingWorkerStartError as exc:
+                    self._append_log(
+                        log_path,
+                        "\n[DUBBING] Persistent worker startup failed; "
+                        f"falling back to one-task lifecycle: {exc}\n",
+                    )
+        return self._run_subprocess_command(
+            job_id,
+            command,
+            log_path,
+            stage_progress_start=stage_progress_start,
+            stage_progress_span=stage_progress_span,
+        )
+
+    @staticmethod
+    def _dubbing_request_from_command(command: list[str]) -> dict[str, Any]:
+        def option(name: str, default: Any = None) -> Any:
+            if name not in command:
+                return default
+            index = command.index(name)
+            return command[index + 1] if index + 1 < len(command) else default
+
+        return {
+            "video_dir": str(option("--video-dir") or ""),
+            "config": option("--config"),
+            "reference_mode": str(option("--reference-mode", "auto")),
+            "reference_start": (
+                float(option("--reference-start"))
+                if option("--reference-start") is not None
+                else None
+            ),
+            "reference_end": (
+                float(option("--reference-end"))
+                if option("--reference-end") is not None
+                else None
+            ),
+            "force_separation": "--force-separation" in command,
+            "force_tts": "--force-tts" in command,
+        }
+
+    def _consume_job_output_line(
+        self,
+        job_id: str,
+        line: str,
+        log_path: Path,
+        *,
+        stage_progress_start: float,
+        stage_progress_span: float,
+    ) -> None:
+        redacted = self.publisher.redact_log_text(line)
+        self._append_log(log_path, redacted)
+        if not redacted.startswith("[DUBBING_PROGRESS] "):
+            return
+        try:
+            progress = json.loads(redacted.split(" ", 1)[1])
+            step = str(progress.get("step") or "中文配音处理中")
+            stage_value = max(0, min(float(progress.get("progress") or 0), 100))
+            overall_value = round(
+                stage_progress_start + stage_progress_span * stage_value / 100
+            )
+            self.store.update(
+                job_id,
+                step=step[:300],
+                progress=max(0, min(overall_value, 99)),
+            )
+        except (json.JSONDecodeError, AttributeError, TypeError, ValueError):
+            pass
+
+    def _run_persistent_dubbing_command(
+        self,
+        job_id: str,
+        command: list[str],
+        log_path: Path,
+        *,
+        config: dict[str, Any],
+        stage_progress_start: float,
+        stage_progress_span: float,
+    ) -> int:
+        executable = Path(command[0]).resolve()
+        if not executable.is_file():
+            raise FileNotFoundError(f"缺少运行环境：{executable}")
+        environment = build_dubbing_subprocess_env(self.project_root)
+        environment["PYTHONUTF8"] = "1"
+        environment["PYTHONIOENCODING"] = "utf-8"
+        performance = (
+            config.get("performance")
+            if isinstance(config.get("performance"), dict)
+            else {}
+        )
+        client = self._dubbing_worker_client
+        if client is not None and (
+            not client.alive or client.python_executable != executable
+        ):
+            self._shutdown_dubbing_worker(
+                "Dubbing runtime changed; restarting persistent worker."
+            )
+            client = None
+        if client is None:
+            client = PersistentDubbingWorkerClient(
+                executable,
+                self.project_root,
+                idle_timeout_seconds=float(
+                    performance.get("worker_idle_timeout_seconds", 45.0)
+                ),
+                env=environment,
+            )
+            self._dubbing_worker_client = client
+            self._append_log(
+                log_path,
+                "[DUBBING] Persistent .venv_dubbing worker started.\n",
+            )
+        with self._process_lock:
+            self._processes[job_id] = client.process  # type: ignore[assignment]
+            terminate_immediately = (
+                job_id in self._cancel_requested or self._stop_event.is_set()
+            )
+        if terminate_immediately:
+            client.terminate()
+        try:
+            result = client.run(
+                self._dubbing_request_from_command(command),
+                on_line=lambda line: self._consume_job_output_line(
+                    job_id,
+                    line,
+                    log_path,
+                    stage_progress_start=stage_progress_start,
+                    stage_progress_span=stage_progress_span,
+                ),
+                cancelled=lambda: self._raise_if_cancelled(job_id),
+                stopping=self._stop_event.is_set,
+            )
+            exit_code = int(result.get("exit_code") or 0)
+            if result.get("worker_exiting") or not client.alive:
+                client.terminate()
+                self._dubbing_worker_client = None
+            return exit_code
+        except DubbingWorkerCrashed as exc:
+            self._append_log(
+                log_path,
+                f"\n[DUBBING] Persistent worker crashed: {exc}. "
+                "The next retry will start a fresh worker and reuse segment checkpoints.\n",
+            )
+            client.terminate()
+            self._dubbing_worker_client = None
+            return 2
+        finally:
+            with self._process_lock:
+                if self._processes.get(job_id) is client.process:
+                    self._processes.pop(job_id, None)
+
+    def _run_subprocess_command(
         self,
         job_id: str,
         command: list[str],

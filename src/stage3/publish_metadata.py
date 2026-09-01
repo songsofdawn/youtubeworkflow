@@ -11,7 +11,17 @@ from .models import SubtitleSegment
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PUBLISH_METADATA_PROMPT_VERSION = "stage3-publish-metadata-v2"
 _CJK_PATTERN = re.compile(r"[\u3400-\u9fff]")
-_PREFIX_PATTERN = re.compile(r"^\s*【\s*(?:中英双语|无配音)\s*】\s*")
+_PREFIX_PATTERN = re.compile(r"^\s*【\s*(?:中英双语|原声中字|无配音)\s*】\s*")
+
+
+def normalize_title_prefix(value: Any) -> str:
+    """Normalize an optional user-facing title prefix.
+
+    A prefix is presentation text only.  It may be Chinese, English, or any
+    other title-safe text; it must never be interpreted as a bilingual marker.
+    Collapsing whitespace also keeps newlines out of the generated CLI title.
+    """
+    return " ".join(str(value or "").split()).strip()
 
 
 def utf16_code_units(value: str) -> int:
@@ -128,7 +138,7 @@ def compose_localized_title(
     chinese_title: str,
     english_title: str,
     *,
-    prefix: str,
+    prefix: str = "",
     fallback_title: str,
     max_length: int = 80,
 ) -> str:
@@ -139,29 +149,30 @@ def compose_localized_title(
     Build every budget from the same counter used by submission validation so
     generated defaults can always be submitted unchanged.
     """
+    normalized_prefix = normalize_title_prefix(prefix)
     chinese = _PREFIX_PATTERN.sub("", " ".join(str(chinese_title or "").split())).strip(" ｜|+-")
     english = _PREFIX_PATTERN.sub("", " ".join(str(english_title or "").split())).strip(" ｜|+-")
     if not chinese:
         chinese = fallback_title
     if not english or english.casefold() == chinese.casefold():
-        return truncate_utf16(prefix + chinese, max_length)
+        return truncate_utf16(normalized_prefix + chinese, max_length)
     separator = "｜"
-    full = f"{prefix}{chinese}{separator}{english}"
+    full = f"{normalized_prefix}{chinese}{separator}{english}"
     if utf16_code_units(full) <= max_length:
         return full
     chinese_budget = min(utf16_code_units(chinese), 36)
     chinese_short = truncate_utf16(chinese, chinese_budget, suffix="").rstrip()
     english_budget = (
         max_length
-        - utf16_code_units(prefix)
+        - utf16_code_units(normalized_prefix)
         - utf16_code_units(separator)
         - utf16_code_units(chinese_short)
     )
     if english_budget <= 1:
-        return truncate_utf16(prefix + chinese_short, max_length)
+        return truncate_utf16(normalized_prefix + chinese_short, max_length)
     english_short = truncate_utf16(english, english_budget).rstrip()
     return truncate_utf16(
-        f"{prefix}{chinese_short}{separator}{english_short}",
+        f"{normalized_prefix}{chinese_short}{separator}{english_short}",
         max_length,
     )
 
@@ -170,12 +181,13 @@ def compose_bilingual_title(
     chinese_title: str,
     english_title: str,
     *,
+    prefix: str = "",
     max_length: int = 80,
 ) -> str:
     return compose_localized_title(
         chinese_title,
         english_title,
-        prefix="【中英双语】",
+        prefix=prefix,
         fallback_title="中英双语精选",
         max_length=max_length,
     )
@@ -353,6 +365,7 @@ __all__ = [
     "fallback_publish_metadata",
     "load_category_mapping",
     "normalize_ai_recommendation",
+    "normalize_title_prefix",
     "normalize_tags",
     "truncate_utf8",
     "truncate_utf16",

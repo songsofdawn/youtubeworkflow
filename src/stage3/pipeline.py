@@ -859,6 +859,7 @@ class Stage3Pipeline:
         glossary_path: Path,
         settings: dict[str, Any],
         polish_all: bool,
+        for_dubbing: bool,
     ) -> dict[str, Any]:
         return {
             "stage_version": TRANSLATION_STAGE_VERSION,
@@ -875,6 +876,7 @@ class Stage3Pipeline:
             "context_after": settings["context_after"],
             "max_output_tokens": settings["max_output_tokens"],
             "polish_all": bool(polish_all),
+            "for_dubbing": bool(for_dubbing),
         }
 
     @staticmethod
@@ -1155,6 +1157,7 @@ class Stage3Pipeline:
         allow_paid_api: bool = False,
         force: bool = False,
         polish_all: bool = False,
+        for_dubbing: bool = False,
     ) -> dict[str, Any]:
         selected_path = self.subtitle_dir / "en.selected.srt"
         if not selected_path.is_file():
@@ -1222,6 +1225,7 @@ class Stage3Pipeline:
             glossary_path,
             settings,
             polish_all,
+            for_dubbing,
         )
         if not allow_paid_api:
             dry_run_path = self.translation_dir / "dry_run.json"
@@ -1308,7 +1312,19 @@ class Stage3Pipeline:
 
         metadata = _media_metadata(self.video_dir)
         translator = DeepSeekTranslator(self.config, self.translation_dir)
-        raw_map = translator.translate_all(source, source, glossary, metadata, pass_name="raw", force=force)
+        translation_options = {
+            "pass_name": "raw",
+            "force": force,
+        }
+        if for_dubbing:
+            translation_options["for_dubbing"] = True
+        raw_map = translator.translate_all(
+            source,
+            source,
+            glossary,
+            metadata,
+            **translation_options,
+        )
         translated = [
             TranslationSegment(item.id, item.start, item.end, item.text, raw_map.get(item.id, ""), raw_map.get(item.id, ""))
             for item in source
@@ -1325,7 +1341,13 @@ class Stage3Pipeline:
 
         if polish_all:
             polished_map = translator.translate_all(
-                source, source, glossary, metadata, pass_name="polished", force=force
+                source,
+                source,
+                glossary,
+                metadata,
+                pass_name="polished",
+                force=force,
+                **({"for_dubbing": True} if for_dubbing else {}),
             )
             for item in translated:
                 if item.id in polished_map:

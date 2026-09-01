@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import math
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -12,6 +14,7 @@ from unittest.mock import Mock, patch
 import src.dubbing.config as dubbing_config
 from src.dubbing.config import load_dubbing_config, public_dubbing_health
 from src.dubbing.mixer import build_timeline_filter
+from src.dubbing.model_pool import WarmVoxCPM2Pool
 from src.dubbing.pipeline import DubbingError, DubbingPipeline, subtitle_segments
 from src.dubbing.timing import calculate_available_end, plan_duration
 
@@ -27,6 +30,20 @@ def write_wav(path: Path, duration: float = 0.5, rate: int = 16000) -> None:
         handle.setsampwidth(2)
         handle.setframerate(rate)
         handle.writeframes(b"\x00\x00" * frames)
+
+
+def write_tone_wav(path: Path, duration: float = 0.5, rate: int = 16000) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frames = max(1, round(duration * rate))
+    payload = bytearray()
+    for index in range(frames):
+        sample = round(0.2 * 32767 * math.sin(2 * math.pi * 440 * index / rate))
+        payload.extend(int(sample).to_bytes(2, "little", signed=True))
+    with wave.open(str(path), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(rate)
+        handle.writeframes(payload)
 
 
 class FakeSeparator:
@@ -75,6 +92,46 @@ class FakeSynthesizerFactory:
 
     def __call__(self, *_: object, **__: object) -> FakeSynthesizer:
         return FakeSynthesizer(self)
+
+
+class FakeToneSynthesizer(FakeSynthesizer):
+    def generate(self, text: str, reference: Path, output: Path) -> None:
+        del reference
+        self.factory.calls.append(text)
+        write_tone_wav(Path(output), 0.5)
+
+
+class FakeToneSynthesizerFactory(FakeSynthesizerFactory):
+    def __call__(self, *_: object, **__: object) -> FakeToneSynthesizer:
+        return FakeToneSynthesizer(self)
+
+
+class DurationRetrySynthesizer:
+    def __init__(self, factory: "DurationRetrySynthesizerFactory") -> None:
+        self.factory = factory
+
+    def generate(self, text: str, reference: Path, output: Path) -> None:
+        del reference
+        self.factory.calls.append(text)
+        count = self.factory.calls_by_text.get(text, 0) + 1
+        self.factory.calls_by_text[text] = count
+        write_tone_wav(
+            Path(output),
+            1.0 if count == 1 else self.factory.retry_duration,
+        )
+
+    def close(self) -> None:
+        self.factory.closed += 1
+
+
+class DurationRetrySynthesizerFactory(FakeSynthesizerFactory):
+    def __init__(self, retry_duration: float = 0.6) -> None:
+        super().__init__()
+        self.calls_by_text: dict[str, int] = {}
+        self.retry_duration = retry_duration
+
+    def __call__(self, *_: object, **__: object) -> DurationRetrySynthesizer:
+        return DurationRetrySynthesizer(self)
 
 
 def fake_command_runner(command: list[object], **_: object) -> None:
@@ -221,6 +278,24 @@ class DubbingCoreTests(unittest.TestCase):
         self.assertIn("adelay=9000:all=1", value)
         self.assertIn("atrim=duration=15.000000", value)
 
+    def test_timeline_filter_prefers_safe_scheduled_start(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            audio = root / "segments" / "scheduled" / "000001.wav"
+            write_wav(audio)
+            value = build_timeline_filter(
+                [
+                    {
+                        "start": 1.0,
+                        "scheduled_start": 1.375,
+                        "final_wav": audio,
+                    }
+                ],
+                work_dir=root,
+                media_duration=3.0,
+            )
+        self.assertIn("adelay=1375:all=1", value)
+
     def test_config_and_optional_health_do_not_affect_core_readiness(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -293,6 +368,180 @@ class DubbingResumeTests(unittest.TestCase):
             separator_factory=FakeSeparator,
             command_runner=fake_command_runner,
             runtime_preflight=lambda *_: None,
+        )
+
+    def _audio_pipeline(
+        self,
+        factory: object,
+        normalizer_calls: list[tuple[str, float]],
+        mix_calls: list[str],
+    ) -> DubbingPipeline:
+        def normalizer(source: Path, destination: Path, **kwargs: object) -> dict[str, object]:
+            shutil.copy2(source, destination)
+            target = float(kwargs["target_lufs"])
+            normalizer_calls.append((Path(source).name, target))
+            return {
+                "mode": "two_pass_loudnorm",
+                "input_lufs": -24.0,
+                "output_lufs": target,
+                "true_peak_db": float(kwargs["true_peak_db"]),
+            }
+
+        def runner(command: list[object], **_: object) -> None:
+            if any("ducking_filter.txt" in str(item) for item in command):
+                mix_calls.append("mix")
+            fake_command_runner(command)
+
+        return DubbingPipeline(
+            self.root,
+            self.config,
+            synthesizer_factory=factory,
+            separator_factory=FakeSeparator,
+            command_runner=runner,
+            runtime_preflight=lambda *_: None,
+            loudness_normalizer=normalizer,
+        )
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_regional_timing_pipeline_trims_schedules_and_reuses_tts(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        self.config["timing"].update(
+            regional_scheduling_enabled=True,
+            trim_silence_enabled=True,
+            silence_threshold_db=-45,
+            silence_relative_db=-35,
+            silence_padding_ms=40,
+            region_max_gap_ms=500,
+            region_internal_gap_ms=40,
+            region_boundary_gap_ms=50,
+            max_alignment_shift_ms=1500,
+            overlap_tolerance_ms=20,
+        )
+
+        first = FakeToneSynthesizerFactory()
+        result = self._pipeline(first).run(self.task)
+        manifest = json.loads(
+            (self.task / "dubbing" / "manifest.json").read_text(encoding="utf-8")
+        )
+        second = FakeToneSynthesizerFactory()
+        self._pipeline(second).run(self.task)
+
+        self.assertEqual(result.status, "COMPLETED")
+        self.assertEqual(manifest["timing_qc"]["status"], "PASS_AUTO_ADAPTED")
+        self.assertTrue(manifest["timing_qc"]["no_voice_overlap"])
+        self.assertTrue(all("scheduled_start" in row for row in manifest["segments"]))
+        self.assertTrue(
+            (self.task / "dubbing" / "segments" / "trimmed" / "000001.wav").is_file()
+        )
+        self.assertEqual(second.calls, [])
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_overlong_region_retries_each_segment_once_before_review(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        self.subtitle.write_text(
+            "1\n00:00:00,000 --> 00:00:00,300\n第一句。\n\n"
+            "2\n00:00:00,310 --> 00:00:00,600\n第二句。\n\n"
+            "3\n00:00:00,610 --> 00:00:00,900\n第三句。\n",
+            encoding="utf-8",
+        )
+        self.config["timing"].update(
+            regional_scheduling_enabled=True,
+            duration_retry_enabled=True,
+            duration_retry_max_times=1,
+            trim_silence_enabled=True,
+            silence_padding_ms=40,
+            region_max_gap_ms=500,
+            region_internal_gap_ms=40,
+            region_boundary_gap_ms=50,
+            max_alignment_shift_ms=1500,
+            overlap_tolerance_ms=20,
+        )
+
+        first = DurationRetrySynthesizerFactory()
+        result = self._pipeline(first).run(self.task)
+        manifest_path = self.task / "dubbing" / "manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            first.calls,
+            [
+                "第一句。",
+                "第二句。",
+                "第三句。",
+                "第一句。",
+                "第二句。",
+                "第三句。",
+            ],
+        )
+        self.assertEqual(result.status, "COMPLETED")
+        self.assertEqual(manifest["timing_qc"]["status"], "PASS_AUTO_ADAPTED")
+        self.assertTrue(
+            all(
+                row["duration_retry"]["selected"]
+                and row["duration_retry"]["target_met"]
+                for row in manifest["segments"]
+            )
+        )
+
+        second = DurationRetrySynthesizerFactory()
+        self._pipeline(second).run(self.task)
+        self.assertEqual(second.calls, [])
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_duration_retry_keeps_review_when_target_still_does_not_fit(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        self.subtitle.write_text(
+            "1\n00:00:00,000 --> 00:00:00,300\n第一句。\n\n"
+            "2\n00:00:00,310 --> 00:00:00,600\n第二句。\n\n"
+            "3\n00:00:00,610 --> 00:00:00,900\n第三句。\n",
+            encoding="utf-8",
+        )
+        self.config["timing"].update(
+            regional_scheduling_enabled=True,
+            duration_retry_enabled=True,
+            duration_retry_max_times=1,
+            trim_silence_enabled=True,
+            silence_padding_ms=40,
+            region_max_gap_ms=500,
+            region_internal_gap_ms=40,
+            region_boundary_gap_ms=50,
+            max_alignment_shift_ms=1500,
+            overlap_tolerance_ms=20,
+        )
+
+        factory = DurationRetrySynthesizerFactory(retry_duration=0.9)
+        result = self._pipeline(factory).run(self.task)
+        manifest = json.loads(
+            (self.task / "dubbing" / "manifest.json").read_text(encoding="utf-8")
+        )
+
+        self.assertEqual(result.status, "COMPLETED_WITH_REVIEW")
+        self.assertEqual(manifest["timing_qc"]["status"], "REVIEW_REQUIRED")
+        self.assertTrue(
+            all(
+                row["duration_retry"]["attempts"] == 1
+                and row["duration_retry"]["selected"]
+                and not row["duration_retry"]["target_met"]
+                for row in manifest["segments"]
+            )
         )
 
     @patch("src.dubbing.pipeline.probe_media")
@@ -393,6 +642,98 @@ class DubbingResumeTests(unittest.TestCase):
             recovered["segments"][1]["recovered_from"],
             "validated_disk_scan",
         )
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_audio_setting_changes_invalidate_only_downstream_checkpoints(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        self.config["loudness"] = {
+            "enabled": True,
+            "voice_target_lufs": -18.0,
+            "voice_true_peak_db": -2.0,
+            "final_target_lufs": -14.0,
+            "final_true_peak_db": -1.0,
+            "final_lra": 11.0,
+        }
+        normalizer_calls: list[tuple[str, float]] = []
+        mix_calls: list[str] = []
+
+        initial = FakeSynthesizerFactory()
+        self._audio_pipeline(initial, normalizer_calls, mix_calls).run(self.task)
+        self.assertEqual([target for _, target in normalizer_calls], [-18.0, -14.0])
+        self.assertEqual(len(mix_calls), 1)
+
+        cached = FakeSynthesizerFactory()
+        self._audio_pipeline(cached, normalizer_calls, mix_calls).run(self.task)
+        self.assertEqual(cached.calls, [])
+        self.assertEqual(len(normalizer_calls), 2)
+        self.assertEqual(len(mix_calls), 1)
+
+        self.config["loudness"]["final_target_lufs"] = -13.0
+        final_changed = FakeSynthesizerFactory()
+        self._audio_pipeline(final_changed, normalizer_calls, mix_calls).run(self.task)
+        self.assertEqual(final_changed.calls, [])
+        self.assertEqual(normalizer_calls[-1], ("mixed_audio.wav", -13.0))
+        self.assertEqual(len(mix_calls), 1)
+
+        self.config["mix"]["background_duck_db"] = 8.0
+        duck_changed = FakeSynthesizerFactory()
+        self._audio_pipeline(duck_changed, normalizer_calls, mix_calls).run(self.task)
+        self.assertEqual(duck_changed.calls, [])
+        self.assertEqual(len(mix_calls), 2)
+        self.assertEqual(normalizer_calls[-1], ("mixed_audio.wav", -13.0))
+
+        self.config["loudness"]["voice_target_lufs"] = -16.0
+        voice_changed = FakeSynthesizerFactory()
+        self._audio_pipeline(voice_changed, normalizer_calls, mix_calls).run(self.task)
+        self.assertEqual(voice_changed.calls, [])
+        self.assertEqual(normalizer_calls[-2:], [
+            ("chinese_voice.wav", -16.0),
+            ("mixed_audio.wav", -13.0),
+        ])
+        self.assertEqual(len(mix_calls), 3)
+
+        manifest = json.loads(
+            (self.task / "dubbing" / "manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertIn("voice_loudness", manifest["checkpoints"])
+        self.assertIn("final_loudness", manifest["checkpoints"])
+        self.assertEqual(manifest["audio_qc"]["voice"]["output_lufs"], -16.0)
+        self.assertEqual(manifest["audio_qc"]["final_mix"]["output_lufs"], -13.0)
+
+    @patch("src.dubbing.pipeline.probe_media")
+    @patch("src.dubbing.pipeline.resolve_source_video")
+    def test_manifest_records_model_reuse_and_performance_without_losing_segments(
+        self,
+        resolve_source_video_mock: object,
+        probe_media_mock: object,
+    ) -> None:
+        resolve_source_video_mock.return_value = (self.video, "test", (self.video,))
+        probe_media_mock.return_value = {"duration": 12.0, "audio_stream_count": 1}
+        factory = FakeSynthesizerFactory()
+        pool = WarmVoxCPM2Pool(synthesizer_factory=factory)
+        try:
+            self._pipeline(pool.acquire).run(self.task)
+            first = json.loads(
+                (self.task / "dubbing" / "manifest.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(first["performance"]["model_reused"])
+
+            self._pipeline(pool.acquire).run(self.task, force_tts=True)
+            second = json.loads(
+                (self.task / "dubbing" / "manifest.json").read_text(encoding="utf-8")
+            )
+        finally:
+            pool.close()
+        self.assertTrue(second["performance"]["model_reused"])
+        self.assertEqual(second["performance"]["tts_segment_count"], 2)
+        self.assertEqual(len(second["segments"]), 2)
+        self.assertEqual(factory.closed, 1)
 
 
 if __name__ == "__main__":

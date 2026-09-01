@@ -9,6 +9,10 @@ const state = {
   selectedTasks: new Set(),
   activeLogJob: null,
   publishTask: null,
+  publishTitlePrefix: "",
+  publishTitleBase: "",
+  publishAutoTitle: true,
+  publishDynamicAuto: true,
   renderReviewTask: null,
   refreshBusy: false,
   setupDismissed: false,
@@ -22,7 +26,8 @@ const state = {
   automationAccountId: "",
 };
 
-const AUTOMATION_SETTINGS_KEY = "youtube-workflow.automation.v1";
+const AUTOMATION_SETTINGS_KEY = "youtube-workflow.automation.v2";
+const LEGACY_AUTOMATION_SETTINGS_KEY = "youtube-workflow.automation.v1";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -167,12 +172,20 @@ function saveAutomationSettings() {
 
 function restoreAutomationSettings() {
   let settings = null;
+  let migratedLegacySettings = false;
   try {
     settings = JSON.parse(localStorage.getItem(AUTOMATION_SETTINGS_KEY) || "null");
+    if (!settings) {
+      settings = JSON.parse(localStorage.getItem(LEGACY_AUTOMATION_SETTINGS_KEY) || "null");
+      migratedLegacySettings = Boolean(settings);
+    }
   } catch (_error) {
     settings = null;
   }
   if (!settings || typeof settings !== "object") return;
+  if (migratedLegacySettings) {
+    settings.dubbingReviewPolicy = "auto_fallback";
+  }
   $("#autoPublishAfterDownload").checked = settings.enabled === true;
   const target = ["subtitles", "render", "publish"].includes(settings.target)
     ? settings.target
@@ -195,7 +208,7 @@ function restoreAutomationSettings() {
   if (["chinese", "bilingual"].includes(settings.dubbingSubtitleDisplay)) {
     $("#automationDubbingSubtitleDisplay").value = settings.dubbingSubtitleDisplay;
   }
-  if (["block", "continue"].includes(settings.dubbingReviewPolicy)) {
+  if (["auto_fallback", "block", "continue"].includes(settings.dubbingReviewPolicy)) {
     $("#automationDubbingReviewPolicy").value = settings.dubbingReviewPolicy;
   }
   if (["ass", "softsub", "hardsub", "both"].includes(settings.renderMode)) {
@@ -330,7 +343,9 @@ function updateAutomationFlow() {
     ? ""
     : settings.dubbingReviewPolicy === "continue"
       ? " 中配时槽超限时仍会继续成片与投稿，请仅在接受重叠风险时使用。"
-      : ` 中配时槽超限会在成片前阻止；随后${settings.failurePolicy === "skip" ? "自动跳过并继续队列" : "保留失败状态"}。`;
+      : settings.dubbingReviewPolicy === "auto_fallback"
+        ? " 中配无法安全适配时会自动改为原声中文字幕成片并继续投稿。"
+        : ` 中配时槽超限会在成片前阻止；随后${settings.failurePolicy === "skip" ? "自动跳过并继续队列" : "保留失败状态"}。`;
   $("#automationFailureFlow").textContent = (settings.failurePolicy === "skip"
     ? "异常策略：无法安全完成字幕或成片时，记录原因并自动跳过该视频；其他视频继续执行。"
     : "异常策略：无法安全完成字幕或成片时，将该视频保留为失败状态；不会上传不合格成片。")
@@ -489,6 +504,7 @@ function renderPublishingSettings(publishing) {
   $("#publishMinIntervalMinutes").value = Number.isInteger(minutes) && minutes >= 1
     ? minutes
     : 3;
+  $("#defaultPublishTitlePrefix").value = publishing.default_title_prefix || "";
   state.publishingSettingsInitialized = true;
 }
 
@@ -647,7 +663,7 @@ function renderTasks(tasks) {
         </div>
         <div class="stage-track">${stages}</div>
         <div class="status-cell">
-          <strong>${escapeHtml(task.overall)}</strong>
+          <strong title="${escapeHtml(task.overall)}">${escapeHtml(task.overall)}</strong>
           <small class="${summaryClass}" title="${escapeHtml(reviewSummary)}">${escapeHtml(subtitle)}</small>
           <progress class="progress-mini" max="100" value="${Math.max(0, Math.min(100, progress))}" aria-label="进度 ${progress}%"></progress>
         </div>
@@ -1704,6 +1720,13 @@ async function openPublishDialog(task) {
   try {
     const defaults = await api(`/api/publish/defaults?task=${encodeURIComponent(task)}`);
     $("#publishDialogTitle").textContent = targetLabel(task);
+    state.publishTitlePrefix = defaults.title_prefix || "";
+    state.publishTitleBase = defaults.title.startsWith(state.publishTitlePrefix)
+      ? defaults.title.slice(state.publishTitlePrefix.length)
+      : defaults.title;
+    state.publishAutoTitle = true;
+    state.publishDynamicAuto = true;
+    $("#publishTitlePrefix").value = state.publishTitlePrefix;
     $("#publishTitle").value = defaults.title;
     $("#publishTid").innerHTML = categoryOptions(defaults.categories);
     $("#publishTid").value = defaults.tid;
@@ -1752,6 +1775,25 @@ async function openPublishDialog(task) {
   }
 }
 
+function normalizePublishTitlePrefix(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function updatePublishTitlePrefix() {
+  const prefixField = $("#publishTitlePrefix");
+  const titleField = $("#publishTitle");
+  if (!prefixField || !titleField) return;
+  const oldPrefix = state.publishTitlePrefix || "";
+  let title = state.publishAutoTitle ? state.publishTitleBase : titleField.value;
+  if (!state.publishAutoTitle && oldPrefix && title.startsWith(oldPrefix)) {
+    title = title.slice(oldPrefix.length);
+  }
+  const prefix = normalizePublishTitlePrefix(prefixField.value);
+  titleField.value = `${prefix}${title}`;
+  if (state.publishDynamicAuto) $("#publishDynamic").value = titleField.value;
+  state.publishTitlePrefix = prefix;
+}
+
 function updateSourceRequirement() {
   const isReprint = $("#publishCopyright").value === "2";
   $("#publishSource").required = isReprint;
@@ -1761,6 +1803,9 @@ function updateSourceRequirement() {
 
 $("#publishCopyright").addEventListener("change", updateSourceRequirement);
 $("#publishDescription").addEventListener("input", updatePublishDescriptionCount);
+$("#publishTitlePrefix").addEventListener("input", updatePublishTitlePrefix);
+$("#publishTitle").addEventListener("input", () => { state.publishAutoTitle = false; });
+$("#publishDynamic").addEventListener("input", () => { state.publishDynamicAuto = false; });
 $("#closePublish").addEventListener("click", () => $("#publishDialog").close());
 $("#cancelPublish").addEventListener("click", () => $("#publishDialog").close());
 $("#publishDialog").addEventListener("close", () => { state.publishTask = null; });
@@ -1777,6 +1822,7 @@ $("#publishForm").addEventListener("submit", async (event) => {
         task: state.publishTask,
         account_id: $("#publishAccount").value,
         title: $("#publishTitle").value,
+        title_prefix: normalizePublishTitlePrefix($("#publishTitlePrefix").value),
         tid: Number($("#publishTid").value),
         copyright: Number($("#publishCopyright").value),
         submit: $("#publishSubmit").value,
@@ -1890,6 +1936,7 @@ $("#settingsForm").addEventListener("submit", async (event) => {
     discovery_max_search_requests: Number($("#discoveryMaxSearchRequests").value),
     discovery_metadata_max_candidates: Number($("#discoveryMetadataMaxCandidates").value),
     publish_min_interval_minutes: Number($("#publishMinIntervalMinutes").value),
+    publish_title_prefix: $("#defaultPublishTitlePrefix").value,
   };
   if (youtube) body.youtube_api_key = youtube;
   if (translationKey) body.translation_api_key = translationKey;

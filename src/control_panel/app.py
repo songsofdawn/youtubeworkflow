@@ -480,7 +480,7 @@ class ControlPanelApp:
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
         automation_silent_video_policy: str = "publish_original",
-        automation_dubbing_review_policy: str = "block",
+        automation_dubbing_review_policy: str = "auto_fallback",
         dubbing_enabled: bool = False,
         dubbing_reference_mode: str = "auto",
         dubbing_reference_start: float | None = None,
@@ -588,7 +588,7 @@ class ControlPanelApp:
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
         automation_silent_video_policy: str = "publish_original",
-        automation_dubbing_review_policy: str = "block",
+        automation_dubbing_review_policy: str = "auto_fallback",
         dubbing_enabled: bool = False,
         dubbing_reference_mode: str = "auto",
         dubbing_reference_start: float | None = None,
@@ -903,9 +903,13 @@ class ControlPanelApp:
         if normalized_silent_video_policy not in {"publish_original", "skip"}:
             raise ValueError("不支持的无配音视频处理策略")
         normalized_dubbing_review_policy = str(
-            dubbing_review_policy or "block"
+            dubbing_review_policy or "auto_fallback"
         ).strip().casefold()
-        if normalized_dubbing_review_policy not in {"block", "continue"}:
+        if normalized_dubbing_review_policy not in {
+            "auto_fallback",
+            "block",
+            "continue",
+        }:
             raise ValueError("不支持的中文配音复核策略")
         health = self.health()
         api_ready = bool(health["checks"]["translation_api"])

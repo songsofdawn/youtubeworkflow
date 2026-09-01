@@ -15,6 +15,7 @@ from src.stage3.publish_metadata import (
     compose_bilingual_title,
     compose_localized_title,
     load_category_mapping,
+    normalize_title_prefix,
     normalize_tags,
     truncate_utf8,
     truncate_utf16,
@@ -77,6 +78,7 @@ TRANSIENT_UPLOAD_PATTERNS = (
 )
 BILIBILI_DESCRIPTION_MAX_UNITS = 2000
 BILIBILI_DESCRIPTION_MAX_UTF8_BYTES = 1900
+TITLE_PREFIX_MAX_UNITS = 32
 
 
 def utc_now() -> str:
@@ -228,27 +230,57 @@ class BiliupIntegration:
             "accounts": accounts,
             "publish_min_interval_seconds": minimum_interval_seconds,
             "publish_min_interval_minutes": minimum_interval_seconds // 60,
+            "default_title_prefix": self.default_title_prefix(),
         }
 
     def update_publish_settings(self, values: dict[str, Any]) -> list[str]:
-        if "publish_min_interval_minutes" not in values:
+        if not ({"publish_min_interval_minutes", "publish_title_prefix"} & set(values)):
             return []
-        raw_minutes = values["publish_min_interval_minutes"]
-        if isinstance(raw_minutes, bool):
-            raise ValueError("投稿最短间隔必须是整数分钟")
-        try:
-            minutes = int(raw_minutes)
-        except (TypeError, ValueError) as exc:
-            raise ValueError("投稿最短间隔必须是整数分钟") from exc
-        if str(raw_minutes).strip() != str(minutes):
-            raise ValueError("投稿最短间隔必须是整数分钟")
-        if not 1 <= minutes <= 1440:
-            raise ValueError("投稿最短间隔必须在 1 到 1440 分钟之间")
         updated = dict(self.config)
-        updated["publish_min_interval_seconds"] = minutes * 60
+        saved: list[str] = []
+        if "publish_min_interval_minutes" in values:
+            raw_minutes = values["publish_min_interval_minutes"]
+            if isinstance(raw_minutes, bool):
+                raise ValueError("投稿最短间隔必须是整数分钟")
+            try:
+                minutes = int(raw_minutes)
+            except (TypeError, ValueError) as exc:
+                raise ValueError("投稿最短间隔必须是整数分钟") from exc
+            if str(raw_minutes).strip() != str(minutes):
+                raise ValueError("投稿最短间隔必须是整数分钟")
+            if not 1 <= minutes <= 1440:
+                raise ValueError("投稿最短间隔必须在 1 到 1440 分钟之间")
+            updated["publish_min_interval_seconds"] = minutes * 60
+            saved.append("publish_min_interval_minutes")
+        if "publish_title_prefix" in values:
+            prefix = self._validated_title_prefix(values["publish_title_prefix"])
+            updated["default_title_prefix"] = prefix
+            saved.append("publish_title_prefix")
         atomic_write_json(self.config_path, updated)
         self.config = updated
-        return ["publish_min_interval_minutes"]
+        return saved
+
+    def default_title_prefix(self) -> str:
+        """Return a safe configured prefix; invalid legacy config means none."""
+        try:
+            return self._validated_title_prefix(
+                self.config.get("default_title_prefix", "")
+            )
+        except ValueError:
+            return ""
+
+    @staticmethod
+    def _validated_title_prefix(value: Any) -> str:
+        if value is not None and not isinstance(value, str):
+            raise ValueError("投稿标题前缀必须是文本")
+        prefix = normalize_title_prefix(value)
+        if any(ord(character) < 32 or ord(character) == 127 for character in prefix):
+            raise ValueError("投稿标题前缀不能包含控制字符")
+        if utf16_code_units(prefix) > TITLE_PREFIX_MAX_UNITS:
+            raise ValueError(
+                f"投稿标题前缀不能超过 {TITLE_PREFIX_MAX_UNITS} 个字符"
+            )
+        return prefix
 
     @staticmethod
     def expected_hardsub(task_dir: Path) -> Path:
@@ -298,6 +330,8 @@ class BiliupIntegration:
         task_dir: Path,
         *,
         publish_original_video: bool | None = None,
+        media_variant: str = "",
+        title_prefix: str | None = None,
     ) -> dict[str, Any]:
         download = read_json(task_dir / "download_manifest.json")
         info = read_json(task_dir / "metadata" / "info.json")
@@ -323,17 +357,43 @@ class BiliupIntegration:
             if publish_original_video is None
             else bool(publish_original_video)
         )
+        normalized_variant = str(media_variant or "").strip().casefold()
+        if original_media:
+            normalized_variant = "original"
+        elif normalized_variant not in {
+            "dubbed",
+            "localized",
+            "subtitled_original_audio",
+        }:
+            normalized_variant = "localized"
+        prefix = (
+            self.default_title_prefix()
+            if title_prefix is None
+            else self._validated_title_prefix(title_prefix)
+        )
         chinese_title = str(recommendation.get("title_zh") or "").strip()
-        upload_title = (
-            compose_localized_title(
+        if normalized_variant == "subtitled_original_audio":
+            upload_title = compose_localized_title(
                 chinese_title,
                 title,
-                prefix="【无配音】",
-                fallback_title="无配音精选",
+                prefix=prefix,
+                fallback_title="原声中字精选",
             )
-            if original_media
-            else compose_bilingual_title(chinese_title, title)
-        )
+        else:
+            upload_title = (
+                compose_localized_title(
+                    chinese_title,
+                    title,
+                    prefix=prefix,
+                    fallback_title="无配音精选",
+                )
+                if original_media
+                else compose_bilingual_title(
+                    chinese_title,
+                    title,
+                    prefix=prefix,
+                )
+            )
         recommended_tid = int(
             recommendation.get("tid")
             or self.config.get("default_tid")
@@ -347,19 +407,24 @@ class BiliupIntegration:
                 int(self.category_mapping["fallback_tid"]),
             )
             recommended_tid = int(category["tid"])
+        if normalized_variant == "subtitled_original_audio":
+            disclaimer = (
+                "【免责声明】\n本视频保留原始音轨并添加中文字幕；"
+                "标题、简介、标签和分区已进行中文本地化，请以原视频内容为准。"
+            )
+        elif original_media:
+            disclaimer = (
+                "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区"
+                "已进行中文本地化，视频画面及音轨保持原样。"
+            )
+        else:
+            disclaimer = str(
+                self.config.get("description_disclaimer")
+                or "【免责声明】\n本视频为中英双语本地化版本，请以原视频内容为准。"
+            )
         description = build_publish_description(
             original_description,
-            disclaimer=str(
-                (
-                    "【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区"
-                    "已进行中文本地化，视频画面及音轨保持原样。"
-                )
-                if original_media
-                else (
-                    self.config.get("description_disclaimer")
-                    or "【免责声明】\n本视频为中英双语本地化版本，请以原视频内容为准。"
-                )
-            ),
+            disclaimer=disclaimer,
             original_heading=str(
                 self.config.get("description_original_heading")
                 or "【原视频简介】"
@@ -379,6 +444,7 @@ class BiliupIntegration:
         metadata_status = str(recommendation.get("status") or "MISSING")
         return {
             "title": upload_title,
+            "title_prefix": prefix,
             "title_zh": chinese_title,
             "original_title": title,
             "description": description,
@@ -390,8 +456,20 @@ class BiliupIntegration:
             "tags": normalize_tags(
                 recommendation.get("tags"),
                 fallback=[category["name"]],
-                required=["无配音"] if original_media else None,
-                excluded=["中英双语", "中文翻译"] if original_media else None,
+                required=(
+                    ["无配音"]
+                    if original_media
+                    else ["原声", "中文字幕"]
+                    if normalized_variant == "subtitled_original_audio"
+                    else None
+                ),
+                excluded=(
+                    ["中英双语", "中文翻译"]
+                    if original_media
+                    else ["中文配音"]
+                    if normalized_variant == "subtitled_original_audio"
+                    else None
+                ),
             ),
             "copyright": int(self.config.get("default_copyright", 2)),
             "source": source_url,
@@ -428,6 +506,7 @@ class BiliupIntegration:
                 )
             ),
             "publish_original_video": original_media,
+            "media_variant": normalized_variant,
             "accounts": accounts,
             "account_id": accounts[0]["id"] if accounts else "",
         }
@@ -446,6 +525,7 @@ class BiliupIntegration:
         title = " ".join(str(values.get("title") or "").split())
         description = str(values.get("description") or "").strip()
         dynamic = str(values.get("dynamic") or "").strip()
+        title_prefix = self._validated_title_prefix(values.get("title_prefix"))
         tags = ",".join(
             item.strip()
             for item in re.split(r"[,，]", str(values.get("tags") or ""))
@@ -460,9 +540,15 @@ class BiliupIntegration:
             "publish_original_video" not in values
             and no_english_subtitle_or_recognized_speech(task_dir)
         )
-        expected_prefix = "【无配音】" if publish_original_video else "【中英双语】"
-        if not title.startswith(expected_prefix):
-            raise ValueError(f"投稿标题必须以{expected_prefix}开头")
+        media_variant = str(values.get("media_variant") or "").strip().casefold()
+        if publish_original_video:
+            media_variant = "original"
+        elif media_variant not in {
+            "dubbed",
+            "localized",
+            "subtitled_original_audio",
+        }:
+            media_variant = "localized"
         if not re.search(r"[\u3400-\u9fff]", title):
             raise ValueError("投稿标题必须包含中文标题")
         if utf16_code_units(description) > BILIBILI_DESCRIPTION_MAX_UNITS:
@@ -540,12 +626,25 @@ class BiliupIntegration:
 
         return {
             "title": title,
+            "title_prefix": title_prefix,
             "description": description,
             "dynamic": dynamic,
             "tags": normalize_tags(
                 tags,
-                required=["无配音"] if publish_original_video else None,
-                excluded=["中英双语", "中文翻译"] if publish_original_video else None,
+                required=(
+                    ["无配音"]
+                    if publish_original_video
+                    else ["原声", "中文字幕"]
+                    if media_variant == "subtitled_original_audio"
+                    else None
+                ),
+                excluded=(
+                    ["中英双语", "中文翻译"]
+                    if publish_original_video
+                    else ["中文配音"]
+                    if media_variant == "subtitled_original_audio"
+                    else None
+                ),
             ),
             "copyright": copyright_value,
             "source": source,
@@ -565,6 +664,7 @@ class BiliupIntegration:
             "media_relpath": media_relpath,
             "media_hash": str(values.get("media_hash") or ""),
             "publish_original_video": publish_original_video,
+            "media_variant": media_variant,
         }
 
     def automatic_submission(
@@ -574,11 +674,15 @@ class BiliupIntegration:
         account_id: str = "",
         is_only_self: bool | None = None,
         publish_original_video: bool = False,
+        media_variant: str = "",
+        title_prefix: str | None = None,
     ) -> dict[str, Any]:
         """Build a validated payload for an explicitly enabled unattended run."""
         defaults = self.defaults(
             task_dir,
             publish_original_video=publish_original_video,
+            media_variant=media_variant,
+            title_prefix=title_prefix,
         )
         values = {
             **defaults,
@@ -610,16 +714,58 @@ class BiliupIntegration:
         )
 
     @staticmethod
-    def mark_automation_original_media(task_dir: Path) -> None:
+    def mark_automation_failed(
+        task_dir: Path,
+        reason: str,
+        *,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        atomic_write_json(
+            task_dir / "stage5" / "automation_manifest.json",
+            {
+                "schema_version": 1,
+                "status": "FAILED",
+                "reason": str(reason),
+                "details": dict(details or {}),
+                "finished_at": utc_now(),
+            },
+        )
+
+    @staticmethod
+    def mark_automation_fallback(
+        task_dir: Path,
+        reason: str,
+        *,
+        media_variant: str,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        atomic_write_json(
+            task_dir / "stage5" / "automation_manifest.json",
+            {
+                "schema_version": 1,
+                "status": "FALLBACK_PENDING",
+                "reason": str(reason),
+                "media_variant": str(media_variant),
+                "details": dict(details or {}),
+                "updated_at": utc_now(),
+            },
+        )
+
+    @staticmethod
+    def mark_automation_original_media(
+        task_dir: Path,
+        *,
+        reason: str = "NO_NARRATION_OR_BACKGROUND_MUSIC",
+        message: str = "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息",
+    ) -> None:
         atomic_write_json(
             task_dir / "stage5" / "automation_manifest.json",
             {
                 "schema_version": 1,
                 "status": "ORIGINAL_MEDIA",
-                "reason": "NO_NARRATION_OR_BACKGROUND_MUSIC",
-                "details": {
-                    "message": "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息"
-                },
+                "reason": str(reason),
+                "media_variant": "original",
+                "details": {"message": str(message)},
                 "finished_at": utc_now(),
             },
         )
@@ -939,6 +1085,7 @@ class BiliupIntegration:
                 key: payload.get(key)
                 for key in (
                     "title",
+                    "title_prefix",
                     "description",
                     "dynamic",
                     "tags",
@@ -956,6 +1103,7 @@ class BiliupIntegration:
                     "use_cover",
                     "media_relpath",
                     "publish_original_video",
+                    "media_variant",
                 )
             },
         }
@@ -971,4 +1119,4 @@ class BiliupIntegration:
         return digest.hexdigest()
 
 
-__all__ = ["BiliupIntegration"]
+__all__ = ["BiliupIntegration", "TITLE_PREFIX_MAX_UNITS"]

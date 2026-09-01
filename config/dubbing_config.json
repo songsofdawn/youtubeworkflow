@@ -31,11 +31,37 @@
     "min_gap_ms": 200,
     "max_extension_ms": 1000,
     "direct_accept_ratio": 1.1,
-    "max_stretch_ratio": 1.3
+    "max_stretch_ratio": 1.3,
+    "duration_retry_enabled": true,
+    "duration_retry_max_times": 1,
+    "regional_scheduling_enabled": true,
+    "trim_silence_enabled": true,
+    "silence_threshold_db": -45.0,
+    "silence_relative_db": -35.0,
+    "silence_padding_ms": 40,
+    "region_max_gap_ms": 500,
+    "region_internal_gap_ms": 40,
+    "region_boundary_gap_ms": 50,
+    "max_alignment_shift_ms": 1500,
+    "overlap_tolerance_ms": 20
   },
   "mix": {
     "background_duck_db": 6.0,
+    "duck_attack_ms": 40,
+    "duck_release_ms": 250,
     "sample_rate": 48000,
     "limiter": 0.95
+  },
+  "loudness": {
+    "enabled": true,
+    "voice_target_lufs": -18.0,
+    "voice_true_peak_db": -2.0,
+    "final_target_lufs": -14.0,
+    "final_true_peak_db": -1.0,
+    "final_lra": 11.0
+  },
+  "performance": {
+    "keep_voxcpm_warm": true,
+    "worker_idle_timeout_seconds": 45
   }
 }

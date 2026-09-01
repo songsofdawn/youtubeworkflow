@@ -52,13 +52,16 @@ def run_checked(
         raise RuntimeError(f"无法启动命令：{args[0]}（{exc}）") from exc
     tail: list[str] = []
     assert process.stdout is not None
-    for line in process.stdout:
-        text = line.rstrip()
-        if text and log:
-            log(text)
-        tail.append(text)
-        if len(tail) > 80:
-            tail.pop(0)
+    try:
+        for line in process.stdout:
+            text = line.rstrip()
+            if text and log:
+                log(text)
+            tail.append(text)
+            if len(tail) > 80:
+                tail.pop(0)
+    finally:
+        process.stdout.close()
     returncode = process.wait()
     if returncode != 0:
         details = "\n".join(item for item in tail if item)[-4000:]

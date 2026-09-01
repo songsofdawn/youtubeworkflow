@@ -302,7 +302,7 @@ class Stage3PipelineTests(TestCase):
 
         class FakeTranslator:
             def __init__(self, *args, **kwargs): pass
-            def translate_all(self, targets, all_segments, glossary, metadata, *, pass_name, force):
+            def translate_all(self, targets, all_segments, glossary, metadata, *, pass_name, force, **kwargs):
                 calls.append((pass_name, [item.id for item in targets]))
                 return {item.id: "好" for item in targets}
             def usage_report(self): return {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
@@ -312,6 +312,28 @@ class Stage3PipelineTests(TestCase):
             prepare_selected(video, "1\n00:00:00,000 --> 00:00:02,000\nHello.\n")
             Stage3Pipeline(video, CONFIG).run_p1(allow_paid_api=True, polish_all=True)
             self.assertEqual(calls, [("raw", [1]), ("polished", [1])])
+
+    def test_dubbing_translation_mode_reaches_translator(self) -> None:
+        received: list[dict[str, object]] = []
+
+        class FakeTranslator:
+            def __init__(self, *args, **kwargs): pass
+            def translate_all(self, targets, all_segments, glossary, metadata, *, pass_name, force, **kwargs):
+                received.append(dict(kwargs))
+                return {item.id: "好" for item in targets}
+            def usage_report(self): return {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+
+        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(
+            "os.environ", {"DEEPSEEK_API_KEY": "unit-secret"}, clear=False
+        ), mock.patch("src.stage3.pipeline.DeepSeekTranslator", FakeTranslator):
+            video = Path(directory)
+            prepare_selected(video, "1\n00:00:00,000 --> 00:00:02,000\nHello.\n")
+            Stage3Pipeline(video, CONFIG).run_p1(
+                allow_paid_api=True,
+                for_dubbing=True,
+            )
+
+        self.assertEqual(received, [{"for_dubbing": True}])
 
     def test_completed_translation_stage_skips_all_translator_work(self) -> None:
         calls: list[str] = []

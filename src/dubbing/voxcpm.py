@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import gc
 import os
+import time
 from pathlib import Path
 from typing import Any, Callable
 
@@ -35,6 +36,8 @@ class VoxCPM2Synthesizer:
         self._torch: Any | None = None
         self._soundfile = soundfile_module
         self._model: Any | None = None
+        self.model_reused = False
+        self.model_load_seconds = 0.0
 
         if not voxcpm_model_ready(self.model_path):
             raise FileNotFoundError(
@@ -80,13 +83,14 @@ class VoxCPM2Synthesizer:
             model_factory = VoxCPM.from_pretrained
 
         if self.log:
-            self.log("[DUBBING] Loading VoxCPM2 once for this task...")
+            self.log("[DUBBING] Loading VoxCPM2...")
         load_kwargs = {
             "load_denoiser": bool(self.settings.get("denoise", False)),
             "optimize": self.device.startswith("cuda"),
             "device": self.device,
             "local_files_only": True,
         }
+        load_started = time.monotonic()
         try:
             self._model = model_factory(str(self.model_path), **load_kwargs)
         except TypeError as exc:
@@ -101,6 +105,28 @@ class VoxCPM2Synthesizer:
                 raise VoxCPM2Error(f"VoxCPM2 模型加载失败：{retry_exc}") from retry_exc
         except Exception as exc:
             raise VoxCPM2Error(f"VoxCPM2 模型加载失败：{exc}") from exc
+        self.model_load_seconds = round(time.monotonic() - load_started, 3)
+        if self.log:
+            self.log(
+                f"[DUBBING] VoxCPM2 loaded in {self.model_load_seconds:.1f}s."
+            )
+
+    def reset_peak_vram_stats(self) -> None:
+        if self._torch is None or not self.device.startswith("cuda"):
+            return
+        try:
+            self._torch.cuda.reset_peak_memory_stats()
+        except Exception:
+            pass
+
+    @property
+    def peak_vram_mb(self) -> float | None:
+        if self._torch is None or not self.device.startswith("cuda"):
+            return None
+        try:
+            return round(float(self._torch.cuda.max_memory_allocated()) / 1024**2, 1)
+        except Exception:
+            return None
 
     @property
     def sample_rate(self) -> int:

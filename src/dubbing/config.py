@@ -20,6 +20,61 @@ DUBBING_RUNTIME_CANDIDATES = (
 _RUNTIME_PROBE_CACHE: dict[str, tuple[float, dict[str, Any]]] = {}
 
 
+def _validate_range(
+    section: dict[str, Any],
+    key: str,
+    minimum: float,
+    maximum: float,
+) -> None:
+    if key not in section:
+        return
+    try:
+        value = float(section[key])
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"中文配音配置 {key} 必须是数字") from exc
+    if not minimum <= value <= maximum:
+        raise ValueError(
+            f"中文配音配置 {key} 必须在 {minimum:g}～{maximum:g} 之间"
+        )
+
+
+def validate_dubbing_config(payload: dict[str, Any]) -> None:
+    timing = (
+        payload.get("timing") if isinstance(payload.get("timing"), dict) else {}
+    )
+    _validate_range(timing, "min_gap_ms", 0.0, 5000.0)
+    _validate_range(timing, "max_extension_ms", 0.0, 10000.0)
+    _validate_range(timing, "direct_accept_ratio", 1.0, 3.0)
+    _validate_range(timing, "max_stretch_ratio", 1.0, 2.0)
+    _validate_range(timing, "duration_retry_max_times", 0.0, 1.0)
+    _validate_range(timing, "silence_threshold_db", -90.0, -10.0)
+    _validate_range(timing, "silence_relative_db", -90.0, -3.0)
+    _validate_range(timing, "silence_padding_ms", 0.0, 500.0)
+    _validate_range(timing, "region_max_gap_ms", 0.0, 5000.0)
+    _validate_range(timing, "region_internal_gap_ms", 0.0, 1000.0)
+    _validate_range(timing, "region_boundary_gap_ms", 0.0, 2000.0)
+    _validate_range(timing, "max_alignment_shift_ms", 0.0, 10000.0)
+    _validate_range(timing, "overlap_tolerance_ms", 0.0, 250.0)
+    mix = payload.get("mix") if isinstance(payload.get("mix"), dict) else {}
+    _validate_range(mix, "background_duck_db", 0.0, 18.0)
+    _validate_range(mix, "duck_attack_ms", 0.0, 2000.0)
+    _validate_range(mix, "duck_release_ms", 0.0, 5000.0)
+    loudness = (
+        payload.get("loudness") if isinstance(payload.get("loudness"), dict) else {}
+    )
+    _validate_range(loudness, "voice_target_lufs", -70.0, -5.0)
+    _validate_range(loudness, "voice_true_peak_db", -9.0, 0.0)
+    _validate_range(loudness, "final_target_lufs", -70.0, -5.0)
+    _validate_range(loudness, "final_true_peak_db", -9.0, 0.0)
+    _validate_range(loudness, "final_lra", 1.0, 50.0)
+    performance = (
+        payload.get("performance")
+        if isinstance(payload.get("performance"), dict)
+        else {}
+    )
+    _validate_range(performance, "worker_idle_timeout_seconds", 5.0, 300.0)
+
+
 def load_dubbing_config(project_root: Path | str, path: Path | str | None = None) -> dict[str, Any]:
     root = Path(project_root).resolve()
     source = Path(path) if path is not None else root / "config" / "dubbing_config.json"
@@ -33,6 +88,7 @@ def load_dubbing_config(project_root: Path | str, path: Path | str | None = None
         raise ValueError(f"中文配音配置 JSON 无效：{exc}") from exc
     if not isinstance(payload, dict):
         raise ValueError("中文配音配置顶层必须是 JSON 对象")
+    validate_dubbing_config(payload)
     payload["_config_path"] = str(source.resolve())
     return payload
 
@@ -249,5 +305,6 @@ __all__ = [
     "resolve_dubbing_python",
     "resolve_model_path",
     "runtime_package_ready",
+    "validate_dubbing_config",
     "voxcpm_model_ready",
 ]

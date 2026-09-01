@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from src.dubbing.runtime import (
     build_dubbing_subprocess_env,
@@ -60,6 +62,47 @@ class DubbingRuntimeTests(unittest.TestCase):
         self.assertFalse(result["ready"])
         self.assertEqual(result["code"], "FFMPEG_SHARED_REQUIRED")
         self.assertIn("Shared Build", result["message"])
+
+    def test_torchcodec_timeout_retries_in_a_fresh_process(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            create_tools(root, shared=True)
+            runtime = root / "python.exe"
+            runtime.write_bytes(b"python")
+            responses = [
+                subprocess.CompletedProcess(
+                    ["ffmpeg", "-version"],
+                    0,
+                    stdout="configuration: --enable-shared",
+                    stderr="",
+                ),
+                subprocess.TimeoutExpired(
+                    ["python", "-m", "src.dubbing.torchcodec_probe"],
+                    60,
+                    output='{\"probe_status\":\"starting\",\"stage\":\"imports\"}',
+                ),
+                subprocess.CompletedProcess(
+                    ["python", "-m", "src.dubbing.torchcodec_probe"],
+                    0,
+                    stdout='{\"ready\":true,\"torch_version\":\"test\"}\n',
+                    stderr="",
+                ),
+            ]
+            with (
+                mock.patch(
+                    "src.dubbing.runtime.subprocess.run",
+                    side_effect=responses,
+                ) as run,
+                mock.patch("src.dubbing.runtime.time.sleep"),
+            ):
+                result = preflight_dubbing_runtime(
+                    root,
+                    runtime,
+                    use_cache=False,
+                )
+
+        self.assertTrue(result["ready"], result)
+        self.assertEqual(run.call_count, 3)
 
     @unittest.skipUnless(
         DUBBING_PYTHON.is_file()

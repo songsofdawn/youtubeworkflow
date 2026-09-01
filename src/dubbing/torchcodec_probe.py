@@ -38,6 +38,10 @@ def _emit(payload: dict[str, Any]) -> None:
     print(json.dumps(payload, ensure_ascii=False), flush=True)
 
 
+def _emit_phase(stage: str) -> None:
+    _emit({"probe_status": "starting", "stage": stage})
+
+
 def _load_shared_dlls(tools_bin: Path) -> None:
     if os.name != "nt":
         return
@@ -61,13 +65,16 @@ def main(argv: list[str] | None = None) -> int:
     tools_bin = args.tools_bin.resolve()
     stage = "shared_dll"
     try:
+        _emit_phase(stage)
         _load_shared_dlls(tools_bin)
         stage = "imports"
+        _emit_phase(stage)
         import torch
         import torchaudio
         import torchcodec
 
         stage = "encode"
+        _emit_phase(stage)
         with tempfile.TemporaryDirectory(prefix="torchcodec-dubbing-") as temporary:
             output = Path(temporary) / "probe.wav"
             samples = torch.zeros((1, 800), dtype=torch.float32)

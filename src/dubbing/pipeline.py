@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
@@ -18,13 +19,15 @@ from ..stage4.stage4_manifest import (
 from .config import resolve_model_path
 from .demucs import DemucsSeparator, run_checked, valid_wav
 from .manifest import ManifestSaveError, load_manifest, save_manifest, save_segment_metadata
+from .loudness import normalize_loudness
 from .mixer import build_chinese_voice_track, mix_background
 from .runtime import (
     DubbingPreflightError,
     build_dubbing_subprocess_env,
     ensure_dubbing_runtime,
 )
-from .timing import adapt_segment, plan_duration, wav_duration
+from .speech_timing import schedule_speech_regions, trim_wav_silence
+from .timing import TimingPlan, adapt_segment, plan_duration, wav_duration
 from .voxcpm import VoxCPM2Synthesizer
 
 
@@ -133,6 +136,7 @@ class DubbingPipeline:
         separator_factory: Callable[..., Any] = DemucsSeparator,
         command_runner: Callable[..., None] = run_checked,
         runtime_preflight: Callable[[Path, Path], Any] = ensure_dubbing_runtime,
+        loudness_normalizer: Callable[..., dict[str, Any]] = normalize_loudness,
     ) -> None:
         self.project_root = Path(project_root).resolve()
         self.config = dict(config)
@@ -148,6 +152,7 @@ class DubbingPipeline:
         self.separator_factory = separator_factory
         self.command_runner = command_runner
         self.runtime_preflight = runtime_preflight
+        self.loudness_normalizer = loudness_normalizer
         self.subprocess_env = build_dubbing_subprocess_env(self.project_root)
 
     @staticmethod
@@ -315,6 +320,436 @@ class DubbingPipeline:
                 details={"free_bytes": free},
             )
 
+    @staticmethod
+    def _duration_retry_candidates(
+        rows: list[dict[str, Any]],
+        *,
+        timing_settings: dict[str, Any],
+    ) -> list[dict[str, Any]]:
+        """Return only first-pass duration overflows eligible for one TTS retry."""
+
+        if not bool(timing_settings.get("duration_retry_enabled", True)):
+            return []
+        try:
+            max_times = int(timing_settings.get("duration_retry_max_times", 1))
+        except (TypeError, ValueError):
+            max_times = 1
+        if max_times < 1:
+            return []
+        candidates: list[dict[str, Any]] = []
+        for row in rows:
+            timing = row.get("timing") if isinstance(row.get("timing"), dict) else {}
+            reasons = set(timing.get("reasons") or row.get("schedule_reasons") or [])
+            if "REGION_DURATION_OVERFLOW" not in reasons:
+                continue
+            retry = row.get("duration_retry")
+            if isinstance(retry, dict) and retry.get("attempted"):
+                continue
+            candidates.append(row)
+        return candidates
+
+    @staticmethod
+    def _selected_duration_retry_source(
+        row: dict[str, Any],
+        *,
+        work_dir: Path,
+        force: bool,
+    ) -> tuple[Path, dict[str, Any]] | None:
+        if force:
+            return None
+        retry = row.get("previous", {}).get("duration_retry")
+        if not isinstance(retry, dict) or not retry.get("selected"):
+            return None
+        relative = str(retry.get("candidate_wav") or "").strip()
+        candidate = work_dir / relative
+        expected_hash = str(retry.get("candidate_wav_hash") or "")
+        if (
+            not relative
+            or not candidate.is_file()
+            or not valid_wav(candidate)
+            or not expected_hash
+            or sha256_file(candidate) != expected_hash
+        ):
+            return None
+        return candidate, dict(retry)
+
+    def _retry_overlong_segments(
+        self,
+        rows: list[dict[str, Any]],
+        *,
+        synthesizer: Any,
+        reference: Path,
+        work_dir: Path,
+        timing_settings: dict[str, Any],
+        checkpoint: Callable[[list[dict[str, Any]]], None] | None = None,
+    ) -> tuple[list[dict[str, Any]], int, int]:
+        """Retry each overlong segment once and keep it only when it is shorter.
+
+        VoxCPM2 does not currently expose a target-duration argument. The target
+        is therefore used as an acceptance budget: a second same-text synthesis
+        is selected only if its silence-trimmed speech is shorter. The normal
+        bounded speed adaptation remains the final timing control.
+        """
+
+        candidates = self._duration_retry_candidates(
+            rows,
+            timing_settings=timing_settings,
+        )
+        if not candidates:
+            return rows, 0, 0
+
+        retry_root = work_dir / "segments" / "duration_retry"
+        retry_root.mkdir(parents=True, exist_ok=True)
+        retry_trim_root = retry_root / "trimmed"
+        retry_trim_root.mkdir(parents=True, exist_ok=True)
+        trim_enabled = bool(timing_settings.get("trim_silence_enabled", True))
+        threshold_db = float(timing_settings.get("silence_threshold_db", -45.0))
+        relative_db = float(timing_settings.get("silence_relative_db", -35.0))
+        padding_ms = float(timing_settings.get("silence_padding_ms", 40.0))
+        max_stretch = max(
+            1.0, float(timing_settings.get("max_stretch_ratio", 1.30))
+        )
+        updated = [dict(row) for row in rows]
+        selected_count = 0
+        attempted_count = 0
+        candidate_indexes = {int(row["index"]) for row in candidates}
+        for offset, row in enumerate(updated, 1):
+            if int(row["index"]) not in candidate_indexes:
+                continue
+            index = int(row["index"])
+            timing = row.get("timing") if isinstance(row.get("timing"), dict) else {}
+            natural_duration = max(
+                0.05,
+                float(row.get("spoken_duration") or row.get("generated_duration") or 0.0),
+            )
+            required_speed = max(
+                1.0,
+                float(
+                    timing.get(
+                        "required_speed_factor",
+                        row.get("schedule_required_speed", max_stretch),
+                    )
+                ),
+            )
+            target_duration = max(0.05, natural_duration * max_stretch / required_speed)
+            retry_path = retry_root / f"{index:06d}.wav"
+            retry_trimmed_path = retry_trim_root / f"{index:06d}.wav"
+            fingerprint = hash_json(
+                {
+                    "version": 1,
+                    "input_hash": row.get("input_hash", ""),
+                    "target_duration": round(target_duration, 3),
+                    "max_stretch_ratio": round(max_stretch, 4),
+                    "trim_enabled": trim_enabled,
+                    "silence_threshold_db": threshold_db,
+                    "silence_relative_db": relative_db,
+                    "silence_padding_ms": padding_ms,
+                }
+            )
+            self._notify(
+                "超时片段重生成",
+                79,
+                offset,
+                len(candidates),
+            )
+            attempted_count += 1
+            record: dict[str, Any] = {
+                "version": 1,
+                "attempted": True,
+                "attempts": 1,
+                "fingerprint": fingerprint,
+                "target_duration": round(target_duration, 3),
+                "original_spoken_duration": round(natural_duration, 3),
+                "completed_at": utc_now(),
+                "selected": False,
+            }
+            try:
+                synthesizer.generate(str(row["text"]), reference, retry_path)
+                retry_raw_duration = wav_duration(retry_path)
+                retry_trim = trim_wav_silence(
+                    retry_path,
+                    retry_trimmed_path,
+                    enabled=trim_enabled,
+                    threshold_db=threshold_db,
+                    relative_db=relative_db,
+                    padding_ms=padding_ms,
+                )
+                retry_spoken_duration = wav_duration(retry_trimmed_path)
+                retry_hash = sha256_file(retry_path)
+                selected = retry_spoken_duration + 0.01 < natural_duration
+                record.update(
+                    candidate_wav=self._relative(retry_path, work_dir),
+                    candidate_wav_hash=retry_hash,
+                    retry_generated_duration=round(retry_raw_duration, 3),
+                    retry_spoken_duration=round(retry_spoken_duration, 3),
+                    target_met=retry_spoken_duration <= target_duration + 0.02,
+                    selected=selected,
+                    reason=(
+                        "shorter"
+                        if selected and retry_spoken_duration > target_duration + 0.02
+                        else "target_met"
+                        if selected
+                        else "not_shorter"
+                    ),
+                )
+                if selected:
+                    row.update(
+                        wav=record["candidate_wav"],
+                        wav_hash=retry_hash,
+                        generated_duration=retry_raw_duration,
+                        duration_retry=record,
+                    )
+                    selected_count += 1
+                else:
+                    row["duration_retry"] = record
+                self._log(
+                    "[DUBBING] Duration retry segment "
+                    f"{index}: target={target_duration:.2f}s, "
+                    f"retry={retry_spoken_duration:.2f}s, "
+                    f"{'selected' if selected else 'kept original'}"
+                )
+            except Exception as exc:
+                record.update(status="FAILED", error=str(exc))
+                row["duration_retry"] = record
+                self._log(
+                    f"[DUBBING] WARNING: duration retry for segment {index} failed; "
+                    f"keeping original audio ({exc})"
+                )
+            if checkpoint is not None:
+                checkpoint(updated)
+        return updated, selected_count, attempted_count
+
+    def _apply_regional_timing(
+        self,
+        rows: list[dict[str, Any]],
+        *,
+        previous_segments: dict[int, dict[str, Any]],
+        work_dir: Path,
+        media_duration: float,
+        timing_settings: dict[str, Any],
+        force: bool,
+    ) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
+        trimmed_dir = work_dir / "segments" / "trimmed"
+        scheduled_dir = work_dir / "segments" / "scheduled"
+        trimmed_dir.mkdir(parents=True, exist_ok=True)
+        scheduled_dir.mkdir(parents=True, exist_ok=True)
+        trim_enabled = bool(timing_settings.get("trim_silence_enabled", True))
+        threshold_db = float(timing_settings.get("silence_threshold_db", -45.0))
+        relative_db = float(timing_settings.get("silence_relative_db", -35.0))
+        padding_ms = float(timing_settings.get("silence_padding_ms", 40.0))
+        prepared: list[dict[str, Any]] = []
+        total_removed = 0.0
+
+        self._notify("裁剪配音首尾静音", 75, 0, len(rows))
+        for offset, row in enumerate(rows, 1):
+            index = int(row["index"])
+            raw_path = work_dir / str(row["wav"])
+            trimmed_path = trimmed_dir / f"{index:06d}.wav"
+            trim_fingerprint = hash_json(
+                {
+                    "version": 1,
+                    "wav_hash": row["wav_hash"],
+                    "enabled": trim_enabled,
+                    "threshold_db": threshold_db,
+                    "relative_db": relative_db,
+                    "padding_ms": padding_ms,
+                }
+            )
+            previous = previous_segments.get(index, {})
+            trim_reused = (
+                not force
+                and previous.get("trim_fingerprint") == trim_fingerprint
+                and valid_wav(trimmed_path)
+                and previous.get("trimmed_wav_hash") == sha256_file(trimmed_path)
+            )
+            if trim_reused:
+                trim_record = (
+                    dict(previous.get("silence_trim"))
+                    if isinstance(previous.get("silence_trim"), dict)
+                    else {}
+                )
+            else:
+                trim_record = trim_wav_silence(
+                    raw_path,
+                    trimmed_path,
+                    enabled=trim_enabled,
+                    threshold_db=threshold_db,
+                    relative_db=relative_db,
+                    padding_ms=padding_ms,
+                ).to_dict()
+            spoken_duration = wav_duration(trimmed_path)
+            source_duration = float(row.get("generated_duration") or spoken_duration)
+            total_removed += max(0.0, source_duration - spoken_duration)
+            item = dict(row)
+            item.update(
+                trim_fingerprint=trim_fingerprint,
+                trimmed_wav=self._relative(trimmed_path, work_dir),
+                trimmed_wav_hash=sha256_file(trimmed_path),
+                spoken_duration=spoken_duration,
+                silence_trim=trim_record,
+                trim_reused=trim_reused,
+            )
+            prepared.append(item)
+            self._notify("裁剪配音首尾静音", 75, offset, len(rows))
+
+        self._notify("连续语音区域调度", 78, 0, len(prepared))
+        scheduled, timing_qc = schedule_speech_regions(
+            prepared,
+            media_duration=media_duration,
+            region_max_gap=float(timing_settings.get("region_max_gap_ms", 500.0))
+            / 1000,
+            internal_gap=float(timing_settings.get("region_internal_gap_ms", 40.0))
+            / 1000,
+            boundary_gap=float(timing_settings.get("region_boundary_gap_ms", 50.0))
+            / 1000,
+            max_extension=float(timing_settings.get("max_extension_ms", 1000.0))
+            / 1000,
+            max_stretch_ratio=float(timing_settings.get("max_stretch_ratio", 1.30)),
+            max_alignment_shift=float(
+                timing_settings.get("max_alignment_shift_ms", 1500.0)
+            )
+            / 1000,
+            overlap_tolerance=float(
+                timing_settings.get("overlap_tolerance_ms", 20.0)
+            )
+            / 1000,
+        )
+        tolerance = float(timing_settings.get("overlap_tolerance_ms", 20.0)) / 1000
+        final_rows: list[dict[str, Any]] = []
+        for offset, item in enumerate(scheduled, 1):
+            index = int(item["index"])
+            trimmed_path = work_dir / str(item["trimmed_wav"])
+            speed = max(1.0, float(item["schedule_speed_factor"]))
+            scheduled_path = scheduled_dir / f"{index:06d}.wav"
+            schedule_fingerprint = hash_json(
+                {
+                    "version": 1,
+                    "trimmed_wav_hash": item["trimmed_wav_hash"],
+                    "speed_factor": round(speed, 8),
+                    "scheduled_start": round(float(item["scheduled_start"]), 6),
+                }
+            )
+            previous = previous_segments.get(index, {})
+            scheduled_reused = (
+                speed > 1.000001
+                and not force
+                and previous.get("schedule_fingerprint") == schedule_fingerprint
+                and valid_wav(scheduled_path)
+                and previous.get("final_wav_hash") == sha256_file(scheduled_path)
+            )
+            if speed > 1.000001:
+                plan = TimingPlan(
+                    start=float(item["scheduled_start"]),
+                    subtitle_end=float(item["end"]),
+                    available_end=float(item["scheduled_start"])
+                    + float(item["spoken_duration"]) / speed,
+                    available_duration=float(item["spoken_duration"]) / speed,
+                    generated_duration=float(item["spoken_duration"]),
+                    ratio=speed,
+                    speed_factor=speed,
+                    final_duration=float(item["spoken_duration"]) / speed,
+                    needs_review=bool(item["schedule_needs_review"]),
+                    reason=(
+                        "region_review"
+                        if item["schedule_needs_review"]
+                        else "region_scheduled"
+                    ),
+                )
+                final_path = (
+                    scheduled_path
+                    if scheduled_reused
+                    else adapt_segment(
+                        trimmed_path,
+                        scheduled_path,
+                        plan,
+                        ffmpeg_path=self.ffmpeg_path,
+                        log=self._log,
+                        command_runner=self._run_command,
+                    )
+                )
+            else:
+                final_path = trimmed_path
+                scheduled_reused = bool(item.get("trim_reused"))
+            actual_duration = wav_duration(final_path)
+            result = dict(item)
+            result.update(
+                status="done",
+                original_start=float(item["start"]),
+                timing={
+                    "reason": (
+                        "region_review"
+                        if item["schedule_needs_review"]
+                        else "region_scheduled"
+                    ),
+                    "region": int(item["schedule_region"]),
+                    "generated_duration": float(item["generated_duration"]),
+                    "spoken_duration": float(item["spoken_duration"]),
+                    "required_speed_factor": float(item["schedule_required_speed"]),
+                    "speed_factor": speed,
+                    "scheduled_start": float(item["scheduled_start"]),
+                    "schedule_shift": float(item["schedule_shift"]),
+                    "needs_review": bool(item["schedule_needs_review"]),
+                    "reasons": list(item["schedule_reasons"]),
+                },
+                timing_fingerprint=schedule_fingerprint,
+                schedule_fingerprint=schedule_fingerprint,
+                final_wav=self._relative(final_path, work_dir),
+                final_wav_hash=sha256_file(final_path),
+                final_duration=actual_duration,
+                needs_review=bool(item["schedule_needs_review"]),
+                overlap=False,
+                adapted_reused=scheduled_reused,
+            )
+            final_rows.append(result)
+
+        warning_rows: list[str] = []
+        for index, row in enumerate(final_rows):
+            end = float(row["scheduled_start"]) + float(row["final_duration"])
+            actual_overlap = bool(
+                index + 1 < len(final_rows)
+                and end
+                > float(final_rows[index + 1]["scheduled_start"]) + tolerance
+            )
+            media_overflow = end > media_duration + tolerance
+            reasons = list(row.get("schedule_reasons") or [])
+            if actual_overlap:
+                reasons.append("ACTUAL_VOICE_OVERLAP")
+            if media_overflow:
+                reasons.append("MEDIA_END_OVERFLOW")
+            if not bool((row.get("silence_trim") or {}).get("speech_detected", True)):
+                reasons.append("NO_SPEECH_DETECTED")
+            row["overlap"] = actual_overlap
+            row["needs_review"] = bool(reasons)
+            row["timing"]["needs_review"] = bool(reasons)
+            row["timing"]["reasons"] = sorted(set(reasons))
+
+        review_rows = [row for row in final_rows if row["needs_review"]]
+        review_regions = sorted({int(row["schedule_region"]) for row in review_rows})
+        for region in review_regions:
+            reasons = sorted(
+                {
+                    reason
+                    for row in review_rows
+                    if int(row["schedule_region"]) == region
+                    for reason in row["timing"]["reasons"]
+                }
+            )
+            message = (
+                f"Region {region} requires fallback/review: {', '.join(reasons)}."
+            )
+            warning_rows.append(message)
+            self._log(f"[DUBBING] WARNING: {message}")
+
+        timing_qc.update(
+            status="REVIEW_REQUIRED" if review_rows else "PASS_AUTO_ADAPTED",
+            review_region_count=len(review_regions),
+            review_segment_count=len(review_rows),
+            no_voice_overlap=not any(bool(row["overlap"]) for row in final_rows),
+            total_trimmed_silence_seconds=round(total_removed, 3),
+            trim_enabled=trim_enabled,
+        )
+        return final_rows, timing_qc, warning_rows
+
     def run(
         self,
         video_dir: Path | str,
@@ -325,6 +760,7 @@ class DubbingPipeline:
         force_separation: bool = False,
         force_tts: bool = False,
     ) -> DubbingResult:
+        total_started = time.monotonic()
         root = Path(video_dir).resolve()
         if not root.is_dir():
             raise DubbingError("VIDEO_DIR_NOT_FOUND", f"视频任务目录不存在：{root}")
@@ -392,8 +828,26 @@ class DubbingPipeline:
                 if isinstance(loaded_manifest.get("checkpoints"), dict)
                 else {}
             ),
+            "audio_qc": (
+                loaded_manifest.get("audio_qc")
+                if isinstance(loaded_manifest.get("audio_qc"), dict)
+                else {}
+            ),
+            "performance": {
+                "model_load_seconds": 0.0,
+                "model_reused": False,
+                "tts_total_seconds": 0.0,
+                "tts_segment_count": 0,
+                "tts_cached_segment_count": 0,
+                "tts_average_segment_seconds": 0.0,
+                "demucs_seconds": 0.0,
+                "mix_seconds": 0.0,
+                "loudness_seconds": 0.0,
+                "total_dubbing_seconds": 0.0,
+            },
             "segments": list(previous_segments.values()),
         }
+        performance = manifest["performance"]
         self._save_manifest(manifest_path, manifest)
 
         try:
@@ -435,10 +889,14 @@ class DubbingPipeline:
                 command_runner=self.command_runner,
                 subprocess_env=self.subprocess_env,
             )
+            demucs_started = time.monotonic()
             separation = separator.prepare(
                 source_video,
                 work_dir,
                 force=force_separation,
+            )
+            performance["demucs_seconds"] = round(
+                time.monotonic() - demucs_started, 3
             )
             manifest["separation"] = {
                 "reused": bool(separation.get("reused")),
@@ -464,6 +922,9 @@ class DubbingPipeline:
             model_path = resolve_model_path(self.project_root, self.config)
             tts_settings = dict(self.config.get("tts") or {})
             timing_settings = dict(self.config.get("timing") or {})
+            regional_timing_enabled = bool(
+                timing_settings.get("regional_scheduling_enabled", False)
+            )
             reference_hash = sha256_file(reference)
             model_files = [
                 path
@@ -616,8 +1077,13 @@ class DubbingPipeline:
                 )
 
             synthesizer: Any | None = None
-            if pending_count:
+
+            def ensure_synthesizer() -> Any:
+                nonlocal synthesizer
+                if synthesizer is not None:
+                    return synthesizer
                 self._notify("加载 VoxCPM2", 28)
+                model_load_started = time.monotonic()
                 synthesizer = self.synthesizer_factory(
                     model_path,
                     device=str(self.config.get("device") or "cuda"),
@@ -625,8 +1091,36 @@ class DubbingPipeline:
                     settings=tts_settings,
                     log=self._log,
                 )
+                performance["model_load_seconds"] = round(
+                    float(
+                        getattr(
+                            synthesizer,
+                            "model_load_seconds",
+                            time.monotonic() - model_load_started,
+                        )
+                    ),
+                    3,
+                )
+                performance["model_reused"] = bool(
+                    getattr(synthesizer, "model_reused", False)
+                )
+                reset_peak = getattr(synthesizer, "reset_peak_vram_stats", None)
+                if callable(reset_peak):
+                    try:
+                        reset_peak()
+                    except Exception:
+                        pass
+                return synthesizer
+
+            if pending_count:
+                ensure_synthesizer()
             else:
                 self._log("[DUBBING] All segment TTS caches are valid; VoxCPM2 load skipped.")
+
+            performance["tts_segment_count"] = int(pending_count)
+            performance["tts_cached_segment_count"] = int(
+                len(prepared) - pending_count
+            )
 
             completed_rows: list[dict[str, Any]] = []
             warnings: list[str] = []
@@ -647,10 +1141,29 @@ class DubbingPipeline:
                         "wav": self._relative(raw_path, work_dir),
                         "status": "pending",
                     }
+                    previous_retry = item["previous"].get("duration_retry")
+                    if (
+                        not force_tts
+                        and isinstance(previous_retry, dict)
+                        and previous_retry.get("attempted")
+                    ):
+                        entry["duration_retry"] = dict(previous_retry)
                     if not item["raw_reusable"]:
                         assert synthesizer is not None
                         try:
+                            segment_started = time.monotonic()
                             synthesizer.generate(str(item["text"]), reference, raw_path)
+                            performance["tts_total_seconds"] = round(
+                                float(performance["tts_total_seconds"])
+                                + time.monotonic()
+                                - segment_started,
+                                3,
+                            )
+                            performance["tts_average_segment_seconds"] = round(
+                                float(performance["tts_total_seconds"])
+                                / max(1, int(performance["tts_segment_count"])),
+                                3,
+                            )
                         except Exception as exc:
                             entry.update(status="failed", error=str(exc))
                             current = [*completed_rows, entry]
@@ -710,6 +1223,40 @@ class DubbingPipeline:
                             reused=True,
                             recovered_from=str(item.get("recovered_from") or "manifest"),
                         )
+
+                    retry_source = self._selected_duration_retry_source(
+                        item,
+                        work_dir=work_dir,
+                        force=force_tts,
+                    )
+                    if retry_source is not None:
+                        retry_path, retry_record = retry_source
+                        entry.update(
+                            wav=self._relative(retry_path, work_dir),
+                            wav_hash=str(retry_record["candidate_wav_hash"]),
+                            generated_duration=float(
+                                retry_record["retry_generated_duration"]
+                            ),
+                            duration_retry=retry_record,
+                        )
+
+                    if regional_timing_enabled:
+                        effective_path = work_dir / str(entry["wav"])
+                        entry.update(
+                            status="generated",
+                            final_wav=self._relative(effective_path, work_dir),
+                            final_wav_hash=str(entry["wav_hash"]),
+                            final_duration=float(entry["generated_duration"]),
+                            needs_review=False,
+                            overlap=False,
+                        )
+                        completed_rows.append(entry)
+                        manifest.update(
+                            updated_at=utc_now(),
+                            segments=completed_rows,
+                        )
+                        self._save_manifest(manifest_path, manifest)
+                        continue
 
                     self._notify(f"时长处理：{offset} / {total}", progress, offset, total)
 
@@ -797,19 +1344,119 @@ class DubbingPipeline:
                     self._save_manifest(manifest_path, manifest)
             finally:
                 if synthesizer is not None:
+                    peak_vram = getattr(synthesizer, "peak_vram_mb", None)
+                    if peak_vram is not None:
+                        try:
+                            performance["peak_vram_mb"] = round(float(peak_vram), 1)
+                        except (TypeError, ValueError):
+                            pass
                     close = getattr(synthesizer, "close", None)
                     if callable(close):
                         close()
+                    synthesizer = None
+
+            if regional_timing_enabled:
+                self._notify("准备连续语音区域调度", 74, 0, len(completed_rows))
+                completed_rows, timing_qc, timing_warnings = self._apply_regional_timing(
+                    completed_rows,
+                    previous_segments=previous_segments,
+                    work_dir=work_dir,
+                    media_duration=media_duration,
+                    timing_settings=timing_settings,
+                    force=force_tts,
+                )
+                retry_candidates = self._duration_retry_candidates(
+                    completed_rows,
+                    timing_settings=timing_settings,
+                )
+                retry_selected = 0
+                retry_attempted = 0
+                if retry_candidates:
+                    try:
+                        ensure_synthesizer()
+                    except (DubbingError, OSError, RuntimeError) as exc:
+                        self._log(
+                            "[DUBBING] WARNING: cannot load VoxCPM2 for duration retry; "
+                            f"keeping the original audio for review ({exc})"
+                        )
+                    else:
+                        def save_duration_retry_checkpoint(
+                            retry_rows: list[dict[str, Any]],
+                        ) -> None:
+                            manifest.update(
+                                updated_at=utc_now(),
+                                segments=retry_rows,
+                            )
+                            self._save_manifest(manifest_path, manifest)
+
+                        try:
+                            (
+                                completed_rows,
+                                retry_selected,
+                                retry_attempted,
+                            ) = self._retry_overlong_segments(
+                                completed_rows,
+                                synthesizer=synthesizer,
+                                reference=reference,
+                                work_dir=work_dir,
+                                timing_settings=timing_settings,
+                                checkpoint=save_duration_retry_checkpoint,
+                            )
+                        finally:
+                            if synthesizer is not None:
+                                close = getattr(synthesizer, "close", None)
+                                if callable(close):
+                                    close()
+                                synthesizer = None
+                if retry_attempted:
+                    manifest.update(
+                        updated_at=utc_now(),
+                        segments=completed_rows,
+                    )
+                    self._save_manifest(manifest_path, manifest)
+                if retry_selected:
+                    self._notify(
+                        "重新调度超时片段",
+                        79,
+                        retry_selected,
+                        len(retry_candidates),
+                    )
+                    completed_rows, timing_qc, timing_warnings = self._apply_regional_timing(
+                        completed_rows,
+                        previous_segments=previous_segments,
+                        work_dir=work_dir,
+                        media_duration=media_duration,
+                        timing_settings=timing_settings,
+                        force=force_tts,
+                    )
+                warnings = timing_warnings
+                preserved_warnings = [
+                    value
+                    for value in list(manifest.get("warnings") or [])
+                    if "exceeds target duration significantly" not in str(value)
+                    and "requires fallback/review" not in str(value)
+                ]
+                manifest.update(
+                    updated_at=utc_now(),
+                    segments=completed_rows,
+                    timing_qc=timing_qc,
+                    warnings=sorted(set(preserved_warnings + warnings)),
+                )
+                self._save_manifest(manifest_path, manifest)
 
             self._notify("按字幕时间轴拼接", 80)
             self._log("[DUBBING] Building Chinese voice track...")
             voice_path = work_dir / "chinese_voice.wav"
             timeline_fingerprint = hash_json(
                 {
-                    "version": 1,
+                    "version": 2,
                     "media_duration": round(media_duration, 3),
                     "segments": [
-                        [row["index"], row["start"], row["final_wav_hash"]]
+                        [
+                            row["index"],
+                            row.get("scheduled_start", row["start"]),
+                            row["final_wav_hash"],
+                        ]
                         for row in completed_rows
                     ],
                 }
@@ -854,16 +1501,124 @@ class DubbingPipeline:
             }
             self._save_manifest(manifest_path, manifest)
 
-            self._notify("混合背景音", 92)
-            self._log("[DUBBING] Mixing background audio...")
-            dubbed_path = work_dir / "dubbed_audio.wav"
             mix_settings = dict(self.config.get("mix") or {})
-            mix_fingerprint = hash_json(
+            sample_rate = int(mix_settings.get("sample_rate", 48000))
+            loudness_settings = dict(self.config.get("loudness") or {})
+            # Existing custom configs that predate this section keep their old
+            # behavior; the project default config explicitly enables it.
+            loudness_enabled = bool(loudness_settings.get("enabled", False))
+            voice_target_lufs = float(
+                loudness_settings.get("voice_target_lufs", -18.0)
+            )
+            voice_true_peak_db = float(
+                loudness_settings.get("voice_true_peak_db", -2.0)
+            )
+            final_target_lufs = float(
+                loudness_settings.get("final_target_lufs", -14.0)
+            )
+            final_true_peak_db = float(
+                loudness_settings.get("final_true_peak_db", -1.0)
+            )
+            final_lra = float(loudness_settings.get("final_lra", 11.0))
+            audio_qc = manifest.setdefault("audio_qc", {})
+
+            normalized_voice_path = work_dir / "chinese_voice_normalized.wav"
+            voice_loudness_fingerprint = hash_json(
                 {
                     "version": 1,
-                    "background_hash": sha256_file(Path(separation["background"])),
                     "voice_hash": sha256_file(voice_path),
-                    "settings": mix_settings,
+                    "enabled": loudness_enabled,
+                    "target_lufs": voice_target_lufs,
+                    "true_peak_db": voice_true_peak_db,
+                    "lra": final_lra,
+                    "sample_rate": sample_rate,
+                }
+            )
+            voice_loudness_checkpoint = (
+                checkpoints.get("voice_loudness")
+                if isinstance(checkpoints.get("voice_loudness"), dict)
+                else {}
+            )
+            if loudness_enabled:
+                voice_for_mix = normalized_voice_path
+                voice_loudness_reused = (
+                    not force_tts
+                    and valid_wav(voice_for_mix)
+                    and voice_loudness_checkpoint.get("fingerprint")
+                    == voice_loudness_fingerprint
+                    and voice_loudness_checkpoint.get("output_hash")
+                    == sha256_file(voice_for_mix)
+                )
+                if not voice_loudness_reused:
+                    self._notify("统一中文人声响度", 86)
+                    self._log(
+                        f"[DUBBING] Normalizing Chinese voice to {voice_target_lufs:g} LUFS"
+                    )
+                    loudness_started = time.monotonic()
+                    audio_qc["voice"] = self.loudness_normalizer(
+                        voice_path,
+                        voice_for_mix,
+                        ffmpeg_path=self.ffmpeg_path,
+                        target_lufs=voice_target_lufs,
+                        true_peak_db=voice_true_peak_db,
+                        lra=final_lra,
+                        sample_rate=sample_rate,
+                        log=self._log,
+                        env=self.subprocess_env,
+                    )
+                    performance["loudness_seconds"] = round(
+                        float(performance["loudness_seconds"])
+                        + time.monotonic()
+                        - loudness_started,
+                        3,
+                    )
+            else:
+                voice_for_mix = voice_path
+                voice_loudness_reused = True
+                audio_qc["voice"] = {"enabled": False}
+            checkpoints["voice_loudness"] = {
+                "fingerprint": voice_loudness_fingerprint,
+                "output_hash": sha256_file(voice_for_mix),
+                "path": self._relative(voice_for_mix, work_dir),
+                "reused": voice_loudness_reused,
+                "completed_at": utc_now(),
+            }
+            self._save_manifest(manifest_path, manifest)
+
+            self._notify("混合背景音", 92)
+            duck_db = float(mix_settings.get("background_duck_db", 6.0))
+            duck_attack_ms = float(mix_settings.get("duck_attack_ms", 40.0))
+            duck_release_ms = float(mix_settings.get("duck_release_ms", 250.0))
+            self._log(
+                f"[DUBBING] Applying background ducking: -{max(0.0, duck_db):g} dB"
+                if duck_db > 0
+                else "[DUBBING] Background ducking disabled."
+            )
+            self._log("[DUBBING] Mixing background audio...")
+            mixed_path = work_dir / "mixed_audio.wav"
+            dubbed_path = work_dir / "dubbed_audio.wav"
+            mix_fingerprint = hash_json(
+                {
+                    "version": 2,
+                    "background_hash": sha256_file(Path(separation["background"])),
+                    "voice_hash": sha256_file(voice_for_mix),
+                    "voice_loudness_fingerprint": voice_loudness_fingerprint,
+                    "background_duck_db": duck_db,
+                    "duck_attack_ms": duck_attack_ms,
+                    "duck_release_ms": duck_release_ms,
+                    "sample_rate": sample_rate,
+                    "limiter": float(mix_settings.get("limiter", 0.95)),
+                    "speech_intervals": [
+                        [
+                            int(row["index"]),
+                            round(
+                                float(row.get("scheduled_start", row["start"])),
+                                6,
+                            ),
+                            round(float(row["final_duration"]), 6),
+                        ]
+                        for row in completed_rows
+                    ],
                 }
             )
             mix_checkpoint = (
@@ -871,28 +1626,104 @@ class DubbingPipeline:
             )
             mix_reused = (
                 not force_tts
-                and valid_wav(dubbed_path)
+                and valid_wav(mixed_path)
                 and mix_checkpoint.get("fingerprint") == mix_fingerprint
-                and mix_checkpoint.get("output_hash") == sha256_file(dubbed_path)
+                and mix_checkpoint.get("output_hash") == sha256_file(mixed_path)
             )
             if not mix_reused:
+                mix_started = time.monotonic()
                 mix_background(
                     Path(separation["background"]),
-                    voice_path,
-                    dubbed_path,
+                    voice_for_mix,
+                    mixed_path,
                     ffmpeg_path=self.ffmpeg_path,
-                    duck_db=float(mix_settings.get("background_duck_db", 6.0)),
-                    sample_rate=int(mix_settings.get("sample_rate", 48000)),
+                    duck_db=duck_db,
+                    speech_intervals=completed_rows,
+                    attack_ms=duck_attack_ms,
+                    release_ms=duck_release_ms,
+                    sample_rate=sample_rate,
                     limiter=float(mix_settings.get("limiter", 0.95)),
                     media_duration=media_duration,
                     log=self._log,
                     command_runner=self._run_command,
                 )
+                performance["mix_seconds"] = round(
+                    time.monotonic() - mix_started, 3
+                )
             checkpoints["mix"] = {
                 "fingerprint": mix_fingerprint,
+                "output_hash": sha256_file(mixed_path),
+                "path": "mixed_audio.wav",
+                "reused": mix_reused,
+                "completed_at": utc_now(),
+            }
+
+            final_loudness_fingerprint = hash_json(
+                {
+                    "version": 1,
+                    "mixed_audio_hash": sha256_file(mixed_path),
+                    "mix_fingerprint": mix_fingerprint,
+                    "enabled": loudness_enabled,
+                    "target_lufs": final_target_lufs,
+                    "true_peak_db": final_true_peak_db,
+                    "lra": final_lra,
+                    "sample_rate": sample_rate,
+                }
+            )
+            final_loudness_checkpoint = (
+                checkpoints.get("final_loudness")
+                if isinstance(checkpoints.get("final_loudness"), dict)
+                else {}
+            )
+            final_loudness_reused = (
+                not force_tts
+                and valid_wav(dubbed_path)
+                and final_loudness_checkpoint.get("fingerprint")
+                == final_loudness_fingerprint
+                and final_loudness_checkpoint.get("output_hash")
+                == sha256_file(dubbed_path)
+            )
+            if not final_loudness_reused:
+                if loudness_enabled:
+                    self._notify("统一最终成片响度", 96)
+                    self._log(
+                        "[DUBBING] Final loudness target: "
+                        f"{final_target_lufs:g} LUFS / {final_true_peak_db:g} dBTP"
+                    )
+                    loudness_started = time.monotonic()
+                    audio_qc["final_mix"] = self.loudness_normalizer(
+                        mixed_path,
+                        dubbed_path,
+                        ffmpeg_path=self.ffmpeg_path,
+                        target_lufs=final_target_lufs,
+                        true_peak_db=final_true_peak_db,
+                        lra=final_lra,
+                        sample_rate=sample_rate,
+                        log=self._log,
+                        env=self.subprocess_env,
+                    )
+                    performance["loudness_seconds"] = round(
+                        float(performance["loudness_seconds"])
+                        + time.monotonic()
+                        - loudness_started,
+                        3,
+                    )
+                else:
+                    temporary_copy = dubbed_path.with_name(
+                        f".{dubbed_path.stem}-{os.getpid()}.tmp.wav"
+                    )
+                    temporary_copy.unlink(missing_ok=True)
+                    try:
+                        shutil.copy2(mixed_path, temporary_copy)
+                        os.replace(temporary_copy, dubbed_path)
+                    finally:
+                        temporary_copy.unlink(missing_ok=True)
+                    audio_qc["final_mix"] = {"enabled": False}
+            checkpoints["final_loudness"] = {
+                "fingerprint": final_loudness_fingerprint,
                 "output_hash": sha256_file(dubbed_path),
                 "path": "dubbed_audio.wav",
-                "reused": mix_reused,
+                "reused": final_loudness_reused,
                 "completed_at": utc_now(),
             }
             needs_review = any(bool(row.get("needs_review")) for row in completed_rows)
@@ -904,6 +1735,8 @@ class DubbingPipeline:
                     "needs_review": needs_review,
                     "segment_count": len(completed_rows),
                     "chinese_voice_path": str(voice_path),
+                    "chinese_voice_normalized_path": str(voice_for_mix),
+                    "mixed_audio_path": str(mixed_path),
                     "dubbed_audio_path": str(dubbed_path),
                     "finished_at": utc_now(),
                     "updated_at": utc_now(),
@@ -916,6 +1749,9 @@ class DubbingPipeline:
                         list(manifest.get("error_history") or []) + prior_errors
                     )[-20:],
                 }
+            )
+            performance["total_dubbing_seconds"] = round(
+                time.monotonic() - total_started, 3
             )
             self._save_manifest(manifest_path, manifest)
             self._notify("中文配音完成", 100, len(completed_rows), len(completed_rows))
@@ -934,6 +1770,9 @@ class DubbingPipeline:
                 details={"path": str(exc.path), "attempts": exc.attempts},
             ) from exc
         except DubbingError as exc:
+            performance["total_dubbing_seconds"] = round(
+                time.monotonic() - total_started, 3
+            )
             manifest.update(status="FAILED", updated_at=utc_now())
             errors = list(manifest.get("errors") or [])
             errors.append(exc.to_dict())
@@ -952,6 +1791,9 @@ class DubbingPipeline:
             raise
         except (OSError, RuntimeError, ValueError) as exc:
             wrapped = DubbingError("DUBBING_FAILED", str(exc))
+            performance["total_dubbing_seconds"] = round(
+                time.monotonic() - total_started, 3
+            )
             manifest.update(status="FAILED", updated_at=utc_now())
             errors = list(manifest.get("errors") or [])
             errors.append(wrapped.to_dict())

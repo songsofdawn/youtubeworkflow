@@ -96,6 +96,12 @@ class SourceRoutingTests(TestCase):
             ).whisper_for_auto_subtitles
         )
 
+    def test_for_dubbing_cli_switch_defaults_off(self) -> None:
+        self.assertFalse(parse_args(["--video-dir", "task"]).for_dubbing)
+        self.assertTrue(
+            parse_args(["--video-dir", "task", "--for-dubbing"]).for_dubbing
+        )
+
     def test_auto_prepares_both_sources_and_prefers_close_manual_youtube(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             video = Path(directory)
