@@ -147,7 +147,9 @@ def compose_localized_title(
     Python ``len`` counts supplementary characters such as emoji once, while
     Bilibili's web form and API count each of them as two UTF-16 code units.
     Build every budget from the same counter used by submission validation so
-    generated defaults can always be submitted unchanged.
+    generated defaults can always be submitted unchanged.  When the combined
+    title is too long, keep the complete Chinese title whenever it fits and
+    spend the remaining budget on the English title.
     """
     normalized_prefix = normalize_title_prefix(prefix)
     chinese = _PREFIX_PATTERN.sub("", " ".join(str(chinese_title or "").split())).strip(" ｜|+-")
@@ -160,19 +162,31 @@ def compose_localized_title(
     full = f"{normalized_prefix}{chinese}{separator}{english}"
     if utf16_code_units(full) <= max_length:
         return full
-    chinese_budget = min(utf16_code_units(chinese), 36)
-    chinese_short = truncate_utf16(chinese, chinese_budget, suffix="").rstrip()
+    prefix_units = utf16_code_units(normalized_prefix)
+    chinese_units = utf16_code_units(chinese)
+    chinese_budget = max_length - prefix_units
+    if chinese_budget <= 0:
+        return truncate_utf16(normalized_prefix, max_length)
+    if chinese_units > chinese_budget:
+        # The Chinese title alone exceeds the platform limit.  In this
+        # impossible-to-preserve case, omit English instead of sacrificing
+        # additional Chinese content for a bilingual separator.
+        chinese_short = truncate_utf16(chinese, chinese_budget).rstrip()
+        return truncate_utf16(
+            f"{normalized_prefix}{chinese_short}",
+            max_length,
+        )
+
     english_budget = (
-        max_length
-        - utf16_code_units(normalized_prefix)
-        - utf16_code_units(separator)
-        - utf16_code_units(chinese_short)
+        max_length - prefix_units - utf16_code_units(separator) - chinese_units
     )
     if english_budget <= 1:
-        return truncate_utf16(normalized_prefix + chinese_short, max_length)
+        return f"{normalized_prefix}{chinese}"
     english_short = truncate_utf16(english, english_budget).rstrip()
+    if not english_short:
+        return f"{normalized_prefix}{chinese}"
     return truncate_utf16(
-        f"{normalized_prefix}{chinese_short}{separator}{english_short}",
+        f"{normalized_prefix}{chinese}{separator}{english_short}",
         max_length,
     )
 

@@ -1,0 +1,110 @@
+youtubeworkflow：GLM-5.3-Flash + 动态 Batch 覆盖包
+=====================================================
+
+这是根据你上传的本地真实源码生成的，不是按 GitHub main 猜测。
+
+【你本地原来存在的问题】
+translator_deepseek.py 里已经手工加入了一部分动态 batch 代码，
+但 _choose_batch_size() / _estimate_batch_prompt_tokens() 位于 LLMTranslator class 外，
+而 translate_all() 调用 self._choose_batch_size()。
+这会在实际进入动态批处理时产生 AttributeError。
+
+本覆盖包已经把这部分整理正确。
+
+一、如何覆盖
+------------
+
+把本 ZIP 解压到：
+
+C:\Users\23664\Desktop\program\youtubeworkflow
+
+选择“替换目标中的文件”。
+
+会替换：
+- src\stage3\llm_providers.py
+- src\stage3\translator_deepseek.py
+- config\stage3_config.json
+- .env.example
+
+不会覆盖你的 .env，所以不会丢 API Key。
+
+二、切换当前 .env 到 GLM-5.3-Flash
+----------------------------------
+
+覆盖完成后，在项目根目录执行：
+
+python activate_glm53_env.py
+
+这个脚本会：
+- 先备份当前 .env
+- 保留所有 API Key
+- 只修改翻译模型相关配置
+
+然后确认你的 .env 中已经有：
+
+ZHIPU_API_KEY=你的Key
+
+三、最终翻译配置
+----------------
+
+GLM：
+- provider=zhipu
+- model=glm-5.3-flash
+- thinking=enabled（该模型无法关闭）
+- reasoning_effort=low
+- max_output_tokens=8192
+
+动态 batch：
+- 正常主批次最小 64
+- 正常主批次最大 96
+- 完整 prompt 目标约 4500 tokens
+- 前文 2 条
+- 后文 2 条
+- 最后一批允许 <64
+
+完整 prompt 估算包含：
+- system prompt
+- metadata
+- glossary
+- 前后上下文
+- 当前字幕 JSON payload
+
+四、失败恢复
+------------
+
+整批 JSON 截断/损坏：
+96 -> 48 -> 24 -> 12
+64 -> 32 -> 16 -> 8
+
+少量 missing ID：
+只重试缺失字幕，不重发整批。
+
+payload overflow：
+仍保留单条重试逻辑。
+
+五、校验
+--------
+
+本包生成前已完成：
+- llm_providers.py Python 语法校验
+- translator_deepseek.py Python 语法校验
+- stage3_config.json JSON 校验
+- GLM-5.3-Flash 参数加载测试
+- forced thinking 测试
+- reasoning_effort=low 转发测试
+- 动态 batch 64~96 运行测试（短字幕实际选择 96）
+
+覆盖后建议你在完整项目中再运行：
+
+python -m pytest tests/stage3 -q
+
+六、如果要恢复
+--------------
+
+你之前已经有：
+
+backup_glm53_dynamic_batch_20260902_193201
+
+而 activate_glm53_env.py 还会额外生成：
+
+.env.backup_before_glm53_时间戳

@@ -54,6 +54,16 @@ class TranslatorTests(TestCase):
                 "TRANSLATION_BASE_URL": "",
                 "TRANSLATION_THINKING": "disabled",
                 "TRANSLATION_BATCH_SIZE": "2",
+                # Explicitly isolate legacy/fixed-batch tests from the project's
+                # production .env, which now enables dynamic batching globally.
+                "TRANSLATION_DYNAMIC_BATCH": "false",
+                "TRANSLATION_BATCH_MIN": "64",
+                "TRANSLATION_BATCH_MAX": "96",
+                "TRANSLATION_BATCH_TARGET_TOKENS": "4500",
+                # reasoning_effort is GLM-5.3-Flash-specific. Keep it empty in
+                # the default DeepSeek unit-test environment so a project-level
+                # .env value such as "low" cannot alter checkpoint hashes.
+                "TRANSLATION_REASONING_EFFORT": "",
                 "TRANSLATION_CONTEXT_BEFORE": "1",
                 "TRANSLATION_CONTEXT_AFTER": "1",
                 "TRANSLATION_MAX_OUTPUT_TOKENS": "4096",

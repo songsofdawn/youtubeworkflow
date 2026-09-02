@@ -63,6 +63,16 @@ class PublishMetadataTests(TestCase):
         self.assertLessEqual(utf8_bytes(description), 1900)
         self.assertIn("【原视频简介】", description)
 
+    def test_long_chinese_title_is_preserved_before_shortening_english(self) -> None:
+        chinese = "完整中文翻译标题" * 6
+        title = compose_bilingual_title(
+            chinese,
+            "A very long English title that should be shortened to fit the limit",
+        )
+
+        self.assertTrue(title.startswith(chinese + "｜"))
+        self.assertLessEqual(utf16_code_units(title), 80)
+
     def test_title_with_emoji_respects_bilibili_utf16_limit(self) -> None:
         title = compose_bilingual_title(
             "印度乡村制作炸秋葵片条食谱",

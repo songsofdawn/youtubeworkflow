@@ -17,6 +17,7 @@ from .publish_metadata import build_publish_metadata_messages, normalize_ai_reco
 from .subtitle_writer import atomic_write_json
 from .translation_qc import translation_payload_overflow
 import math
+import re
 
 PROMPT_VERSION = "stage3-translation-v6-dubbing-oral"
 TRANSLATION_CHECKPOINT_VERSION = "stage3-translation-checkpoint-v2"
@@ -215,7 +216,111 @@ def build_messages(
         )},
     ]
 
+def _estimate_batch_prompt_tokens(
+    self,
+    batch: list[SubtitleSegment],
+    all_segments: list[SubtitleSegment],
+    glossary: dict[str, Any],
+    metadata: dict[str, str],
+    *,
+    for_dubbing: bool = False,
+) -> int:
+    if not batch:
+        return 0
 
+    index_by_id = {
+        item.id: index
+        for index, item in enumerate(all_segments)
+    }
+
+    first_index = min(index_by_id[item.id] for item in batch)
+    last_index = max(index_by_id[item.id] for item in batch)
+
+    before = all_segments[
+        max(0, first_index - self.context_before):
+        first_index
+    ]
+
+    after = all_segments[
+        last_index + 1:
+        last_index + 1 + self.context_after
+    ]
+
+    messages = build_messages(
+        batch,
+        before,
+        after,
+        glossary,
+        metadata,
+        for_dubbing=for_dubbing,
+    )
+
+    # 再加一点 Chat Completion 消息结构开销
+    return (
+        sum(
+            estimate_text_tokens(message["content"])
+            for message in messages
+        )
+        + 32
+    )
+
+def _choose_batch_size(
+    self,
+    remaining_targets: list[SubtitleSegment],
+    all_segments: list[SubtitleSegment],
+    glossary: dict[str, Any],
+    metadata: dict[str, str],
+    *,
+    for_dubbing: bool = False,
+) -> int:
+    remaining = len(remaining_targets)
+
+    if remaining <= 0:
+        return 0
+
+    if not self.dynamic_batch:
+        return min(self.batch_size, remaining)
+
+    # 最后一批
+    if remaining <= self.batch_min:
+        return remaining
+
+    minimum = min(self.batch_min, remaining)
+    maximum = min(self.batch_max, remaining)
+
+    best = minimum
+
+    # 主批次至少 64 条。
+    # 即使这 64 条已经超过 target_tokens，也不主动缩小。
+    for size in range(minimum + 1, maximum + 1):
+        candidate = remaining_targets[:size]
+
+        estimated_tokens = self._estimate_batch_prompt_tokens(
+            candidate,
+            all_segments,
+            glossary,
+            metadata,
+            for_dubbing=for_dubbing,
+        )
+
+        if estimated_tokens > self.batch_target_tokens:
+            break
+
+        best = size
+
+    # 尽量避免出现 96 + 54 这种不必要的小尾巴。
+    tail = remaining - best
+
+    if (
+        remaining >= self.batch_min * 2
+        and 0 < tail < self.batch_min
+    ):
+        balanced = remaining - self.batch_min
+
+        if self.batch_min <= balanced <= self.batch_max:
+            best = balanced
+
+    return best
 
 class LLMTranslator:
     def __init__(
@@ -237,10 +342,7 @@ class LLMTranslator:
         self.jitter = jitter
         self.batch_size = int(os.environ.get(
             "TRANSLATION_BATCH_SIZE",
-            self.config.get(
-                "batch_size",
-                self.config.get("translation_batch_size", self.settings["batch_size"]),
-            ),
+            self.config.get("translation_batch_size", self.settings["batch_size"]),
         ))
         self.context_before = int(os.environ.get(
             "TRANSLATION_CONTEXT_BEFORE",
@@ -250,36 +352,6 @@ class LLMTranslator:
             "TRANSLATION_CONTEXT_AFTER",
             self.config.get("context_after", self.settings["context_after"]),
         ))
-
-        dynamic_env = os.environ.get("TRANSLATION_DYNAMIC_BATCH")
-        if dynamic_env is None:
-            self.dynamic_batch = bool(self.config.get("dynamic_batch", False))
-        else:
-            self.dynamic_batch = dynamic_env.strip().casefold() in {
-                "1", "true", "yes", "on", "enabled",
-            }
-
-        self.batch_min = max(1, int(os.environ.get(
-            "TRANSLATION_BATCH_MIN",
-            self.config.get("batch_min", 64),
-        )))
-        self.batch_max = max(self.batch_min, int(os.environ.get(
-            "TRANSLATION_BATCH_MAX",
-            self.config.get("batch_max", 96),
-        )))
-        self.batch_target_tokens = max(512, int(os.environ.get(
-            "TRANSLATION_BATCH_TARGET_TOKENS",
-            self.config.get("batch_target_tokens", 4500),
-        )))
-
-        if self.dynamic_batch:
-            # Production main batches are kept in [batch_min, batch_max].
-            # Recovery retries may still go below batch_min.
-            self.batch_size = max(
-                self.batch_min,
-                min(self.batch_max, self.batch_size),
-            )
-
         self.max_output_tokens = int(self.settings["max_output_tokens"])
         if client is None:
             if not self.settings["api_key"]:
@@ -305,112 +377,6 @@ class LLMTranslator:
                 )
         self.client = client
         self.usage = {key: 0 for key in USAGE_KEYS}
-
-    def _estimate_batch_prompt_tokens(
-        self,
-        targets: list[SubtitleSegment],
-        all_segments: list[SubtitleSegment],
-        glossary: dict[str, Any],
-        metadata: dict[str, str],
-        *,
-        pass_name: str = "raw",
-        for_dubbing: bool = False,
-    ) -> int:
-        """Estimate the complete request size for dynamic batch planning."""
-        if not targets:
-            return 0
-
-        index_by_id = {
-            item.id: index
-            for index, item in enumerate(all_segments)
-        }
-        first_index = min(index_by_id[item.id] for item in targets)
-        last_index = max(index_by_id[item.id] for item in targets)
-
-        before = all_segments[
-            max(0, first_index - self.context_before) : first_index
-        ]
-        after = all_segments[
-            last_index + 1 : last_index + 1 + self.context_after
-        ]
-
-        messages = build_messages(
-            targets,
-            before,
-            after,
-            glossary,
-            metadata,
-            polish=pass_name == "polished",
-            for_dubbing=for_dubbing,
-        )
-        # Add a small allowance for role/message framing.
-        return (
-            sum(
-                estimate_text_tokens(str(message.get("content", "")))
-                for message in messages
-            )
-            + 24 * len(messages)
-        )
-
-    def _choose_batch_size(
-        self,
-        remaining_targets: list[SubtitleSegment],
-        all_segments: list[SubtitleSegment],
-        glossary: dict[str, Any],
-        metadata: dict[str, str],
-        *,
-        pass_name: str = "raw",
-        for_dubbing: bool = False,
-    ) -> int:
-        """Choose a production batch in [batch_min, batch_max] by prompt size."""
-        remaining = len(remaining_targets)
-        if remaining <= 0:
-            return 0
-        if not self.dynamic_batch:
-            return min(self.batch_size, remaining)
-
-        # The final tail is allowed to be smaller than the production minimum.
-        if remaining <= self.batch_min:
-            return remaining
-
-        minimum = min(self.batch_min, remaining)
-        maximum = min(self.batch_max, remaining)
-        best = minimum
-
-        # batch_min is a hard production floor. If 64 already exceeds the
-        # soft token target, keep 64 rather than silently reverting to tiny
-        # batches. Recovery logic below translate_batch may still split it.
-        for size in range(minimum + 1, maximum + 1):
-            estimated = self._estimate_batch_prompt_tokens(
-                remaining_targets[:size],
-                all_segments,
-                glossary,
-                metadata,
-                pass_name=pass_name,
-                for_dubbing=for_dubbing,
-            )
-            if estimated > self.batch_target_tokens:
-                break
-            best = size
-
-        # Avoid an unnecessarily small tail, e.g. 96 + 54. Prefer 86 + 64
-        # when the smaller current batch still fits the soft token target.
-        tail = remaining - best
-        if remaining >= self.batch_min * 2 and 0 < tail < self.batch_min:
-            balanced = remaining - self.batch_min
-            if self.batch_min <= balanced <= self.batch_max:
-                estimated = self._estimate_batch_prompt_tokens(
-                    remaining_targets[:balanced],
-                    all_segments,
-                    glossary,
-                    metadata,
-                    pass_name=pass_name,
-                    for_dubbing=for_dubbing,
-                )
-                if estimated <= self.batch_target_tokens or balanced == self.batch_min:
-                    best = balanced
-
-        return best
 
     @staticmethod
     def _exception_details(exc: Exception) -> tuple[int | None, str]:
@@ -503,7 +469,7 @@ class LLMTranslator:
     def _legacy_optional_checkpoint_key(key: str) -> bool:
         return key in {
             "translation_config_hash", "checkpoint_version", "provider",
-            "thinking", "reasoning_effort", "max_output_tokens",
+            "thinking", "max_output_tokens",
         }
 
     @staticmethod
@@ -564,11 +530,7 @@ class LLMTranslator:
     def _output_limit(self, messages: list[dict[str, str]], *, degraded: bool = False) -> int:
         if degraded:
             return self.max_output_tokens
-        is_glm53_flash = (
-            self.provider.id == "zhipu"
-            and self.settings["model"].casefold() == "glm-5.3-flash"
-        )
-        multiplier = 1.25 if self.provider.id == "deepseek" or is_glm53_flash else 0.9
+        multiplier = 1.25 if self.provider.id == "deepseek" else 0.9
         return min(
             self.max_output_tokens,
             max(512, int(len(messages[-1]["content"]) * multiplier)),
@@ -588,27 +550,11 @@ class LLMTranslator:
         deepseek_fallback = self.provider.id == "deepseek" and degraded
         if self.provider.json_mode and not deepseek_fallback:
             kwargs["response_format"] = {"type": "json_object"}
-        is_glm53_flash = (
-            self.provider.id == "zhipu"
-            and self.settings["model"].casefold() == "glm-5.3-flash"
-        )
-        enabled = (
-            True
-            if is_glm53_flash
-            else self.settings["thinking"] == "enabled" and not deepseek_fallback
-        )
+        enabled = self.settings["thinking"] == "enabled" and not deepseek_fallback
         if self.provider.thinking_style == "openai" and self.settings["model"].startswith("gpt-5"):
             kwargs["reasoning_effort"] = "high" if enabled else "none"
-
         extra_body: dict[str, Any] = {}
-        if is_glm53_flash:
-            # GLM-5.3-Flash is forced-thinking. The API accepts only enabled,
-            # while low/high/max controls the reasoning budget.
-            extra_body["thinking"] = {"type": "enabled"}
-            extra_body["reasoning_effort"] = self.settings.get(
-                "reasoning_effort", "low"
-            )
-        elif self.provider.thinking_style == "object" and not (
+        if self.provider.thinking_style == "object" and not (
             self.provider.id == "custom" and not enabled
         ):
             extra_body["thinking"] = {"type": "enabled" if enabled else "disabled"}
@@ -798,15 +744,6 @@ class LLMTranslator:
             "translation_batch_size": self.batch_size,
             "pass_name": pass_name,
         }
-        if self.dynamic_batch:
-            translation_config.update({
-                "dynamic_batch": True,
-                "batch_min": self.batch_min,
-                "batch_max": self.batch_max,
-                "batch_target_tokens": self.batch_target_tokens,
-            })
-        if self.settings.get("reasoning_effort"):
-            translation_config["reasoning_effort"] = self.settings["reasoning_effort"]
         if for_dubbing:
             # Keep the regular translation hash compatible with existing
             # checkpoints; the dedicated dubbing mode must never reuse one.
@@ -822,7 +759,6 @@ class LLMTranslator:
             "provider": self.settings["provider"],
             "model": self.settings["model"],
             "thinking": self.settings["thinking"],
-            "reasoning_effort": self.settings.get("reasoning_effort", ""),
             "max_output_tokens": self.max_output_tokens,
             "translation_config_hash": hash_config(translation_config),
             "checkpoint_version": TRANSLATION_CHECKPOINT_VERSION,
@@ -1004,9 +940,11 @@ class LLMTranslator:
                     priority_targets = [
                         item for item in request_targets if item.id in {p.id for p in pending}
                     ]
-                    # Whole-response failure: halve the current request.
-                    # Examples: 96 -> 48 -> 24 -> 12, 64 -> 32 -> 16 -> 8.
-                    request_limit = max(1, (len(request_targets) + 1) // 2)
+                    fallback_size = max(1, (len(request_targets) + 1) // 2)
+                    request_limit = min(
+                        int(self.config.get("degraded_batch_size", 16)),
+                        fallback_size,
+                    )
                     if self.provider.id == "deepseek":
                         degraded = True
                 elif isinstance(exc, IncompleteResponseError):
@@ -1091,34 +1029,13 @@ class LLMTranslator:
                 all_segments,
                 glossary,
                 metadata,
-                pass_name=pass_name,
                 for_dubbing=for_dubbing,
             )
-            if batch_size <= 0:
-                raise TranslationError(
-                    "Dynamic batch planner returned an invalid batch size"
-                )
 
-            batch = targets[cursor : cursor + batch_size]
-            estimated_tokens = self._estimate_batch_prompt_tokens(
-                batch,
-                all_segments,
-                glossary,
-                metadata,
-                pass_name=pass_name,
-                for_dubbing=for_dubbing,
-            )
-            LOGGER.info(
-                "Translation batch %d: %d subtitles, estimated prompt=%d tokens "
-                "(dynamic=%s, production range=%d-%d, target=%d)",
-                batch_id,
-                len(batch),
-                estimated_tokens,
-                self.dynamic_batch,
-                self.batch_min,
-                self.batch_max,
-                self.batch_target_tokens,
-            )
+            batch = targets[
+                cursor:
+                cursor + batch_size
+            ]
 
             merged.update(
                 self.translate_batch(
@@ -1144,12 +1061,7 @@ class LLMTranslator:
             "provider": self.settings["provider"],
             "model": self.settings["model"],
             "thinking": self.settings["thinking"],
-            "reasoning_effort": self.settings.get("reasoning_effort", ""),
             "batch_size": self.batch_size,
-            "dynamic_batch": self.dynamic_batch,
-            "batch_min": self.batch_min,
-            "batch_max": self.batch_max,
-            "batch_target_tokens": self.batch_target_tokens,
             "context_before": self.context_before,
             "context_after": self.context_after,
             "max_output_tokens": self.max_output_tokens,

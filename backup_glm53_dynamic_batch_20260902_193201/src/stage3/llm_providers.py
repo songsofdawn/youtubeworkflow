@@ -56,10 +56,10 @@ PROVIDERS: tuple[ProviderSpec, ...] = (
         "ZHIPU_API_KEY",
         "https://open.bigmodel.cn/api/paas/v4/",
         (
-            ModelOption("glm-5.3-flash", "GLM-5.3-Flash"),
-            ModelOption("glm-4.7-flash", "GLM-4.7-Flash（免费）", free=True),
-            ModelOption("glm-4.7-flashx", "GLM-4.7-FlashX"),
-            ModelOption("glm-5.2", "GLM-5.2"),
+        ModelOption("glm-5.3-flash", "GLM-5.3-Flash"),
+        ModelOption("glm-4.7-flash", "GLM-4.7-Flash（免费）", free=True),
+        ModelOption("glm-4.7-flashx", "GLM-4.7-FlashX"),
+        ModelOption("glm-5.2", "GLM-5.2"),
         ),
         thinking_style="object",
     ),
@@ -190,22 +190,18 @@ def load_llm_settings() -> dict[str, Any]:
     ).strip().casefold()
     if thinking not in {"disabled", "enabled"}:
         thinking = "disabled"
-
     is_glm53_flash = (
-        provider.id == "zhipu"
-        and model.casefold() == "glm-5.3-flash"
+    provider.id == "zhipu"
+    and model.casefold() == "glm-5.3-flash"
     )
     if is_glm53_flash:
-        # GLM-5.3-Flash is forced-thinking and rejects thinking=disabled.
         thinking = "enabled"
-
     reasoning_effort = os.environ.get(
         "TRANSLATION_REASONING_EFFORT",
         "low" if is_glm53_flash else "",
     ).strip().casefold()
     if is_glm53_flash and reasoning_effort not in {"low", "high", "max"}:
         reasoning_effort = "low"
-
     return {
         "provider": provider.id,
         "provider_label": provider.label,
@@ -215,16 +211,11 @@ def load_llm_settings() -> dict[str, Any]:
         "base_url": base_url,
         "model": model,
         "thinking": thinking,
-        "reasoning_effort": reasoning_effort,
-        "batch_size": _bounded_int("TRANSLATION_BATCH_SIZE", 64, 1, 100),
+        "batch_size": _bounded_int("TRANSLATION_BATCH_SIZE", 32, 1, 100),
         "context_before": _bounded_int("TRANSLATION_CONTEXT_BEFORE", 2, 0, 10),
         "context_after": _bounded_int("TRANSLATION_CONTEXT_AFTER", 2, 0, 10),
-        "max_output_tokens": _bounded_int(
-            "TRANSLATION_MAX_OUTPUT_TOKENS",
-            8192 if is_glm53_flash else 4096,
-            256,
-            32768,
-        ),
+        "max_output_tokens": _bounded_int("TRANSLATION_MAX_OUTPUT_TOKENS", 4096, 256, 32768),
+        "reasoning_effort": reasoning_effort,
     }
 
 
@@ -257,45 +248,15 @@ def public_provider_catalog(
         thinking = str(
             source.get("TRANSLATION_THINKING", provider.default_thinking)
         ).casefold()
-        active_model = (
-            str(source.get("TRANSLATION_MODEL", "")).strip()
-            or legacy_model
-            or provider.default_model
-        )
-        is_glm53_flash = (
-            provider.id == "zhipu"
-            and active_model.casefold() == "glm-5.3-flash"
-        )
-        active_thinking = (
-            thinking if thinking in {"enabled", "disabled"} else "disabled"
-        )
-        if is_glm53_flash:
-            active_thinking = "enabled"
-
-        reasoning_effort = str(
-            source.get(
-                "TRANSLATION_REASONING_EFFORT",
-                "low" if is_glm53_flash else "",
-            )
-        ).strip().casefold()
-        if is_glm53_flash and reasoning_effort not in {"low", "high", "max"}:
-            reasoning_effort = "low"
-
         active = {
             "provider": provider.id,
-            "model": active_model,
+            "model": str(source.get("TRANSLATION_MODEL", "")).strip() or legacy_model or provider.default_model,
             "base_url": str(source.get("TRANSLATION_BASE_URL", "")).strip() or legacy_url or provider.base_url,
-            "thinking": active_thinking,
-            "reasoning_effort": reasoning_effort,
-            "batch_size": value_int("TRANSLATION_BATCH_SIZE", 64, 1, 100),
+            "thinking": thinking if thinking in {"enabled", "disabled"} else "disabled",
+            "batch_size": value_int("TRANSLATION_BATCH_SIZE", 32, 1, 100),
             "context_before": value_int("TRANSLATION_CONTEXT_BEFORE", 2, 0, 10),
             "context_after": value_int("TRANSLATION_CONTEXT_AFTER", 2, 0, 10),
-            "max_output_tokens": value_int(
-                "TRANSLATION_MAX_OUTPUT_TOKENS",
-                8192 if is_glm53_flash else 4096,
-                256,
-                32768,
-            ),
+            "max_output_tokens": value_int("TRANSLATION_MAX_OUTPUT_TOKENS", 4096, 256, 32768),
         }
     providers = []
     for provider in PROVIDERS:
@@ -324,7 +285,6 @@ def public_provider_catalog(
                 "model",
                 "base_url",
                 "thinking",
-                "reasoning_effort",
                 "batch_size",
                 "context_before",
                 "context_after",
