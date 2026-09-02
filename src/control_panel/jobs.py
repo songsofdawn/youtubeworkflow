@@ -1372,10 +1372,40 @@ class WorkflowWorker:
     @classmethod
     def _youtube_chinese_requires_api_fallback(cls, task_dir: Path) -> bool:
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
-        return cls._last_manifest_error_code(stage4) in {
+
+        # 第一类：中文字幕本身不存在、损坏或无法结构化使用。
+        if cls._last_manifest_error_code(stage4) in {
             "NO_VALID_CHINESE_SUBTITLE",
             "ZH_AUTO_SUBTITLE_UNUSABLE",
-        }
+        }:
+            return True
+
+        # 第二类：YouTube 中文字幕虽然能够恢复/对齐，
+        # 但最终双语字幕布局无法保证可读性。
+        #
+        # 这种情况下不要继续无限降低最小时长阈值，
+        # 而是自动切换到 AI/API 翻译，再生成一次更干净、
+        # 与英文 segment 一一对应的中文字幕。
+        review = stage4.get("review")
+        if isinstance(review, dict):
+            review_code = str(review.get("code") or "").upper()
+
+            issue_codes = {
+                str(code).upper()
+                for code in (review.get("issue_codes") or [])
+            }
+
+            if (
+                review_code == "SUBTITLE_LAYOUT_REVIEW_REQUIRED"
+                and (
+                    "BILINGUAL_FRAGMENT_DURATION_TOO_SHORT" in issue_codes
+                    or "BILINGUAL_LINE_TOO_WIDE" in issue_codes
+                    or "BILINGUAL_TOO_MANY_LINES" in issue_codes
+                )
+            ):
+                return True
+
+        return False
 
     def _retry_unusable_youtube_chinese_with_api(
         self,

@@ -43,7 +43,7 @@
     "chinese_bold": false,
     "one_line_per_language": true,
     "auto_fragment_long_lines": true,
-    "minimum_fragment_duration_seconds": 1.0,
+    "minimum_fragment_duration_seconds": 0.8,
     "language_order": "english_above_chinese",
     "max_line_width_ratio": 0.92,
     "minimum_horizontal_scale_percent": 92,
