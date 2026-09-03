@@ -68,6 +68,30 @@ def _deepseek_translation_ready(video_dir: Path) -> bool:
     return status in {"QC_PASSED", "TRANSLATION_COMPLETED"}
 
 
+def _canonical_dubbing_pair(video_dir: Path) -> tuple[Path, Path] | None:
+    """Return the Stage 3 single-script pair when translation ran for dubbing."""
+
+    manifest_path = video_dir / "stage3_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not bool(manifest.get("translation_for_dubbing")):
+        return None
+    english_value = str(manifest.get("dubbing_english_path") or "subtitles/en.dubbing.srt")
+    chinese_value = str(manifest.get("dubbing_chinese_path") or "subtitles/zh.dubbing.srt")
+    english = _configured_task_path(video_dir, english_value)
+    chinese = _configured_task_path(video_dir, chinese_value)
+    if (
+        english.is_file()
+        and chinese.is_file()
+        and english.stat().st_size > 0
+        and chinese.stat().st_size > 0
+    ):
+        return english, chinese
+    return None
+
+
 def _youtube_auto_chinese_available(video_dir: Path) -> bool:
     manifest_path = video_dir / "download_manifest.json"
     try:
@@ -108,9 +132,18 @@ def resolve_subtitle_inputs(
             "subtitles/zh.auto.srt",
         ],
     }
-    english = _configured_task_path(
-        video_dir,
-        str(input_config.get("english_subtitle", "subtitles/en.selected.srt")),
+    canonical_pair = (
+        _canonical_dubbing_pair(video_dir)
+        if chinese_source in {"auto", "deepseek"}
+        else None
+    )
+    english = (
+        canonical_pair[0]
+        if canonical_pair is not None
+        else _configured_task_path(
+            video_dir,
+            str(input_config.get("english_subtitle", "subtitles/en.selected.srt")),
+        )
     )
     if not english.is_file():
         missing_english = Stage4Error(
@@ -174,11 +207,58 @@ def resolve_subtitle_inputs(
                 "该视频没有自动生成的中文字幕，请改选 AI API 翻译。",
             )
     elif chinese_source == "deepseek":
-        candidates = [
-            "subtitles/zh.clean.srt",
-            "subtitles/zh.raw.srt",
-        ]
+        if canonical_pair is not None:
+            selected = canonical_pair[1]
+            reason = "Stage 3 使用中配单一脚本翻译，选择 en.dubbing.srt / zh.dubbing.srt 配对"
+            return (
+                english,
+                selected,
+                False,
+                False,
+                None,
+                reason,
+                {
+                    "selection_mode": "canonical_dubbing_script",
+                    "english_path": str(english),
+                    "selected_path": str(selected),
+                    "selected_score": None,
+                    "selection_reason": reason,
+                    "candidates": [
+                        {
+                            "path": str(selected),
+                            "eligible": True,
+                            "canonical_dubbing_script": True,
+                        }
+                    ],
+                },
+            )
+        candidates = ["subtitles/zh.clean.srt", "subtitles/zh.raw.srt"]
     else:
+        if canonical_pair is not None:
+            selected = canonical_pair[1]
+            reason = "自动模式检测到中配单一脚本，优先使用与配音完全一致的中文字幕"
+            return (
+                english,
+                selected,
+                False,
+                False,
+                None,
+                reason,
+                {
+                    "selection_mode": "canonical_dubbing_script",
+                    "english_path": str(english),
+                    "selected_path": str(selected),
+                    "selected_score": None,
+                    "selection_reason": reason,
+                    "candidates": [
+                        {
+                            "path": str(selected),
+                            "eligible": True,
+                            "canonical_dubbing_script": True,
+                        }
+                    ],
+                },
+            )
         candidates = input_config.get("chinese_auto_candidates", priorities)
     try:
         selected, score, reason, report = select_best_chinese_subtitle(

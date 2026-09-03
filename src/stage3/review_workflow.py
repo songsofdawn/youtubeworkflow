@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .manifest import sha256_file, utc_now
+from .dubbing_script import canonical_text_from_payload, script_text_hash
 from .models import TranslationSegment
 from .subtitle_writer import (
     atomic_write_json,
@@ -23,6 +24,19 @@ REVIEW_COLUMNS = (
     "id", "start", "end", "duration", "english", "chinese_raw", "chinese_clean",
     "reviewed_translation", "qc_flags", "source", "reviewer_note",
 )
+
+
+def _review_source_path(root: Path) -> Path:
+    manifest_path = root / "stage3_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError):
+        manifest = {}
+    if bool(manifest.get("translation_for_dubbing")):
+        candidate = root / "subtitles" / "en.dubbing.srt"
+        if candidate.is_file() and candidate.stat().st_size > 0:
+            return candidate
+    return root / "subtitles" / "en.selected.srt"
 
 
 def _atomic_text(path: Path, content: str) -> Path:
@@ -84,7 +98,7 @@ def _translation_flags(root: Path) -> dict[int, list[str]]:
 
 def export_review(video_dir: Path | str) -> dict[str, Any]:
     root = Path(video_dir).resolve()
-    selected_path = root / "subtitles" / "en.selected.srt"
+    selected_path = _review_source_path(root)
     if not selected_path.is_file():
         raise FileNotFoundError("EN_SELECTED_SUBTITLE_NOT_FOUND: run youtube,whisper,select first")
     selected = read_srt(selected_path)
@@ -133,7 +147,7 @@ def export_review(video_dir: Path | str) -> dict[str, Any]:
 
 def generate_review_html(video_dir: Path | str) -> Path:
     root = Path(video_dir).resolve()
-    selected_path = root / "subtitles" / "en.selected.srt"
+    selected_path = _review_source_path(root)
     if not selected_path.is_file():
         raise FileNotFoundError("EN_SELECTED_SUBTITLE_NOT_FOUND: run youtube,whisper,select first")
     selection_path = root / "stage3" / "selection" / "selection_report.json"
@@ -152,7 +166,7 @@ def import_review(
     overwrite_reviewed: bool = False,
 ) -> dict[str, Any]:
     root = Path(video_dir).resolve()
-    selected_path = root / "subtitles" / "en.selected.srt"
+    selected_path = _review_source_path(root)
     if not selected_path.is_file():
         raise FileNotFoundError("EN_SELECTED_SUBTITLE_NOT_FOUND: run youtube,whisper,select first")
     input_path = Path(review_file)
@@ -221,6 +235,63 @@ def import_review(
         atomic_write_srt(reviewed_path, output_segments, translated=True, width=20, max_lines=2)
         report["reviewed_path"] = str(reviewed_path)
         report["reviewed_hash"] = sha256_file(reviewed_path)
+
+        # In Single-Script / Dual-Segmentation mode an accepted manual review
+        # becomes the new canonical text.  Both Stage4 and TTS must see the same
+        # wording; keeping canonical_zh.json stale would correctly trip the
+        # DUB_TEXT_SUBTITLE_MISMATCH safety gate.
+        canonical_path = root / "stage3" / "translation" / "canonical_zh.json"
+        if canonical_path.is_file():
+            try:
+                canonical = json.loads(canonical_path.read_text(encoding="utf-8-sig"))
+                canonical_rows = canonical.get("utterances") or []
+                if len(canonical_rows) != len(output_segments):
+                    raise ValueError("canonical utterance count changed")
+                for item, canonical_row in zip(output_segments, canonical_rows):
+                    if int(canonical_row.get("id") or 0) != int(item.id):
+                        raise ValueError(f"canonical id mismatch at {item.id}")
+                    canonical_row["zh_text"] = translations[item.id]
+                canonical["canonical_text_hash"] = script_text_hash(
+                    canonical_text_from_payload(canonical)
+                )
+                canonical["reviewed"] = True
+                canonical["reviewed_at"] = utc_now()
+                canonical["reviewed_source"] = str(input_path)
+                atomic_write_json(canonical_path, canonical)
+
+                # Keep the compatibility dubbing SRT synchronized as well.
+                dubbing_path = root / "subtitles" / "zh.dubbing.srt"
+                atomic_write_srt(
+                    dubbing_path, output_segments, translated=True, width=20, max_lines=2
+                )
+                report["canonical_script_path"] = str(canonical_path)
+                report["canonical_script_hash"] = sha256_file(canonical_path)
+                report["dubbing_subtitle_path"] = str(dubbing_path)
+                report["dubbing_subtitle_hash"] = sha256_file(dubbing_path)
+
+                stage3_manifest_path = root / "stage3_manifest.json"
+                if stage3_manifest_path.is_file():
+                    try:
+                        stage3_manifest = json.loads(
+                            stage3_manifest_path.read_text(encoding="utf-8-sig")
+                        )
+                    except (OSError, ValueError):
+                        stage3_manifest = {}
+                    stage3_manifest.update(
+                        canonical_script_path=str(canonical_path),
+                        canonical_script_hash=sha256_file(canonical_path),
+                        dubbing_chinese_path=str(dubbing_path),
+                    )
+                    atomic_write_json(stage3_manifest_path, stage3_manifest)
+            except (OSError, ValueError, TypeError, KeyError) as exc:
+                # Do not leave a reviewed subtitle that disagrees with canonical
+                # state; report the import as failed so the user can retry.
+                reviewed_path.unlink(missing_ok=True)
+                errors.append(f"CANONICAL_REVIEW_SYNC_FAILED:{exc}")
+                report["status"] = "REVIEW_IMPORT_FAILED"
+                report["errors"] = errors
+                report["reviewed_path"] = ""
+                report["reviewed_hash"] = ""
     atomic_write_json(report_path, report)
     return report
 

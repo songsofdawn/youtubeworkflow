@@ -46,6 +46,11 @@ class SynthesizerLease:
         if callable(reset):
             reset()
 
+    def set_reference_prompt_text(self, text: str) -> None:
+        setter = getattr(self._synthesizer, "set_reference_prompt_text", None)
+        if callable(setter):
+            setter(text)
+
     @property
     def peak_vram_mb(self) -> float | None:
         return getattr(self._synthesizer, "peak_vram_mb", None)

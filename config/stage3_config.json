@@ -94,5 +94,16 @@
     "tts_rewrite_ratio": 1.25,
     "input_price_per_million": null,
     "output_price_per_million": null
+  },
+  "dubbing_script": {
+    "enabled": true,
+    "target_min_duration_seconds": 2.2,
+    "target_max_duration_seconds": 6.0,
+    "hard_max_duration_seconds": 9.0,
+    "merge_gap_seconds": 0.55,
+    "short_standalone_max_words": 4,
+    "max_source_words": 42,
+    "max_source_chars": 240,
+    "unfinished_merge_gap_seconds": 1.0
   }
 }

@@ -1,0 +1,46 @@
+VoxCPM2 Windows 加载 Hotfix
+============================
+
+诊断依据
+--------
+用户手动测试：
+- from voxcpm import VoxCPM：约 11.9 秒，成功
+- VoxCPM.from_pretrained(... optimize=False, device='cuda')：
+  约 9.4~12.2 秒，成功
+- CUDA 显存加载正常
+
+因此模型、CUDA、权重文件本身可用。
+控制面板旧代码在 CUDA 下强制 optimize=True，这会进入 VoxCPM2 的
+torch.compile / warm-up 路径，在 Windows 上可能长时间卡住。
+
+修改
+----
+src/dubbing/voxcpm.py
+
+旧逻辑：
+    "optimize": self.device.startswith("cuda")
+
+新逻辑：
+    optimize = bool(self.settings.get("optimize", False)) and self.device.startswith("cuda")
+
+也就是说默认使用 optimize=False / eager CUDA。
+如果未来明确要重新测试 torch.compile，可在 tts settings 中手动加 optimize=true。
+
+另外增加更细日志：
+[DUBBING] Importing VoxCPM2 runtime...
+[DUBBING] Loading VoxCPM2 (device=cuda, optimize=false)...
+[DUBBING] VoxCPM2 loaded in X.Xs.
+
+安装
+----
+1. 彻底关闭控制面板，确保旧 persistent dubbing worker 退出。
+2. 将本 ZIP 解压到 youtubeworkflow 项目根目录并覆盖。
+3. 执行：
+   python verify_voxcpm_windows_load_hotfix.py
+4. 重新启动控制面板。
+5. 再运行“生成中文 AI 配音”。
+
+注意
+----
+这个包只修改 src/dubbing/voxcpm.py，不覆盖 config、Stage3、Stage4、
+control_panel，也不会撤销之前的 Single-Script V2 和 preflight hotfix。

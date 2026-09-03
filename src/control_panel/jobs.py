@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterator
 
 from ..dubbing.config import load_dubbing_config, resolve_dubbing_python
-from ..dubbing.runtime import build_dubbing_subprocess_env
+from ..dubbing.runtime import build_dubbing_subprocess_env, preflight_dubbing_runtime
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from .dubbing_worker import (
     DubbingWorkerCrashed,
@@ -2176,13 +2176,26 @@ class WorkflowWorker:
                 metadata_command.append("--allow-paid-api")
             return [("生成无配音视频投稿信息", metadata_command)]
         steps = str(payload.get("workflow") or "complete")
+        dubbing_requested = bool(payload.get("dubbing_enabled") or steps == "dubbing")
         requested_chinese_source = str(
             payload.get("chinese_subtitle_source") or "deepseek"
         )
         if requested_chinese_source not in {"auto", "deepseek", "youtube_auto"}:
             raise ValueError("不支持的中文字幕来源")
         has_youtube_chinese = youtube_chinese_path(task_dir) is not None
-        if requested_chinese_source == "auto":
+        if (
+            requested_chinese_source == "auto"
+            and dubbing_requested
+            and steps in {"subtitles", "complete"}
+            and payload.get("allow_paid_api")
+        ):
+            # High-quality dubbing needs the Stage3 canonical utterance script.
+            # YouTube Chinese tracks are display-oriented and may contain very
+            # short rolling-caption fragments, so when the user explicitly
+            # allows paid API usage we prefer one duration-aware canonical GLM
+            # translation for both subtitle text and TTS input.
+            chinese_source = "deepseek"
+        elif requested_chinese_source == "auto":
             youtube_chinese_unusable = (
                 has_youtube_chinese
                 and payload.get("auto_translate_missing", True)
@@ -2278,7 +2291,7 @@ class WorkflowWorker:
                 commands.append(
                     ("自动生成投稿标题、标签与分区", metadata_command)
                 )
-        dubbing_enabled = bool(payload.get("dubbing_enabled") or steps == "dubbing")
+        dubbing_enabled = dubbing_requested
         if dubbing_enabled and steps in {"render", "complete", "dubbing"}:
             dubbing_config = load_dubbing_config(self.project_root)
             dubbing_python = resolve_dubbing_python(
@@ -2498,6 +2511,34 @@ class WorkflowWorker:
             )
             client = None
         if client is None:
+            # Probe from the control-panel process before starting the long-lived
+            # .venv_dubbing worker.  The same TorchCodec command can succeed as
+            # a standalone child yet stall when it is launched *from inside*
+            # the persistent worker on Windows.  Once a worker is alive, this
+            # preflight remains valid for that worker lifetime.
+            preflight = preflight_dubbing_runtime(
+                self.project_root, executable, use_cache=True
+            )
+            if not preflight.get("ready"):
+                details = dict(preflight.get("details") or {})
+                if details:
+                    self._append_log(
+                        log_path,
+                        "[DUBBING] Preflight detail: "
+                        + json.dumps(details, ensure_ascii=False)
+                        + "\n",
+                    )
+                self._append_log(
+                    log_path,
+                    "中文配音失败："
+                    + str(preflight.get("message") or "中文配音运行环境预检失败。")
+                    + "\n",
+                )
+                return 2
+            self._append_log(
+                log_path,
+                "[DUBBING] Runtime preflight passed before persistent worker startup.\n",
+            )
             client = PersistentDubbingWorkerClient(
                 executable,
                 self.project_root,
@@ -2519,8 +2560,10 @@ class WorkflowWorker:
         if terminate_immediately:
             client.terminate()
         try:
+            request = self._dubbing_request_from_command(command)
+            request["runtime_preflight_done"] = True
             result = client.run(
-                self._dubbing_request_from_command(command),
+                request,
                 on_line=lambda line: self._consume_job_output_line(
                     job_id,
                     line,

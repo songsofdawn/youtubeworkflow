@@ -17,7 +17,8 @@
     "minimum_seconds": 5.0,
     "maximum_seconds": 10.0,
     "skip_intro_seconds": 3.0,
-    "maximum_continuity_gap_seconds": 0.6
+    "maximum_continuity_gap_seconds": 0.6,
+    "use_prompt_transcript": true
   },
   "tts": {
     "cfg_value": 2.0,
@@ -29,9 +30,9 @@
   },
   "timing": {
     "min_gap_ms": 200,
-    "max_extension_ms": 1000,
-    "direct_accept_ratio": 1.1,
-    "max_stretch_ratio": 1.3,
+    "max_extension_ms": 1500,
+    "direct_accept_ratio": 1.08,
+    "max_stretch_ratio": 1.15,
     "duration_retry_enabled": true,
     "duration_retry_max_times": 1,
     "regional_scheduling_enabled": true,
@@ -39,9 +40,9 @@
     "silence_threshold_db": -45.0,
     "silence_relative_db": -35.0,
     "silence_padding_ms": 40,
-    "region_max_gap_ms": 500,
-    "region_internal_gap_ms": 40,
-    "region_boundary_gap_ms": 50,
+    "region_max_gap_ms": 650,
+    "region_internal_gap_ms": 60,
+    "region_boundary_gap_ms": 80,
     "max_alignment_shift_ms": 1500,
     "overlap_tolerance_ms": 20
   },
@@ -61,7 +62,7 @@
     "final_lra": 11.0
   },
   "performance": {
-    "keep_voxcpm_warm": true,
+    "keep_voxcpm_warm": false,
     "worker_idle_timeout_seconds": 45
   }
 }

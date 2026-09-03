@@ -1,0 +1,119 @@
+YouTube Workflow - Single-Script / Dual-Segmentation Dubbing V2
+================================================================
+
+目标
+----
+最终中文字幕和最终中文配音必须来自同一份中文正文。
+允许字幕为了阅读分页/分行，但不允许字幕写 A、配音说 B。
+
+核心数据流
+----------
+en.selected.srt
+  -> Stage3 Dubbing Utterance Planner
+  -> en.dubbing.srt（发声句子级）
+  -> GLM / 当前翻译 API 只翻译一次
+  -> canonical_zh.json（唯一中文真源）
+  -> zh.dubbing.srt（兼容/Stage4 输入）
+  -> VoxCPM2 直接从 canonical_zh.json 取同一份文字
+  -> Stage4 可把一个 utterance 视觉分页成多个 ASS event
+
+关键变化
+--------
+1. 不再直接拿屏幕字幕碎片逐条做 TTS。
+   - 目标 utterance：约 2.2～6 秒。
+   - 未完成的句子允许增长到 9 秒，以避免诸如：
+       "versus a $1 million" / "Minecraft server."
+     被分成两次 TTS。
+   - 完整短句/反应（Okay. / Wow! / What?）仍可独立存在。
+
+2. 单一中文脚本。
+   新增：stage3/translation/canonical_zh.json
+   TTS 直接读取 canonical JSON 中的 zh_text，不从换行后的 SRT 重新取文。
+   如果字幕文字和 canonical 文字不同，配音直接停止并报：
+       DUB_TEXT_SUBTITLE_MISMATCH
+
+3. 人工审核不会破坏一致性。
+   review import 成功后，zh.reviewed.srt、zh.dubbing.srt 和 canonical_zh.json
+   会同步更新为同一份文字。
+
+4. Stage4 使用 canonical 英中配对。
+   当 translation_for_dubbing=true 时优先：
+       en.dubbing.srt + zh.dubbing.srt
+   Stage4 仍可视觉分页，因此“配音一句”不等于“屏幕只能显示一条”。
+
+5. VoxCPM2 reference conditioning 改进。
+   自动 reference 尽量只用完整 cue 边界，不切半句话。
+   如果 reference.wav 能找到完全对应的英文字幕，VoxCPM2 同时收到：
+       prompt_wav_path = reference.wav
+       prompt_text     = reference 的准确英文文本
+       reference_wav_path = reference.wav
+   若手动裁剪导致无法获得准确 transcript，会安全回退 reference-only，
+   不会拿错误文字硬配 prompt audio。
+
+6. 时间适配更保守。
+   max_stretch_ratio：1.30 -> 1.15
+   direct_accept_ratio：1.10 -> 1.08
+   max_extension_ms：1000 -> 1500
+   regional gap/slack 适度增加。
+   目标是优先借自然静音，不再把中文大量压成“机关枪”。
+
+7. 控制面板自动逻辑。
+   手动/普通 complete 流程中：
+   - 开启中文配音
+   - 中文字幕来源=auto
+   - 并明确勾选/允许付费 API
+   则会优先走 AI canonical 翻译，即使视频已有 YouTube 中文，避免继续拿
+   display-oriented/rolling 的 YouTube 中文字幕直接做 TTS。
+   如果不允许 API，不会偷偷产生费用，仍保留旧的免费字幕路径。
+
+安装
+----
+1. 完全关闭当前控制面板及正在运行的任务。
+2. 建议先备份项目。
+3. 将本 ZIP 解压到：
+   C:\Users\23664\Desktop\program\youtubeworkflow
+   并允许覆盖同名文件。
+4. 在项目根目录运行：
+
+   python verify_single_script_dubbing_v2.py
+
+5. 再运行完整项目测试：
+
+   .venv\Scripts\python.exe -m pytest tests\stage3 -q
+   .venv\Scripts\python.exe -m pytest tests\stage4 -q
+   .venv\Scripts\python.exe -m pytest tests\dubbing -q
+   .venv\Scripts\python.exe -m pytest tests\test_control_panel.py -q
+
+6. 测试通过后重新启动控制面板。
+
+第一次真实测试建议
+------------------
+选择一个 5～15 分钟、单人说话较多的视频：
+- 中文字幕来源选择 AI API（最明确）；或者 auto + 明确允许付费 API。
+- 开启中文配音。
+- 先不要 force 全部重跑旧任务，优先用一个新任务验证。
+
+应看到的新文件
+--------------
+subtitles/en.dubbing.srt
+subtitles/zh.dubbing.srt
+stage3/translation/dubbing_utterance_plan.json
+stage3/translation/canonical_zh.json
+
+Dubbing manifest 应出现：
+script_consistency.status = PASSED
+reference.prompt_text / prompt_text_hash（能精确对应 reference 时）
+tts_context.prompt_conditioning = true（能精确对应 reference 时）
+
+为什么本版暂时没有加 forced alignment
+---------------------------------------
+本版先解决质量损失最大的结构问题：碎字幕 TTS、字幕/配音双文本、过度变速、
+reference 缺少准确 transcript。TTS 后中文 forced alignment 是下一阶段可以加入的
+增强项，但它会引入新的对齐模型/依赖和新的失败模式。先真实试听 V2，再决定是否
+值得为“字幕翻页时间更贴合实际中文发音”增加这一层。
+
+为什么没有默认使用“上一句生成音频”无限 continuation
+--------------------------------------------------
+当前稳定版采用固定原始 reference + 准确 transcript。这样连续多个任务更可复现，
+也不会把某一条 TTS 的伪影逐句传播下去。后续可以尝试有界 rolling continuation，
+但不建议作为无人值守 V2 的第一默认策略。

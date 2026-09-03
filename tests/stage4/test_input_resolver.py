@@ -120,6 +120,37 @@ class InputResolverTests(unittest.TestCase):
             result = resolve_inputs(root, CONFIG, chinese_source="deepseek")
             self.assertEqual(result.chinese_subtitle.name, "zh.clean.srt")
 
+    def test_deepseek_dubbing_uses_canonical_utterance_pair(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.prepare(root)
+            (root / "subtitles" / "en.dubbing.srt").write_text(
+                ENGLISH_SRT, encoding="utf-8"
+            )
+            (root / "subtitles" / "zh.dubbing.srt").write_text(
+                CHINESE_SRT, encoding="utf-8"
+            )
+            (root / "stage3_manifest.json").write_text(
+                json.dumps(
+                    {
+                        "translation_status": "QC_PASSED",
+                        "translation_for_dubbing": True,
+                        "dubbing_english_path": str(root / "subtitles" / "en.dubbing.srt"),
+                        "dubbing_chinese_path": str(root / "subtitles" / "zh.dubbing.srt"),
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = resolve_inputs(root, CONFIG, chinese_source="deepseek")
+
+            self.assertEqual(result.english_subtitle.name, "en.dubbing.srt")
+            self.assertEqual(result.chinese_subtitle.name, "zh.dubbing.srt")
+            self.assertEqual(
+                result.chinese_selection_report.get("selection_mode"),
+                "canonical_dubbing_script",
+            )
+
     def test_youtube_auto_source_reports_missing_chinese_track(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

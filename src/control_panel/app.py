@@ -703,6 +703,11 @@ class ControlPanelApp:
             and (
                 chinese_subtitle_source == "deepseek"
                 or (bool(automatic_missing) and auto_translate_missing)
+                or (
+                    dubbing["dubbing_enabled"]
+                    and chinese_subtitle_source == "auto"
+                    and bool(allow_paid_api)
+                )
             )
         )
         if uses_translation_api:

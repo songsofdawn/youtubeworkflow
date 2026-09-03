@@ -9,6 +9,12 @@ from pathlib import Path
 from typing import Any, Callable
 
 from ..stage3.subtitle_writer import read_srt
+from ..stage3.dubbing_script import (
+    canonical_text_from_payload,
+    load_canonical_script,
+    normalize_script_text,
+    script_text_hash,
+)
 from ..stage4.input_resolver import resolve_source_video
 from ..stage4.media_probe import probe_media
 from ..stage4.stage4_manifest import (
@@ -54,16 +60,30 @@ class DubbingResult:
 ProgressCallback = Callable[[str, int, int, int], None]
 
 
+def _canonical_mode_enabled(video_dir: Path | str) -> bool:
+    root = Path(video_dir).resolve()
+    manifest_path = root / "stage3_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError):
+        return False
+    return bool(manifest.get("translation_for_dubbing"))
+
+
 def select_chinese_subtitle(video_dir: Path | str) -> Path:
     root = Path(video_dir).resolve()
-    for relative in ("subtitles/zh.reviewed.srt", "subtitles/zh.clean.srt"):
+    priorities = ["subtitles/zh.reviewed.srt"]
+    if _canonical_mode_enabled(root):
+        priorities.append("subtitles/zh.dubbing.srt")
+    priorities.append("subtitles/zh.clean.srt")
+    for relative in priorities:
         candidate = root / relative
         if candidate.is_file() and candidate.stat().st_size > 0:
             return candidate
     raise DubbingError(
         "CHINESE_DUBBING_SUBTITLE_NOT_FOUND",
-        "中文配音只读取现有的 zh.reviewed.srt 或 zh.clean.srt。"
-        "当前任务两者都不存在；请先完成中文字幕翻译阶段。",
+        "中文配音只读取现有的 zh.dubbing.srt、zh.reviewed.srt 或 zh.clean.srt。"
+        "当前任务没有这些字幕文件；请先完成中文字幕翻译阶段。",
     )
 
 
@@ -78,6 +98,130 @@ def subtitle_segments(path: Path | str) -> list[dict[str, Any]]:
         }
         for index, segment in enumerate(rows, 1)
     ]
+
+
+def canonical_dubbing_segments(video_dir: Path | str) -> list[dict[str, Any]]:
+    """Load exact TTS text from canonical_zh.json when Stage3 V2 is present."""
+
+    root = Path(video_dir).resolve()
+    canonical_path = root / "stage3" / "translation" / "canonical_zh.json"
+    if not _canonical_mode_enabled(root) or not canonical_path.is_file():
+        return []
+    payload = load_canonical_script(canonical_path)
+    result: list[dict[str, Any]] = []
+    for index, row in enumerate(payload.get("utterances") or [], 1):
+        text = str(row.get("zh_text") or "").strip()
+        if not text:
+            continue
+        result.append(
+            {
+                "index": index,
+                "start": float(row.get("start") or 0.0),
+                "end": float(row.get("end") or 0.0),
+                "text": text,
+            }
+        )
+    return result
+
+
+def reference_prompt_text(
+    video_dir: Path | str,
+    *,
+    start: float,
+    end: float,
+) -> tuple[str, str]:
+    """Return the English transcript corresponding to the reference audio window."""
+
+    root = Path(video_dir).resolve()
+    for relative in ("subtitles/en.dubbing.srt", "subtitles/en.selected.srt"):
+        candidate = root / relative
+        if not candidate.is_file():
+            continue
+        cues = read_srt(candidate)
+        contained = [
+            cue.text.strip()
+            for cue in cues
+            if cue.text.strip()
+            and float(cue.start) >= start - 0.03
+            and float(cue.end) <= end + 0.03
+        ]
+        # Prompt text must describe the prompt waveform exactly enough for
+        # continuation conditioning.  Do not guess with partially-overlapping
+        # cues (common with a manually cropped reference); reference-only
+        # conditioning is safer than pairing audio with the wrong transcript.
+        if contained:
+            return " ".join(contained), relative
+    return "", ""
+
+
+def validate_canonical_dubbing_script(
+    video_dir: Path | str,
+    subtitle_path: Path | str,
+) -> dict[str, Any]:
+    """Ensure the TTS input text is the same text Stage 3 declared canonical."""
+
+    root = Path(video_dir).resolve()
+    canonical_path = root / "stage3" / "translation" / "canonical_zh.json"
+    if not _canonical_mode_enabled(root) or not canonical_path.is_file():
+        return {
+            "enabled": False,
+            "status": "LEGACY_SUBTITLE_SOURCE",
+            "canonical_path": "",
+        }
+    try:
+        payload = load_canonical_script(canonical_path)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+        raise DubbingError(
+            "CANONICAL_DUBBING_SCRIPT_INVALID",
+            f"中配单一脚本无法读取：{canonical_path}",
+            details={"error": str(exc)},
+        ) from exc
+
+    subtitle_rows = read_srt(subtitle_path)
+    canonical_rows = list(payload.get("utterances") or [])
+    canonical_text = canonical_text_from_payload(payload)
+    subtitle_text = "".join(item.text for item in subtitle_rows)
+    mismatch_ids: list[int] = []
+    timeline_mismatch_ids: list[int] = []
+    for index, row in enumerate(canonical_rows, 1):
+        if index > len(subtitle_rows):
+            mismatch_ids.append(index)
+            continue
+        cue = subtitle_rows[index - 1]
+        if normalize_script_text(cue.text) != normalize_script_text(str(row.get("zh_text") or "")):
+            mismatch_ids.append(index)
+        if (
+            abs(float(cue.start) - float(row.get("start") or 0.0)) > 0.002
+            or abs(float(cue.end) - float(row.get("end") or 0.0)) > 0.002
+        ):
+            timeline_mismatch_ids.append(index)
+
+    full_match = normalize_script_text(subtitle_text) == normalize_script_text(canonical_text)
+    if len(subtitle_rows) != len(canonical_rows):
+        full_match = False
+    if not full_match or mismatch_ids or timeline_mismatch_ids:
+        raise DubbingError(
+            "DUB_TEXT_SUBTITLE_MISMATCH",
+            "中文字幕与中配 canonical_zh.json 不一致。为避免观众看到的文字和听到的文字不同，已停止配音。",
+            details={
+                "subtitle_path": str(Path(subtitle_path).resolve()),
+                "canonical_path": str(canonical_path),
+                "subtitle_count": len(subtitle_rows),
+                "canonical_count": len(canonical_rows),
+                "text_mismatch_ids": mismatch_ids,
+                "timeline_mismatch_ids": timeline_mismatch_ids,
+                "subtitle_text_hash": script_text_hash(subtitle_text),
+                "canonical_text_hash": script_text_hash(canonical_text),
+            },
+        )
+    return {
+        "enabled": True,
+        "status": "PASSED",
+        "canonical_path": str(canonical_path),
+        "canonical_hash": sha256_file(canonical_path),
+        "canonical_text_hash": script_text_hash(canonical_text),
+        "utterance_count": len(canonical_rows),
+    }
 
 
 def choose_reference_window(
@@ -97,15 +241,25 @@ def choose_reference_window(
     for offset, row in enumerate(usable):
         start = max(skip_intro, float(row["start"]))
         end = float(row["end"])
+        duration = end - start
+        if minimum <= duration <= maximum:
+            candidates.append((abs(duration - target), start, min(end, media_duration)))
         for following in usable[offset + 1 :]:
             if float(following["start"]) - end > maximum_gap:
                 break
-            end = max(end, float(following["end"]))
-            duration = end - start
-            if duration >= minimum:
-                clipped_end = min(end, start + target, start + maximum, media_duration)
-                candidates.append((abs((clipped_end - start) - target), start, clipped_end))
+            proposed_end = max(end, float(following["end"]))
+            proposed_duration = proposed_end - start
+            if proposed_duration > maximum:
                 break
+            end = proposed_end
+            if proposed_duration >= minimum:
+                candidates.append(
+                    (
+                        abs(proposed_duration - target),
+                        start,
+                        min(end, media_duration),
+                    )
+                )
     candidates = [item for item in candidates if item[2] - item[1] >= min(minimum, media_duration)]
     if candidates:
         _, start, end = min(candidates, key=lambda item: (item[0], item[1]))
@@ -278,14 +432,22 @@ class DubbingPipeline:
             )
         else:
             raise DubbingError("REFERENCE_MODE_INVALID", f"不支持的参考声音模式：{mode}")
+        use_prompt_transcript = bool(reference_settings.get("use_prompt_transcript", True))
+        prompt_text, prompt_source = (
+            reference_prompt_text(work_dir.parent, start=start, end=end)
+            if use_prompt_transcript
+            else ("", "")
+        )
+        prompt_text_hash = script_text_hash(prompt_text) if prompt_text else ""
         vocals_hash = sha256_file(vocals)
         fingerprint = hash_json(
             {
-                "version": 1,
+                "version": 2,
                 "vocals_hash": vocals_hash,
                 "mode": normalized_mode,
                 "start": round(start, 3),
                 "end": round(end, 3),
+                "prompt_text_hash": prompt_text_hash,
             }
         )
         previous = manifest.get("reference") if isinstance(manifest.get("reference"), dict) else {}
@@ -306,8 +468,23 @@ class DubbingPipeline:
             "fingerprint": fingerprint,
             "output_hash": sha256_file(reference),
             "reused": reusable,
+            "prompt_transcript_enabled": use_prompt_transcript,
+            "prompt_text": prompt_text,
+            "prompt_text_hash": prompt_text_hash,
+            "prompt_source": prompt_source,
         }
         self._log(f"[DUBBING] Reference audio: {start:.1f}s - {end:.1f}s")
+        if use_prompt_transcript:
+            if prompt_text:
+                self._log(
+                    "[DUBBING] Reference transcript attached for VoxCPM2 prompt conditioning "
+                    f"({prompt_source})."
+                )
+            else:
+                self._log(
+                    "[DUBBING] WARNING: reference.wav 没有找到对应英文文本；"
+                    "本次将仅使用 reference voice conditioning。"
+                )
         return reference, record
 
     def _check_disk(self, work_dir: Path) -> None:
@@ -854,7 +1031,12 @@ class DubbingPipeline:
             self._notify("准备音频", 2)
             self._check_disk(work_dir)
             subtitle_path = select_chinese_subtitle(root)
-            segments = subtitle_segments(subtitle_path)
+            script_consistency = validate_canonical_dubbing_script(root, subtitle_path)
+            segments = (
+                canonical_dubbing_segments(root)
+                if script_consistency.get("enabled")
+                else subtitle_segments(subtitle_path)
+            )
             if not segments:
                 raise DubbingError(
                     "CHINESE_DUBBING_SUBTITLE_EMPTY",
@@ -875,6 +1057,7 @@ class DubbingPipeline:
                     "source_video_hash": sha256_file(source_video),
                     "subtitle_path": str(subtitle_path),
                     "subtitle_hash": sha256_file(subtitle_path),
+                    "script_consistency": script_consistency,
                     "media_duration": media_duration,
                 }
             )
@@ -949,11 +1132,13 @@ class DubbingPipeline:
                     ],
                 }
             )
+            reference_prompt_hash = str(reference_record.get("prompt_text_hash") or "")
             tts_context_fingerprint = hash_json(
                 {
-                    "version": 1,
+                    "version": 2,
                     "subtitle_hash": manifest["subtitle_hash"],
                     "reference_hash": reference_hash,
+                    "reference_prompt_hash": reference_prompt_hash,
                     "model": model_identifier,
                     "tts": tts_settings,
                 }
@@ -962,6 +1147,8 @@ class DubbingPipeline:
                 "fingerprint": tts_context_fingerprint,
                 "model": model_identifier,
                 "reference_hash": reference_hash,
+                "reference_prompt_hash": reference_prompt_hash,
+                "prompt_conditioning": bool(reference_record.get("prompt_text")),
             }
             self._save_manifest(manifest_path, manifest)
 
@@ -975,6 +1162,7 @@ class DubbingPipeline:
                         "start": round(float(row["start"]), 3),
                         "end": round(float(row["end"]), 3),
                         "reference_hash": reference_hash,
+                        "reference_prompt_hash": reference_prompt_hash,
                         "model": model_identifier,
                         "tts": tts_settings,
                     }
@@ -1104,6 +1292,9 @@ class DubbingPipeline:
                 performance["model_reused"] = bool(
                     getattr(synthesizer, "model_reused", False)
                 )
+                prompt_setter = getattr(synthesizer, "set_reference_prompt_text", None)
+                if callable(prompt_setter):
+                    prompt_setter(str(reference_record.get("prompt_text") or ""))
                 reset_peak = getattr(synthesizer, "reset_peak_vram_stats", None)
                 if callable(reset_peak):
                     try:
@@ -1818,5 +2009,7 @@ __all__ = [
     "DubbingResult",
     "choose_reference_window",
     "select_chinese_subtitle",
+    "canonical_dubbing_segments",
+    "validate_canonical_dubbing_script",
     "subtitle_segments",
 ]

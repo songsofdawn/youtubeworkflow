@@ -40,11 +40,24 @@ def _emit(marker: str, payload: dict[str, Any]) -> None:
 def _run_request(payload: dict[str, Any], pool: WarmVoxCPM2Pool) -> dict[str, Any]:
     config_path = payload.get("config")
     config = load_dubbing_config(PROJECT_ROOT, config_path)
+    pipeline_kwargs: dict[str, Any] = {
+        "python_executable": Path(sys.executable),
+        "synthesizer_factory": pool.acquire,
+    }
+    # The control panel performs the real TorchCodec/FFmpeg preflight before
+    # dispatching a request to the persistent worker.  Re-running that probe
+    # from inside this long-lived worker would create a nested .venv_dubbing
+    # Python process and has proven prone to Windows loader stalls.  Direct
+    # worker/CLI use still keeps the normal pipeline preflight.
+    if bool(payload.get("runtime_preflight_done")):
+        pipeline_kwargs["runtime_preflight"] = lambda *_args, **_kwargs: {
+            "ready": True,
+            "delegated": True,
+        }
     pipeline = DubbingPipeline(
         PROJECT_ROOT,
         config,
-        python_executable=Path(sys.executable),
-        synthesizer_factory=pool.acquire,
+        **pipeline_kwargs,
     )
     result = pipeline.run(
         Path(str(payload["video_dir"])),

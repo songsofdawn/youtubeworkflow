@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .artifact_migration import atomic_copy, migrate_legacy_artifacts
+from .dubbing_script import build_dubbing_utterances, canonical_script_payload
 from .manifest import hash_config, sha256_file, utc_now, write_manifest
 from .models import RawCue, SubtitleSegment, TranslationSegment, WordEvent
 from .publish_metadata import (
@@ -48,7 +49,7 @@ GLOSSARY_DEFAULT = {
     "notes": [],
 }
 YOUTUBE_CLEANER_VERSION = "stage3-youtube-clean-v3"
-TRANSLATION_STAGE_VERSION = "stage3-translation-stage-v2"
+TRANSLATION_STAGE_VERSION = "stage3-translation-stage-v3-canonical-dubbing"
 
 
 def _raw_from_srt(path: Path) -> list[RawCue]:
@@ -158,6 +159,12 @@ class Stage3Pipeline:
             "translation_model": load_llm_settings()["model"],
             "api_usage": {},
             "translation_qc": {},
+            "translation_for_dubbing": False,
+            "dubbing_utterance_count": 0,
+            "dubbing_english_path": "",
+            "dubbing_chinese_path": "",
+            "canonical_script_path": "",
+            "canonical_script_hash": "",
             "review_status": "NOT_RUN",
             "reviewed_path": "",
             "reviewed_hash": "",
@@ -1177,9 +1184,39 @@ class Stage3Pipeline:
             raise RuntimeError(
                 "EN_SELECTED_SUBTITLE_CHECKPOINT_MISMATCH: rerun --steps select before translation"
             )
-        source = read_srt(selected_path)
-        if not source:
+        selected_source = read_srt(selected_path)
+        if not selected_source:
             raise ValueError("EN_SELECTED_SUBTITLE_EMPTY")
+        source = selected_source
+        dubbing_english_path: Path | None = None
+        dubbing_plan_path: Path | None = None
+        canonical_script_path: Path | None = None
+        dubbing_chinese_path: Path | None = None
+        if for_dubbing:
+            utterance_settings = dict(self.config.get("dubbing_script") or {})
+            source = build_dubbing_utterances(selected_source, utterance_settings)
+            if not source:
+                raise ValueError("DUBBING_UTTERANCE_PLAN_EMPTY")
+            dubbing_english_path = self.subtitle_dir / "en.dubbing.srt"
+            atomic_write_srt(
+                dubbing_english_path,
+                source,
+                width=int(self.config["english_max_chars_per_line"]),
+                max_lines=int(self.config["max_lines"]),
+            )
+            dubbing_plan_path = self.translation_dir / "dubbing_utterance_plan.json"
+            atomic_write_json(
+                dubbing_plan_path,
+                {
+                    "version": 1,
+                    "architecture": "single_script_dual_segmentation",
+                    "source_path": str(selected_path),
+                    "source_segment_count": len(selected_source),
+                    "utterance_count": len(source),
+                    "settings": utterance_settings,
+                    "utterances": [item.to_dict() for item in source],
+                },
+            )
         glossary = self._load_glossary()
         glossary_path = self.translation_dir / "glossary.json"
         settings = load_llm_settings()
@@ -1213,10 +1250,12 @@ class Stage3Pipeline:
             "batch_count": batch_count,
             "estimated_translation_count": len(source),
             "estimated_publish_metadata_requests": 1,
-            "input": str(selected_path),
+            "input": str(dubbing_english_path or selected_path),
             "source_sha256": sha256_file(selected_path),
             "selection_report_sha256": sha256_file(selection_report_path),
             "segment_count": len(source),
+            "selected_segment_count": len(selected_source),
+            "for_dubbing": bool(for_dubbing),
             "timeline_summary": timeline_summary,
         }
         translation_metadata = self._translation_checkpoint_metadata(
@@ -1290,6 +1329,16 @@ class Stage3Pipeline:
             report["checkpoint_reused"] = True
             report["publish_metadata"] = publish_metadata
             clean_path = self.subtitle_dir / "zh.clean.srt"
+            canonical_script_path = (
+                self.translation_dir / "canonical_zh.json"
+                if for_dubbing
+                else None
+            )
+            dubbing_chinese_path = (
+                self.subtitle_dir / "zh.dubbing.srt"
+                if for_dubbing
+                else None
+            )
             self.manifest.update(
                 translation_status=report["status"],
                 translation_source_hash=translation_metadata["source_hash"],
@@ -1305,6 +1354,28 @@ class Stage3Pipeline:
                     else ""
                 ),
                 translation_count=len(source),
+                translation_for_dubbing=bool(for_dubbing),
+                dubbing_utterance_count=len(source) if for_dubbing else 0,
+                dubbing_english_path=(
+                    str(dubbing_english_path)
+                    if dubbing_english_path is not None and dubbing_english_path.is_file()
+                    else ""
+                ),
+                dubbing_chinese_path=(
+                    str(dubbing_chinese_path)
+                    if dubbing_chinese_path is not None and dubbing_chinese_path.is_file()
+                    else ""
+                ),
+                canonical_script_path=(
+                    str(canonical_script_path)
+                    if canonical_script_path is not None and canonical_script_path.is_file()
+                    else ""
+                ),
+                canonical_script_hash=(
+                    sha256_file(canonical_script_path)
+                    if canonical_script_path is not None and canonical_script_path.is_file()
+                    else ""
+                ),
                 p1_qc=report,
             )
             self._finish()
@@ -1366,16 +1437,35 @@ class Stage3Pipeline:
         usage_path = atomic_write_json(self.translation_dir / "api_usage.json", usage)
         atomic_copy(usage_path, self.legacy_translation_dir / "api_usage.json")
         clean_chinese = ""
+        canonical_script_hash = ""
         if report["status"] == "QC_PASSED":
-            clean_chinese = str(
-                atomic_write_srt(
-                    self.subtitle_dir / "zh.clean.srt",
+            clean_path = atomic_write_srt(
+                self.subtitle_dir / "zh.clean.srt",
+                translated,
+                translated=True,
+                width=int(self.config["chinese_max_chars_per_line"]),
+                max_lines=int(self.config["max_lines"]),
+            )
+            clean_chinese = str(clean_path)
+            if for_dubbing:
+                dubbing_chinese_path = atomic_write_srt(
+                    self.subtitle_dir / "zh.dubbing.srt",
                     translated,
                     translated=True,
                     width=int(self.config["chinese_max_chars_per_line"]),
                     max_lines=int(self.config["max_lines"]),
                 )
-            )
+                assert dubbing_english_path is not None
+                canonical_script_path = self.translation_dir / "canonical_zh.json"
+                payload = canonical_script_payload(
+                    selected_path,
+                    dubbing_english_path,
+                    dubbing_chinese_path,
+                    source,
+                    translated,
+                )
+                atomic_write_json(canonical_script_path, payload)
+                canonical_script_hash = sha256_file(canonical_script_path)
         self.manifest.update(
             translation_status=report["status"],
             translation_source_hash=sha256_file(selected_path),
@@ -1387,6 +1477,12 @@ class Stage3Pipeline:
             p1_status=report["status"],
             clean_chinese_path=clean_chinese,
             translation_count=len(translated),
+            translation_for_dubbing=bool(for_dubbing),
+            dubbing_utterance_count=len(source) if for_dubbing else 0,
+            dubbing_english_path=(str(dubbing_english_path) if dubbing_english_path else ""),
+            dubbing_chinese_path=(str(dubbing_chinese_path) if dubbing_chinese_path else ""),
+            canonical_script_path=(str(canonical_script_path) if canonical_script_path else ""),
+            canonical_script_hash=canonical_script_hash,
             p1_qc=report,
         )
         stage_outputs = [
@@ -1399,6 +1495,15 @@ class Stage3Pipeline:
         clean_path = self.subtitle_dir / "zh.clean.srt"
         if report["status"] == "QC_PASSED" and clean_path.is_file():
             stage_outputs.append(clean_path)
+        if for_dubbing:
+            for optional_path in (
+                dubbing_english_path,
+                dubbing_plan_path,
+                dubbing_chinese_path,
+                canonical_script_path,
+            ):
+                if optional_path is not None and optional_path.is_file():
+                    stage_outputs.append(optional_path)
         self._write_output_checkpoint(
             stage_checkpoint_path,
             translation_metadata,
