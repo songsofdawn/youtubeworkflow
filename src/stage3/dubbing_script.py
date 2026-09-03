@@ -233,6 +233,234 @@ def build_dubbing_utterances(
     return result
 
 
+
+_DANGLING_END = re.compile(
+    r"(?:\b(?:a|an|the|and|but|or|so|because|to|of|for|with|from|in|on|at|by|as|if|that|which|who|when|while|where|my|your|our|their|its|this|these|those|most|more|less|one)\b|(?:and|but|so)\s+that['’]?s)\s*[.!?]?[\"')\]]*$",
+    re.IGNORECASE,
+)
+_SUSPICIOUS_SHORT_START = re.compile(
+    r"^(?:the\s+most|the\s+least|one\s+of|some\s+of|part\s+of|kind\s+of|sort\s+of|according\s+to|because\b|and\s+that['’]?s\b)",
+    re.IGNORECASE,
+)
+_SHORT_REACTION = re.compile(
+    r"^(?:ok(?:ay)?|yes|no|yeah|yep|nope|wow|what|why|thanks|thank\s+you|sure|right|exactly|absolutely|great|nice|really|seriously|hello|hi|hey|bye|goodbye)[.!?]*$",
+    re.IGNORECASE,
+)
+
+
+def _strip_artificial_terminal_punctuation(text: str) -> str:
+    return re.sub(r"[.!?]+[\"')\]]*$", "", str(text or "").rstrip()).rstrip()
+
+
+def _renumber_utterance(identifier: int, item: SubtitleSegment) -> SubtitleSegment:
+    return SubtitleSegment(
+        id=identifier,
+        start=float(item.start),
+        end=float(item.end),
+        text=item.text,
+        source_cue_ids=list(item.source_cue_ids),
+        words=list(item.words),
+        confidence=item.confidence,
+        warnings=list(item.warnings),
+        source=item.source,
+        source_segment_ids=list(item.source_segment_ids),
+        qc_flags=list(item.qc_flags),
+        metadata=dict(item.metadata),
+    )
+
+
+def _merge_semantic_pair(left: SubtitleSegment, right: SubtitleSegment) -> SubtitleSegment:
+    left_text = _strip_artificial_terminal_punctuation(left.text)
+    merged_text = _join_text([left_text, right.text])
+    metadata = dict(left.metadata)
+    metadata.update(
+        semantic_boundary_repaired=True,
+        semantic_merged_utterance_ids=(
+            list(left.metadata.get("semantic_merged_utterance_ids") or [left.id])
+            + list(right.metadata.get("semantic_merged_utterance_ids") or [right.id])
+        ),
+    )
+    return SubtitleSegment(
+        id=left.id,
+        start=float(left.start),
+        end=float(right.end),
+        text=merged_text,
+        source_cue_ids=sorted(set(left.source_cue_ids + right.source_cue_ids)),
+        words=list(left.words) + list(right.words),
+        confidence=left.confidence if left.confidence is not None else right.confidence,
+        warnings=sorted(set(left.warnings + right.warnings)),
+        source=left.source or right.source,
+        source_segment_ids=sorted(
+            set((left.source_segment_ids or [left.id]) + (right.source_segment_ids or [right.id]))
+        ),
+        qc_flags=sorted(set(left.qc_flags + right.qc_flags)),
+        metadata=metadata,
+    )
+
+
+def suspicious_boundary_candidates(
+    utterances: list[SubtitleSegment],
+    settings: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Return only boundaries likely to be artificial subtitle splits.
+
+    This is intentionally a high-recall pre-filter. An LLM may judge the
+    candidates, but complete short reactions are excluded before any API call.
+    """
+
+    cfg = dict(settings or {})
+    max_gap = max(0.0, float(cfg.get("semantic_candidate_max_gap_seconds", 0.9)))
+    short_seconds = max(0.2, float(cfg.get("semantic_candidate_short_seconds", 1.8)))
+    short_words = max(1, int(cfg.get("semantic_candidate_short_words", 6)))
+    candidates: list[dict[str, Any]] = []
+    for offset, (left, right) in enumerate(zip(utterances, utterances[1:])):
+        gap = max(0.0, float(right.start) - float(left.end))
+        if gap > max_gap:
+            continue
+        left_text = left.text.strip()
+        right_text = right.text.strip()
+        if not left_text or not right_text:
+            continue
+        if _SHORT_REACTION.fullmatch(left_text):
+            continue
+
+        reasons: list[str] = []
+        left_words = _word_count(left_text)
+        right_words = _word_count(right_text)
+        if left.duration <= short_seconds and left_words <= short_words:
+            reasons.append("SHORT_LEFT")
+        if right.duration <= short_seconds and right_words <= short_words:
+            reasons.append("SHORT_RIGHT")
+        if _DANGLING_END.search(left_text):
+            reasons.append("DANGLING_LEFT")
+        if _SUSPICIOUS_SHORT_START.search(left_text) and left_words <= short_words:
+            reasons.append("SUSPICIOUS_SHORT_LEFT")
+        if CONTINUATION_START.search(right_text):
+            reasons.append("CONTINUATION_RIGHT")
+        if STRONG_END.search(left_text) and left_words <= 3 and not _SHORT_REACTION.fullmatch(left_text):
+            reasons.append("SHORT_STRONG_END")
+        if not STRONG_END.search(left_text) and left.duration <= short_seconds * 1.5:
+            reasons.append("UNFINISHED_LEFT")
+
+        # Do not spend an API call on a merely short but clearly self-contained
+        # statement unless there is at least one additional syntactic warning.
+        structural = {
+            "DANGLING_LEFT",
+            "SUSPICIOUS_SHORT_LEFT",
+            "CONTINUATION_RIGHT",
+            "SHORT_STRONG_END",
+            "UNFINISHED_LEFT",
+        }
+        if not structural.intersection(reasons):
+            continue
+
+        previous_text = utterances[offset - 1].text if offset > 0 else ""
+        next_text = utterances[offset + 2].text if offset + 2 < len(utterances) else ""
+        candidates.append(
+            {
+                "left_id": int(left.id),
+                "right_id": int(right.id),
+                "left_text": left_text,
+                "right_text": right_text,
+                "previous_text": previous_text,
+                "next_text": next_text,
+                "gap_seconds": round(gap, 3),
+                "reasons": sorted(set(reasons)),
+            }
+        )
+    return candidates
+
+
+def build_semantic_boundary_messages(
+    candidates: list[dict[str, Any]],
+) -> list[dict[str, str]]:
+    system = (
+        "你是英文语音字幕边界审核器。输入只包含疑似被字幕错误切开的相邻 utterance。"
+        "你的任务只判断 left 和 right 是否实际上属于同一个连续发声语义单元。"
+        "重点识别自动字幕制造的假句号、被切断的短语、冠词/介词/连词悬空、词组被拆开、"
+        "以及类似 'The most.' + 'Overlooked AI.' + 'Stock.' 的碎片。"
+        "完整的短反应、问答轮次、真正句末不得合并。上下文只用于判断。"
+        "不得改写、翻译或纠正英文，只返回每个候选 left_id 的 merge 布尔值。"
+        "必须覆盖输入中的每个 left_id 且只输出 JSON："
+        '{"boundaries":[{"left_id":35,"merge":true}]}'
+    )
+    payload = {
+        "candidates": [
+            {
+                "left_id": int(row["left_id"]),
+                "left": row["left_text"],
+                "right": row["right_text"],
+                "previous_read_only": row.get("previous_text", ""),
+                "next_read_only": row.get("next_text", ""),
+                "gap_seconds": row.get("gap_seconds", 0.0),
+                "signals": row.get("reasons", []),
+            }
+            for row in candidates
+        ]
+    }
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": "按要求输出 JSON：" + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))},
+    ]
+
+
+def apply_semantic_boundary_decisions(
+    utterances: list[SubtitleSegment],
+    decisions: dict[int, bool],
+    settings: dict[str, Any] | None = None,
+) -> tuple[list[SubtitleSegment], dict[str, Any]]:
+    """Merge LLM-approved contiguous boundaries while enforcing hard limits."""
+
+    cfg = dict(settings or {})
+    hard_max = max(0.5, float(cfg.get("hard_max_duration_seconds", 9.0)))
+    semantic_hard_max = max(
+        hard_max, float(cfg.get("semantic_hard_max_duration_seconds", hard_max + 1.5))
+    )
+    max_words = max(4, int(cfg.get("max_source_words", 42)))
+    semantic_max_words = max(max_words, int(cfg.get("semantic_max_source_words", max_words + 12)))
+    max_chars = max(40, int(cfg.get("max_source_chars", 240)))
+    semantic_max_chars = max(max_chars, int(cfg.get("semantic_max_source_chars", max_chars + 80)))
+
+    result: list[SubtitleSegment] = []
+    merged_boundaries: list[int] = []
+    rejected_boundaries: list[dict[str, Any]] = []
+    index = 0
+    while index < len(utterances):
+        current = utterances[index]
+        while index + 1 < len(utterances) and bool(decisions.get(int(utterances[index].id), False)):
+            following = utterances[index + 1]
+            combined_text = _join_text([_strip_artificial_terminal_punctuation(current.text), following.text])
+            combined_duration = float(following.end) - float(current.start)
+            if (
+                combined_duration > semantic_hard_max + 1e-6
+                or _word_count(combined_text) > semantic_max_words
+                or len(combined_text) > semantic_max_chars
+            ):
+                rejected_boundaries.append(
+                    {
+                        "left_id": int(utterances[index].id),
+                        "reason": "HARD_LIMIT",
+                        "combined_duration": round(combined_duration, 3),
+                    }
+                )
+                break
+            merged_boundaries.append(int(utterances[index].id))
+            current = _merge_semantic_pair(current, following)
+            index += 1
+        result.append(current)
+        index += 1
+
+    renumbered = [_renumber_utterance(i, item) for i, item in enumerate(result, 1)]
+    remaining = suspicious_boundary_candidates(renumbered, cfg)
+    return renumbered, {
+        "candidate_count": len(decisions),
+        "merged_boundary_count": len(merged_boundaries),
+        "merged_boundaries": merged_boundaries,
+        "rejected_boundaries": rejected_boundaries,
+        "remaining_suspicious_count": len(remaining),
+        "remaining_suspicious": remaining,
+    }
+
 def canonical_script_payload(
     source_path: Path,
     english_path: Path,
@@ -284,10 +512,13 @@ def canonical_text_from_payload(payload: dict[str, Any]) -> str:
 
 
 __all__ = [
+    "apply_semantic_boundary_decisions",
     "build_dubbing_utterances",
+    "build_semantic_boundary_messages",
     "canonical_script_payload",
     "canonical_text_from_payload",
     "load_canonical_script",
     "normalize_script_text",
+    "suspicious_boundary_candidates",
     "script_text_hash",
 ]

@@ -46,6 +46,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--reference-end", type=float)
     parser.add_argument("--force-separation", action="store_true")
     parser.add_argument("--force-tts", action="store_true")
+    parser.add_argument(
+        "--allow-paid-api",
+        action="store_true",
+        help="允许中配辅助 AI 调用（Reference Quality Gate / Canonical Duration Rewrite）",
+    )
     return parser
 
 
@@ -57,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
             PROJECT_ROOT,
             config,
             python_executable=Path(sys.executable),
+            allow_paid_api=bool(args.allow_paid_api),
         )
         result = pipeline.run(
             args.video_dir,

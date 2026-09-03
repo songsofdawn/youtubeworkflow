@@ -2318,6 +2318,8 @@ class WorkflowWorker:
                 )
             if payload.get("force_dubbing"):
                 dubbing_command.append("--force-tts")
+            if payload.get("allow_paid_api"):
+                dubbing_command.append("--allow-paid-api")
             commands.append(("生成中文 AI 配音", dubbing_command))
         if steps in {"render", "complete", "dubbing"}:
             mode = str(payload.get("render_mode") or "hardsub")
@@ -2451,6 +2453,7 @@ class WorkflowWorker:
             ),
             "force_separation": "--force-separation" in command,
             "force_tts": "--force-tts" in command,
+            "allow_paid_api": "--allow-paid-api" in command,
         }
 
     def _consume_job_output_line(

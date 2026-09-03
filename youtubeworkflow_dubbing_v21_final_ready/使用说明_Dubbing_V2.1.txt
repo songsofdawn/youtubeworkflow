@@ -1,0 +1,106 @@
+YouTube Workflow - Dubbing V2.1 安装与运行说明
+================================================
+
+目标
+----
+本补丁在已经安装 Single-Script / Dual-Segmentation V2 的基础上，实现 V2.1 前四项：
+
+1. Utterance Planner V2 / Semantic Boundary Repair
+   - Stage A 继续使用稳定的规则合并。
+   - Stage B 只筛出可疑字幕边界，调用当前 Stage3 AI provider 判断 merge=true/false。
+   - AI 只能判断边界，不能翻译、改写或纠正英文。
+   - 支持修复类似：
+       The most. + Overlooked AI. + Stock.
+     为：
+       The most Overlooked AI Stock.
+   - 完整短反应如 Okay. / Wow! / What? 不会因为短就强行粘连。
+
+2. Timing Scheduler V2
+   - soft alignment shift：0.50 s
+   - hard alignment shift：0.75 s（另保留 overlap tolerance）
+   - 出现局部压力时先生成 duration rewrite candidate，不再优先把偏移一路传播到后续句子。
+   - 最终仍超过 hard limit 才保留 REVIEW_REQUIRED。
+
+3. Canonical Duration Rewrite
+   - TTS/VAD 后发现中文过长时，调用 Stage3 当前 AI provider 压缩同一 ID 的 canonical 中文。
+   - 只能在同一 ID 内改短；不能跨 ID 移动、拆分或合并内容。
+   - 必须保留核心事实、数字、否定、条件、因果、比较、专名和结论。
+   - canonical_zh.json 与 subtitles/zh.dubbing.srt 同步更新。
+   - 只重新生成发生改写的 VoxCPM2 utterance。
+   - 最多 2 轮 canonical rewrite；之后才使用旧的“同文本随机再生成一次”作为最后 fallback。
+   - 若存在 zh.reviewed.srt，自动锁定人工审核稿，不偷偷改写。
+
+4. Reference Quality Gate
+   - 自动 reference 不再只看长度。
+   - 先进行本地结构检查，再由 Stage3 AI 只做 transcript 质量评分。
+   - 可疑 ASR、半句话、语序异常、明显碎片会跳过并选择下一候选。
+   - AI quality gate 故障时退化为本地规则。
+   - 所有 transcript 都不可靠时默认 reference-only，不给 VoxCPM2 喂错误 prompt_text。
+
+重要原则
+--------
+最终字幕与最终 TTS 仍只使用一份 canonical Chinese script。
+V2.1 的 duration rewrite 修改的是 canonical 本身，所以不会产生“字幕说 A、配音说 B”。
+
+安装
+----
+1. 彻底关闭控制面板，确保没有正在运行的中配任务。
+2. 建议先备份项目目录。
+3. 把本 ZIP 解压到：
+   C:\Users\23664\Desktop\program\youtubeworkflow
+   并允许覆盖同名文件。
+4. 在项目根目录运行：
+
+   python verify_dubbing_v21.py
+
+预期：
+   [通过] Dubbing V2.1 四项核心改造已正确安装。
+
+5. 运行回归测试：
+
+   .venv\Scripts\python.exe -m pytest tests\stage3 -q
+   .venv\Scripts\python.exe -m pytest tests\stage4 -q
+   .venv\Scripts\python.exe -m pytest tests\dubbing -q
+   .venv\Scripts\python.exe -m pytest tests\test_control_panel.py -q
+
+运行后重点检查
+--------------
+stage3\translation\dubbing_utterance_plan.json
+stage3\translation\semantic_boundary_repair.json
+stage3\translation\canonical_zh.json
+subtitles\en.dubbing.srt
+subtitles\zh.dubbing.srt
+dubbing\manifest.json
+dubbing\reference_quality_request.json
+dubbing\reference_quality_response.json
+dubbing\duration_rewrite_request.json
+dubbing\duration_rewrite_response.json
+
+正常日志将增加类似：
+[DUBBING] Reference Quality Gate: AI_COMPLETED, candidate=N
+[DUBBING] Canonical duration rewrite pass 1: rewrote N segment(s); rescheduling.
+
+配置位置
+--------
+config\stage3_config.json -> dubbing_script -> semantic_*
+config\dubbing_config.json -> timing -> duration_rewrite_*
+config\dubbing_config.json -> reference -> quality_*
+
+Windows 稳定性
+-------------
+本补丁继续保持：
+performance.keep_voxcpm_warm = false
+即每个视频任务加载一次 VoxCPM2，而不是跨视频维持 persistent CUDA model。
+单个视频内部所有 utterance 仍复用同一个模型实例。
+
+
+付费 API 权限贯穿（最终版新增）
+----------------------------
+- 控制面板只有在任务 payload 的 allow_paid_api=true 时，才给中配命令追加 --allow-paid-api。
+- src.run_dubbing 把该权限传给 DubbingPipeline。
+- persistent worker 路径也保留该权限（即使 Windows 当前默认 keep_voxcpm_warm=false）。
+- Reference Quality Gate：未授权付费 API 时只做本地确定性检查，不调用 GLM。
+- Canonical Duration Rewrite：未授权付费 API 时跳过 AI 改写，保留原有 same-text retry / review。
+- DubbingPipeline 的辅助 AI helper 还有最后一道 PAID_API_NOT_ALLOWED 硬保护，避免未来误调用。
+
+因此不会因为启用了 V2.1，就在用户没有明确允许的情况下偷偷产生 API 费用。

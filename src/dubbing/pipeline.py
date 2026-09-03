@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
+import subprocess
+import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -224,12 +227,12 @@ def validate_canonical_dubbing_script(
     }
 
 
-def choose_reference_window(
+def reference_window_candidates(
     segments: list[dict[str, Any]],
     *,
     media_duration: float,
     settings: dict[str, Any],
-) -> tuple[float, float]:
+) -> list[tuple[float, float]]:
     target = float(settings.get("duration_seconds") or 8.0)
     minimum = float(settings.get("minimum_seconds") or 5.0)
     maximum = float(settings.get("maximum_seconds") or 10.0)
@@ -254,16 +257,23 @@ def choose_reference_window(
             end = proposed_end
             if proposed_duration >= minimum:
                 candidates.append(
-                    (
-                        abs(proposed_duration - target),
-                        start,
-                        min(end, media_duration),
-                    )
+                    (abs(proposed_duration - target), start, min(end, media_duration))
                 )
-    candidates = [item for item in candidates if item[2] - item[1] >= min(minimum, media_duration)]
-    if candidates:
-        _, start, end = min(candidates, key=lambda item: (item[0], item[1]))
-        return round(start, 3), round(end, 3)
+    valid = [
+        item for item in candidates
+        if item[2] - item[1] >= min(minimum, media_duration)
+    ]
+    if valid:
+        ordered = sorted(valid, key=lambda item: (item[0], item[1]))
+        seen: set[tuple[float, float]] = set()
+        result: list[tuple[float, float]] = []
+        for _, start, end in ordered:
+            key = (round(start, 3), round(end, 3))
+            if key in seen:
+                continue
+            seen.add(key)
+            result.append(key)
+        return result
     start = max(skip_intro, float(usable[0]["start"]) if usable else skip_intro)
     if media_duration > 0 and start >= media_duration:
         start = max(0.0, media_duration - target)
@@ -273,7 +283,61 @@ def choose_reference_window(
             "REFERENCE_WINDOW_NOT_FOUND",
             "无法从有效视频时长中选择 reference.wav 片段。",
         )
-    return round(start, 3), round(end, 3)
+    return [(round(start, 3), round(end, 3))]
+
+
+def choose_reference_window(
+    segments: list[dict[str, Any]],
+    *,
+    media_duration: float,
+    settings: dict[str, Any],
+) -> tuple[float, float]:
+    return reference_window_candidates(
+        segments, media_duration=media_duration, settings=settings
+    )[0]
+
+
+def _strict_bool(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and value in {0, 1}:
+        return bool(value)
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized == "true":
+            return True
+        if normalized == "false":
+            return False
+    return None
+
+
+def _basic_reference_transcript_quality(
+    text: str,
+    settings: dict[str, Any],
+) -> tuple[bool, list[str]]:
+    value = re.sub(r"\s+", " ", str(text or "")).strip()
+    words = re.findall(r"[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)?", value)
+    reasons: list[str] = []
+    minimum = max(1, int(settings.get("quality_min_words", 8)))
+    maximum = max(minimum, int(settings.get("quality_max_words", 34)))
+    if len(words) < minimum:
+        reasons.append("TOO_FEW_WORDS")
+    if len(words) > maximum:
+        reasons.append("TOO_MANY_WORDS")
+    if bool(settings.get("quality_require_sentence_end", True)) and not re.search(
+        r"[.!?][\"')\]]*$", value
+    ):
+        reasons.append("NO_SENTENCE_END")
+    if (
+        re.search(r"(?:\b(?:and|but|or|so|because|to|of|for|with|from|in|on|at|by|as|if|that|which|who|when|while|where|the|a|an)\b)\s*[.!?]?$", value, re.I)
+        or re.search(r"\b(?:and|but|so)\s+that['’]?s[.!?]*$", value, re.I)
+    ):
+        reasons.append("DANGLING_END")
+    non_word = sum(1 for char in value if not char.isalnum() and not char.isspace() and char not in ".,!?'-’")
+    ratio = non_word / max(1, len(value))
+    if ratio > float(settings.get("quality_max_special_token_ratio", 0.35)):
+        reasons.append("SPECIAL_TOKEN_HEAVY")
+    return not reasons, reasons
 
 
 class DubbingPipeline:
@@ -291,6 +355,7 @@ class DubbingPipeline:
         command_runner: Callable[..., None] = run_checked,
         runtime_preflight: Callable[[Path, Path], Any] = ensure_dubbing_runtime,
         loudness_normalizer: Callable[..., dict[str, Any]] = normalize_loudness,
+        allow_paid_api: bool = False,
     ) -> None:
         self.project_root = Path(project_root).resolve()
         self.config = dict(config)
@@ -307,6 +372,7 @@ class DubbingPipeline:
         self.command_runner = command_runner
         self.runtime_preflight = runtime_preflight
         self.loudness_normalizer = loudness_normalizer
+        self.allow_paid_api = bool(allow_paid_api)
         self.subprocess_env = build_dubbing_subprocess_env(self.project_root)
 
     @staticmethod
@@ -329,6 +395,113 @@ class DubbingPipeline:
             cwd=cwd,
             log=log,
             env=self.subprocess_env,
+        )
+
+    def _stage3_helper_python(self) -> Path:
+        candidates = [
+            self.project_root / ".venv" / "Scripts" / "python.exe",
+            self.project_root / ".venv" / "bin" / "python",
+        ]
+        for candidate in candidates:
+            if candidate.is_file():
+                return candidate.resolve()
+        return self.python_executable
+
+    def _run_stage3_json_helper(
+        self,
+        module: str,
+        *,
+        request_path: Path,
+        response_path: Path,
+        extra_args: list[str] | None = None,
+        timeout_seconds: float = 180.0,
+    ) -> dict[str, Any]:
+        if not self.allow_paid_api:
+            raise DubbingError(
+                "PAID_API_NOT_ALLOWED",
+                "当前中配任务未授权付费 API，已阻止中配辅助 AI 调用。",
+                details={"module": module},
+            )
+        python_path = self._stage3_helper_python()
+        command = [
+            str(python_path),
+            "-u",
+            "-m",
+            module,
+            "--project-root",
+            str(self.project_root),
+            "--request-file",
+            str(request_path),
+            "--response-file",
+            str(response_path),
+            *(extra_args or []),
+        ]
+        response_path.unlink(missing_ok=True)
+        completed = subprocess.run(
+            command,
+            cwd=self.project_root,
+            env=self.subprocess_env,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=max(10.0, float(timeout_seconds)),
+            check=False,
+            creationflags=(
+                getattr(subprocess, "CREATE_NO_WINDOW", 0)
+                if os.name == "nt" else 0
+            ),
+        )
+        if completed.stdout.strip():
+            for line in completed.stdout.strip().splitlines():
+                self._log(f"[DUBBING][AUX] {line}")
+        if completed.returncode != 0:
+            detail = (completed.stderr or completed.stdout or "stage3 helper failed")[-2000:]
+            raise DubbingError(
+                "DUBBING_STAGE3_HELPER_FAILED",
+                f"中配辅助 AI 任务失败：{module}",
+                details={"returncode": completed.returncode, "detail": detail},
+            )
+        if not response_path.is_file():
+            raise DubbingError(
+                "DUBBING_STAGE3_HELPER_NO_RESPONSE",
+                f"中配辅助 AI 任务没有生成响应文件：{module}",
+            )
+        try:
+            payload = json.loads(response_path.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError) as exc:
+            raise DubbingError(
+                "DUBBING_STAGE3_HELPER_INVALID_RESPONSE",
+                f"中配辅助 AI 任务响应无效：{module}",
+            ) from exc
+        if not isinstance(payload, dict) or str(payload.get("status") or "").upper() == "FAILED":
+            raise DubbingError(
+                "DUBBING_STAGE3_HELPER_INVALID_RESPONSE",
+                f"中配辅助 AI 任务返回失败：{module}",
+                details={"response": payload if isinstance(payload, dict) else {}},
+            )
+        return payload
+
+    @staticmethod
+    def _segment_input_hash(
+        row: dict[str, Any],
+        *,
+        reference_hash: str,
+        reference_prompt_hash: str,
+        model_identifier: str,
+        tts_settings: dict[str, Any],
+    ) -> str:
+        return hash_json(
+            {
+                "version": 1,
+                "text": str(row["text"]),
+                "start": round(float(row["start"]), 3),
+                "end": round(float(row["end"]), 3),
+                "reference_hash": reference_hash,
+                "reference_prompt_hash": reference_prompt_hash,
+                "model": model_identifier,
+                "tts": tts_settings,
+            }
         )
 
     @staticmethod
@@ -425,19 +598,133 @@ class DubbingPipeline:
                     details={"start": start, "end": end, "duration": media_duration},
                 )
         elif normalized_mode == "auto":
-            start, end = choose_reference_window(
+            windows = reference_window_candidates(
                 segments,
                 media_duration=media_duration,
                 settings=reference_settings,
             )
+            start, end = windows[0]
         else:
             raise DubbingError("REFERENCE_MODE_INVALID", f"不支持的参考声音模式：{mode}")
+
         use_prompt_transcript = bool(reference_settings.get("use_prompt_transcript", True))
-        prompt_text, prompt_source = (
-            reference_prompt_text(work_dir.parent, start=start, end=end)
-            if use_prompt_transcript
-            else ("", "")
-        )
+        quality_enabled = bool(reference_settings.get("quality_gate_enabled", True))
+        quality_gate: dict[str, Any] = {
+            "enabled": bool(quality_enabled and normalized_mode == "auto" and use_prompt_transcript),
+            "status": "NOT_APPLICABLE",
+            "candidate_count": 0,
+            "selected_candidate_id": None,
+            "fallback_reference_only": False,
+        }
+        prompt_text = ""
+        prompt_source = ""
+
+        if normalized_mode == "auto" and use_prompt_transcript and quality_enabled:
+            limit = max(1, int(reference_settings.get("quality_candidate_count", 20)))
+            candidate_rows: list[dict[str, Any]] = []
+            for candidate_id, (candidate_start, candidate_end) in enumerate(windows[:limit], 1):
+                candidate_text, candidate_source = reference_prompt_text(
+                    work_dir.parent, start=candidate_start, end=candidate_end
+                )
+                basic_ok, basic_reasons = _basic_reference_transcript_quality(
+                    candidate_text, reference_settings
+                )
+                candidate_rows.append(
+                    {
+                        "candidate_id": candidate_id,
+                        "start": candidate_start,
+                        "end": candidate_end,
+                        "duration": candidate_end - candidate_start,
+                        "prompt_text": candidate_text,
+                        "prompt_source": candidate_source,
+                        "basic_usable": bool(candidate_text and basic_ok),
+                        "basic_reasons": basic_reasons,
+                    }
+                )
+            quality_gate["candidate_count"] = len(candidate_rows)
+            ai_candidates = [row for row in candidate_rows if row["basic_usable"]]
+            selected_row: dict[str, Any] | None = None
+            if ai_candidates:
+                if self.allow_paid_api:
+                    request_path = work_dir / "reference_quality_request.json"
+                    response_path = work_dir / "reference_quality_response.json"
+                    request_path.write_text(
+                        json.dumps({"candidates": ai_candidates}, ensure_ascii=False, indent=2),
+                        encoding="utf-8",
+                    )
+                    try:
+                        response = self._run_stage3_json_helper(
+                            "src.stage3.reference_quality",
+                            request_path=request_path,
+                            response_path=response_path,
+                            timeout_seconds=float(
+                                reference_settings.get("quality_timeout_seconds", 120)
+                            ),
+                        )
+                        quality_gate["status"] = "AI_COMPLETED"
+                        quality_gate["results"] = list(response.get("results") or [])
+                        quality_gate["usage"] = dict(response.get("usage") or {})
+                        by_id = {int(row["candidate_id"]): row for row in ai_candidates}
+                        for judged in quality_gate["results"]:
+                            if _strict_bool(judged.get("usable")) is True:
+                                selected_row = by_id.get(int(judged.get("candidate_id") or 0))
+                                if selected_row is not None:
+                                    quality_gate["selected_score"] = judged.get("score")
+                                    quality_gate["selected_reason"] = judged.get("reason", "")
+                                    break
+                    except (DubbingError, OSError, subprocess.TimeoutExpired) as exc:
+                        quality_gate["status"] = "DEGRADED_LOCAL"
+                        quality_gate["error"] = str(exc)
+                        self._log(
+                            "[DUBBING] WARNING: reference transcript AI quality gate failed; "
+                            "falling back to deterministic checks."
+                        )
+                    if selected_row is None and quality_gate["status"] == "DEGRADED_LOCAL":
+                        selected_row = ai_candidates[0]
+                else:
+                    # No paid API permission: keep the quality gate deterministic and local.
+                    # This preserves the project's explicit authorization rule while still
+                    # avoiding obviously broken prompt transcripts.
+                    selected_row = ai_candidates[0]
+                    quality_gate["status"] = "LOCAL_ONLY_NO_PAID_API"
+                    quality_gate["ai_skipped_reason"] = "PAID_API_NOT_ALLOWED"
+                    self._log(
+                        "[DUBBING] Reference Quality Gate: paid API not authorized; "
+                        "using deterministic transcript checks only."
+                    )
+            if selected_row is not None:
+                start = float(selected_row["start"])
+                end = float(selected_row["end"])
+                prompt_text = str(selected_row.get("prompt_text") or "")
+                prompt_source = str(selected_row.get("prompt_source") or "")
+                quality_gate["selected_candidate_id"] = int(selected_row["candidate_id"])
+                if quality_gate["status"] == "NOT_APPLICABLE":
+                    quality_gate["status"] = "LOCAL_COMPLETED"
+            else:
+                quality_gate["status"] = (
+                    quality_gate["status"]
+                    if quality_gate["status"] != "NOT_APPLICABLE"
+                    else "NO_USABLE_TRANSCRIPT"
+                )
+                if bool(reference_settings.get("quality_fallback_reference_only", True)):
+                    quality_gate["fallback_reference_only"] = True
+                    prompt_text = ""
+                    prompt_source = ""
+                else:
+                    fallback = ai_candidates[0] if ai_candidates else candidate_rows[0]
+                    start = float(fallback["start"])
+                    end = float(fallback["end"])
+                    prompt_text = str(fallback.get("prompt_text") or "")
+                    prompt_source = str(fallback.get("prompt_source") or "")
+                    quality_gate["selected_candidate_id"] = int(fallback["candidate_id"])
+        else:
+            prompt_text, prompt_source = (
+                reference_prompt_text(work_dir.parent, start=start, end=end)
+                if use_prompt_transcript
+                else ("", "")
+            )
+            quality_gate["status"] = "DISABLED" if not quality_enabled else "MANUAL_OR_NO_PROMPT"
+
         prompt_text_hash = script_text_hash(prompt_text) if prompt_text else ""
         vocals_hash = sha256_file(vocals)
         fingerprint = hash_json(
@@ -448,6 +735,8 @@ class DubbingPipeline:
                 "start": round(start, 3),
                 "end": round(end, 3),
                 "prompt_text_hash": prompt_text_hash,
+                "quality_gate_status": quality_gate.get("status", ""),
+                "quality_selected_candidate_id": quality_gate.get("selected_candidate_id"),
             }
         )
         previous = manifest.get("reference") if isinstance(manifest.get("reference"), dict) else {}
@@ -472,8 +761,21 @@ class DubbingPipeline:
             "prompt_text": prompt_text,
             "prompt_text_hash": prompt_text_hash,
             "prompt_source": prompt_source,
+            "quality_gate": quality_gate,
         }
         self._log(f"[DUBBING] Reference audio: {start:.1f}s - {end:.1f}s")
+        if quality_gate.get("enabled"):
+            self._log(
+                "[DUBBING] Reference Quality Gate: "
+                f"{quality_gate.get('status')}"
+                + (
+                    f", candidate={quality_gate.get('selected_candidate_id')}"
+                    if quality_gate.get("selected_candidate_id") is not None
+                    else ", reference-only fallback"
+                    if quality_gate.get("fallback_reference_only")
+                    else ""
+                )
+            )
         if use_prompt_transcript:
             if prompt_text:
                 self._log(
@@ -498,6 +800,228 @@ class DubbingPipeline:
             )
 
     @staticmethod
+    def _duration_rewrite_candidates(
+        rows: list[dict[str, Any]],
+        *,
+        timing_settings: dict[str, Any],
+    ) -> list[dict[str, Any]]:
+        if not bool(timing_settings.get("duration_rewrite_enabled", True)):
+            return []
+        max_passes = max(0, int(timing_settings.get("duration_rewrite_max_passes", 2)))
+        if max_passes < 1:
+            return []
+        maximum = max(1, int(timing_settings.get("duration_rewrite_batch_max", 48)))
+        candidates: list[tuple[float, dict[str, Any]]] = []
+        for row in rows:
+            if not bool(row.get("duration_rewrite_required")):
+                continue
+            history = row.get("duration_rewrite")
+            attempts = int(history.get("attempts") or 0) if isinstance(history, dict) else 0
+            if attempts >= max_passes:
+                continue
+            local_speed = max(1.0, float(row.get("local_required_speed") or 1.0))
+            shift = abs(float(row.get("schedule_shift") or 0.0))
+            severity = max(local_speed, 1.0 + shift)
+            candidates.append((severity, row))
+        candidates.sort(key=lambda item: (-item[0], int(item[1]["index"])))
+        chosen = [row for _, row in candidates[:maximum]]
+        chosen.sort(key=lambda row: int(row["index"]))
+        return chosen
+
+    def _rewrite_overlong_canonical_segments(
+        self,
+        rows: list[dict[str, Any]],
+        *,
+        root: Path,
+        work_dir: Path,
+        synthesizer: Any,
+        reference: Path,
+        timing_settings: dict[str, Any],
+        reference_hash: str,
+        reference_prompt_hash: str,
+        model_identifier: str,
+        tts_settings: dict[str, Any],
+        performance: dict[str, Any],
+        manifest: dict[str, Any],
+        manifest_path: Path,
+    ) -> tuple[list[dict[str, Any]], int]:
+        candidates = self._duration_rewrite_candidates(
+            rows, timing_settings=timing_settings
+        )
+        if not candidates or not _canonical_mode_enabled(root):
+            return rows, 0
+        if not self.allow_paid_api:
+            manifest["duration_rewrite"] = {
+                "status": "SKIPPED_PAID_API_NOT_ALLOWED",
+                "candidate_count": len(candidates),
+            }
+            self._save_manifest(manifest_path, manifest)
+            self._log(
+                "[DUBBING] Canonical duration rewrite skipped: paid API not authorized."
+            )
+            return rows, 0
+
+        canonical_path = root / "stage3" / "translation" / "canonical_zh.json"
+        try:
+            canonical = load_canonical_script(canonical_path)
+        except (OSError, ValueError):
+            return rows, 0
+        canonical_by_id = {
+            int(item.get("id") or 0): item
+            for item in canonical.get("utterances") or []
+            if isinstance(item, dict)
+        }
+        request_segments: list[dict[str, Any]] = []
+        for row in candidates:
+            identifier = int(row["index"])
+            source_row = canonical_by_id.get(identifier, {})
+            request_segments.append(
+                {
+                    "id": identifier,
+                    "source_text": str(source_row.get("source_text") or ""),
+                    "zh_text": str(row.get("text") or ""),
+                    "target_duration": round(
+                        max(0.2, float(row.get("duration_rewrite_target_duration") or 0.0)),
+                        3,
+                    ),
+                    "spoken_duration": round(
+                        max(0.0, float(row.get("spoken_duration") or 0.0)),
+                        3,
+                    ),
+                }
+            )
+        request_path = work_dir / "duration_rewrite_request.json"
+        response_path = work_dir / "duration_rewrite_response.json"
+        request_path.write_text(
+            json.dumps({"segments": request_segments}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        self._notify("压缩超时中文脚本", 79, 0, len(request_segments))
+        response = self._run_stage3_json_helper(
+            "src.stage3.dubbing_rewrite",
+            request_path=request_path,
+            response_path=response_path,
+            extra_args=["--video-dir", str(root)],
+            timeout_seconds=float(timing_settings.get("duration_rewrite_timeout_seconds", 180)),
+        )
+        if str(response.get("status") or "").upper() == "HUMAN_REVIEWED_LOCKED":
+            self._log(
+                "[DUBBING] Duration rewrite skipped because zh.reviewed.srt exists."
+            )
+            return rows, 0
+        changes = response.get("changes") if isinstance(response.get("changes"), list) else []
+        change_by_id = {
+            int(item["id"]): str(item.get("after") or "").strip()
+            for item in changes
+            if isinstance(item, dict) and item.get("id") is not None and str(item.get("after") or "").strip()
+        }
+        if not change_by_id:
+            return rows, 0
+
+        updated = [dict(row) for row in rows]
+        regenerated = 0
+        metadata_dir = work_dir / "segments" / "metadata"
+        metadata_dir.mkdir(parents=True, exist_ok=True)
+        for row in updated:
+            identifier = int(row["index"])
+            new_text = change_by_id.get(identifier)
+            if not new_text:
+                continue
+            old_text = str(row.get("text") or "")
+            raw_path = work_dir / "segments" / f"{identifier:06d}.wav"
+            row["text"] = new_text
+            row["input_hash"] = self._segment_input_hash(
+                row,
+                reference_hash=reference_hash,
+                reference_prompt_hash=reference_prompt_hash,
+                model_identifier=model_identifier,
+                tts_settings=tts_settings,
+            )
+            started = time.monotonic()
+            synthesizer.generate(new_text, reference, raw_path)
+            elapsed = time.monotonic() - started
+            performance["tts_total_seconds"] = round(
+                float(performance.get("tts_total_seconds") or 0.0) + elapsed, 3
+            )
+            generated_duration = wav_duration(raw_path)
+            wav_hash = sha256_file(raw_path)
+            row.update(
+                wav=self._relative(raw_path, work_dir),
+                wav_hash=wav_hash,
+                generated_duration=generated_duration,
+                status="generated",
+                final_wav=self._relative(raw_path, work_dir),
+                final_wav_hash=wav_hash,
+                final_duration=generated_duration,
+                needs_review=False,
+                overlap=False,
+            )
+            previous_rewrite = row.get("duration_rewrite")
+            attempts = (
+                int(previous_rewrite.get("attempts") or 0)
+                if isinstance(previous_rewrite, dict) else 0
+            ) + 1
+            row["duration_rewrite"] = {
+                "version": 1,
+                "attempted": True,
+                "attempts": attempts,
+                "before": old_text,
+                "after": new_text,
+                "target_duration": float(row.get("duration_rewrite_target_duration") or 0.0),
+                "spoken_duration_before": float(row.get("spoken_duration") or 0.0),
+                "generated_duration_after": generated_duration,
+                "completed_at": utc_now(),
+            }
+            save_segment_metadata(
+                metadata_dir / f"{identifier:06d}.json",
+                {
+                    "version": 1,
+                    "index": identifier,
+                    "input_hash": row["input_hash"],
+                    "wav": row["wav"],
+                    "wav_hash": wav_hash,
+                    "generated_duration": generated_duration,
+                    "completed_at": utc_now(),
+                    "duration_rewritten": True,
+                },
+            )
+            regenerated += 1
+            self._notify(
+                "压缩超时中文脚本",
+                79,
+                regenerated,
+                len(change_by_id),
+            )
+
+        subtitle_path = Path(str(response.get("subtitle_path") or root / "subtitles" / "zh.dubbing.srt"))
+        if subtitle_path.is_file():
+            manifest["subtitle_path"] = str(subtitle_path)
+            manifest["subtitle_hash"] = sha256_file(subtitle_path)
+            manifest["script_consistency"] = validate_canonical_dubbing_script(
+                root, subtitle_path
+            )
+        tts_context = manifest.get("tts_context") if isinstance(manifest.get("tts_context"), dict) else {}
+        tts_context["fingerprint"] = hash_json(
+            {
+                "version": 2,
+                "subtitle_hash": manifest.get("subtitle_hash", ""),
+                "reference_hash": reference_hash,
+                "reference_prompt_hash": reference_prompt_hash,
+                "model": model_identifier,
+                "tts": tts_settings,
+            }
+        )
+        manifest["tts_context"] = tts_context
+        manifest["duration_rewrite"] = {
+            "status": "COMPLETED",
+            "changed_count": regenerated,
+            "response": response,
+        }
+        manifest.update(updated_at=utc_now(), segments=updated)
+        self._save_manifest(manifest_path, manifest)
+        return updated, regenerated
+
+    @staticmethod
     def _duration_retry_candidates(
         rows: list[dict[str, Any]],
         *,
@@ -517,7 +1041,11 @@ class DubbingPipeline:
         for row in rows:
             timing = row.get("timing") if isinstance(row.get("timing"), dict) else {}
             reasons = set(timing.get("reasons") or row.get("schedule_reasons") or [])
-            if "REGION_DURATION_OVERFLOW" not in reasons:
+            if not (
+                "REGION_DURATION_OVERFLOW" in reasons
+                or "ALIGNMENT_SHIFT_EXCEEDED" in reasons
+                or bool(row.get("duration_rewrite_required"))
+            ):
                 continue
             retry = row.get("duration_retry")
             if isinstance(retry, dict) and retry.get("attempted"):
@@ -783,9 +1311,19 @@ class DubbingPipeline:
             / 1000,
             max_stretch_ratio=float(timing_settings.get("max_stretch_ratio", 1.30)),
             max_alignment_shift=float(
-                timing_settings.get("max_alignment_shift_ms", 1500.0)
+                timing_settings.get("max_alignment_shift_ms", 750.0)
             )
             / 1000,
+            soft_alignment_shift=float(
+                timing_settings.get("soft_alignment_shift_ms", 500.0)
+            )
+            / 1000,
+            duration_rewrite_trigger_ratio=float(
+                timing_settings.get("duration_rewrite_trigger_ratio", 1.15)
+            ),
+            duration_rewrite_target_ratio=float(
+                timing_settings.get("duration_rewrite_target_ratio", 1.05)
+            ),
             overlap_tolerance=float(
                 timing_settings.get("overlap_tolerance_ms", 20.0)
             )
@@ -895,10 +1433,16 @@ class DubbingPipeline:
                 reasons.append("MEDIA_END_OVERFLOW")
             if not bool((row.get("silence_trim") or {}).get("speech_detected", True)):
                 reasons.append("NO_SPEECH_DETECTED")
+            all_reasons = sorted(set(reasons))
+            review_reasons = [
+                reason for reason in all_reasons
+                if reason != "DURATION_REWRITE_REQUIRED"
+            ]
             row["overlap"] = actual_overlap
-            row["needs_review"] = bool(reasons)
-            row["timing"]["needs_review"] = bool(reasons)
-            row["timing"]["reasons"] = sorted(set(reasons))
+            row["needs_review"] = bool(review_reasons)
+            row["timing"]["needs_review"] = bool(review_reasons)
+            row["timing"]["reasons"] = all_reasons
+            row["timing"]["review_reasons"] = review_reasons
 
         review_rows = [row for row in final_rows if row["needs_review"]]
         review_regions = sorted({int(row["schedule_region"]) for row in review_rows})
@@ -908,7 +1452,7 @@ class DubbingPipeline:
                     reason
                     for row in review_rows
                     if int(row["schedule_region"]) == region
-                    for reason in row["timing"]["reasons"]
+                    for reason in row["timing"].get("review_reasons", row["timing"]["reasons"])
                 }
             )
             message = (
@@ -1155,17 +1699,12 @@ class DubbingPipeline:
             candidates: list[dict[str, Any]] = []
             pending_count = 0
             for row in segments:
-                input_hash = hash_json(
-                    {
-                        "version": 1,
-                        "text": row["text"],
-                        "start": round(float(row["start"]), 3),
-                        "end": round(float(row["end"]), 3),
-                        "reference_hash": reference_hash,
-                        "reference_prompt_hash": reference_prompt_hash,
-                        "model": model_identifier,
-                        "tts": tts_settings,
-                    }
+                input_hash = self._segment_input_hash(
+                    row,
+                    reference_hash=reference_hash,
+                    reference_prompt_hash=reference_prompt_hash,
+                    model_identifier=model_identifier,
+                    tts_settings=tts_settings,
                 )
                 raw_path = work_dir / "segments" / f"{int(row['index']):06d}.wav"
                 previous = previous_segments.get(int(row["index"]), {})
@@ -1556,6 +2095,76 @@ class DubbingPipeline:
                     timing_settings=timing_settings,
                     force=force_tts,
                 )
+
+                # V2.1: repair the canonical Chinese script before allowing timing
+                # drift to propagate through a dense speech region. The helper runs
+                # in the main .venv where the configured LLM provider already lives.
+                rewrite_passes = 0
+                rewrite_changed_total = 0
+                max_rewrite_passes = max(
+                    0, int(timing_settings.get("duration_rewrite_max_passes", 2))
+                )
+                while rewrite_passes < max_rewrite_passes:
+                    rewrite_candidates = self._duration_rewrite_candidates(
+                        completed_rows, timing_settings=timing_settings
+                    )
+                    if not rewrite_candidates:
+                        break
+                    try:
+                        active_synth = ensure_synthesizer()
+                        completed_rows, changed_count = self._rewrite_overlong_canonical_segments(
+                            completed_rows,
+                            root=root,
+                            work_dir=work_dir,
+                            synthesizer=active_synth,
+                            reference=reference,
+                            timing_settings=timing_settings,
+                            reference_hash=reference_hash,
+                            reference_prompt_hash=reference_prompt_hash,
+                            model_identifier=model_identifier,
+                            tts_settings=tts_settings,
+                            performance=performance,
+                            manifest=manifest,
+                            manifest_path=manifest_path,
+                        )
+                    except (DubbingError, OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
+                        self._log(
+                            "[DUBBING] WARNING: canonical duration rewrite failed; "
+                            f"falling back to same-text retry/review ({exc})"
+                        )
+                        manifest["duration_rewrite"] = {
+                            "status": "FAILED_FALLBACK",
+                            "error": str(exc),
+                            "passes": rewrite_passes,
+                        }
+                        self._save_manifest(manifest_path, manifest)
+                        break
+                    rewrite_passes += 1
+                    if changed_count <= 0:
+                        break
+                    rewrite_changed_total += changed_count
+                    self._log(
+                        f"[DUBBING] Canonical duration rewrite pass {rewrite_passes}: "
+                        f"rewrote {changed_count} segment(s); rescheduling."
+                    )
+                    completed_rows, timing_qc, timing_warnings = self._apply_regional_timing(
+                        completed_rows,
+                        previous_segments=previous_segments,
+                        work_dir=work_dir,
+                        media_duration=media_duration,
+                        timing_settings=timing_settings,
+                        force=force_tts,
+                    )
+
+                if rewrite_changed_total:
+                    manifest["duration_rewrite_summary"] = {
+                        "status": "COMPLETED",
+                        "passes": rewrite_passes,
+                        "changed_count": rewrite_changed_total,
+                    }
+                    self._save_manifest(manifest_path, manifest)
+
+                # Same-text stochastic regeneration remains a final fallback only.
                 retry_candidates = self._duration_retry_candidates(
                     completed_rows,
                     timing_settings=timing_settings,
@@ -1564,7 +2173,7 @@ class DubbingPipeline:
                 retry_attempted = 0
                 if retry_candidates:
                     try:
-                        ensure_synthesizer()
+                        active_synth = ensure_synthesizer()
                     except (DubbingError, OSError, RuntimeError) as exc:
                         self._log(
                             "[DUBBING] WARNING: cannot load VoxCPM2 for duration retry; "
@@ -1580,25 +2189,18 @@ class DubbingPipeline:
                             )
                             self._save_manifest(manifest_path, manifest)
 
-                        try:
-                            (
-                                completed_rows,
-                                retry_selected,
-                                retry_attempted,
-                            ) = self._retry_overlong_segments(
-                                completed_rows,
-                                synthesizer=synthesizer,
-                                reference=reference,
-                                work_dir=work_dir,
-                                timing_settings=timing_settings,
-                                checkpoint=save_duration_retry_checkpoint,
-                            )
-                        finally:
-                            if synthesizer is not None:
-                                close = getattr(synthesizer, "close", None)
-                                if callable(close):
-                                    close()
-                                synthesizer = None
+                        (
+                            completed_rows,
+                            retry_selected,
+                            retry_attempted,
+                        ) = self._retry_overlong_segments(
+                            completed_rows,
+                            synthesizer=active_synth,
+                            reference=reference,
+                            work_dir=work_dir,
+                            timing_settings=timing_settings,
+                            checkpoint=save_duration_retry_checkpoint,
+                        )
                 if retry_attempted:
                     manifest.update(
                         updated_at=utc_now(),
@@ -1620,6 +2222,22 @@ class DubbingPipeline:
                         timing_settings=timing_settings,
                         force=force_tts,
                     )
+
+                if synthesizer is not None:
+                    peak_vram = getattr(synthesizer, "peak_vram_mb", None)
+                    if peak_vram is not None:
+                        try:
+                            performance["peak_vram_mb"] = max(
+                                float(performance.get("peak_vram_mb") or 0.0),
+                                round(float(peak_vram), 1),
+                            )
+                        except (TypeError, ValueError):
+                            pass
+                    close = getattr(synthesizer, "close", None)
+                    if callable(close):
+                        close()
+                    synthesizer = None
+
                 warnings = timing_warnings
                 preserved_warnings = [
                     value

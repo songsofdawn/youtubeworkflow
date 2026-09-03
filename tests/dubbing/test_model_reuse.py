@@ -239,6 +239,19 @@ class SchedulerReuseTests(unittest.TestCase):
         self.assertIsNone(worker._dubbing_worker_client)
         self.assertIn("reuse segment checkpoints", log)
 
+    def test_persistent_request_preserves_paid_api_permission(self) -> None:
+        payload = WorkflowWorker._dubbing_request_from_command(
+            [
+                "python.exe",
+                "-m",
+                "src.run_dubbing",
+                "--video-dir",
+                "task",
+                "--allow-paid-api",
+            ]
+        )
+        self.assertTrue(payload["allow_paid_api"])
+
     def test_jsonl_worker_starts_and_releases_without_loading_model(self) -> None:
         project_root = Path(__file__).resolve().parents[2]
         client = PersistentDubbingWorkerClient(

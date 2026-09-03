@@ -127,11 +127,40 @@ class WorkerDubbingCommandTests(unittest.TestCase):
             "9.0",
         )
         self.assertIn("--force-tts", commands[0][1])
+        self.assertNotIn("--allow-paid-api", commands[0][1])
         self.assertIn("src.run_stage4", commands[1][1])
         self.assertIn("--audio-source", commands[1][1])
         self.assertIn("--subtitle-display", commands[1][1])
         source_index = commands[1][1].index("--chinese-source")
         self.assertEqual(commands[1][1][source_index + 1], "auto")
+
+    @mock.patch("src.control_panel.jobs.resolve_dubbing_python")
+    @mock.patch("src.control_panel.jobs.load_dubbing_config")
+    @mock.patch("src.control_panel.jobs.resolve_python_executable")
+    def test_dubbing_command_propagates_paid_api_permission(
+        self,
+        runtime: mock.Mock,
+        load_config: mock.Mock,
+        dubbing_runtime: mock.Mock,
+    ) -> None:
+        runtime.return_value = self.python
+        load_config.return_value = {}
+        dubbing_runtime.return_value = self.python
+        commands = self.worker._build_commands(
+            {
+                "kind": "pipeline",
+                "target": "task",
+                "payload": {
+                    "workflow": "dubbing",
+                    "render_mode": "hardsub",
+                    "chinese_subtitle_source": "deepseek",
+                    "dubbing_enabled": True,
+                    "allow_paid_api": True,
+                },
+            }
+        )
+        dubbing = next(command for label, command in commands if label == "生成中文 AI 配音")
+        self.assertIn("--allow-paid-api", dubbing)
 
     @mock.patch("src.control_panel.jobs.resolve_dubbing_python")
     @mock.patch("src.control_panel.jobs.load_dubbing_config")

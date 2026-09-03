@@ -7,7 +7,13 @@ from pathlib import Path
 from typing import Any
 
 from .artifact_migration import atomic_copy, migrate_legacy_artifacts
-from .dubbing_script import build_dubbing_utterances, canonical_script_payload
+from .dubbing_script import (
+    apply_semantic_boundary_decisions,
+    build_dubbing_utterances,
+    build_semantic_boundary_messages,
+    canonical_script_payload,
+    suspicious_boundary_candidates,
+)
 from .manifest import hash_config, sha256_file, utc_now, write_manifest
 from .models import RawCue, SubtitleSegment, TranslationSegment, WordEvent
 from .publish_metadata import (
@@ -1190,33 +1196,23 @@ class Stage3Pipeline:
         source = selected_source
         dubbing_english_path: Path | None = None
         dubbing_plan_path: Path | None = None
+        semantic_repair_path: Path | None = None
         canonical_script_path: Path | None = None
         dubbing_chinese_path: Path | None = None
+        utterance_settings: dict[str, Any] = {}
+        semantic_report: dict[str, Any] = {
+            "enabled": False,
+            "status": "NOT_APPLICABLE",
+        }
+        translator: DeepSeekTranslator | None = None
         if for_dubbing:
             utterance_settings = dict(self.config.get("dubbing_script") or {})
             source = build_dubbing_utterances(selected_source, utterance_settings)
             if not source:
                 raise ValueError("DUBBING_UTTERANCE_PLAN_EMPTY")
             dubbing_english_path = self.subtitle_dir / "en.dubbing.srt"
-            atomic_write_srt(
-                dubbing_english_path,
-                source,
-                width=int(self.config["english_max_chars_per_line"]),
-                max_lines=int(self.config["max_lines"]),
-            )
             dubbing_plan_path = self.translation_dir / "dubbing_utterance_plan.json"
-            atomic_write_json(
-                dubbing_plan_path,
-                {
-                    "version": 1,
-                    "architecture": "single_script_dual_segmentation",
-                    "source_path": str(selected_path),
-                    "source_segment_count": len(selected_source),
-                    "utterance_count": len(source),
-                    "settings": utterance_settings,
-                    "utterances": [item.to_dict() for item in source],
-                },
-            )
+            semantic_repair_path = self.translation_dir / "semantic_boundary_repair.json"
         glossary = self._load_glossary()
         glossary_path = self.translation_dir / "glossary.json"
         settings = load_llm_settings()
@@ -1232,6 +1228,151 @@ class Stage3Pipeline:
         settings["context_after"] = int(
             os.environ.get("TRANSLATION_CONTEXT_AFTER", self.config["context_after"])
         )
+
+        if for_dubbing:
+            assert dubbing_english_path is not None
+            assert dubbing_plan_path is not None
+            semantic_enabled = bool(
+                utterance_settings.get("semantic_boundary_repair_enabled", True)
+            )
+            semantic_report = {
+                "enabled": semantic_enabled,
+                "status": "DISABLED" if not semantic_enabled else "PENDING",
+                "candidate_count": 0,
+                "merged_boundary_count": 0,
+            }
+            if semantic_enabled and allow_paid_api:
+                if not settings["api_key"]:
+                    raise TranslationError(
+                        f'--allow-paid-api requires {settings["key_env"]} in the environment'
+                    )
+                semantic_meta = {
+                    "version": 1,
+                    "source_hash": selected_hash,
+                    "settings_hash": hash_config(utterance_settings),
+                    "provider": settings["provider"],
+                    "model": settings["model"],
+                }
+                semantic_cached = False
+                if not force and semantic_repair_path is not None and semantic_repair_path.is_file():
+                    try:
+                        cached_payload = json.loads(
+                            semantic_repair_path.read_text(encoding="utf-8-sig")
+                        )
+                    except (OSError, ValueError):
+                        cached_payload = {}
+                    if (
+                        all(cached_payload.get(key) == value for key, value in semantic_meta.items())
+                        and cached_payload.get("status") == "COMPLETED"
+                        and dubbing_english_path.is_file()
+                        and cached_payload.get("english_output_hash") == sha256_file(dubbing_english_path)
+                    ):
+                        source = read_srt(dubbing_english_path)
+                        semantic_report = dict(cached_payload.get("report") or {})
+                        semantic_report["checkpoint_reused"] = True
+                        semantic_cached = bool(source)
+                if not semantic_cached:
+                    candidates = suspicious_boundary_candidates(source, utterance_settings)
+                    semantic_report["candidate_count"] = len(candidates)
+                    if candidates:
+                        translator = DeepSeekTranslator(self.config, self.translation_dir)
+                        payload = translator.request_json_object(
+                            build_semantic_boundary_messages(candidates),
+                            purpose="dubbing semantic boundary repair",
+                            response_filename="semantic_boundary_repair_raw.json",
+                        )
+                        raw_rows = payload.get("boundaries")
+                        if not isinstance(raw_rows, list):
+                            raise TranslationError(
+                                "DUBBING_SEMANTIC_BOUNDARY_REPAIR_INVALID: missing boundaries array"
+                            )
+                        expected = {int(row["left_id"]) for row in candidates}
+                        decisions: dict[int, bool] = {}
+                        for row in raw_rows:
+                            if not isinstance(row, dict) or "left_id" not in row or "merge" not in row:
+                                continue
+                            try:
+                                left_id = int(row["left_id"])
+                            except (TypeError, ValueError):
+                                continue
+                            if left_id in expected:
+                                raw_merge = row["merge"]
+                                if isinstance(raw_merge, bool):
+                                    merge = raw_merge
+                                elif isinstance(raw_merge, (int, float)) and raw_merge in {0, 1}:
+                                    merge = bool(raw_merge)
+                                elif isinstance(raw_merge, str) and raw_merge.strip().lower() in {"true", "false"}:
+                                    merge = raw_merge.strip().lower() == "true"
+                                else:
+                                    continue
+                                decisions[left_id] = merge
+                        if set(decisions) != expected:
+                            missing = sorted(expected - set(decisions))
+                            raise TranslationError(
+                                "DUBBING_SEMANTIC_BOUNDARY_REPAIR_INVALID: "
+                                f"missing candidate decisions {missing}"
+                            )
+                        source, repair_details = apply_semantic_boundary_decisions(
+                            source, decisions, utterance_settings
+                        )
+                        semantic_report = {
+                            "enabled": True,
+                            "status": "COMPLETED",
+                            **repair_details,
+                            "decision_count": len(decisions),
+                        }
+                    else:
+                        semantic_report = {
+                            "enabled": True,
+                            "status": "COMPLETED",
+                            "candidate_count": 0,
+                            "decision_count": 0,
+                            "merged_boundary_count": 0,
+                            "merged_boundaries": [],
+                            "remaining_suspicious_count": 0,
+                            "remaining_suspicious": [],
+                        }
+                    atomic_write_srt(
+                        dubbing_english_path,
+                        source,
+                        width=int(self.config["english_max_chars_per_line"]),
+                        max_lines=int(self.config["max_lines"]),
+                    )
+                    if semantic_repair_path is not None:
+                        atomic_write_json(
+                            semantic_repair_path,
+                            {
+                                **semantic_meta,
+                                "status": "COMPLETED",
+                                "english_output_path": str(dubbing_english_path),
+                                "english_output_hash": sha256_file(dubbing_english_path),
+                                "report": semantic_report,
+                            },
+                        )
+            else:
+                if semantic_enabled:
+                    semantic_report["status"] = "NOT_RUN_NO_PAID_API"
+                atomic_write_srt(
+                    dubbing_english_path,
+                    source,
+                    width=int(self.config["english_max_chars_per_line"]),
+                    max_lines=int(self.config["max_lines"]),
+                )
+
+            atomic_write_json(
+                dubbing_plan_path,
+                {
+                    "version": 2,
+                    "architecture": "single_script_dual_segmentation",
+                    "source_path": str(selected_path),
+                    "source_segment_count": len(selected_source),
+                    "utterance_count": len(source),
+                    "settings": utterance_settings,
+                    "semantic_boundary_repair": semantic_report,
+                    "utterances": [item.to_dict() for item in source],
+                },
+            )
+
         batch_count = math.ceil(len(source) / settings["batch_size"])
         timeline_summary = {
             "first_start": source[0].start,
@@ -1382,7 +1523,8 @@ class Stage3Pipeline:
             return report
 
         metadata = _media_metadata(self.video_dir)
-        translator = DeepSeekTranslator(self.config, self.translation_dir)
+        if translator is None:
+            translator = DeepSeekTranslator(self.config, self.translation_dir)
         translation_options = {
             "pass_name": "raw",
             "force": force,
@@ -1499,6 +1641,7 @@ class Stage3Pipeline:
             for optional_path in (
                 dubbing_english_path,
                 dubbing_plan_path,
+                semantic_repair_path,
                 dubbing_chinese_path,
                 canonical_script_path,
             ):

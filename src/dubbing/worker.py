@@ -43,6 +43,7 @@ def _run_request(payload: dict[str, Any], pool: WarmVoxCPM2Pool) -> dict[str, An
     pipeline_kwargs: dict[str, Any] = {
         "python_executable": Path(sys.executable),
         "synthesizer_factory": pool.acquire,
+        "allow_paid_api": bool(payload.get("allow_paid_api")),
     }
     # The control panel performs the real TorchCodec/FFmpeg preflight before
     # dispatching a request to the persistent worker.  Re-running that probe

@@ -54,7 +54,21 @@ def validate_dubbing_config(payload: dict[str, Any]) -> None:
     _validate_range(timing, "region_internal_gap_ms", 0.0, 1000.0)
     _validate_range(timing, "region_boundary_gap_ms", 0.0, 2000.0)
     _validate_range(timing, "max_alignment_shift_ms", 0.0, 10000.0)
+    _validate_range(timing, "soft_alignment_shift_ms", 0.0, 10000.0)
+    _validate_range(timing, "duration_rewrite_max_passes", 0.0, 5.0)
+    _validate_range(timing, "duration_rewrite_batch_max", 1.0, 200.0)
+    _validate_range(timing, "duration_rewrite_trigger_ratio", 1.0, 3.0)
+    _validate_range(timing, "duration_rewrite_target_ratio", 0.5, 1.5)
+    _validate_range(timing, "duration_rewrite_timeout_seconds", 10.0, 600.0)
     _validate_range(timing, "overlap_tolerance_ms", 0.0, 250.0)
+    reference = (
+        payload.get("reference") if isinstance(payload.get("reference"), dict) else {}
+    )
+    _validate_range(reference, "quality_candidate_count", 1.0, 200.0)
+    _validate_range(reference, "quality_min_words", 1.0, 100.0)
+    _validate_range(reference, "quality_max_words", 1.0, 200.0)
+    _validate_range(reference, "quality_max_special_token_ratio", 0.0, 1.0)
+    _validate_range(reference, "quality_timeout_seconds", 10.0, 600.0)
     mix = payload.get("mix") if isinstance(payload.get("mix"), dict) else {}
     _validate_range(mix, "background_duck_db", 0.0, 18.0)
     _validate_range(mix, "duck_attack_ms", 0.0, 2000.0)

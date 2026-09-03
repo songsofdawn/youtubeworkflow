@@ -387,3 +387,28 @@ class RealFFmpegAudioSmokeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_soft_alignment_shift_marks_duration_rewrite_candidate_without_hard_review() -> None:
+    rows, qc = schedule_speech_regions(
+        [
+            {"index": 1, "start": 0.0, "end": 1.0, "spoken_duration": 1.0},
+            {"index": 2, "start": 1.02, "end": 2.0, "spoken_duration": 1.5},
+            {"index": 3, "start": 2.02, "end": 3.0, "spoken_duration": 0.5},
+        ],
+        media_duration=4.0,
+        region_max_gap=0.5,
+        internal_gap=0.04,
+        boundary_gap=0.05,
+        max_extension=1.0,
+        max_stretch_ratio=1.15,
+        soft_alignment_shift=0.5,
+        max_alignment_shift=0.75,
+        duration_rewrite_trigger_ratio=1.15,
+        duration_rewrite_target_ratio=1.05,
+    )
+
+    assert any(row["duration_rewrite_required"] for row in rows)
+    assert qc["duration_rewrite_candidate_count"] >= 1
+    assert qc["hard_alignment_shift_limit"] == 0.75
+    assert qc["soft_alignment_shift_limit"] == 0.5

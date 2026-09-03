@@ -723,6 +723,71 @@ class LLMTranslator:
             ) from exc
         return translations, usage, json.dumps(payload, ensure_ascii=False), finish_reason
 
+    def request_json_object(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        purpose: str = "auxiliary",
+        response_filename: str | None = None,
+    ) -> dict[str, Any]:
+        """Run one structured auxiliary LLM request with normal retry policy.
+
+        This is used by dubbing semantic-boundary repair and canonical duration
+        rewrite so they share the exact provider/thinking/retry behavior of the
+        translation path without pretending their payload is a translation batch.
+        """
+
+        attempts = 0
+        failures: dict[str, int] = {}
+        degraded = False
+        while True:
+            attempts += 1
+            try:
+                content, usage, finish_reason = self._request_content(
+                    messages, degraded=degraded
+                )
+                try:
+                    payload = _extract_json(content)
+                except TranslationError as exc:
+                    truncated = finish_reason in {"length", "max_tokens"}
+                    raise ResponsePayloadError(
+                        "API returned truncated JSON" if truncated else str(exc),
+                        reason="truncated_json" if truncated else "invalid_json",
+                        usage=usage,
+                        finish_reason=finish_reason,
+                    ) from exc
+                self._add_usage(self.usage, usage)
+                if response_filename:
+                    response_path = self.response_dir / response_filename
+                    atomic_write_json(
+                        response_path,
+                        {
+                            "purpose": purpose,
+                            "attempts": attempts,
+                            "usage": usage,
+                            "payload": payload,
+                        },
+                    )
+                return payload
+            except Exception as exc:
+                if self.provider.id == "deepseek" and isinstance(exc, ResponsePayloadError):
+                    degraded = True
+                decision = self._retry_decision(exc, failures)
+                if decision is None:
+                    raise TranslationError(
+                        f"{purpose} request failed after {attempts} attempt(s): {exc}"
+                    ) from exc
+                kind, wait_seconds, failure_number, maximum = decision
+                LOGGER.warning(
+                    "AI API %s during %s; retrying in %.1fs (%d/%d)",
+                    kind,
+                    purpose,
+                    wait_seconds,
+                    failure_number,
+                    maximum,
+                )
+                self.sleeper(wait_seconds)
+
     def recommend_publish_metadata(
         self,
         metadata: dict[str, Any],

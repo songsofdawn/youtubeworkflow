@@ -12,8 +12,8 @@
   "default_line": "",
   "upload_limit": 3,
   "publish_min_interval_seconds": 60,
-  "publish_daily_limit": 20,
-  "publish_rate_limit_cooldown_seconds": 21600,
+  "publish_daily_limit": 50,
+  "publish_rate_limit_cooldown_seconds": 86400,
   "bypass_system_proxy_for_upload": true,
   "transient_retry_delays_seconds": [
     3,
@@ -25,9 +25,9 @@
     "bda2",
     "tx"
   ],
-  "default_copyright": 2,
+  "default_copyright": 1,
   "default_only_self": false,
-  "default_no_reprint": true,
+  "default_no_reprint": false,
   "default_title_prefix": "",
   "description_disclaimer": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。",
   "description_original_heading": "【原视频简介】"

@@ -18,7 +18,15 @@
     "maximum_seconds": 10.0,
     "skip_intro_seconds": 3.0,
     "maximum_continuity_gap_seconds": 0.6,
-    "use_prompt_transcript": true
+    "use_prompt_transcript": true,
+    "quality_gate_enabled": true,
+    "quality_candidate_count": 20,
+    "quality_min_words": 8,
+    "quality_max_words": 34,
+    "quality_max_special_token_ratio": 0.35,
+    "quality_require_sentence_end": true,
+    "quality_fallback_reference_only": true,
+    "quality_timeout_seconds": 120
   },
   "tts": {
     "cfg_value": 2.0,
@@ -43,8 +51,15 @@
     "region_max_gap_ms": 650,
     "region_internal_gap_ms": 60,
     "region_boundary_gap_ms": 80,
-    "max_alignment_shift_ms": 1500,
-    "overlap_tolerance_ms": 20
+    "max_alignment_shift_ms": 750,
+    "overlap_tolerance_ms": 20,
+    "soft_alignment_shift_ms": 500,
+    "duration_rewrite_enabled": true,
+    "duration_rewrite_max_passes": 2,
+    "duration_rewrite_trigger_ratio": 1.15,
+    "duration_rewrite_target_ratio": 1.05,
+    "duration_rewrite_timeout_seconds": 180,
+    "duration_rewrite_batch_max": 48
   },
   "mix": {
     "background_duck_db": 6.0,

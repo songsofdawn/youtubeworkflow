@@ -96,3 +96,42 @@ def test_comma_visual_break_is_remerged_for_speech() -> None:
 
     assert len(result) == 1
     assert result[0].text == "The important thing is, we need to test it first."
+
+
+def test_semantic_boundary_prefilter_flags_false_period_fragments() -> None:
+    from src.stage3.dubbing_script import suspicious_boundary_candidates
+
+    source = [
+        segment(1, 0.0, 0.8, "The most."),
+        segment(2, 0.82, 1.5, "Overlooked AI."),
+        segment(3, 1.52, 2.0, "Stock."),
+        segment(4, 2.5, 3.0, "Wow!"),
+    ]
+
+    candidates = suspicious_boundary_candidates(source)
+    left_ids = {item["left_id"] for item in candidates}
+
+    assert 1 in left_ids
+    assert 2 in left_ids
+    assert 4 not in left_ids
+
+
+def test_semantic_boundary_decisions_merge_without_preserving_fake_period() -> None:
+    from src.stage3.dubbing_script import apply_semantic_boundary_decisions
+
+    source = [
+        segment(1, 0.0, 0.8, "The most."),
+        segment(2, 0.82, 1.5, "Overlooked AI."),
+        segment(3, 1.52, 2.0, "Stock."),
+    ]
+
+    repaired, report = apply_semantic_boundary_decisions(
+        source,
+        {1: True, 2: True},
+        {"semantic_hard_max_duration_seconds": 10.5},
+    )
+
+    assert len(repaired) == 1
+    assert repaired[0].text == "The most Overlooked AI Stock."
+    assert repaired[0].source_segment_ids == [1, 2, 3]
+    assert report["merged_boundary_count"] == 2

@@ -173,7 +173,10 @@ def schedule_speech_regions(
     boundary_gap: float = 0.05,
     max_extension: float = 1.0,
     max_stretch_ratio: float = 1.3,
-    max_alignment_shift: float = 1.5,
+    max_alignment_shift: float = 0.75,
+    soft_alignment_shift: float = 0.5,
+    duration_rewrite_trigger_ratio: float = 1.15,
+    duration_rewrite_target_ratio: float = 1.05,
     overlap_tolerance: float = 0.02,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Build a non-overlapping TTS schedule without changing subtitle timing.
@@ -199,6 +202,9 @@ def schedule_speech_regions(
     extension = max(0.0, float(max_extension))
     speed_limit = max(1.0, float(max_stretch_ratio))
     shift_limit = max(0.0, float(max_alignment_shift))
+    soft_shift_limit = min(shift_limit, max(0.0, float(soft_alignment_shift)))
+    rewrite_trigger = max(1.0, float(duration_rewrite_trigger_ratio))
+    rewrite_target_ratio = max(0.5, min(float(duration_rewrite_target_ratio), rewrite_trigger))
     tolerance = max(0.0, float(overlap_tolerance))
     groups = _group_rows(rows, max_gap)
     scheduled: list[dict[str, Any]] = []
@@ -252,7 +258,62 @@ def schedule_speech_regions(
             reasons.append("ALIGNMENT_SHIFT_EXCEEDED")
         if starts_before_region:
             reasons.append("REGION_START_UNDERFLOW")
-        needs_review = bool(reasons)
+
+        rewrite_flags: list[bool] = []
+        local_budgets: list[float] = []
+        local_required_speeds: list[float] = []
+        rewrite_targets: list[float] = []
+        for offset, row in enumerate(group):
+            local_deadline = (
+                float(group[offset + 1]["start"]) - cue_gap
+                if offset + 1 < len(group)
+                else deadline
+            )
+            local_budget = max(0.05, local_deadline - float(row["start"]))
+            local_speed = max(1.0, spoken[offset] / local_budget)
+            target_duration = max(0.05, local_budget * rewrite_target_ratio)
+            rewrite_required = bool(
+                local_speed > rewrite_trigger + tolerance
+                or (
+                    shifts[offset] > soft_shift_limit + tolerance
+                    and spoken[offset] > target_duration + tolerance
+                )
+            )
+            local_budgets.append(local_budget)
+            local_required_speeds.append(local_speed)
+            rewrite_targets.append(target_duration)
+            rewrite_flags.append(rewrite_required)
+
+        # A region may still drift even when no single cue exceeds the local
+        # ratio trigger. In that case nominate one pressure source so the next
+        # canonical-rewrite pass can recover timing instead of propagating the
+        # shift through the whole region.
+        if alignment_exceeded and not any(rewrite_flags) and group:
+            pressure_index = max(
+                range(len(group)),
+                key=lambda idx: (local_required_speeds[idx], spoken[idx]),
+            )
+            recovery = max(0.0, max_abs_shift - soft_shift_limit)
+            pressure_target = max(
+                0.2,
+                min(
+                    rewrite_targets[pressure_index],
+                    spoken[pressure_index] - recovery,
+                ),
+            )
+            if pressure_target + tolerance < spoken[pressure_index]:
+                rewrite_targets[pressure_index] = pressure_target
+                rewrite_flags[pressure_index] = True
+
+        if any(rewrite_flags):
+            reasons.append("DURATION_REWRITE_REQUIRED")
+        needs_review = bool(
+            any(reason in reasons for reason in (
+                "REGION_DURATION_OVERFLOW",
+                "ALIGNMENT_SHIFT_EXCEEDED",
+                "REGION_START_UNDERFLOW",
+            ))
+        )
 
         for offset, row in enumerate(group):
             item = dict(row)
@@ -264,6 +325,13 @@ def schedule_speech_regions(
                 schedule_region=group_index,
                 schedule_needs_review=needs_review,
                 schedule_reasons=list(reasons),
+                local_available_duration=local_budgets[offset],
+                local_required_speed=local_required_speeds[offset],
+                duration_rewrite_required=rewrite_flags[offset],
+                duration_rewrite_target_duration=rewrite_targets[offset],
+                soft_alignment_shift_exceeded=bool(
+                    abs(shifts[offset]) > soft_shift_limit + tolerance
+                ),
             )
             scheduled.append(item)
         previous_scheduled_end = max(previous_scheduled_end, scheduled_end)
@@ -281,6 +349,9 @@ def schedule_speech_regions(
                 "speed_factor": speed,
                 "scheduled_end": scheduled_end,
                 "max_alignment_shift": max_abs_shift,
+                "soft_alignment_shift_limit": soft_shift_limit,
+                "hard_alignment_shift_limit": shift_limit,
+                "duration_rewrite_candidate_count": sum(1 for value in rewrite_flags if value),
                 "needs_review": needs_review,
                 "reasons": reasons,
             }
@@ -306,6 +377,11 @@ def schedule_speech_regions(
         "max_required_speed_factor": max((float(item["required_speed_factor"]) for item in region_summaries), default=1.0),
         "max_applied_speed_factor": max((float(item["speed_factor"]) for item in region_summaries), default=1.0),
         "max_alignment_shift": max((float(item["max_alignment_shift"]) for item in region_summaries), default=0.0),
+        "soft_alignment_shift_limit": soft_shift_limit,
+        "hard_alignment_shift_limit": shift_limit,
+        "duration_rewrite_candidate_count": sum(
+            1 for item in scheduled if item.get("duration_rewrite_required")
+        ),
         "final_speech_end": final_end,
         "media_duration": duration_limit,
         "no_voice_overlap": all(

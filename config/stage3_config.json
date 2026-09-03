@@ -104,6 +104,13 @@
     "short_standalone_max_words": 4,
     "max_source_words": 42,
     "max_source_chars": 240,
-    "unfinished_merge_gap_seconds": 1.0
+    "unfinished_merge_gap_seconds": 1.0,
+    "semantic_boundary_repair_enabled": true,
+    "semantic_candidate_max_gap_seconds": 0.9,
+    "semantic_candidate_short_seconds": 1.8,
+    "semantic_candidate_short_words": 6,
+    "semantic_hard_max_duration_seconds": 10.5,
+    "semantic_max_source_words": 54,
+    "semantic_max_source_chars": 320
   }
 }
