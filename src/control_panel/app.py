@@ -312,8 +312,18 @@ class ControlPanelApp:
     def search(self, query: str, limit: int, order: str) -> list[dict[str, Any]]:
         return self.searcher.search(query, limit, order)
 
-    def discovery_catalog(self) -> list[dict[str, Any]]:
-        return self.searcher.discovery_catalog()
+    def discovery_catalog(
+        self,
+        *,
+        include_details: bool = False,
+    ) -> list[dict[str, Any]]:
+        return self.searcher.discovery_catalog(include_details=include_details)
+
+    def save_discovery_catalog(
+        self,
+        packs: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        return self.searcher.save_discovery_catalog(packs)
 
     def discover(
         self,
@@ -322,6 +332,7 @@ class ControlPanelApp:
         per_pack: int,
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
+        ranking_mode: str = "hot",
     ) -> dict[str, Any]:
         existing_tasks = self.scanner.scan()
         known_video_ids = {
@@ -342,6 +353,7 @@ class ControlPanelApp:
                 if maximum_duration_minutes is not None
                 else None
             ),
+            ranking_mode=ranking_mode,
         )
 
     def queue_discovery(
@@ -351,6 +363,7 @@ class ControlPanelApp:
         per_pack: int,
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
+        ranking_mode: str = "hot",
     ) -> dict[str, Any]:
         selected_ids = list(dict.fromkeys(str(value) for value in pack_ids))
         catalog_ids = {str(item["id"]) for item in self.discovery_catalog()}
@@ -363,6 +376,9 @@ class ControlPanelApp:
             raise ValueError("发现时间范围只支持 24、72、168、336 或 720 小时")
         if not 1 <= int(per_pack) <= 100:
             raise ValueError("每个领域的结果数量必须在 1 到 100 之间")
+        ranking_mode = str(ranking_mode or "hot").strip().casefold()
+        if ranking_mode not in {"hot", "potential"}:
+            raise ValueError("筛选模式只支持“热门优先”或“内容潜力优先”")
         configured_maximum_duration_minutes = int(
             self.searcher.discovery_settings().get("maximum_duration_minutes") or 45
         )
@@ -388,6 +404,7 @@ class ControlPanelApp:
             "per_pack": int(per_pack),
             "minimum_duration_seconds": int(minimum_duration_minutes) * 60,
             "maximum_duration_seconds": requested_maximum_duration_minutes * 60,
+            "ranking_mode": ranking_mode,
             "known_video_ids": [
                 str(task.get("video_id") or "")
                 for task in existing_tasks
@@ -429,6 +446,7 @@ class ControlPanelApp:
             ),
             progress=progress,
             cancelled=cancelled,
+            ranking_mode=str(payload.get("ranking_mode") or "hot"),
         )
 
     def discovery_job_result(self, job_id: str) -> dict[str, Any]:

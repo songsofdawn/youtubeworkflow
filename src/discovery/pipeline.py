@@ -181,7 +181,10 @@ class DiscoveryPipeline:
             ),
             "maximum_duration_minutes": max(
                 1,
-                int(config.get("max_duration_seconds", 2700)) // 60,
+                int(config.get("discovery_max_duration_seconds", 10800)) // 60,
+            ),
+            "default_ranking_mode": str(
+                config.get("discovery_default_ranking_mode", "hot")
             ),
             "feedback": self.store.feedback_summary(),
         }
@@ -278,6 +281,7 @@ class DiscoveryPipeline:
         hits: dict[str, list[dict[str, Any]]],
         ordered_ids: list[str],
         recent_titles: dict[str, list[str]],
+        lane: str = "standard",
         page_token: str | None = None,
         page_index: int = 0,
         video_duration: str | None = None,
@@ -320,6 +324,7 @@ class DiscoveryPipeline:
                 "search_rank": page_index * pool_size + rank,
                 "search_order": order,
                 "query": query,
+                "recall_lane": lane,
                 "search_page": page_index + 1,
                 "video_duration_filter": video_duration or "any",
             }
@@ -466,6 +471,7 @@ class DiscoveryPipeline:
         known_titles: list[str] | None = None,
         minimum_duration_seconds: int | None = None,
         maximum_duration_seconds: int | None = None,
+        ranking_mode: str = "hot",
         now: datetime | None = None,
         progress: ProgressCallback | None = None,
         cancelled: CancellationCallback | None = None,
@@ -475,6 +481,9 @@ class DiscoveryPipeline:
         now_utc = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         pack_by_id = {str(pack["id"]): pack for pack in packs}
         selected_packs = [pack_by_id[pack_id] for pack_id in selected_ids]
+        ranking_mode = str(ranking_mode or "hot").strip().casefold()
+        if ranking_mode not in {"hot", "potential"}:
+            raise ValueError("智能发现排序模式只支持 hot 或 potential")
         settings = OllamaSettings.from_config(config)
         llm = self._client(settings)
         warnings: list[str] = []
@@ -501,7 +510,9 @@ class DiscoveryPipeline:
         )
         if not 60 <= minimum_duration <= 10800:
             raise ValueError("智能发现候选最小时长必须在 1 到 180 分钟之间")
-        configured_maximum_duration = int(config.get("max_duration_seconds", 2700))
+        configured_maximum_duration = int(
+            config.get("discovery_max_duration_seconds", 10800)
+        )
         maximum_duration = int(
             maximum_duration_seconds
             if maximum_duration_seconds is not None
@@ -511,9 +522,8 @@ class DiscoveryPipeline:
             raise ValueError("智能发现候选最大时长超出配置允许范围")
         if minimum_duration > maximum_duration:
             raise ValueError("智能发现候选最小时长不能大于候选最大时长")
-        duration_filters: list[str | None] = (
-            ["medium", "long"] if minimum_duration >= 240 else [None]
-        )
+        # V4: one broad search stream; exact duration is filtered after videos.list.
+        duration_filters: list[str | None] = [None]
         published_after = (now_utc - timedelta(hours=hours)).isoformat().replace("+00:00", "Z")
         published_before = now_utc.isoformat().replace("+00:00", "Z")
         pool_size = min(
@@ -524,13 +534,20 @@ class DiscoveryPipeline:
                 20,
             ),
         )
-        raw_orders = config.get("discovery_recall_orders", ["viewCount"])
+        raw_orders = config.get(
+            "discovery_recall_orders",
+            ["viewCount", "date", "relevance"],
+        )
         recall_orders = [
             str(value)
             for value in raw_orders
             if str(value) in {"viewCount", "date", "relevance"}
-        ] if isinstance(raw_orders, list) else ["viewCount"]
-        recall_orders = list(dict.fromkeys(recall_orders)) or ["viewCount"]
+        ] if isinstance(raw_orders, list) else ["viewCount", "date", "relevance"]
+        recall_orders = list(dict.fromkeys(recall_orders)) or [
+            "viewCount",
+            "date",
+            "relevance",
+        ]
         requested_recall_target = max(
             1,
             min(int(config.get("discovery_recall_target", 1000)), 5000),
@@ -565,19 +582,89 @@ class DiscoveryPipeline:
             f"正在深度召回候选，每领域目标 {per_pack_recall_target} 条",
             6,
         )
+        max_supplemental_queries = max(
+            0,
+            min(
+                int(config.get("discovery_max_supplemental_queries", 3)),
+                5,
+            ),
+        )
+        pack_query_plan: dict[str, dict[str, Any]] = {}
+        hot_lane_queries: dict[str, str] = {}
+        for pack in selected_packs:
+            pack_id = str(pack["id"])
+            query_parts = [
+                value.strip()
+                for value in str(pack.get("query") or "").split("|")
+                if value.strip()
+            ]
+            if not query_parts:
+                raise ValueError(f"领域 {pack_id} 缺少主搜索词")
+            primary_query = query_parts[0]
+            supplemental_queries = query_parts[1 : 1 + max_supplemental_queries]
+            pack_query_plan[pack_id] = {
+                "primary": primary_query,
+                "supplemental": supplemental_queries,
+            }
+            hot_lane_queries[pack_id] = primary_query
+
+        adaptive_page2_tokens: dict[tuple[str, str], str | None] = {}
+        for hot_order in ("viewCount", "date"):
+            for pack in selected_packs:
+                if request_count >= max_requests:
+                    break
+                self._cancel(cancelled)
+                pack_id = str(pack["id"])
+                hot_query = hot_lane_queries.get(pack_id, "")
+                if not hot_query:
+                    continue
+                request_count += 1
+                search_requests_by_pack[pack_id] += 1
+                try:
+                    next_page_token, _, page_video_ids = self._search_once(
+                        youtube,
+                        pack=pack,
+                        query=hot_query,
+                        order=hot_order,
+                        pool_size=pool_size,
+                        published_after=published_after,
+                        published_before=published_before,
+                        config=config,
+                        hits=hits,
+                        ordered_ids=ordered_ids,
+                        recent_titles=recent_titles,
+                        lane="hot",
+                        video_duration=duration_filters[0],
+                    )
+                except SearchQuotaExceeded:
+                    quota_exhausted = True
+                    if not ordered_ids:
+                        raise
+                    warnings.append(
+                        "YouTube API 配额在热门召回通道中耗尽，已使用当前召回结果继续筛选"
+                    )
+                    break
+                adaptive_page2_tokens[(pack_id, hot_order)] = next_page_token
+                if not page_video_ids:
+                    zero_result_searches_by_pack[pack_id] += 1
+                recalled_by_pack[pack_id].update(page_video_ids)
+            if quota_exhausted or request_count >= max_requests:
+                break
+
         for index, pack in enumerate(selected_packs):
-            if request_count >= max_requests:
+            if quota_exhausted or request_count >= max_requests:
                 break
             self._cancel(cancelled)
             pack_id = str(pack["id"])
+            primary_query = str(pack_query_plan[pack_id]["primary"])
             request_count += 1
             search_requests_by_pack[pack_id] += 1
             try:
                 next_page_token, _, page_video_ids = self._search_once(
                     youtube,
                     pack=pack,
-                    query=str(pack["query"]),
-                    order=recall_orders[0],
+                    query=primary_query,
+                    order="relevance",
                     pool_size=pool_size,
                     published_after=published_after,
                     published_before=published_before,
@@ -597,8 +684,8 @@ class DiscoveryPipeline:
                 zero_result_searches_by_pack[pack_id] += 1
             recalled_by_pack[pack_id].update(page_video_ids)
             initial_streams[pack_id] = {
-                "query": str(pack["query"]),
-                "order": recall_orders[0],
+                "query": primary_query,
+                "order": "relevance",
                 "video_duration": duration_filters[0],
                 "page_token": next_page_token,
                 "page_index": 1,
@@ -611,8 +698,9 @@ class DiscoveryPipeline:
                 6 + int(6 * (index + 1) / max(1, len(selected_packs))),
             )
 
+        # V4: deterministic recall; LLM no longer plans search phrases.
         planned_queries: dict[str, list[str] | str] = {}
-        if llm_ready and settings.query_planning_enabled and not quota_exhausted:
+        if False and llm_ready and settings.query_planning_enabled and not quota_exhausted:
             self._notify(progress, "本地 AI 正在规划补充搜索词", 13)
             try:
                 planned_queries = llm.plan_queries(selected_packs, recent_titles, preferences)
@@ -651,52 +739,23 @@ class DiscoveryPipeline:
                     }
                 )
 
-            base_query = str(pack["query"])
-            seed_queries = [
-                value.strip()
-                for value in base_query.split("|")
-                if value.strip()
+            query_plan = pack_query_plan[pack_id]
+            supplemental_queries = [
+                str(value)
+                for value in query_plan.get("supplemental", [])
+                if str(value).strip()
             ]
-            raw_planned_queries = planned_queries.get(pack_id, [])
-            if isinstance(raw_planned_queries, str):
-                pack_planned_queries = [raw_planned_queries]
-            else:
-                pack_planned_queries = [
-                    str(value)
-                    for value in raw_planned_queries
-                    if str(value).strip()
-                ]
-            # Fixed, user-editable seed queries are the reliable recall floor.
-            # Search them before LLM-planned phrases so a few narrow or empty AI
-            # queries cannot consume the shared daily request budget and starve
-            # whole packs.  Looping by duration/order first spreads the first
-            # request round across different topics instead of deep-paging one.
-            for video_duration in duration_filters:
-                for order in recall_orders:
-                    for query in dict.fromkeys(seed_queries):
-                        add_stream(query, order, video_duration)
-            for video_duration in duration_filters:
-                for order in recall_orders:
-                    for query in dict.fromkeys(pack_planned_queries):
-                        add_stream(query, order, video_duration)
-            for video_duration in duration_filters:
-                for order in recall_orders:
-                    if order != recall_orders[0] or video_duration != duration_filters[0]:
-                        add_stream(base_query, order, video_duration)
-            # Pagination of the broad initial OR query is useful, but it comes
-            # after independent seed coverage to maximize per-pack breadth.
-            initial = initial_streams.get(pack_id)
-            if initial is not None and initial.get("page_token"):
-                add_stream(
-                    str(initial["query"]),
-                    str(initial["order"]),
-                    (
-                        str(initial["video_duration"])
-                        if initial["video_duration"]
-                        else None
-                    ),
-                    initial,
-                )
+            supplemental_orders = config.get(
+                "discovery_supplemental_search_orders",
+                ["viewCount"],
+            )
+            supplemental_order = (
+                str(supplemental_orders[0])
+                if isinstance(supplemental_orders, list) and supplemental_orders
+                else "viewCount"
+            )
+            for query in supplemental_queries:
+                add_stream(query, supplemental_order, None)
             streams_by_pack[pack_id] = streams
 
         while (
@@ -800,6 +859,312 @@ class DiscoveryPipeline:
         self._cancel(cancelled)
         self._notify(progress, f"正在读取 {len(ordered_ids)} 个视频的详细信息", 28)
         resources = get_video_details(youtube, ordered_ids)
+
+        # V4.1 adaptive page-2 recall.
+        adaptive_enabled = bool(
+            config.get("discovery_adaptive_page2_enabled", True)
+        )
+        adaptive_min_unique = max(
+            1,
+            int(config.get("discovery_adaptive_min_unique_candidates", 80)),
+        )
+        adaptive_min_qualified = max(
+            1,
+            int(config.get("discovery_adaptive_min_qualified_candidates", 30)),
+        )
+        raw_adaptive_orders = config.get(
+            "discovery_adaptive_page2_orders",
+            ["viewCount", "date"],
+        )
+        adaptive_orders = [
+            str(value)
+            for value in raw_adaptive_orders
+            if str(value) in {"viewCount", "date"}
+        ] if isinstance(raw_adaptive_orders, list) else ["viewCount", "date"]
+        adaptive_orders = list(dict.fromkeys(adaptive_orders)) or [
+            "viewCount",
+            "date",
+        ]
+        adaptive_max_extra = max(
+            0,
+            min(
+                int(
+                    config.get(
+                        "discovery_adaptive_max_extra_calls_per_pack",
+                        2,
+                    )
+                ),
+                len(adaptive_orders),
+            ),
+        )
+        adaptive_extra_calls_by_pack: Counter[str] = Counter()
+        adaptive_triggered_packs: list[str] = []
+        adaptive_before: dict[str, dict[str, int]] = {}
+        adaptive_after: dict[str, dict[str, int]] = {}
+
+        adaptive_known = {
+            str(value)
+            for value in known_video_ids or set()
+        }
+        adaptive_hard_excludes = [
+            str(value).casefold()
+            for value in config.get("hard_exclude_phrases", [])
+        ]
+        adaptive_strict_english = bool(config.get("english_only", True))
+        adaptive_min_views = _window_threshold(
+            config,
+            "discovery_min_view_count",
+            hours,
+            300,
+        )
+        adaptive_min_vph = _window_threshold(
+            config,
+            "discovery_min_views_per_hour",
+            hours,
+            20,
+        )
+        adaptive_expansion_views = max(
+            1.0,
+            adaptive_min_views
+            * float(
+                config.get(
+                    "discovery_popularity_expansion_view_ratio",
+                    0.4,
+                )
+            ),
+        )
+        adaptive_expansion_vph = max(
+            0.1,
+            adaptive_min_vph
+            * float(
+                config.get(
+                    "discovery_popularity_expansion_vph_ratio",
+                    0.5,
+                )
+            ),
+        )
+        adaptive_reserve_views = max(
+            1.0,
+            adaptive_min_views
+            * float(
+                config.get(
+                    "discovery_popularity_reserve_view_ratio",
+                    0.1,
+                )
+            ),
+        )
+        adaptive_reserve_vph = max(
+            0.1,
+            adaptive_min_vph
+            * float(
+                config.get(
+                    "discovery_popularity_reserve_vph_ratio",
+                    0.15,
+                )
+            ),
+        )
+        adaptive_popularity_mode = str(
+            config.get("discovery_popularity_filter_mode") or "hard"
+        ).casefold()
+
+        def adaptive_candidate_qualified(video_id: str) -> bool:
+            if video_id in adaptive_known:
+                return False
+            item = resources.get(video_id)
+            if not item:
+                return False
+            snippet = item.get("snippet", {})
+            content = item.get("contentDetails", {})
+            statistics = item.get("statistics", {})
+            status = item.get("status", {})
+            published = _published_datetime(snippet.get("publishedAt"))
+            if published is None:
+                return False
+            age_hours = max(
+                0.0,
+                (now_utc - published).total_seconds() / 3600,
+            )
+            if age_hours > hours + 0.05:
+                return False
+            if (
+                snippet.get("liveBroadcastContent", "none") != "none"
+                or str(status.get("privacyStatus") or "public") != "public"
+                or not bool(status.get("embeddable", True))
+            ):
+                return False
+            duration_seconds = parse_iso8601_duration(
+                str(content.get("duration", ""))
+            )
+            if not minimum_duration <= duration_seconds <= maximum_duration:
+                return False
+            title = str(snippet.get("title") or video_id)
+            description = str(snippet.get("description") or "")
+            searchable = f"{title} {description}".casefold()
+            is_short = (
+                duration_seconds
+                <= int(config.get("shorts_max_duration_seconds", 180))
+                and (
+                    "#shorts" in searchable
+                    or " shorts " in f" {searchable} "
+                )
+            )
+            if bool(config.get("exclude_shorts", True)) and is_short:
+                return False
+            if any(
+                phrase in searchable
+                for phrase in adaptive_hard_excludes
+            ):
+                return False
+            has_caption = str(
+                content.get("caption", "")
+            ).casefold() == "true"
+            if adaptive_strict_english:
+                language = assess_language(
+                    snippet,
+                    has_caption,
+                    [
+                        str(value)
+                        for value in config.get("language_markers", [])
+                    ],
+                )
+                if not language["is_english"]:
+                    return False
+            view_count = int(statistics.get("viewCount") or 0)
+            views_per_hour = view_count / max(age_hours, 1.0)
+            strict_pass = (
+                view_count >= adaptive_min_views
+                and views_per_hour >= adaptive_min_vph
+            )
+            expansion_pass = (
+                view_count >= adaptive_expansion_views
+                and views_per_hour >= adaptive_expansion_vph
+            )
+            reserve_pass = (
+                view_count >= adaptive_reserve_views
+                and views_per_hour >= adaptive_reserve_vph
+            )
+            if adaptive_popularity_mode == "hard":
+                return strict_pass
+            if adaptive_popularity_mode == "balanced":
+                return strict_pass or expansion_pass or reserve_pass
+            return True
+
+        def adaptive_pack_counts(pack_id: str) -> dict[str, int]:
+            ids = recalled_by_pack.get(pack_id, set())
+            return {
+                "unique": len(ids),
+                "qualified": sum(
+                    adaptive_candidate_qualified(video_id)
+                    for video_id in ids
+                ),
+            }
+
+        if adaptive_enabled and not quota_exhausted:
+            self._notify(
+                progress,
+                "正在检查是否需要自适应补充第二页",
+                29,
+            )
+            for pack in selected_packs:
+                if request_count >= max_requests:
+                    break
+                pack_id = str(pack["id"])
+                before_counts = adaptive_pack_counts(pack_id)
+                adaptive_before[pack_id] = dict(before_counts)
+
+                needs_more = (
+                    before_counts["unique"] < adaptive_min_unique
+                    or before_counts["qualified"] < adaptive_min_qualified
+                )
+                if not needs_more:
+                    adaptive_after[pack_id] = dict(before_counts)
+                    continue
+
+                adaptive_triggered_packs.append(pack_id)
+                primary_query = str(
+                    pack_query_plan[pack_id]["primary"]
+                )
+
+                for order in adaptive_orders[:adaptive_max_extra]:
+                    if request_count >= max_requests:
+                        break
+                    page_token = adaptive_page2_tokens.get(
+                        (pack_id, order)
+                    )
+                    if not page_token:
+                        continue
+
+                    self._cancel(cancelled)
+                    request_count += 1
+                    search_requests_by_pack[pack_id] += 1
+                    adaptive_extra_calls_by_pack[pack_id] += 1
+                    try:
+                        _, _, page_video_ids = self._search_once(
+                            youtube,
+                            pack=pack,
+                            query=primary_query,
+                            order=order,
+                            pool_size=pool_size,
+                            published_after=published_after,
+                            published_before=published_before,
+                            config=config,
+                            hits=hits,
+                            ordered_ids=ordered_ids,
+                            recent_titles=recent_titles,
+                            page_token=page_token,
+                            page_index=1,
+                            lane="adaptive_page2",
+                            video_duration=None,
+                        )
+                    except SearchQuotaExceeded:
+                        quota_exhausted = True
+                        warnings.append(
+                            "YouTube 今日搜索调用配额在自适应补页时用尽，"
+                            "继续处理已召回候选"
+                        )
+                        break
+
+                    recalled_by_pack[pack_id].update(page_video_ids)
+                    new_ids = [
+                        video_id
+                        for video_id in page_video_ids
+                        if video_id not in resources
+                    ]
+                    if new_ids:
+                        resources.update(
+                            get_video_details(youtube, new_ids)
+                        )
+
+                    current_counts = adaptive_pack_counts(pack_id)
+                    adaptive_after[pack_id] = dict(current_counts)
+
+                    if (
+                        current_counts["unique"] >= adaptive_min_unique
+                        and current_counts["qualified"]
+                        >= adaptive_min_qualified
+                    ):
+                        break
+
+                adaptive_after.setdefault(
+                    pack_id,
+                    adaptive_pack_counts(pack_id),
+                )
+                if quota_exhausted:
+                    break
+
+            if adaptive_triggered_packs:
+                extra_total = sum(
+                    adaptive_extra_calls_by_pack.values()
+                )
+                self._notify(
+                    progress,
+                    (
+                        "自适应补页完成 · "
+                        f"{len(adaptive_triggered_packs)} 个领域触发 · "
+                        f"额外搜索 {extra_total} 次"
+                    ),
+                    31,
+                )
         known = {str(value) for value in known_video_ids or set()}
         local_titles = [str(value) for value in known_titles or [] if str(value).strip()]
         hard_excludes = [str(value).casefold() for value in config.get("hard_exclude_phrases", [])]
@@ -822,6 +1187,22 @@ class DiscoveryPipeline:
             min_vph * float(config.get("discovery_popularity_reserve_vph_ratio", 0.15)),
         )
         popularity_mode = str(config.get("discovery_popularity_filter_mode") or "hard").casefold()
+        hot_min_views = int(
+            _window_threshold(
+                config,
+                "discovery_hot_view_count",
+                hours,
+                100000,
+            )
+        )
+        hot_min_vph = float(
+            _window_threshold(
+                config,
+                "discovery_hot_views_per_hour",
+                hours,
+                5000.0,
+            )
+        )
         strict_english = bool(config.get("english_only", True))
         interest_config = _interest_config(config)
         excluded: Counter[str] = Counter()
@@ -885,6 +1266,18 @@ class DiscoveryPipeline:
             like_count = int(statistics.get("likeCount") or 0)
             comment_count = int(statistics.get("commentCount") or 0)
             views_per_hour = view_count / max(age_hours, 1.0)
+            hot_protected = (
+                view_count >= hot_min_views
+                or views_per_hour >= hot_min_vph
+            )
+            hot_protection_reason = ""
+            if hot_protected:
+                reasons: list[str] = []
+                if view_count >= hot_min_views:
+                    reasons.append(f"播放量 {view_count:,} ≥ {hot_min_views:,}")
+                if views_per_hour >= hot_min_vph:
+                    reasons.append(f"VPH {views_per_hour:,.0f} ≥ {hot_min_vph:,.0f}")
+                hot_protection_reason = "；".join(reasons)
             heat_floor_pass = view_count >= min_views and views_per_hour >= min_vph
             expansion_heat_pass = (
                 view_count >= expansion_min_views
@@ -894,11 +1287,14 @@ class DiscoveryPipeline:
                 view_count >= reserve_min_views
                 and views_per_hour >= reserve_min_vph
             )
-            if popularity_mode == "hard" and not heat_floor_pass:
+            if popularity_mode == "hard" and not heat_floor_pass and not hot_protected:
                 excluded["low_popularity"] += 1
                 continue
             if popularity_mode == "balanced" and not (
-                heat_floor_pass or expansion_heat_pass or reserve_heat_pass
+                heat_floor_pass
+                or expansion_heat_pass
+                or reserve_heat_pass
+                or hot_protected
             ):
                 excluded["low_popularity"] += 1
                 continue
@@ -946,6 +1342,12 @@ class DiscoveryPipeline:
                 "matched_pack_ids": matched_ids,
                 "search_rank": min(int(hit["search_rank"]) for hit in hits[video_id]),
                 "search_source_details": list(hits[video_id]),
+                "hot_lane_hit": any(
+                    str(source.get("recall_lane") or "") == "hot"
+                    for source in hits[video_id]
+                ),
+                "hot_protected": hot_protected,
+                "hot_protection_reason": hot_protection_reason,
                 "seen_in_previous_search": video_id in history,
                 "heat_floor_pass": heat_floor_pass,
                 "heat_tier": (
@@ -992,11 +1394,11 @@ class DiscoveryPipeline:
             row["hot_score"] = round(hot_score, 1)
             row["editorial_prefilter_score"] = round(
                 _clamp(
-                    hot_score * 0.5
-                    + float(row["topic_relevance_score"]) * 0.2
-                    + _clamp(float(row["interest_score"]) * 5) * 0.2
-                    + (100.0 if row["has_caption"] else 35.0) * 0.1
-                    - min(20.0, float(row["boring_penalty"])),
+                    hot_score * 0.70
+                    + float(row["topic_relevance_score"]) * 0.15
+                    + _clamp(float(row["interest_score"]) * 5) * 0.10
+                    + (100.0 if row["has_caption"] else 35.0) * 0.05
+                    - min(12.0, float(row["boring_penalty"])),
                 ),
                 1,
             )
@@ -1128,15 +1530,22 @@ class DiscoveryPipeline:
             else:
                 preference = 50.0
             row["preference_score"] = round(preference, 1)
-            preliminary = (
-                float(row["qualitative_score"]) * 0.52
-                + float(row["growth_score"]) * 0.15
-                + float(row["engagement_score"]) * 0.07
-                + float(row["freshness_score"]) * 0.06
-                + preference * 0.13
-                + (100.0 if row["has_caption"] else 35.0) * 0.04
-                + float(row["topic_relevance_score"]) * 0.03
-            )
+            if ranking_mode == "hot":
+                preliminary = (
+                    float(row["hot_score"]) * 0.70
+                    + float(row["qualitative_score"]) * 0.20
+                    + float(row["topic_relevance_score"]) * 0.10
+                )
+            else:
+                preliminary = (
+                    float(row["qualitative_score"]) * 0.52
+                    + float(row["growth_score"]) * 0.15
+                    + float(row["engagement_score"]) * 0.07
+                    + float(row["freshness_score"]) * 0.06
+                    + preference * 0.13
+                    + (100.0 if row["has_caption"] else 35.0) * 0.04
+                    + float(row["topic_relevance_score"]) * 0.03
+                )
             preliminary -= min(20.0, float(row["boring_penalty"]))
             if row["heat_tier"] == "reserve":
                 preliminary -= float(
@@ -1144,8 +1553,8 @@ class DiscoveryPipeline:
                 )
             elif not row["heat_floor_pass"]:
                 preliminary -= float(config.get("discovery_soft_popularity_penalty", 5))
-            if row["llm_verdict"] == "reject":
-                preliminary -= 22.0
+            if row["llm_verdict"] == "reject" and not row.get("hot_protected"):
+                preliminary -= 12.0 if ranking_mode == "hot" else 22.0
             row["preliminary_score"] = round(_clamp(preliminary), 1)
 
         if llm_ready and settings.visual_enabled and settings.visual_top_n > 0 and rows:
@@ -1199,13 +1608,31 @@ class DiscoveryPipeline:
                 )
                 row["visual_score"] = round(_clamp(visual_score), 1)
                 row["visual_reason"] = str(visual.get("reason_zh") or "")
-                final = float(row["preliminary_score"]) * 0.88 + row["visual_score"] * 0.12
+                if ranking_mode == "hot":
+                    final = (
+                        float(row["preliminary_score"]) * 0.94
+                        + row["visual_score"] * 0.06
+                    )
+                else:
+                    final = (
+                        float(row["preliminary_score"]) * 0.88
+                        + row["visual_score"] * 0.12
+                    )
             else:
                 row["visual_score"] = None
                 row["visual_reason"] = ""
                 final = float(row["preliminary_score"])
+            if ranking_mode == "hot" and row.get("hot_protected"):
+                final = max(final, float(row["hot_score"]))
             row["opportunity_score"] = round(_clamp(final), 1)
             row["selection_reason"] = str(row["llm_reason"])
+            if row.get("hot_protected"):
+                row["selection_reason"] = (
+                    "热门保送（"
+                    + str(row.get("hot_protection_reason") or "达到热度阈值")
+                    + "）："
+                    + row["selection_reason"]
+                )
 
         self._notify(progress, "正在执行多样性重排与配额补位", 90)
         representatives: list[dict[str, Any]] = []
@@ -1316,11 +1743,16 @@ class DiscoveryPipeline:
                 exclude_llm_rejects
                 and row.get("llm_status") == "scored"
                 and row.get("llm_verdict") == "reject"
+                and not row.get("hot_protected")
             ):
                 rejection_reason = "llm_reject"
-            elif row.get("heat_tier") == "expanded" and (
-                row.get("llm_status") != "scored"
-                or row.get("llm_verdict") != "keep"
+            elif (
+                row.get("heat_tier") == "expanded"
+                and not row.get("hot_protected")
+                and (
+                    row.get("llm_status") != "scored"
+                    or row.get("llm_verdict") != "keep"
+                )
             ):
                 rejection_reason = "expansion_quality"
             required_score = (
@@ -1328,7 +1760,11 @@ class DiscoveryPipeline:
                 if row.get("heat_tier") == "expanded"
                 else minimum_opportunity_score
             )
-            if not rejection_reason and float(row["opportunity_score"]) < required_score:
+            if (
+                not rejection_reason
+                and not row.get("hot_protected")
+                and float(row["opportunity_score"]) < required_score
+            ):
                 rejection_reason = "low_opportunity_score"
             if not rejection_reason:
                 row["selection_tier"] = "preferred"
@@ -1349,6 +1785,9 @@ class DiscoveryPipeline:
             pack_id: sorted(
                 [row for row in selection_rows if pack_id in row["matched_pack_ids"]],
                 key=lambda item: (
+                    0
+                    if ranking_mode == "hot" and item.get("hot_protected")
+                    else 1,
                     0 if item.get("selection_tier") == "preferred" else 1,
                     (
                         0
@@ -1359,7 +1798,11 @@ class DiscoveryPipeline:
                         else 2
                     ),
                     bool(item["similar_candidate"]),
-                    -float(item["opportunity_score"]),
+                    -float(
+                        item["hot_score"]
+                        if ranking_mode == "hot"
+                        else item["opportunity_score"]
+                    ),
                 ),
             )
             for pack_id in selected_ids
@@ -1378,8 +1821,12 @@ class DiscoveryPipeline:
 
         def add_candidate(
             pack_id: str,
+            *,
+            hot_only: bool = False,
         ) -> bool:
             for candidate in candidates_by_pack[pack_id]:
+                if hot_only and not candidate.get("hot_protected"):
+                    continue
                 video_id = str(candidate["video_id"])
                 channel = str(candidate["channel_title"]).casefold()
                 semantic = str(candidate["semantic_group"])
@@ -1410,6 +1857,17 @@ class DiscoveryPipeline:
                 selected_ids.index(pack_id),
             ),
         )
+        hot_lane_min_per_pack = max(
+            0,
+            min(
+                per_pack,
+                int(config.get("discovery_hot_lane_min_per_pack", 3)),
+            ),
+        )
+        for _ in range(hot_lane_min_per_pack):
+            for pack_id in pack_fill_order:
+                if len(assigned[pack_id]) < per_pack:
+                    add_candidate(pack_id, hot_only=True)
         for _ in range(per_pack):
             for pack_id in pack_fill_order:
                 if len(assigned[pack_id]) < per_pack:
@@ -1460,7 +1918,45 @@ class DiscoveryPipeline:
             "groups": groups,
             "results": flattened,
             "summary": {
-                "selection_policy_version": 4,
+                "selection_policy_version": 5,
+                "ranking_mode": ranking_mode,
+                "recall_architecture": "broad_primary_v4_1_adaptive",
+                "expected_search_calls_per_pack": int(
+                    config.get("discovery_expected_search_calls_per_pack", 6)
+                ),
+                "maximum_search_calls_per_pack": int(
+                    config.get("discovery_max_search_calls_per_pack", 8)
+                ),
+                "adaptive_page2_enabled": adaptive_enabled,
+                "adaptive_min_unique_candidates": adaptive_min_unique,
+                "adaptive_min_qualified_candidates": adaptive_min_qualified,
+                "adaptive_triggered_packs": list(adaptive_triggered_packs),
+                "adaptive_extra_calls_total": sum(
+                    adaptive_extra_calls_by_pack.values()
+                ),
+                "adaptive_extra_calls_by_pack": dict(
+                    adaptive_extra_calls_by_pack
+                ),
+                "adaptive_counts_before": adaptive_before,
+                "adaptive_counts_after": adaptive_after,
+                "primary_queries": {
+                    pack_id: str(plan.get("primary") or "")
+                    for pack_id, plan in pack_query_plan.items()
+                },
+                "supplemental_queries": {
+                    pack_id: list(plan.get("supplemental") or [])
+                    for pack_id, plan in pack_query_plan.items()
+                },
+                "recall_orders": recall_orders,
+                "hot_lane_queries": hot_lane_queries,
+                "hot_minimum_view_count": hot_min_views,
+                "hot_minimum_views_per_hour": hot_min_vph,
+                "hot_protected_eligible_count": sum(
+                    bool(row.get("hot_protected")) for row in rows
+                ),
+                "hot_protected_result_count": sum(
+                    bool(row.get("hot_protected")) for row in flattened
+                ),
                 "selected_pack_count": len(selected_ids),
                 "search_request_count": request_count,
                 "search_request_limit": max_requests,

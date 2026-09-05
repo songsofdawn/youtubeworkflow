@@ -42,11 +42,12 @@
   "discovery_engagement_confidence_views": 500,
   "discovery_recall_orders": [
     "viewCount",
+    "date",
     "relevance"
   ],
-  "discovery_max_search_requests": 100,
-  "discovery_recall_candidates_per_result": 10,
-  "discovery_max_pages_per_stream": 3,
+  "discovery_max_search_requests": 96,
+  "discovery_recall_candidates_per_result": 8,
+  "discovery_max_pages_per_stream": 1,
   "discovery_semantic_similarity_threshold": 0.9,
   "discovery_llm": {
     "enabled": true,
@@ -54,7 +55,7 @@
     "model": "qwen3.5:9b",
     "embedding_model": "qwen3-embedding:0.6b",
     "embedding_enabled": true,
-    "query_planning_enabled": true,
+    "query_planning_enabled": false,
     "visual_enabled": true,
     "metadata_batch_size": 10,
     "metadata_candidates_per_pack": 100,
@@ -85,7 +86,7 @@
   "max_retries": 4,
   "search_daily_budget": 60,
   "search_reserve_calls": 20,
-  "search_core_query_groups_per_day": 24,
+  "search_core_query_groups_per_day": 28,
   "search_results_per_query": 50,
   "search_modes": {
     "fresh": {
@@ -98,11 +99,12 @@
     }
   },
   "topic_quotas": {
-    "gardening_farming": 12,
-    "gaming": 12,
-    "ai_model_testing": 8,
-    "tutorials": 6,
-    "political_commentary": 6,
+    "gardening_farming": 10,
+    "gaming": 10,
+    "ai_model_testing": 7,
+    "science_popularization": 8,
+    "tutorials": 5,
+    "political_commentary": 4,
     "experiments_challenges": 4,
     "wildcard_popular": 2
   },
@@ -110,6 +112,7 @@
     "gardening_farming": 16,
     "gaming": 14,
     "ai_model_testing": 10,
+    "science_popularization": 12,
     "tutorials": 8,
     "political_commentary": 8,
     "experiments_challenges": 8,
@@ -143,6 +146,12 @@
     "experiments_challenges": [
       "I tried this for 30 days|30 day experiment",
       "I built|I tested|what happens if"
+    ],
+    "science_popularization": [
+      "what happens if|what would happen if|what if science",
+      "why does this happen|why is this possible|how does this actually work",
+      "the science of|science behind|how it really works",
+      "counterintuitive science|surprising science|strange science"
     ]
   },
   "rotating_queries_per_topic": {
@@ -151,7 +160,8 @@
     "ai_model_testing": 2,
     "tutorials": 1,
     "political_commentary": 1,
-    "experiments_challenges": 1
+    "experiments_challenges": 1,
+    "science_popularization": 2
   },
   "priority_games": [
     "Minecraft",
@@ -313,6 +323,48 @@
         "before and after project|project transformation|extreme makeover project",
         "I automated|I programmed|I built a robot"
       ]
+    },
+    "science_popularization": {
+      "queries": [
+        "what happens if|what would happen if|what if science",
+        "why does this happen|why is this possible|why does science",
+        "how does this actually work|how can this happen|how is this possible",
+        "the science of|science behind|how it really works",
+        "this makes no sense science|counterintuitive science|surprising science",
+        "weird science explained|strange science explained|unexpected science",
+        "science mystery|unsolved science mystery|scientists still don't know",
+        "science paradox|physics paradox|impossible physics explained",
+        "physics explained|everyday physics|physics of everyday life",
+        "physics experiment|counterintuitive physics|surprising physics",
+        "engineering explained|how machines work|engineering mystery",
+        "how things work science|inside how it works|why things work",
+        "fluid dynamics explained|aerodynamics explained|thermodynamics explained",
+        "electricity explained|magnetism explained|electromagnetism explained",
+        "biology explained|weird biology|strange biology",
+        "evolution explained|evolutionary mystery|weird evolution",
+        "human body explained|body mystery|weird human biology",
+        "neuroscience explained|brain mystery|how the brain works",
+        "animal science|weird animals explained|animal adaptations",
+        "deep sea science|deep sea creatures explained|ocean mystery biology",
+        "microbiology explained|microbes explained|strange microorganisms",
+        "genetics explained|DNA explained|genetic mystery",
+        "chemistry explained|weird chemistry|surprising chemistry",
+        "chemistry experiment|chemical reaction explained|unexpected chemistry",
+        "materials science explained|strange materials|impossible materials",
+        "space explained|astronomy explained|space mystery",
+        "universe explained|cosmology explained|mysteries of the universe",
+        "black hole explained|black hole mystery|extreme space",
+        "planet science|weird planets|strange worlds",
+        "earth science explained|geology explained|earth mystery",
+        "volcano science|earthquake science|plate tectonics explained",
+        "weather science explained|extreme weather science|atmosphere explained",
+        "scientists discovered|new discovery explained|researchers found",
+        "scientists were wrong|science misconception|science myth explained",
+        "we thought we knew|turns out science|new evidence explained",
+        "hidden science|overlooked science|forgotten scientific discovery",
+        "famous experiment explained|classic science experiment|experiment changed science",
+        "real science behind|is this actually possible|does this really work"
+      ]
     }
   },
   "topic_keywords": {
@@ -414,6 +466,45 @@
       "100 days",
       "unexpected",
       "invention"
+    ],
+    "science_popularization": [
+      "science",
+      "scientist",
+      "physics",
+      "physicist",
+      "biology",
+      "biologist",
+      "chemistry",
+      "chemist",
+      "astronomy",
+      "astronomer",
+      "space",
+      "universe",
+      "planet",
+      "black hole",
+      "evolution",
+      "genetics",
+      "dna",
+      "cell",
+      "microbe",
+      "neuroscience",
+      "brain",
+      "animal",
+      "ocean",
+      "geology",
+      "earthquake",
+      "volcano",
+      "weather",
+      "atmosphere",
+      "engineering",
+      "engineer",
+      "thermodynamics",
+      "aerodynamics",
+      "electricity",
+      "magnetism",
+      "quantum",
+      "molecule",
+      "material"
     ]
   },
   "topic_interest_phrases": {
@@ -529,6 +620,44 @@
       "gone wrong",
       "actually works",
       "before and after"
+    ],
+    "science_popularization": [
+      "what happens if",
+      "what would happen if",
+      "what if",
+      "why does",
+      "why do",
+      "why is",
+      "how does",
+      "how can",
+      "how is this possible",
+      "how it works",
+      "how it really works",
+      "actually work",
+      "the science of",
+      "science behind",
+      "explained",
+      "mystery",
+      "paradox",
+      "counterintuitive",
+      "surprising",
+      "unexpected",
+      "strange",
+      "weird",
+      "impossible",
+      "nobody knows",
+      "scientists don't know",
+      "scientists discovered",
+      "researchers found",
+      "new discovery",
+      "new evidence",
+      "turns out",
+      "we thought",
+      "myth",
+      "misconception",
+      "experiment",
+      "hidden",
+      "extreme"
     ]
   },
   "topic_penalty_phrases": {
@@ -584,6 +713,26 @@
       "political advertisement",
       "unedited speech",
       "hearing full video"
+    ],
+    "science_popularization": [
+      "full lecture",
+      "lecture recording",
+      "university lecture",
+      "webinar",
+      "online class",
+      "exam review",
+      "exam prep",
+      "homework help",
+      "lesson 1",
+      "lesson 2",
+      "chapter review",
+      "course preview",
+      "conference presentation",
+      "conference talk full",
+      "podcast full episode",
+      "science news roundup",
+      "daily science news",
+      "study with me"
     ]
   },
   "interest_phrases": {
@@ -596,7 +745,12 @@
       "100 days",
       "30 days",
       "what happens if",
-      "before and after"
+      "before and after",
+      "what would happen if",
+      "why does",
+      "how does",
+      "the science of",
+      "scientists discovered"
     ],
     "medium": [
       "experiment",
@@ -612,7 +766,16 @@
       "new method",
       "unexpected result",
       "funny moments",
-      "mistakes"
+      "mistakes",
+      "mystery",
+      "paradox",
+      "counterintuitive",
+      "surprising",
+      "how it works",
+      "new discovery",
+      "new evidence",
+      "turns out",
+      "myth"
     ],
     "normal": [
       "update",
@@ -669,7 +832,13 @@
     "advertisement",
     "course sale",
     "make money fast",
-    "passive income"
+    "passive income",
+    "full lecture",
+    "lecture recording",
+    "webinar",
+    "exam prep",
+    "homework help",
+    "study with me"
   ],
   "boring_penalty_per_hit": 5,
   "language_markers": [
@@ -703,7 +872,8 @@
     "tutorials": 300,
     "political_commentary": 1000,
     "experiments_challenges": 300,
-    "wildcard_popular": 10000
+    "wildcard_popular": 10000,
+    "science_popularization": 500
   },
   "topic_min_views_per_hour": {
     "gardening_farming": 20,
@@ -712,7 +882,8 @@
     "tutorials": 30,
     "political_commentary": 100,
     "experiments_challenges": 30,
-    "wildcard_popular": 1000
+    "wildcard_popular": 1000,
+    "science_popularization": 40
   },
   "final_score_weights": {
     "growth_score": 0.25,
@@ -754,5 +925,41 @@
       "on",
       "with"
     ]
-  }
+  },
+  "discovery_max_duration_seconds": 10800,
+  "discovery_hot_view_count_by_window": {
+    "24": 100000,
+    "72": 250000,
+    "168": 500000,
+    "336": 800000,
+    "720": 1200000
+  },
+  "discovery_hot_views_per_hour_by_window": {
+    "24": 5000,
+    "72": 3000,
+    "168": 1500,
+    "336": 800,
+    "720": 400
+  },
+  "discovery_hot_lane_min_per_pack": 3,
+  "discovery_default_ranking_mode": "hot",
+  "discovery_primary_search_orders": [
+    "viewCount",
+    "date",
+    "relevance"
+  ],
+  "discovery_supplemental_search_orders": [
+    "viewCount"
+  ],
+  "discovery_max_supplemental_queries": 3,
+  "discovery_expected_search_calls_per_pack": 6,
+  "discovery_adaptive_page2_enabled": true,
+  "discovery_adaptive_min_unique_candidates": 80,
+  "discovery_adaptive_min_qualified_candidates": 30,
+  "discovery_adaptive_page2_orders": [
+    "viewCount",
+    "date"
+  ],
+  "discovery_adaptive_max_extra_calls_per_pack": 2,
+  "discovery_max_search_calls_per_pack": 8
 }

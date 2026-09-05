@@ -179,19 +179,107 @@ def load_discovery_packs(path: Path | None = None) -> tuple[dict[str, Any], ...]
     return tuple(packs)
 
 
+
+def save_discovery_packs(
+    path: Path,
+    raw_packs: list[dict[str, Any]],
+) -> tuple[dict[str, Any], ...]:
+    # Validate and atomically persist user-editable discovery packs.
+    if not isinstance(raw_packs, list) or not raw_packs:
+        raise ValueError("智能发现领域列表不能为空")
+    normalized: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for index, raw_pack in enumerate(raw_packs, 1):
+        if not isinstance(raw_pack, dict):
+            raise ValueError(f"第 {index} 个领域格式无效")
+        pack_id = str(raw_pack.get("id") or "").strip().casefold()
+        label = str(raw_pack.get("label") or "").strip()
+        description = str(raw_pack.get("description") or "").strip()
+        query = str(raw_pack.get("query") or "").strip()
+        keywords_raw = raw_pack.get("keywords")
+        if isinstance(keywords_raw, str):
+            keywords = [
+                item.strip().casefold()
+                for item in re.split(r"[,，\n|]+", keywords_raw)
+                if item.strip()
+            ]
+        elif isinstance(keywords_raw, list):
+            keywords = [
+                str(item).strip().casefold()
+                for item in keywords_raw
+                if str(item).strip()
+            ]
+        else:
+            keywords = []
+        query_parts = [item.strip() for item in query.split("|") if item.strip()]
+        query = "|".join(dict.fromkeys(query_parts))
+        keywords = list(dict.fromkeys(keywords))
+        if not DISCOVERY_PACK_ID_PATTERN.fullmatch(pack_id):
+            raise ValueError(
+                f"领域 id '{pack_id}' 无效：只允许 2-64 位小写字母、数字和下划线"
+            )
+        if pack_id in seen_ids:
+            raise ValueError(f"存在重复领域 id：{pack_id}")
+        if not label or not description or not query or not keywords:
+            raise ValueError(
+                f"领域 {pack_id or index} 必须填写名称、说明、至少一个搜索词和关键词"
+            )
+        seen_ids.add(pack_id)
+        normalized.append(
+            {
+                "id": pack_id,
+                "label": label,
+                "description": description,
+                "enabled": True,
+                "default_selected": bool(raw_pack.get("default_selected", True)),
+                "query": query,
+                "keywords": keywords,
+            }
+        )
+    payload = {
+        "schema_version": 1,
+        "description": "智能发现可编辑领域关键词包。可在控制面板中新增、删除和修改。",
+        "packs": normalized,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_suffix(path.suffix + ".tmp")
+    temp_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    try:
+        validated = load_discovery_packs(temp_path)
+        temp_path.replace(path)
+    finally:
+        if temp_path.exists():
+            temp_path.unlink()
+    return validated
+
+
 def public_discovery_catalog(
     packs: tuple[dict[str, Any], ...] | None = None,
+    *,
+    include_details: bool = False,
 ) -> list[dict[str, Any]]:
-    return [
-        {
+    output: list[dict[str, Any]] = []
+    for pack in (packs or DISCOVERY_PACKS):
+        item = {
             "id": pack["id"],
             "label": pack["label"],
             "description": pack["description"],
             "examples": str(pack["query"]).split("|")[:3],
             "default_selected": bool(pack.get("default_selected", True)),
         }
-        for pack in (packs or DISCOVERY_PACKS)
-    ]
+        if include_details:
+            item.update(
+                {
+                    "query": str(pack["query"]),
+                    "keywords": [str(value) for value in pack["keywords"]],
+                    "enabled": True,
+                }
+            )
+        output.append(item)
+    return output
 
 
 def load_env_values(path: Path) -> dict[str, str]:
@@ -270,8 +358,22 @@ class TargetedYouTubeSearch:
     def discovery_packs(self) -> tuple[dict[str, Any], ...]:
         return load_discovery_packs(self.discovery_config_path)
 
-    def discovery_catalog(self) -> list[dict[str, Any]]:
-        return public_discovery_catalog(self.discovery_packs())
+    def discovery_catalog(
+        self,
+        *,
+        include_details: bool = False,
+    ) -> list[dict[str, Any]]:
+        return public_discovery_catalog(
+            self.discovery_packs(),
+            include_details=include_details,
+        )
+
+    def save_discovery_catalog(
+        self,
+        raw_packs: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        packs = save_discovery_packs(self.discovery_config_path, raw_packs)
+        return public_discovery_catalog(packs, include_details=True)
 
     def _settings(self) -> tuple[dict[str, Any], str]:
         config = json.loads(self.config_path.read_text(encoding="utf-8-sig"))
@@ -391,6 +493,7 @@ class TargetedYouTubeSearch:
         known_titles: list[str] | None = None,
         minimum_duration_seconds: int | None = None,
         maximum_duration_seconds: int | None = None,
+        ranking_mode: str = "hot",
         client: YouTubeClient | None = None,
         now: datetime | None = None,
         progress: Any | None = None,
@@ -410,7 +513,9 @@ class TargetedYouTubeSearch:
             raise ValueError("每个领域的结果数量必须在 1 到 100 之间")
 
         config, api_key = self._settings()
-        configured_maximum_duration_seconds = int(config.get("max_duration_seconds", 2700))
+        configured_maximum_duration_seconds = int(
+            config.get("discovery_max_duration_seconds", 10800)
+        )
         requested_maximum_duration_seconds = int(
             maximum_duration_seconds
             if maximum_duration_seconds is not None
@@ -443,6 +548,7 @@ class TargetedYouTubeSearch:
             known_titles=known_titles,
             minimum_duration_seconds=minimum_duration_seconds,
             maximum_duration_seconds=requested_maximum_duration_seconds,
+            ranking_mode=ranking_mode,
             now=now,
             progress=progress,
             cancelled=cancelled,

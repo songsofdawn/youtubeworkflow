@@ -255,12 +255,20 @@
               <span>所有领域共享约 1000 条召回池；建议一次选择 1–3 个领域，把搜索深度集中到真正关心的题材。</span>
             </div>
             <div>
+              <button class="button button-ghost button-small" id="editDiscoveryPacks" type="button">编辑领域 / 关键词</button>
               <button class="button button-ghost button-small" id="selectAllDiscoveryPacks" type="button">全选</button>
               <button class="button button-ghost button-small" id="clearDiscoveryPacks" type="button">清空</button>
             </div>
           </div>
           <div class="discovery-pack-grid" id="discoveryPacks"><span class="muted">正在读取领域列表…</span></div>
           <div class="discovery-controls">
+            <label class="field">
+              <span>筛选模式</span>
+              <select id="discoveryRankingMode">
+                <option value="hot" selected>热门优先</option>
+                <option value="potential">内容潜力优先</option>
+              </select>
+            </label>
             <label class="field">
               <span>最近时间范围</span>
               <select id="discoveryHours">
@@ -273,11 +281,11 @@
             </label>
             <label class="field">
               <span>候选最小时长（分钟）</span>
-              <input id="discoveryMinDurationMinutes" type="number" min="1" max="45" value="5" required>
+              <input id="discoveryMinDurationMinutes" type="number" min="1" max="180" value="5" required>
             </label>
             <label class="field">
               <span>候选最大时长（分钟）</span>
-              <input id="discoveryMaxDurationMinutes" type="number" min="1" max="45" value="45" required>
+              <input id="discoveryMaxDurationMinutes" type="number" min="1" max="180" value="120" required>
             </label>
             <label class="field">
               <span>每领域目标候选数</span>
@@ -289,7 +297,7 @@
             <strong id="discoveryJobStep">等待开始</strong>
             <progress id="discoveryJobProgressBar" max="100" value="0"></progress>
           </div>
-          <small>选择 14 个领域并要求每领域 20 条时，深度发现最多使用 100 次 search.list 调用；单领域通常更少。实际可用次数以你的 Google Cloud 配额页为准。</small>
+          <small id="discoveryModeHint">热门优先会先执行独立热门召回，再用真实播放速度排序；达到热门阈值的视频不会被 Qwen 一票否决。深度发现仍受 discovery_max_search_requests 限制。</small>
         </form>
 
         <form id="directForm" class="tab-panel direct-panel" data-panel="direct">
@@ -757,5 +765,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="/app.js" defer></script>
+  <script src="/discovery_upgrade.js" defer></script>
 </body>
 </html>

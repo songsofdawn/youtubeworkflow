@@ -1,0 +1,107 @@
+.discovery-pack-editor-dialog {
+  width: min(1120px, 94vw);
+  max-height: 92vh;
+  padding: 0;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 16px;
+  background: var(--panel, #0d1117);
+  color: inherit;
+}
+
+.discovery-pack-editor-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.discovery-pack-editor-shell {
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+}
+
+.discovery-pack-editor-header,
+.discovery-pack-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border, #30363d);
+}
+
+.discovery-pack-editor-footer {
+  border-top: 1px solid var(--border, #30363d);
+  border-bottom: 0;
+}
+
+.discovery-pack-editor-header h2 {
+  margin: 0 0 6px;
+}
+
+.discovery-pack-editor-header p {
+  margin: 0;
+  opacity: 0.72;
+}
+
+.discovery-pack-editor-list {
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px;
+  overflow: auto;
+}
+
+.discovery-pack-editor-card {
+  border: 1px solid var(--border, #30363d);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.discovery-pack-editor-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.discovery-pack-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.discovery-pack-editor-wide {
+  grid-column: 1 / -1;
+}
+
+.discovery-pack-editor-grid textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 112px;
+}
+
+.discovery-pack-editor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.error-text {
+  color: #ff7b72;
+}
+
+@media (max-width: 760px) {
+  .discovery-pack-editor-grid {
+    grid-template-columns: 1fr;
+  }
+  .discovery-pack-editor-wide {
+    grid-column: 1;
+  }
+  .discovery-pack-editor-header,
+  .discovery-pack-editor-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .discovery-pack-editor-actions {
+    width: 100%;
+  }
+}

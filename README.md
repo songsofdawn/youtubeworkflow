@@ -51,7 +51,8 @@ YouTube URL / 关键词 / 智能发现
 ## 核心能力
 
 - 直接粘贴单个或多个 YouTube URL / 视频 ID；
-- 使用 YouTube Data API 关键词搜索，或用 Ollama 做本地智能发现、排序和语义去重；
+- 使用 YouTube Data API 关键词搜索，或用 Ollama 做本地智能发现、排序、视觉复评和语义去重；
+- 智能发现内置 14 个可编辑领域，支持“热门优先 / 内容潜力优先”、候选反馈和异步续跑；
 - 下载最高 1080p 的源视频，并保留源音频、原字幕、封面、简介、视频 ID 与下载记录；
 - 在 YouTube 手工英文、YouTube 自动英文和本地 faster-whisper large-v3 之间选择；
 - 支持多家 AI API，按批保存翻译检查点，失败后只继续未完成字幕；
@@ -71,7 +72,7 @@ YouTube URL / 关键词 / 智能发现
 
 ### 外部服务与费用
 
-直接下载 URL 不需要 YouTube API Key。关键词搜索和智能发现需要 YouTube Data API Key；
+直接下载 URL 不需要 YouTube API Key。关键词搜索、智能发现和日报候选脚本需要 YouTube Data API Key；
 AI 翻译、云端投稿文案和哔哩哔哩投稿则分别需要对应服务。API 价格、免费额度和限流可能
 变化，以各供应商账户为准。项目不会在失败时自动切换到另一个可能收费的供应商。
 
@@ -286,7 +287,7 @@ Cookie 等同登录凭据。不要上传到 Issue、聊天或网盘，也不要�
 | 供应商 | 密钥变量 | 内置模型示例 |
 |---|---|---|
 | DeepSeek | `DEEPSEEK_API_KEY` | DeepSeek V4 Flash / Pro |
-| 智谱 GLM | `ZHIPU_API_KEY` | GLM-4.7-Flash / FlashX / GLM-5.2 |
+| 智谱 GLM | `ZHIPU_API_KEY` | GLM-5.3-Flash（强制 Thinking）/ GLM-4.7-Flash / FlashX / GLM-5.2 |
 | 阿里云百炼 / 通义千问 | `DASHSCOPE_API_KEY` | Qwen3.7 Flash / Plus / Qwen-MT-Plus |
 | Moonshot / Kimi | `MOONSHOT_API_KEY` | Kimi K2.6 / K2.5 |
 | MiniMax | `MINIMAX_API_KEY` | MiniMax M2.7 / Highspeed |
@@ -307,7 +308,12 @@ TRANSLATION_PROVIDER=deepseek
 TRANSLATION_MODEL=deepseek-v4-flash
 TRANSLATION_BASE_URL=https://api.deepseek.com
 TRANSLATION_THINKING=disabled
-TRANSLATION_BATCH_SIZE=32
+TRANSLATION_REASONING_EFFORT=low
+TRANSLATION_BATCH_SIZE=64
+TRANSLATION_DYNAMIC_BATCH=true
+TRANSLATION_BATCH_MIN=64
+TRANSLATION_BATCH_MAX=96
+TRANSLATION_BATCH_TARGET_TOKENS=4500
 TRANSLATION_CONTEXT_BEFORE=2
 TRANSLATION_CONTEXT_AFTER=2
 TRANSLATION_MAX_OUTPUT_TOKENS=4096
@@ -338,6 +344,23 @@ CUSTOM_LLM_API_KEY=
 无论使用哪一种方式，下载前都必须勾选“确认拥有下载和使用权”。默认下载最高 1080p
 的源视频、源音频、可用中英文字幕、封面、简介和元数据；翻译与成片不会覆盖这些文件。
 
+### 智能发现的当前行为
+
+控制面板的智能发现是异步任务，结果会保存在本地任务历史中，完成后可从任务卡重新打开。
+领域和查询词来自 `config\discovery_keywords.json`，当前包含 14 个可在面板中新增、删除和
+修改的领域。打开面板时默认选中 AI 与新科技、游戏、Minecraft、挑战与实验；领域选择仍可
+随时调整。
+
+每个领域的第 1 个查询词是宽泛主查询，会分别用 `viewCount`、`date`、`relevance` 召回；
+后续最多 3 个查询词只走 `viewCount` 补充召回。关键词只参与弱主题相关性评分，不负责召回，
+也不是硬过滤条件。时间范围支持 24 / 72 / 168 / 336 / 720 小时；面板默认 72 小时、5–120
+分钟、每领域 20 个候选，最大允许时长由 `config\trending_config.json` 控制（当前为 180 分钟）。
+
+“热门优先”会先执行独立热门召回通道，并对达到播放量或每小时播放量阈值的候选提供热度保护；
+“内容潜力优先”以本地 Qwen 元数据评审和本地化潜力为主，但真正达到热门阈值的候选仍受保护。
+两种模式都受 YouTube 搜索调用上限影响，当前配置的总上限为 96 次，默认基础召回目标为 1000
+条，每领域最多返回 100 条。热门阈值和自适应第 2 页扩展见 `config\trending_config.json`。
+
 智能发现完整功能默认使用 Ollama 的 `qwen3.5:9b` 和
 `qwen3-embedding:0.6b`：
 
@@ -348,7 +371,38 @@ ollama pull qwen3-embedding:0.6b
 
 模型可在“配置服务 → Ollama 本地智能发现”中更换或停用。Ollama 不可用时，任务会给出
 警告并退回规则评分。模型只接收 YouTube 公开元数据和缩略图，不会收到 API Key、Cookie、
-本地视频或字幕。智能发现会消耗 YouTube Data API 配额，实际限制以 Google Cloud 为准。
+本地视频或字幕。当前配置默认关闭 AI 查询词规划，但保留该设置用于兼容旧配置；视觉复评
+和 Embedding 可单独开关。候选卡可记录感兴趣、无关、重复、不安全等反馈；反馈保存在
+`work\discovery\discovery.sqlite3`，用于后续排序。智能发现会消耗 YouTube Data API 配额，
+实际限制以 Google Cloud 为准。结果页还可以只看有字幕、隐藏明确重复/已处理视频，或按机会
+分再次筛选；这些只是展示层过滤，不会修改已保存的发现结果。
+
+### 传统日报候选脚本（可选）
+
+项目仍保留一套面向人工审核的日报候选流程，适合需要按 US/Eastern 日期生成固定候选文件的
+场景。它与控制面板智能发现互相独立，都使用 `config\trending_config.json`，不会自动批准、
+下载或投稿任何视频：
+
+```bat
+.venv\Scripts\python.exe -m src.fetch_daily_candidates
+.venv\Scripts\python.exe -m src.fetch_daily_candidates --date 2026-09-05 --limit 50
+```
+
+结果写入 `candidates\YYYY-MM-DD_US_localization_top50.{csv,json,html}`，同时保存原始池、指标
+和搜索检查点。人工在候选 JSON 中将 `selected` 设为 `1`，并将 `rights_status` 设为
+`APPROVED`、`OWNED`、`LICENSED` 或 `PERMISSION_GRANTED` 后，才可执行：
+
+```bat
+.venv\Scripts\python.exe -m src.download_selected_candidates --input candidates\YYYY-MM-DD_US_localization_top50.json
+```
+
+候选下载默认进入 `downloads\candidates\`，普通 URL / ID 下载进入 `downloads\manual\`。
+中途失败的候选可先用以下命令查看可修复项，再去掉 `--dry-run` 正式重试；修复流程仍会再次检查
+`selected` 和 `rights_status`：
+
+```bat
+.venv\Scripts\python.exe -m src.repair_failed_downloads --root downloads\candidates --dry-run
+```
 
 ### 2. 生成英文字幕
 
@@ -372,9 +426,10 @@ NVENC；不可用时回退到 CPU x264。
 - **AI API 翻译**：使用当前供应商和模型，加入队列前必须勾选“允许调用所选 AI API”；
 - **YouTube 自动中文**：不调用翻译 API，但视频必须存在可用的自动中文字幕。
 
-默认翻译策略是 Thinking 关闭、每批 32 条、前后各 2 条只读上下文、最大输出 4096
-Token。程序按批次保存结果，响应缺少 ID 时只重试待完成字幕，不重新发送已经成功的行。
-只有显式使用“整批润色”才会进行正常的第二次翻译。
+默认翻译策略是 Thinking 关闭、动态生产批次 64–96 条、前后各 2 条只读上下文、最大输出
+4096 Token；批次会尽量控制在约 4500 个提示词 Token，最后的尾批和恢复请求允许小于 64。
+程序按批次保存结果，响应缺少 ID 时只重试待完成字幕，不重新发送已经成功的行；异常降级时会
+缩小请求并记录使用量与完成原因。只有显式使用“整批润色”才会进行正常的第二次翻译。
 
 本地质检只验证 JSON、字幕 ID、非空译文、时间轴、非法控制字符和明显的单 ID 内容污染；
 不会用“翻译腔”“字符速度”或英文残留等主观启发式规则自动购买第二遍翻译。
@@ -423,7 +478,7 @@ Token。程序按批次保存结果，响应缺少 ID 时只重试待完成字�
 
 程序先按音量阈值裁掉 TTS 片段首尾的非语音静音，再把相邻字幕组成连续语音区域，共享区域内
 的空白和尾部余量；调度会保留句子顺序、限制相邻语音间隔并禁止片段重叠。区域仍放不下时
-最多加速到 1.3 倍；超过语速、对齐偏移、媒体结尾或重叠安全限制时，任务会标为“配音需要
+最多按配置拉伸到 1.15 倍；超过语速、对齐偏移、媒体结尾或重叠安全限制时，任务会标为“配音需要
 复核”，不会静默截断句子或把多句声音叠在一起。每句完成后
 立即写入 `dubbing\manifest.json`；中途失败、进程终止或显存不足后重试，只重做缺失或输入
 哈希已变化的句子。修改某句中文字幕只会使对应句的配音缓存失效。“重新生成中配”会显式
@@ -458,7 +513,8 @@ V1 仅支持一个主播音色和一个参考片段，不做说话人分离、�
 整段音频并首次加载 VoxCPM2；之后同一任务的重试会明显更快。默认无人值守调度还会在唯一
 GPU heavy slot 未释放且下一条等待阶段仍是兼容中配任务时，通过 `.venv_dubbing` JSONL worker
 复用已加载模型；遇到其他 GPU 任务、无连续中配、模型配置变化或 worker 异常时立即释放/重建。
-可用 `performance.keep_voxcpm_warm=false` 完全恢复每任务一个进程/模型生命周期。
+当前默认值为 `performance.keep_voxcpm_warm=false`，即每个任务独立加载并释放模型；只有明确
+开启该配置后才会启用上述常驻 worker。
 
 ### 6. 查看状态、停止或续跑
 
@@ -563,14 +619,16 @@ login_bilibili.bat
 需要统一标记时，可在“配置服务 → 哔哩哔哩账号”设置默认标题前缀；单次手动投稿也可在
 投稿窗口单独修改。前缀可以是任意标题文本，不要求包含中英文或特定词，留空即可按原标题正常投稿。
 
-成功后任务会记录 BV 号和链接，防止重复投稿。默认最短投稿间隔为 10 分钟，每个本机
-自然日最多成功投稿 20 条；都可在“配置服务 → 哔哩哔哩账号”调整。平台返回
-`137022`“投稿过于频繁”时，当前任务会回到队列，全部上传暂停 6 小时；重启程序不会
-绕过冷却，页面会显示预计恢复时间。
+成功后任务会记录 BV 号和链接，防止重复投稿。当前默认最短投稿间隔为 60 秒，每个本机
+自然日最多成功投稿 50 条；都可在“配置服务 → 哔哩哔哩账号”调整。平台返回
+`137022`“投稿过于频繁”时，当前任务会回到队列，全部上传暂停 24 小时；重启程序不会
+绕过冷却，页面会显示预计恢复时间。临时网络错误使用配置中的短重试间隔，不会绕过平台
+限流。
 
 ## 输出文件
 
-每个视频位于 `downloads\日期\视频ID_标题\`。最方便的方式是点击任务卡右侧“打开任务
+普通 URL / ID 视频位于 `downloads\manual\日期\视频ID_标题\`；候选脚本下载的视频位于
+`downloads\candidates\日期\排名_视频ID_标题\`。最方便的方式是点击任务卡右侧“打开任务
 目录”。以下路径均相对于单个视频任务目录：
 
 | 相对路径 | 内容 |
@@ -580,10 +638,12 @@ login_bilibili.bat
 | `metadata\info.json` | 原视频元数据 |
 | `metadata\description.txt` | 原视频简介 |
 | `metadata\thumbnail.jpg` | 下载封面 |
+| `subtitles\en.youtube.clean.srt` / `en.whisper.clean.srt` | 英文来源清洗结果 |
 | `subtitles\en.selected.srt` | 最终选定的英文字幕 |
 | `subtitles\zh.raw.srt` | AI 返回的原始中文结果 |
 | `subtitles\zh.clean.srt` | 结构检查通过的中文字幕 |
 | `subtitles\zh.reviewed.srt` | 可选的人工审核版中文字幕 |
+| `stage3\translation\translation_checkpoint.json` / `api_usage.json` | 翻译续跑状态与 API 使用量 |
 | `dubbing\source.wav` | 从原视频提取的源音频 |
 | `dubbing\vocals.wav` / `dubbing\background.wav` | Demucs 人声与背景声 |
 | `dubbing\reference.wav` | 自动或手工选择的音色参考片段 |
@@ -595,7 +655,9 @@ login_bilibili.bat
 | `dubbing\manifest.json` | 配音设置、逐句输入哈希、音频 QC、性能与续跑状态 |
 | `stage4\subtitles\bilingual.ass` | 正式双语 ASS |
 | `stage4\subtitles\chinese_dubbed.ass` | 中文配音成片的仅中文 ASS |
+| `stage4\subtitles\chinese_dubbed_bilingual.ass` | 中文配音成片的中英双语 ASS |
 | `stage4\subtitles\bilingual_preview.ass` | 排版需要复核时的预览 |
+| `stage4\subtitles\chinese_dubbed_preview.ass` / `chinese_dubbed_bilingual_preview.ass` | 中文配音排版复核预览 |
 | `stage4\subtitles\en.layout_reviewed.srt` | 成片专用英文排版副本 |
 | `stage4\subtitles\zh.layout_reviewed.srt` | 成片专用中文排版副本 |
 | `stage4\video\final_bilingual_softsub.mkv` | 软字幕成片 |
@@ -606,6 +668,7 @@ login_bilibili.bat
 | `stage4\video\final_chinese_dubbed_bilingual_hardsub.mp4` | 中英双语字幕的中文配音硬字幕成片 |
 | `download_manifest.json` | 下载状态与源文件记录 |
 | `stage3_manifest.json` | 字幕选择和翻译状态 |
+| `stage3\selection\selection_report.json` | YouTube / Whisper 英文字幕评分与选择记录 |
 | `stage4\stage4_manifest.json` | 成片、质检与续跑状态 |
 
 任务目录中的 JSON、检查点、QC 报告和日志用于断点续跑与旧任务兼容。不要手工删除或改名；
@@ -625,6 +688,7 @@ youtubeworkflow\
 ├─ config\                    下载、字幕、成片、发现与投稿配置
 ├─ src\                       应用源码
 ├─ tests\                     离线自动化测试
+├─ candidates\                可选日报候选、原始池与搜索检查点
 ├─ tools\bin\                FFmpeg、yt-dlp、Deno 等本地程序
 ├─ models\                   本地 Whisper 与可选 VoxCPM2 模型
 ├─ biliup\                   可选的哔哩哔哩工具
@@ -634,8 +698,9 @@ youtubeworkflow\
 └─ work\                     队列、发现数据库与临时状态
 ```
 
-`downloads`、`private`、`logs`、`work`、`models`、`tools`、`biliup` 和虚拟环境均不应
-提交到 Git。
+`candidates`、`downloads`、`private`、`logs`、`work`、`models`、`tools`、`biliup` 和虚拟环境
+均不应提交到 Git。控制面板新增的发现前端资源位于
+`src\control_panel\static\discovery_upgrade.{js,css}`；它们属于源码，不是运行时生成物。
 
 ## 常用配置文件
 

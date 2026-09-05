@@ -11,7 +11,7 @@
   "default_tid": 21,
   "default_line": "",
   "upload_limit": 3,
-  "publish_min_interval_seconds": 60,
+  "publish_min_interval_seconds": 900,
   "publish_daily_limit": 50,
   "publish_rate_limit_cooldown_seconds": 86400,
   "bypass_system_proxy_for_upload": true,

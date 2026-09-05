@@ -1,8 +1,0 @@
-{
-  "files": [
-    "src/dubbing/voxcpm.py",
-    "verify_voxcpm_windows_load_hotfix.py",
-    "使用说明.txt"
-  ],
-  "purpose": "Disable VoxCPM2 optimize/torch.compile by default on Windows production path."
-}

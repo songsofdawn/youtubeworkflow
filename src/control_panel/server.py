@@ -56,7 +56,14 @@ def make_handler(
                     self._json(HTTPStatus.OK, {"tasks": app.scanner.scan()})
                     return
                 if parsed.path == "/api/discovery/packs":
-                    self._json(HTTPStatus.OK, {"packs": app.discovery_catalog()})
+                    query = parse_qs(parsed.query)
+                    include_details = str(
+                        (query.get("details") or ["0"])[0]
+                    ).strip().casefold() in {"1", "true", "yes"}
+                    self._json(
+                        HTTPStatus.OK,
+                        {"packs": app.discovery_catalog(include_details=include_details)},
+                    )
                     return
                 if parsed.path == "/api/discovery/result":
                     query = parse_qs(parsed.query)
@@ -108,6 +115,15 @@ def make_handler(
                     )
                     self._json(HTTPStatus.OK, {"results": results})
                     return
+                if parsed.path == "/api/discovery/packs":
+                    raw_packs = body.get("packs")
+                    if not isinstance(raw_packs, list):
+                        raise ValueError("缺少智能发现领域列表")
+                    self._json(
+                        HTTPStatus.OK,
+                        {"packs": app.save_discovery_catalog(raw_packs)},
+                    )
+                    return
                 if parsed.path == "/api/discover":
                     raw_packs = body.get("packs")
                     job = app.queue_discovery(
@@ -122,6 +138,7 @@ def make_handler(
                             if body.get("maximum_duration_minutes") is not None
                             else None
                         ),
+                        ranking_mode=str(body.get("ranking_mode") or "hot"),
                     )
                     self._json(HTTPStatus.ACCEPTED, {"job": job})
                     return
