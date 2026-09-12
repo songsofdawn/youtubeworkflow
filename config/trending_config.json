@@ -39,7 +39,10 @@
   "discovery_reserve_min_opportunity_score": 35,
   "discovery_reserve_popularity_penalty": 12,
   "discovery_exclude_llm_rejects": true,
-  "discovery_boring_penalty_exempt_phrases": ["asmr", "no commentary"],
+  "discovery_boring_penalty_exempt_phrases": [
+    "asmr",
+    "no commentary"
+  ],
   "discovery_engagement_confidence_views": 500,
   "discovery_recall_orders": [
     "viewCount",
