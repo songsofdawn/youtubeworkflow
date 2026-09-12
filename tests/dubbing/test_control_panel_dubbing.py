@@ -439,6 +439,9 @@ class ControlPanelDubbingQueueTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             task = root / "downloads" / "task"
+            runtime = root / "runtime" / "python" / "python.exe"
+            runtime.parent.mkdir(parents=True)
+            runtime.write_bytes(b"python")
             (task / "dubbing").mkdir(parents=True)
             (task / "download_manifest.json").write_text("{}", encoding="utf-8")
             (task / "dubbing" / "manifest.json").write_text(
@@ -466,10 +469,12 @@ class ControlPanelDubbingQueueTests(unittest.TestCase):
                     "task",
                     {
                         "automation_enabled": True,
+                        "automation_target": "publish",
                         "automation_failure_policy": "skip",
                         "automation_dubbing_review_policy": "block",
                     },
                 )
+                blocked = store.claim_next({"pipeline"}, {"gpu_heavy"})
                 handled = worker._handle_unattended_dubbing_review(
                     blocked,
                     log_path=Path(blocked["log_path"]),
@@ -493,13 +498,11 @@ class ControlPanelDubbingQueueTests(unittest.TestCase):
                 worker.close()
 
         self.assertTrue(handled)
-        self.assertEqual(blocked_after["status"], "completed")
-        self.assertIn("已阻止成片和投稿", blocked_after["step"])
-        publisher.mark_automation_skipped.assert_called_once()
-        self.assertEqual(
-            publisher.mark_automation_skipped.call_args.args[1],
-            "DUBBING_TIMING_REVIEW_REQUIRED",
-        )
+        self.assertEqual(blocked_after["status"], "queued")
+        self.assertTrue(blocked_after["payload"]["publish_original_video"])
+        self.assertTrue(blocked_after["payload"]["silent_video_mode"])
+        publisher.mark_automation_skipped.assert_not_called()
+        publisher.mark_automation_original_media.assert_called_once()
         self.assertFalse(should_stop)
 
     def test_unattended_review_auto_fallback_requeues_original_audio_render(self) -> None:

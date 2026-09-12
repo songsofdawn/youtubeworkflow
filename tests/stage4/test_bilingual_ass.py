@@ -100,13 +100,35 @@ class BilingualAssTests(unittest.TestCase):
         self.assertEqual(scaled["english_font_size"], 30)
         self.assertEqual(scaled["outline"], 2.5)
         self.assertEqual(scaled["orientation_font_multiplier"], 1.0)
-        self.assertEqual(ass_generator_version(608, 1080), "1.11")
+        self.assertEqual(ass_generator_version(608, 1080), "1.12")
 
     def test_landscape_uses_configured_1080p_reference_size_once(self) -> None:
         self.assertEqual(orientation_font_multiplier(1440, 1080), 1.0)
         self.assertEqual(orientation_font_multiplier(1920, 1080), 1.0)
         self.assertEqual(orientation_font_multiplier(2560, 1080), 1.0)
-        self.assertEqual(ass_generator_version(1920, 1080), "1.11")
+        self.assertEqual(ass_generator_version(1920, 1080), "1.12")
+
+    def test_reference_style_can_bold_both_languages_and_put_chinese_first(self) -> None:
+        style = STYLE | {
+            "chinese_bold": True,
+            "english_bold": True,
+            "language_order": "chinese_above_english",
+            "outline_1080p": 3.5,
+            "shadow_1080p": 0.0,
+        }
+        value, _, _ = build_bilingual_ass(
+            [SubtitleCue("1", 0, 1, "And then you can...", ("And then you can...",))],
+            [SubtitleCue("1", 0, 1, "然后你就可以…", ("然后你就可以…",))],
+            style,
+            width=1920,
+            height=1080,
+        )
+        style_line = next(line for line in value.splitlines() if line.startswith("Style: Bilingual,"))
+        dialogue = next(line for line in value.splitlines() if line.startswith("Dialogue:"))
+        self.assertEqual(style_line.split(",")[7], "1")
+        self.assertIn(r"\b1", dialogue)
+        self.assertLess(dialogue.index("然后你就可以"), dialogue.index("And then you can"))
+        self.assertIn(",3.5,0.0,2,", style_line)
 
     def test_source_wrapping_is_collapsed_to_one_line_per_language(self) -> None:
         english = [SubtitleCue("7", 0, 1, "a\nb\nc", ("a", "b", "c"))]

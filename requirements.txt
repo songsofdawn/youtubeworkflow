@@ -3,5 +3,7 @@ python-dotenv>=1.0,<2
 langdetect==1.0.9
 openai>=1.40,<3
 httpx>=0.28,<1
+Pillow>=11.3,<13
+opencv-python-headless>=4.11,<5
 faster-whisper==1.2.1
 ctranslate2==4.8.1

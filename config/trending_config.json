@@ -39,6 +39,7 @@
   "discovery_reserve_min_opportunity_score": 35,
   "discovery_reserve_popularity_penalty": 12,
   "discovery_exclude_llm_rejects": true,
+  "discovery_boring_penalty_exempt_phrases": ["asmr", "no commentary"],
   "discovery_engagement_confidence_views": 500,
   "discovery_recall_orders": [
     "viewCount",
@@ -47,7 +48,7 @@
   ],
   "discovery_max_search_requests": 96,
   "discovery_recall_candidates_per_result": 8,
-  "discovery_max_pages_per_stream": 1,
+  "discovery_max_pages_per_stream": 3,
   "discovery_semantic_similarity_threshold": 0.9,
   "discovery_llm": {
     "enabled": true,
@@ -949,17 +950,22 @@
     "relevance"
   ],
   "discovery_supplemental_search_orders": [
+    "relevance",
+    "relevance",
     "viewCount"
   ],
+  "discovery_query_rotation_enabled": true,
   "discovery_max_supplemental_queries": 3,
   "discovery_expected_search_calls_per_pack": 6,
   "discovery_adaptive_page2_enabled": true,
   "discovery_adaptive_min_unique_candidates": 80,
   "discovery_adaptive_min_qualified_candidates": 30,
+  "discovery_adaptive_qualified_candidates_per_result": 3.0,
   "discovery_adaptive_page2_orders": [
     "viewCount",
     "date"
   ],
   "discovery_adaptive_max_extra_calls_per_pack": 2,
-  "discovery_max_search_calls_per_pack": 8
+  "discovery_max_search_calls_per_pack": 8,
+  "discovery_backfill_max_per_channel": 4
 }

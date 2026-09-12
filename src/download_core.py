@@ -807,16 +807,126 @@ def download_subtitles(url: str, task_dir: Path | str, tools: dict[str, Path] | 
     }
 
 
-def download_thumbnail(url: str, task_dir: Path | str, tools: dict[str, Path] | None = None, config: dict[str, Any] | None = None, paths: dict[str, Path] | None = None) -> dict[str, Any]:
+def _metadata_thumbnail_urls(metadata: dict[str, Any] | None) -> list[str]:
+    if not isinstance(metadata, dict):
+        return []
+    ranked: list[tuple[int, int, str]] = []
+    thumbnails = metadata.get("thumbnails")
+    if isinstance(thumbnails, list):
+        for index, item in enumerate(thumbnails):
+            if not isinstance(item, dict):
+                continue
+            value = str(item.get("url") or "").strip()
+            if not value.startswith("https://"):
+                continue
+            try:
+                area = int(item.get("width") or 0) * int(item.get("height") or 0)
+                preference = int(item.get("preference") or 0)
+            except (TypeError, ValueError):
+                area = preference = 0
+            ranked.append((area, preference * 1000 + index, value))
+    direct = str(metadata.get("thumbnail") or "").strip()
+    if direct.startswith("https://"):
+        ranked.append((0, -len(ranked), direct))
+    ranked.sort(reverse=True)
+    return list(dict.fromkeys(item[2] for item in ranked))
+
+
+def _trusted_metadata_thumbnail(url: str) -> bool:
+    parsed = urlsplit(url)
+    host = (parsed.hostname or "").casefold()
+    return parsed.scheme == "https" and not parsed.username and (
+        host in {"i.ytimg.com", "img.youtube.com"}
+        or host.endswith((".ytimg.com", ".googleusercontent.com"))
+    )
+
+
+class _ThumbnailRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not _trusted_metadata_thumbnail(newurl):
+            raise ValueError("缩略图重定向地址不可信")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _download_thumbnail_from_metadata(
+    metadata: dict[str, Any] | None,
+    final: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+) -> dict[str, Any] | None:
+    """Try the highest-resolution URL yt-dlp already returned before a second yt-dlp call."""
+    for url in _metadata_thumbnail_urls(metadata):
+        if not _trusted_metadata_thumbnail(url):
+            continue
+        temporary = final.with_name(f".{final.name}.metadata.tmp")
+        converted = final.with_name(f".{final.stem}.converted.jpg")
+        try:
+            request = urllib.request.Request(
+                url,
+                headers={"User-Agent": "YouTubeWorkflow/thumbnail"},
+            )
+            opener = urllib.request.build_opener(_ThumbnailRedirectHandler())
+            with opener.open(request, timeout=20) as response:
+                content = response.read(12 * 1024 * 1024 + 1)
+            if not content or len(content) > 12 * 1024 * 1024:
+                continue
+            temporary.write_bytes(content)
+            result = run_command(
+                [
+                    tools["ffmpeg"],
+                    "-hide_banner",
+                    "-loglevel",
+                    "error",
+                    "-y",
+                    "-i",
+                    temporary,
+                    "-frames:v",
+                    "1",
+                    "-q:v",
+                    "2",
+                    converted,
+                ],
+                paths["project_root"],
+            )
+            if result["success"] and converted.is_file() and converted.stat().st_size > 0:
+                converted.replace(final)
+                return {
+                    "success": True,
+                    "status": "success",
+                    "file": final,
+                    "command_result": result,
+                    "source_url": url,
+                    "error": "",
+                }
+        except (OSError, urllib.error.URLError, ValueError):
+            continue
+        finally:
+            temporary.unlink(missing_ok=True)
+            converted.unlink(missing_ok=True)
+    return None
+
+
+def download_thumbnail(
+    url: str,
+    task_dir: Path | str,
+    tools: dict[str, Path] | None = None,
+    config: dict[str, Any] | None = None,
+    paths: dict[str, Path] | None = None,
+    metadata: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     paths = paths or get_project_paths(); tools = tools or find_local_tools(paths); config = config or load_download_config()
     directory = Path(task_dir) / "metadata"; directory.mkdir(parents=True, exist_ok=True)
     final = directory / "thumbnail.jpg"
     if final.is_file() and final.stat().st_size > 0:
         return {"success": True, "status": "success", "file": final, "command_result": None, "error": ""}
+    metadata_result = _download_thumbnail_from_metadata(metadata, final, tools, paths)
+    if metadata_result is not None:
+        return metadata_result
     cookies, warning = _cookie_argument(config, paths)
-    command = [tools["yt-dlp"], url, "--no-playlist", "--skip-download", "--write-thumbnail", "--convert-thumbnails", "jpg", "--ffmpeg-location", paths["tools_bin"], "--output", directory / "thumbnail.%(ext)s", *cookies]
+    command = [tools["yt-dlp"], url, "--no-playlist", "--skip-download", "--write-thumbnail", "--convert-thumbnails", "jpg", "--ffmpeg-location", paths["tools_bin"], "--output", directory / ".thumbnail-source.%(ext)s", *cookies]
     result = run_command(command, paths["project_root"])
-    jpgs = sorted(directory.glob("thumbnail*.jpg"))
+    jpgs = sorted(path for path in directory.glob(".thumbnail-source*.jpg")
+                  if path.stat().st_size > 0)
     if jpgs and jpgs[0] != final:
         if final.exists(): final.unlink()
         jpgs[0].replace(final)
@@ -972,7 +1082,13 @@ def download_one_video(
             path = write_manifest(task_dir, manifest)
             return {"overall_status": "failed", "already_complete": False, "task_dir": task_dir, "manifest": manifest, "manifest_path": path}
         metadata = metadata_result["metadata"]
-    task_dir = _task_directory(root, source_mode, metadata, candidate_file, candidate_rank)
+    # A metadata lookup can fail before we know the upload date/title, leaving a
+    # resumable ``<today>/<id>_<id>`` task.  Prefer that already-discovered task
+    # after metadata recovers; otherwise the upload date would redirect the
+    # retry into a second directory and leave the failed dashboard card behind.
+    task_dir = existing_task or _task_directory(
+        root, source_mode, metadata, candidate_file, candidate_rank
+    )
     for child in ("video", "audio", "subtitles", "metadata"):
         (task_dir / child).mkdir(parents=True, exist_ok=True)
     old_manifest = _load_json(task_dir / "download_manifest.json")
@@ -1013,7 +1129,14 @@ def download_one_video(
 
     thumbnail_file = task_dir / "metadata" / "thumbnail.jpg"
     if not thumbnail_file.is_file() or force:
-        thumb = download_thumbnail(url, task_dir, tools, config, paths)
+        thumb = download_thumbnail(
+            url,
+            task_dir,
+            tools,
+            config,
+            paths,
+            metadata=metadata,
+        )
         if thumb.get("command_result"): commands.append(thumb["command_result"]["command"])
         manifest["thumbnail_status"] = thumb["status"]
         if thumb.get("error"): errors.append(f"缩略图: {thumb['error']}")

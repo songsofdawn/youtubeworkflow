@@ -229,6 +229,44 @@ class TranslatorTests(TestCase):
             DeepSeekTranslator(CONFIG, directory, client=client, sleeper=lambda _: None).translate_batch(1, [item], [item], {}, {})
             self.assertEqual(client.chat.completions.create.call_count, 2)
 
+    def test_content_filter_splits_batch_and_removes_context(self) -> None:
+        class ContentFilterError(RuntimeError):
+            status_code = 400
+            body = {
+                "error": {
+                    "code": "1301",
+                    "message": "内容安全拦截",
+                }
+            }
+
+        with tempfile.TemporaryDirectory() as directory:
+            client = mock.Mock()
+            client.chat.completions.create.side_effect = [
+                ContentFilterError("Error code: 1301"),
+                response([{"id": 1, "translation": "一"}]),
+                response([{"id": 2, "translation": "二"}]),
+            ]
+            items = [
+                SubtitleSegment(1, 0, 1, "one"),
+                SubtitleSegment(2, 1, 2, "two"),
+            ]
+            result = DeepSeekTranslator(
+                CONFIG,
+                directory,
+                client=client,
+                sleeper=lambda _: None,
+            ).translate_batch(1, items, items, {}, {})
+
+        self.assertEqual(result, {1: "一", 2: "二"})
+        self.assertEqual(client.chat.completions.create.call_count, 3)
+        recovery_prompt = client.chat.completions.create.call_args_list[1].kwargs[
+            "messages"
+        ][1]["content"]
+        self.assertIn('"context_before_read_only":[]', recovery_prompt)
+        self.assertIn('"context_after_read_only":[]', recovery_prompt)
+        self.assertIn('"segments_to_translate":[[1,', recovery_prompt)
+        self.assertNotIn('"segments_to_translate":[[2,', recovery_prompt)
+
     def test_deepseek_empty_content_degrades_mode_and_splits_batch(self) -> None:
         items = [SubtitleSegment(index, index, index + 1, f"text {index}") for index in range(1, 5)]
         with tempfile.TemporaryDirectory() as directory, mock.patch.dict(

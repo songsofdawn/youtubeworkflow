@@ -26,6 +26,7 @@ from .tasks import (
     WorkflowScanner,
     no_english_subtitle_or_recognized_speech,
     read_json,
+    translation_content_filter_failed,
     youtube_chinese_path,
 )
 
@@ -93,18 +94,11 @@ class JobStore:
                 SET resource_class = CASE kind
                     WHEN 'download' THEN 'network'
                     WHEN 'pipeline' THEN 'gpu_heavy'
+                    WHEN 'cover' THEN 'gpu_heavy'
                     WHEN 'publish' THEN 'upload'
                     ELSE 'general'
                 END
                 WHERE resource_class = ''
-                """
-            )
-            connection.execute(
-                """
-                UPDATE jobs
-                SET status = 'queued', step = '检测到上次中断，等待续跑',
-                    started_at = '', finished_at = '', exit_code = NULL
-                WHERE status = 'running'
                 """
             )
             connection.execute(
@@ -123,6 +117,40 @@ class JobStore:
                 """
             )
 
+    def recover_interrupted_jobs(self) -> int:
+        """Recover abandoned claims only after this panel owns the server port.
+
+        ``ControlPanelApp`` is constructed before ``ThreadingHTTPServer`` binds.
+        Doing this migration in ``__init__`` meant that accidentally launching a
+        second panel rewrote the live panel's jobs even though the second process
+        immediately failed to bind.  Worker startup happens after a successful
+        bind, which is the first safe point to recover a previous process.
+        """
+        with self._connect() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'queued', step = '检测到上次中断，等待续跑',
+                    started_at = '', finished_at = '', exit_code = NULL,
+                    error = ''
+                WHERE status = 'running'
+                """
+            )
+        return int(cursor.rowcount)
+
+    def reroute_queued(self, job_id: str, resource_class: str, step: str) -> bool:
+        """Correct a queued job's resource without transiently claiming it."""
+        with self._connect() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET resource_class = ?, step = ?
+                WHERE id = ? AND status = 'queued'
+                """,
+                (str(resource_class), str(step), str(job_id)),
+            )
+        return bool(cursor.rowcount)
+
     def enqueue(
         self,
         kind: str,
@@ -136,6 +164,7 @@ class JobStore:
         default_resources = {
             "download": "network",
             "pipeline": "gpu_heavy",
+            "cover": "gpu_heavy",
             "publish": "upload",
         }
         record = {
@@ -288,6 +317,20 @@ class JobStore:
                       FROM jobs AS running
                       WHERE running.status = 'running'
                         AND running.target = queued.target
+                        AND NOT (
+                            (queued.kind = 'cover' AND running.kind = 'pipeline')
+                            OR (queued.kind = 'pipeline' AND running.kind = 'cover')
+                        )
+                  )
+                  AND (
+                      queued.kind != 'publish'
+                      OR NOT EXISTS (
+                          SELECT 1
+                          FROM jobs AS pending_cover
+                          WHERE pending_cover.kind = 'cover'
+                            AND pending_cover.target = queued.target
+                            AND pending_cover.status IN ('queued', 'running')
+                      )
                   )
                 ORDER BY queued.created_at
                 LIMIT 1
@@ -342,6 +385,19 @@ class JobStore:
                       SELECT 1 FROM jobs AS running
                       WHERE running.status = 'running'
                         AND running.target = queued.target
+                        AND NOT (
+                            (queued.kind = 'cover' AND running.kind = 'pipeline')
+                            OR (queued.kind = 'pipeline' AND running.kind = 'cover')
+                        )
+                  )
+                  AND (
+                      queued.kind != 'publish'
+                      OR NOT EXISTS (
+                          SELECT 1 FROM jobs AS pending_cover
+                          WHERE pending_cover.kind = 'cover'
+                            AND pending_cover.target = queued.target
+                            AND pending_cover.status IN ('queued', 'running')
+                      )
                   )
                 """,
                 (str(job_id),),
@@ -662,7 +718,7 @@ class WorkflowWorker:
         gpu_threads = [
             threading.Thread(
                 target=self._run,
-                args=({"pipeline", "publish", "discovery"}, {"gpu_heavy"}),
+                args=({"pipeline", "publish", "discovery", "cover"}, {"gpu_heavy"}),
                 daemon=True,
                 name=f"gpu-heavy-worker-{index + 1}",
             )
@@ -671,7 +727,7 @@ class WorkflowWorker:
         deepseek_threads = [
             threading.Thread(
                 target=self._run,
-                args=({"pipeline"}, {"paid_api"}),
+                args=({"pipeline", "cover"}, {"paid_api"}),
                 daemon=True,
                 name=f"deepseek-worker-{index + 1}",
             )
@@ -695,14 +751,42 @@ class WorkflowWorker:
         self._process_lock = threading.Lock()
         self._processes: dict[str, subprocess.Popen[bytes]] = {}
         self._cancel_requested: set[str] = set()
+        self._started = False
         self._dubbing_worker_client: PersistentDubbingWorkerClient | None = None
         self._cookie_work_dir = self.project_root / "work" / "cookies"
-        self._cleanup_stale_cookie_copies()
 
     def start(self) -> None:
+        if self._started:
+            return
+        self.store.recover_interrupted_jobs()
+        self._repair_queued_resource_classes()
+        self._cleanup_stale_cookie_copies()
+        self._started = True
         for thread in self._threads:
             if thread.ident is None:
                 thread.start()
+
+    def _repair_queued_resource_classes(self) -> None:
+        """Route jobs saved by older schedulers directly to their current slot."""
+        for job in self.store.queued(limit=2000):
+            try:
+                stages = self._build_stages(job)
+                stage_index = max(
+                    0,
+                    int(job.get("payload", {}).get("_stage_index") or 0),
+                )
+                if stage_index >= len(stages):
+                    continue
+                label, _, resource_class = stages[stage_index]
+            except (OSError, RuntimeError, ValueError, IndexError, TypeError):
+                continue
+            if str(job.get("resource_class") or "") == resource_class:
+                continue
+            self.store.reroute_queued(
+                str(job["id"]),
+                resource_class,
+                f"等待资源：{label}",
+            )
 
     def wake(self) -> None:
         self._wake_event.set()
@@ -717,6 +801,8 @@ class WorkflowWorker:
             return "gpu_heavy" if payload.get("prepare_hardsub") else "upload"
         if kind == "discovery":
             return "gpu_heavy"
+        if kind == "cover":
+            return "paid_api" if payload.get("cover_mode") == "cloud" else "gpu_heavy"
         return "general"
 
     @staticmethod
@@ -730,6 +816,25 @@ class WorkflowWorker:
         if target in {"subtitles", "render", "publish"}:
             return target
         return "publish" if payload.get("auto_publish") else ""
+
+    @staticmethod
+    def _automation_failure_policy(payload: dict[str, Any]) -> str:
+        """Return the only supported unattended failure policy.
+
+        Older queued jobs may still contain ``skip``.  Treat that legacy
+        value as a normal failure so a worker can never turn a content issue
+        into a completed, silently skipped task.
+        """
+        policy = str(payload.get("automation_failure_policy") or "fail").strip().casefold()
+        return "fail" if policy in {"", "skip", "fail"} else policy
+
+    @staticmethod
+    def _automation_silent_video_policy(payload: dict[str, Any]) -> str:
+        """Normalize the removed silent-video skip option."""
+        policy = str(
+            payload.get("automation_silent_video_policy") or "publish_original"
+        ).strip().casefold()
+        return "publish_original" if policy in {"", "skip", "publish_original"} else policy
 
     def snapshot(self, jobs: list[dict[str, Any]] | None = None) -> dict[str, Any]:
         rows = jobs if jobs is not None else self.store.list(limit=200)
@@ -1108,7 +1213,12 @@ class WorkflowWorker:
                     log_path,
                 )
             else:
-                exit_code = self._run_command(
+                runner = (
+                    self._run_optional_cover_command
+                    if "src.run_cover_localization" in command
+                    else self._run_command
+                )
+                exit_code = runner(
                     job_id,
                     command,
                     log_path,
@@ -1144,16 +1254,13 @@ class WorkflowWorker:
                         log_path=log_path,
                     ):
                         return
-                    if str(
-                        job["payload"].get("automation_failure_policy") or "skip"
-                    ) == "skip":
-                        self._complete_unattended_pipeline_skip(
-                            job,
-                            label=label,
-                            exit_code=exit_code,
-                            log_path=log_path,
-                        )
-                        return
+                    self._finish_unattended_pipeline_failure(
+                        job,
+                        label=label,
+                        exit_code=exit_code,
+                        log_path=log_path,
+                    )
+                    return
                 if job["kind"] == "publish" and resource_class == "upload":
                     upload_log = self.store.log_tail(job_id, max_chars=100000)
                     if self.publisher.is_publish_rate_limited(upload_log):
@@ -1189,6 +1296,18 @@ class WorkflowWorker:
                             exit_code,
                         )
                     )
+                if job["kind"] == "cover":
+                    task_dir = self.scanner.resolve_task(str(job["target"]))
+                    cover_manifest = read_json(
+                        task_dir / "cover" / "cover_manifest.json"
+                    )
+                    cover_errors = cover_manifest.get("errors") or []
+                    detail = str(
+                        cover_errors[-1]
+                        if cover_errors
+                        else f"退出代码 {exit_code}"
+                    )[:500]
+                    raise RuntimeError(f"{label}失败：{detail}")
                 raise RuntimeError(f"{label}失败，退出代码 {exit_code}")
 
             if (
@@ -1257,6 +1376,24 @@ class WorkflowWorker:
                     job["payload"]
                 ):
                     followup_step = self._queue_post_download_automation(job)
+                elif job["kind"] == "download" and job["payload"].get(
+                    "cover_enabled"
+                ):
+                    target = self._task_reference_for_video_id(str(job["target"]))
+                    cover_payload = {
+                        "cover_enabled": True,
+                        "cover_mode": job["payload"].get("cover_mode", "local"),
+                        "cover_allow_cloud_api": bool(job["payload"].get("cover_allow_cloud_api")),
+                        "cover_allow_paid_api": bool(job["payload"].get("cover_allow_paid_api")),
+                        "cover_force": False,
+                    }
+                    self.store.enqueue(
+                        "cover",
+                        target,
+                        cover_payload,
+                        resource_class=self.initial_resource("cover", cover_payload),
+                    )
+                    followup_step = "下载完成，已自动接续生成中文封面"
                 elif (
                     job["kind"] == "pipeline"
                     and self._automation_target(job["payload"]) == "publish"
@@ -1266,6 +1403,10 @@ class WorkflowWorker:
                     self.store.update(job_id, step=followup_step)
             except Exception as exc:
                 self._append_log(log_path, f"\n[自动接力失败] {exc}\n")
+                if (job["kind"] == "download" and job["payload"].get("cover_enabled")
+                        and not self._automation_enabled(job["payload"])):
+                    self.store.update(job_id, step="下载完成；封面排队失败，保留原封面")
+                    return
                 self.store.update(
                     job_id,
                     status="failed",
@@ -1319,22 +1460,23 @@ class WorkflowWorker:
             if (
                 job["kind"] == "pipeline"
                 and self._automation_enabled(job["payload"])
-                and str(
-                    job["payload"].get("automation_failure_policy") or "skip"
-                ) == "skip"
             ):
                 try:
-                    self._complete_unattended_pipeline_skip(
+                    if current_stage is not None and self._continue_unattended_original_media_publish(
+                        job, label=current_stage[0], exit_code=1, log_path=log_path,
+                    ):
+                        return
+                    self._finish_unattended_pipeline_failure(
                         job,
-                        label="准备或执行自动化流程",
+                        label=current_stage[0] if current_stage else "准备或执行自动化流程",
                         exit_code=1,
                         log_path=log_path,
                     )
                     return
-                except Exception as skip_exc:
+                except Exception as failure_exc:
                     self._append_log(
                         log_path,
-                        f"[自动跳过状态保存失败] {skip_exc}\n",
+                        f"[自动化异常处理失败] {failure_exc}\n",
                     )
             if job["kind"] == "publish" and publish_task is not None:
                 try:
@@ -1372,6 +1514,16 @@ class WorkflowWorker:
     @classmethod
     def _youtube_chinese_requires_api_fallback(cls, task_dir: Path) -> bool:
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
+        stage4_source = str(
+            stage4.get("chinese_subtitle_source") or ""
+        ).strip().casefold()
+
+        # Stage 4 manifests are retained for resume and audit.  A review left
+        # by an earlier explicit API run must not force a later YouTube-first
+        # run to buy another translation pass.  Empty is accepted for legacy
+        # manifests written before the source field was persisted.
+        if stage4_source and stage4_source not in {"auto", "youtube_auto"}:
+            return False
 
         # 第一类：中文字幕本身不存在、损坏或无法结构化使用。
         if cls._last_manifest_error_code(stage4) in {
@@ -1559,25 +1711,41 @@ class WorkflowWorker:
     ) -> bool:
         """Reroute a safe unattended fallback to metadata-only original upload."""
         payload = dict(job.get("payload") or {})
-        no_speech_fallback = bool(
+        if (
+            self._automation_target(payload) != "publish"
+            or payload.get("silent_video_mode")
+            or payload.get("publish_original_video")
+        ):
+            return False
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        no_speech = bool(
             label == "生成并选择最佳英文字幕"
-            and str(
-                payload.get("automation_silent_video_policy") or "publish_original"
-            ).strip().casefold()
-            == "publish_original"
+            and no_english_subtitle_or_recognized_speech(task_dir)
         )
+        silent_policy = self._automation_silent_video_policy(payload)
+        no_speech_fallback = no_speech and silent_policy == "publish_original"
         dubbing_render_fallback = bool(
             payload.get("dubbing_fallback")
             and label == "生成并质检双语成片"
         )
-        if self._automation_target(payload) != "publish" or not (
-            no_speech_fallback or dubbing_render_fallback
+        # A full unattended publish should never stop for a subtitle or render
+        # review.  Keep the original media and continue with localized metadata.
+        subtitle_or_render_fallback = bool(
+            self._automation_target(payload) == "publish"
+            and label in {
+                "生成并选择最佳英文字幕",
+                "翻译并检查中文字幕",
+                "生成中文 AI 配音",
+                "生成并质检双语成片",
+                "生成并质检中文配音成片",
+            }
+        )
+        if not (
+            no_speech_fallback
+            or dubbing_render_fallback
+            or subtitle_or_render_fallback
         ):
             return False
-        task_dir = self.scanner.resolve_task(str(job["target"]))
-        if no_speech_fallback and not no_english_subtitle_or_recognized_speech(task_dir):
-            return False
-
         payload["silent_video_mode"] = True
         payload["publish_original_video"] = True
         payload["media_variant"] = "original"
@@ -1595,9 +1763,44 @@ class WorkflowWorker:
                 "中文配音无法安全适配，原声字幕版成片也未通过检查；"
                 "最终保留原始视频并继续无人值守投稿"
             )
-        else:
+        elif no_speech_fallback:
             reason = "NO_NARRATION_OR_BACKGROUND_MUSIC"
-            message = "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息"
+            message = (
+                "未检测到可用语音；保留原画面和音轨，"
+                "自动生成中文标题、标签、封面并投稿"
+            )
+        elif subtitle_or_render_fallback:
+            stage4 = (
+                read_json(task_dir / "stage4" / "stage4_manifest.json")
+                if label == "生成并质检双语成片"
+                else {}
+            )
+            review = (
+                stage4.get("review")
+                if isinstance(stage4.get("review"), dict)
+                else {}
+            )
+            reason = str(review.get("code") or "").strip()
+            if not reason:
+                reason = self._last_manifest_error_code(stage4)
+            if not reason and label == "翻译并检查中文字幕":
+                reason = (
+                    "TRANSLATION_CONTENT_FILTERED"
+                    if translation_content_filter_failed(task_dir)
+                    else "CHINESE_TRANSLATION_STAGE_FAILED"
+                )
+            if not reason:
+                reason = {
+                    "生成并选择最佳英文字幕": "ENGLISH_SUBTITLE_STAGE_FAILED",
+                    "生成中文 AI 配音": "DUBBING_STAGE_FAILED",
+                    "生成并质检中文配音成片": "STAGE4_DUBBED_RENDER_STAGE_FAILED",
+                }.get(label, "STAGE4_RENDER_STAGE_FAILED")
+            message = (
+                "字幕或排版未达到安全成片条件；"
+                "已保留原画面和原音轨，自动生成中文标题、标签、封面并继续投稿"
+            )
+        else:
+            return False
         self.publisher.mark_automation_original_media(
             task_dir,
             reason=reason,
@@ -1617,7 +1820,7 @@ class WorkflowWorker:
         )
         return True
 
-    def _complete_unattended_pipeline_skip(
+    def _finish_unattended_pipeline_failure(
         self,
         job: dict[str, Any],
         *,
@@ -1625,26 +1828,28 @@ class WorkflowWorker:
         exit_code: int,
         log_path: Path,
     ) -> None:
-        """Turn a subtitle/render rejection into a terminal unattended skip.
-
-        A single unusable video must not leave an unattended queue asking for
-        human input.  The original process exit and manifests remain recorded
-        in details so infrastructure and content failures are still auditable.
-        """
+        """Persist an unattended pipeline failure for retry; never auto-skip it."""
         task_dir = self.scanner.resolve_task(str(job["target"]))
         stage3 = read_json(task_dir / "stage3_manifest.json")
         dubbing = read_json(task_dir / "dubbing" / "manifest.json")
         stage4 = read_json(task_dir / "stage4" / "stage4_manifest.json")
         review = stage4.get("review") if isinstance(stage4.get("review"), dict) else {}
-        reason = str(review.get("code") or "").strip()
-        if not reason:
-            reason = self._last_manifest_error_code(stage4)
+        reason = ""
+        if label in {"生成并质检双语成片", "生成并质检中文配音成片"}:
+            reason = str(review.get("code") or "").strip()
+            if not reason:
+                reason = self._last_manifest_error_code(stage4)
         if not reason:
             if (
                 label == "生成并选择最佳英文字幕"
                 and no_english_subtitle_or_recognized_speech(task_dir)
             ):
                 reason = "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH"
+        if not reason and (
+            label == "翻译并检查中文字幕"
+            and translation_content_filter_failed(task_dir)
+        ):
+            reason = "TRANSLATION_CONTENT_FILTERED"
         if not reason:
             reason_by_label = {
                 "生成并选择最佳英文字幕": "ENGLISH_SUBTITLE_STAGE_FAILED",
@@ -1652,6 +1857,8 @@ class WorkflowWorker:
                 "生成中文 AI 配音": "DUBBING_STAGE_FAILED",
                 "生成并质检中文配音成片": "STAGE4_DUBBED_RENDER_STAGE_FAILED",
                 "生成并质检双语成片": "STAGE4_RENDER_STAGE_FAILED",
+                "生成无配音视频投稿信息": "PUBLISH_METADATA_STAGE_FAILED",
+                "自动生成投稿标题、标签与分区": "PUBLISH_METADATA_STAGE_FAILED",
             }
             reason = reason_by_label.get(label, "UNATTENDED_PIPELINE_STAGE_FAILED")
         details = {
@@ -1668,19 +1875,18 @@ class WorkflowWorker:
             "stage4_errors": list(stage4.get("errors") or []),
             "review": review,
         }
-        self.publisher.mark_automation_skipped(task_dir, reason, details=details)
-        message = "字幕或成片未通过安全检查，已自动跳过此视频并继续队列"
+        self.publisher.mark_automation_failed(task_dir, reason, details=details)
+        message = f"无人值守处理失败，可重试：{label}"
         self._append_log(
             log_path,
-            f"\n[无人值守自动跳过] {message}：{reason}（原退出代码 {exit_code}）\n",
+            f"\n[无人值守处理失败] {message}：{reason}（退出代码 {exit_code}）\n",
         )
         self.store.update(
             str(job["id"]),
-            status="completed",
+            status="failed",
             step=message,
-            progress=100,
-            exit_code=0,
-            error="",
+            exit_code=int(exit_code),
+            error=f"{label}失败：{reason}",
             finished_at=utc_now(),
         )
 
@@ -1751,32 +1957,40 @@ class WorkflowWorker:
             )
             return True
 
-        failure_policy = str(
-            payload.get("automation_failure_policy") or "skip"
-        ).strip().casefold()
-        if failure_policy != "skip":
+        if self._automation_target(payload) != "publish":
             raise RuntimeError(
-                f"{summary}；已阻止成片和投稿，并按设置保留失败状态"
+                f"{summary}；已阻止成片，并保留失败状态等待重试"
             )
 
-        self.publisher.mark_automation_skipped(
-            task_dir,
-            "DUBBING_TIMING_REVIEW_REQUIRED",
-            details=details,
+        # A publish queue must not ask for a manual timing review.  Fall back
+        # to the original video and let the metadata/publish stages continue.
+        payload.update(
+            silent_video_mode=True,
+            publish_original_video=True,
+            media_variant="original",
+            dubbing_enabled=False,
+            force_dubbing=False,
+            _stage_index=0,
         )
-        message = "中文配音需要复核，已阻止成片和投稿并继续队列"
+        stages = self._build_stages({**job, "payload": payload})
+        if not stages:
+            raise RuntimeError("无法为配音复核任务建立投稿信息阶段")
+        self.publisher.mark_automation_original_media(
+            task_dir,
+            reason="DUBBING_TIMING_REVIEW_REQUIRED",
+            message="中文配音时槽需要复核；已保留原始视频并自动生成中文标题、标签、封面后投稿",
+        )
+        self.store.requeue_stage(
+            str(job["id"]),
+            payload=payload,
+            resource_class=stages[0][2],
+            step="自动降级：生成原视频投稿信息",
+            progress=0,
+        )
         self._append_log(
             log_path,
-            f"\n[无人值守自动跳过] {message}：{summary}\n",
-        )
-        self.store.update(
-            str(job["id"]),
-            status="completed",
-            step=message,
-            progress=100,
-            exit_code=0,
-            error="",
-            finished_at=utc_now(),
+            f"\n[无人值守中配自动降级] {summary}；"
+            "已改用原始视频生成投稿信息并继续投稿。\n",
         )
         return True
 
@@ -1815,27 +2029,26 @@ class WorkflowWorker:
         payload = dict(job["payload"])
         automation_target = self._automation_target(payload) or "publish"
         target = self._task_reference_for_video_id(str(job["target"]))
-        task_dir = self.scanner.resolve_task(target)
-        has_youtube_chinese = youtube_chinese_path(task_dir) is not None
-        if (
-            not has_youtube_chinese
-            and not payload.get("auto_translate_missing", True)
-            and str(payload.get("automation_failure_policy") or "skip") == "skip"
-            and not (
-                automation_target == "publish"
-                and str(
-                    payload.get("automation_silent_video_policy")
-                    or "publish_original"
-                ).strip().casefold()
-                == "publish_original"
-            )
+        if payload.get("cover_enabled") and not self.store.has_active(
+            "cover", target
         ):
-            self.publisher.mark_automation_skipped(
-                task_dir,
-                "YOUTUBE_CHINESE_SUBTITLE_NOT_FOUND",
-                details={"message": "没有 YouTube 中文字幕，且自动 API 翻译已关闭"},
+            cover_payload = {
+                "cover_enabled": True,
+                "cover_mode": payload.get("cover_mode", "local"),
+                "cover_allow_cloud_api": bool(
+                    payload.get("cover_allow_cloud_api")
+                ),
+                "cover_allow_paid_api": bool(
+                    payload.get("cover_allow_paid_api")
+                ),
+                "cover_force": False,
+            }
+            self.store.enqueue(
+                "cover",
+                target,
+                cover_payload,
+                resource_class=self.initial_resource("cover", cover_payload),
             )
-            return "下载完成；无中文字幕，已按无人值守设置跳过"
         self.store.enqueue(
             "pipeline",
             target,
@@ -1857,6 +2070,7 @@ class WorkflowWorker:
                     payload.get("auto_translate_missing", True)
                 ),
                 "allow_paid_api": bool(payload.get("allow_paid_api")),
+                "cover_enabled": False,
                 "automation_enabled": True,
                 "automation_target": automation_target,
                 "auto_publish": automation_target == "publish",
@@ -1869,11 +2083,10 @@ class WorkflowWorker:
                 "account_id": str(payload.get("account_id") or ""),
                 "publish_only_self": bool(payload.get("publish_only_self", False)),
                 "automation_failure_policy": str(
-                    payload.get("automation_failure_policy") or "skip"
+                    self._automation_failure_policy(payload)
                 ),
                 "automation_silent_video_policy": str(
-                    payload.get("automation_silent_video_policy")
-                    or "publish_original"
+                    self._automation_silent_video_policy(payload)
                 ),
                 "automation_dubbing_review_policy": str(
                     payload.get("automation_dubbing_review_policy")
@@ -1915,18 +2128,30 @@ class WorkflowWorker:
             else None
         )
         if dubbing_review is not None and not publish_original_video:
-            if str(
-                job["payload"].get("automation_failure_policy") or "skip"
-            ).strip().casefold() != "skip":
+            if self._automation_target(job["payload"]) != "publish":
                 raise RuntimeError(
                     f"{dubbing_review['message']}；已阻止自动投稿并保留失败状态"
                 )
-            self.publisher.mark_automation_skipped(
+            original_payload = self.publisher.automatic_submission(
                 task_dir,
-                "DUBBING_TIMING_REVIEW_REQUIRED",
-                details=dubbing_review,
+                account_id=str(job["payload"].get("account_id") or ""),
+                is_only_self=bool(job["payload"].get("publish_only_self", False)),
+                publish_original_video=True,
+                media_variant="original",
             )
-            return "中文配音需要复核，已阻止自动投稿并继续队列"
+            self.publisher.mark_automation_original_media(
+                task_dir,
+                reason="DUBBING_TIMING_REVIEW_REQUIRED",
+                message="中文配音时槽需要复核；已保留原始视频并自动生成中文标题、标签、封面后投稿",
+            )
+            if not self.store.has_active("publish", target):
+                self.store.enqueue(
+                    "publish",
+                    target,
+                    original_payload,
+                    resource_class=self.initial_resource("publish", original_payload),
+                )
+            return "中文配音需要复核，已改用原视频加入投稿队列"
         manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
         media = self.publisher.media_for_payload(task_dir, job["payload"])
         review = manifest.get("review") if isinstance(manifest.get("review"), dict) else {}
@@ -1944,10 +2169,7 @@ class WorkflowWorker:
                 if render_blocked or status == "REVIEW_REQUIRED"
                 else "HARDSUB_OUTPUT_NOT_READY"
             )
-            if (
-                job["payload"].get("dubbing_fallback")
-                and self._automation_target(job["payload"]) == "publish"
-            ):
+            if self._automation_target(job["payload"]) == "publish":
                 original_payload = self.publisher.automatic_submission(
                     task_dir,
                     account_id=str(job["payload"].get("account_id") or ""),
@@ -1959,10 +2181,17 @@ class WorkflowWorker:
                 )
                 self.publisher.mark_automation_original_media(
                     task_dir,
-                    reason="DUBBING_FALLBACK_RENDER_REVIEW_REQUIRED",
+                    reason=(
+                        "DUBBING_FALLBACK_RENDER_REVIEW_REQUIRED"
+                        if job["payload"].get("dubbing_fallback")
+                        else reason
+                    ),
                     message=(
                         "中文配音无法安全适配，原声字幕版也未达到可投稿条件；"
                         "已自动改用原始视频"
+                        if job["payload"].get("dubbing_fallback")
+                        else "字幕或排版未达到安全成片条件；"
+                        "已自动改用原始视频继续投稿"
                     ),
                 )
                 if not self.store.has_active("publish", target):
@@ -1974,24 +2203,11 @@ class WorkflowWorker:
                             "publish", original_payload
                         ),
                     )
-                return "原声字幕版未通过成片检查，已改用原视频加入投稿队列"
-            if str(
-                job["payload"].get("automation_failure_policy") or "skip"
-            ) != "skip":
-                raise RuntimeError(
-                    f"成片未达到可投稿条件（{reason}）；"
-                    "已按设置保留失败状态，未自动投稿"
-                )
-            self.publisher.mark_automation_skipped(
-                task_dir,
-                reason,
-                details={
-                    "stage4_status": status,
-                    "media_ready": media_ready,
-                    "review": review,
-                },
+                return "字幕成片未通过安全检查，已改用原视频加入投稿队列"
+            raise RuntimeError(
+                f"成片未达到可投稿条件（{reason}）；"
+                "已保留失败状态，未自动投稿"
             )
-            return "成片未达到可投稿条件，已自动跳过并继续队列"
         if self.store.has_active("publish", target):
             return "成片完成，投稿任务已在队列中"
         publish_payload = self.publisher.automatic_submission(
@@ -2079,6 +2295,13 @@ class WorkflowWorker:
         for label, command in self._build_commands(job):
             if job["kind"] == "download":
                 resource_class = "network"
+            elif "src.run_cover_localization" in command:
+                cloud_mode = ("--mode" in command and command[command.index("--mode") + 1] == "cloud")
+                resource_class = (
+                    "paid_api" if cloud_mode
+                    else "paid_api" if "finalize" in command and "--allow-paid-api" in command
+                    else "gpu_heavy"
+                )
             elif job["kind"] == "publish":
                 resource_class = (
                     "upload"
@@ -2150,6 +2373,10 @@ class WorkflowWorker:
             )
             return commands
 
+        if job["kind"] == "cover":
+            task_dir = self.scanner.resolve_task(str(job["target"]))
+            return self._cover_commands(task_dir, payload)
+
         if job["kind"] != "pipeline":
             raise ValueError(f"未知任务类型：{job['kind']}")
 
@@ -2174,7 +2401,10 @@ class WorkflowWorker:
             ]
             if payload.get("allow_paid_api"):
                 metadata_command.append("--allow-paid-api")
-            return [("生成无配音视频投稿信息", metadata_command)]
+            commands = [("生成无配音视频投稿信息", metadata_command)]
+            if payload.get("cover_enabled"):
+                commands.extend(self._cover_commands(task_dir, payload))
+            return commands
         steps = str(payload.get("workflow") or "complete")
         dubbing_requested = bool(payload.get("dubbing_enabled") or steps == "dubbing")
         requested_chinese_source = str(
@@ -2207,14 +2437,17 @@ class WorkflowWorker:
                 chinese_source = "deepseek"
             elif (
                 self._automation_target(payload) == "publish"
-                and str(
-                    payload.get("automation_silent_video_policy")
-                    or "publish_original"
-                ).strip().casefold()
+                and self._automation_silent_video_policy(payload)
                 == "publish_original"
             ):
                 # The English selection stage must run before we can distinguish
                 # a no-speech original from a voiced video missing Chinese text.
+                chinese_source = "auto"
+            elif self._automation_target(payload) == "publish":
+                # Do not stop queue construction because a legacy payload
+                # disabled translation.  The selection/metadata stages will
+                # run, and a failed subtitle path will fall back to the
+                # original upload automatically.
                 chinese_source = "auto"
             else:
                 raise ValueError("没有 YouTube 中文字幕，且自动 API 翻译已关闭")
@@ -2355,7 +2588,66 @@ class WorkflowWorker:
                     render_command,
                 )
             )
+        if payload.get("cover_enabled"):
+            commands.extend(self._cover_commands(task_dir, payload))
         return commands
+
+    def _cover_commands(self, task_dir: Path, payload: dict[str, Any]) -> list[tuple[str, list[str]]]:
+        python = resolve_python_executable(self.project_root)
+        base = [str(python), "-m", "src.run_cover_localization",
+                "--video-dir", str(task_dir), "--project-root", str(self.project_root)]
+        mode = payload.get("cover_mode", "local")
+        base.extend(["--mode", mode])
+        if mode == "cloud" and payload.get("cover_allow_cloud_api"):
+            base.append("--allow-cloud-api")
+        # Analysis/copy and Pillow rendering use separate scheduler slots.
+        if payload.get("cover_allow_paid_api"):
+            base.append("--allow-paid-api")
+        if payload.get("cover_force"):
+            base.append("--force")
+        return [
+            (
+                "调用当前翻译 API 生成封面文案"
+                if mode == "cloud"
+                else "分析封面文字与主体",
+                [*base, "--phase", "analyze"],
+            ),
+            ("生成中文本地化封面", [*base, "--phase", "finalize"]),
+        ]
+
+    def _run_optional_cover_command(self, job_id: str, command: list[str], log_path: Path, **progress: Any) -> int:
+        from ..stage3.subtitle_writer import atomic_write_json
+        standalone_cover = self.store.get(job_id)["kind"] == "cover"
+        task_dir = Path(command[command.index("--video-dir") + 1])
+        try:
+            result = self._run_command(job_id, command, log_path, **progress)
+            self._raise_if_cancelled(job_id)
+            if result == 0:
+                manifest = read_json(task_dir / "cover" / "cover_manifest.json")
+                if not standalone_cover or str(manifest.get("status") or "").upper() != "FAILED":
+                    return 0
+                errors = manifest.get("errors") or []
+                error = str(errors[-1] if errors else "封面生成失败")[:500]
+                result = 2
+            else:
+                error = f"封面子进程退出代码 {result}"
+        except JobCancelled:
+            raise
+        except Exception as exc:
+            error = f"封面子进程无法运行：{type(exc).__name__}"
+            result = 1
+        self._append_log(log_path, f"[封面失败] {error}；保留原封面。\n")
+        try:
+            manifest_path = task_dir / "cover" / "cover_manifest.json"
+            if str(read_json(manifest_path).get("status") or "").upper() != "FAILED":
+                atomic_write_json(manifest_path, {
+                    "status": "FAILED", "fallback": "original", "errors": [error],
+                })
+        except OSError:
+            pass
+        # Legacy pipelines keep cover generation optional. A dedicated cover
+        # job, however, must expose its real terminal state in the job list.
+        return int(result) if standalone_cover else 0
 
     def _create_cookie_copy(self, job_id: str) -> Path | None:
         config_path = self.project_root / "config" / "download_config.json"

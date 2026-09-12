@@ -77,6 +77,25 @@ def make_handler(
                     task = str((query.get("task") or [""])[0])
                     self._json(HTTPStatus.OK, app.publish_defaults(task))
                     return
+                if parsed.path == "/api/cover":
+                    query = parse_qs(parsed.query)
+                    task = str((query.get("task") or [""])[0])
+                    variant = str((query.get("variant") or ["localized"])[0])
+                    path = app.cover_file(task, variant)
+                    content_type = mimetypes.guess_type(path.name)[0] or "image/jpeg"
+                    payload = path.read_bytes()
+                    self.send_response(HTTPStatus.OK)
+                    self.send_header("Content-Type", content_type)
+                    self.send_header("Content-Length", str(len(payload)))
+                    self.send_header("Cache-Control", "no-store")
+                    self.send_header("X-Content-Type-Options", "nosniff")
+                    self.end_headers()
+                    self.wfile.write(payload)
+                    return
+                if parsed.path == "/api/cover/details":
+                    query = parse_qs(parsed.query)
+                    self._json(HTTPStatus.OK, app.cover_details(str((query.get("task") or [""])[0])))
+                    return
                 if parsed.path == "/api/render-review":
                     query = parse_qs(parsed.query)
                     task = str((query.get("task") or [""])[0])
@@ -167,6 +186,13 @@ def make_handler(
                         items=body.get("items") if isinstance(body.get("items"), list) else None,
                         confirm_rights=body.get("confirm_rights") is True,
                         auto_publish=body.get("auto_publish") is True,
+                        cover_choice=body.get("cover_choice"),
+                        cover_cloud_authorized=body.get("cover_cloud_authorized") is True,
+                        cover_enabled=(
+                            body.get("cover_enabled")
+                            if isinstance(body.get("cover_enabled"), bool)
+                            else None
+                        ),
                         whisper_for_auto_subtitles=(
                             body.get("whisper_for_auto_subtitles") is not False
                         ),
@@ -182,7 +208,7 @@ def make_handler(
                             body.get("automation_render_mode") or "hardsub"
                         ),
                         automation_failure_policy=str(
-                            body.get("automation_failure_policy") or "skip"
+                            body.get("automation_failure_policy") or "fail"
                         ),
                         automation_target=str(
                             body.get("automation_target") or "publish"
@@ -234,6 +260,13 @@ def make_handler(
                             body.get("chinese_subtitle_source") or "deepseek"
                         ),
                         allow_paid_api=body.get("allow_paid_api") is True,
+                        cover_choice=body.get("cover_choice"),
+                        cover_cloud_authorized=body.get("cover_cloud_authorized") is True,
+                        cover_enabled=(
+                            body.get("cover_enabled")
+                            if isinstance(body.get("cover_enabled"), bool)
+                            else None
+                        ),
                         whisper_for_auto_subtitles=(
                             body.get("whisper_for_auto_subtitles") is not False
                         ),
@@ -247,7 +280,7 @@ def make_handler(
                         account_id=str(body.get("account_id") or ""),
                         publish_only_self=body.get("publish_only_self") is True,
                         automation_failure_policy=str(
-                            body.get("automation_failure_policy") or "skip"
+                            body.get("automation_failure_policy") or "fail"
                         ),
                         automation_target=str(
                             body.get("automation_target") or "publish"
@@ -288,6 +321,19 @@ def make_handler(
                         force_dubbing=body.get("force_dubbing") is True,
                     )
                     self._json(HTTPStatus.ACCEPTED, {"jobs": jobs})
+                    return
+                if parsed.path == "/api/cover":
+                    self._json(
+                        HTTPStatus.ACCEPTED,
+                        {
+                            "job": app.queue_cover(
+                                str(body.get("task") or ""),
+                                force=body.get("force") is not False,
+                                allow_paid_api=body.get("allow_paid_api") is True,
+                                allow_cloud_api=body.get("allow_cloud_api") is True,
+                            )
+                        },
+                    )
                     return
                 if parsed.path == "/api/render-review":
                     raw_edits = body.get("edits")

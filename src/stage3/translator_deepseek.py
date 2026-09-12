@@ -452,6 +452,19 @@ class LLMTranslator:
                 continue
         return 0.0
 
+    @classmethod
+    def _is_content_filter_error(cls, exc: Exception) -> bool:
+        """Return whether the provider rejected the request by content policy."""
+        _status, code = cls._exception_details(exc)
+        normalized = str(exc).casefold()
+        return (
+            code.casefold() in {"1301", "content_filter", "contentfilter"}
+            or "contentfilter" in normalized
+            or "content filter" in normalized
+            or "内容安全" in str(exc)
+            or "敏感内容" in str(exc)
+        )
+
     def _retry_decision(
         self,
         exc: Exception,
@@ -954,6 +967,7 @@ class LLMTranslator:
         last_failure_reason, last_finish_reason = "", ""
         last_request_ids: list[int] = []
         failures: dict[str, int] = {}
+        content_filter_recovery = False
         response_file = self.response_dir / f"batch_{batch_id:04d}_{pass_name}.json"
 
         def write_progress(
@@ -1014,8 +1028,8 @@ class LLMTranslator:
                 received, usage, raw, finish_reason = self._request(
                     build_messages(
                         request_targets,
-                        before,
-                        after,
+                        [] if content_filter_recovery else before,
+                        [] if content_filter_recovery else after,
                         glossary,
                         metadata,
                         polish=pass_name == "polished",
@@ -1069,7 +1083,22 @@ class LLMTranslator:
                 last_error = str(exc)
                 failure_reason = ""
                 finish_reason = ""
-                if isinstance(exc, ResponsePayloadError):
+                if self._is_content_filter_error(exc):
+                    failure_reason = "content_filter"
+                    priority_targets = [
+                        item
+                        for item in request_targets
+                        if item.id in {p.id for p in pending}
+                    ]
+                    # A provider can reject a large batch because of one
+                    # target or one neighboring context cue.  Isolate the
+                    # request progressively and remove read-only context so a
+                    # single false positive does not discard the rest of the
+                    # translation checkpoint.  A one-ID rejection remains a
+                    # visible terminal error; never invent a translation.
+                    request_limit = max(1, (len(request_targets) + 1) // 2)
+                    content_filter_recovery = True
+                elif isinstance(exc, ResponsePayloadError):
                     self._add_usage(self.usage, exc.usage)
                     self._add_usage(batch_usage, exc.usage)
                     failure_reason = exc.reason
@@ -1100,6 +1129,20 @@ class LLMTranslator:
                 last_failure_reason = failure_reason
                 last_finish_reason = finish_reason
                 last_request_ids = sorted(requested_ids)
+                if self._is_content_filter_error(exc) and len(request_targets) > 1:
+                    write_progress(
+                        "retrying",
+                        error=last_error,
+                        retry_kind="content_filter",
+                        failure_reason=failure_reason,
+                        request_ids=sorted(requested_ids),
+                    )
+                    LOGGER.warning(
+                        "AI API batch %d was content-filtered; retrying %d isolated IDs without context",
+                        batch_id,
+                        request_limit,
+                    )
+                    continue
                 decision = self._retry_decision(exc, failures)
                 if decision is None:
                     break

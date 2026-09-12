@@ -14,6 +14,8 @@ const state = {
   publishAutoTitle: true,
   publishDynamicAuto: true,
   renderReviewTask: null,
+  coverPreviewTask: null,
+  coverInitialized: false,
   refreshBusy: false,
   setupDismissed: false,
   setupManuallyOpened: false,
@@ -136,12 +138,15 @@ function renderDashboard(dashboard) {
   renderScheduler(dashboard.scheduler);
   renderTasks(dashboard.tasks);
   renderJobs(dashboard.jobs);
+  if (state.coverPreviewTask && $("#coverPreviewDialog").open) updateCoverPreview();
   updateChineseSourceControls();
 }
 
 function automationSettingsSnapshot() {
   return {
     enabled: $("#autoPublishAfterDownload").checked,
+    coverChoice: $("#automationCoverChoice").value,
+    coverCloudAuthorized: $("#automationCoverCloudAuthorized").checked,
     target: $("#automationTarget").value,
     englishPolicy: $("#automationEnglishPolicy").value,
     chinesePolicy: $("#automationChinesePolicy").value,
@@ -187,6 +192,8 @@ function restoreAutomationSettings() {
     settings.dubbingReviewPolicy = "auto_fallback";
   }
   $("#autoPublishAfterDownload").checked = settings.enabled === true;
+  $("#automationCoverChoice").value = ["off", "local", "cloud"].includes(settings.coverChoice) ? settings.coverChoice : "off";
+  $("#automationCoverCloudAuthorized").checked = settings.coverChoice === "cloud" && settings.coverCloudAuthorized === true;
   const target = ["subtitles", "render", "publish"].includes(settings.target)
     ? settings.target
     : "publish";
@@ -215,10 +222,12 @@ function restoreAutomationSettings() {
     $("#automationRenderMode").value = settings.renderMode;
   }
   if (["skip", "fail"].includes(settings.failurePolicy)) {
-    $("#automationFailurePolicy").value = settings.failurePolicy;
+    // ``skip`` was removed from the UI.  Existing browser settings continue
+    // as the original-media fallback path instead of silently skipping.
+    $("#automationFailurePolicy").value = "fail";
   }
   if (["publish_original", "skip"].includes(settings.silentVideoPolicy)) {
-    $("#automationSilentVideoPolicy").value = settings.silentVideoPolicy;
+    $("#automationSilentVideoPolicy").value = "publish_original";
   }
   if (["auto", "local_ollama", "translation_api"].includes(settings.metadataProvider)) {
     $("#automationMetadataProvider").value = settings.metadataProvider;
@@ -258,11 +267,10 @@ function updateAutomationFlow() {
   $("#automationFlow").classList.toggle("inactive", !enabled);
   $("#automationMasterSummary").textContent = enabled
     ? `新下载的视频会自动处理到${targetLabels[settings.target]}`
-    : "当前关闭，只下载视频与原始字幕";
+    : "自动化关闭；新下载只保存素材，不生成中文封面";
   const noSpeechOutcome = settings.target === "publish"
-    && settings.silentVideoPolicy === "publish_original"
     ? "无可靠语音时保留原视频并生成中文投稿信息"
-    : `无可靠语音时${settings.failurePolicy === "skip" ? "自动跳过" : "保留失败"}`;
+    : "无可靠语音时保留失败状态";
   const englishDescriptions = {
     quality: `YouTube 字幕与 Whisper 自动比较，选择质量更高者；${noSpeechOutcome}`,
     youtube_first: `优先使用 YouTube 英文字幕；缺少时用 Whisper 兜底；${noSpeechOutcome}`,
@@ -271,7 +279,7 @@ function updateAutomationFlow() {
   const chineseDescriptions = {
     youtube_preferred: "优先可靠的 YouTube 中文；缺少或不可用时调用翻译 API",
     api_always: "忽略已有 YouTube 中文字幕；每个视频都调用所选 API 重新翻译",
-    youtube_only: `只使用可靠的 YouTube 中文；缺少时${settings.failurePolicy === "skip" ? "自动跳过" : "保留失败"}`,
+    youtube_only: `只使用可靠的 YouTube 中文；缺少时${settings.target === "publish" ? "改用原视频投稿" : "保留失败"}`,
   };
   const renderDescriptions = {
     ass: "只生成双语 ASS 字幕文件，不编码视频",
@@ -288,10 +296,12 @@ function updateAutomationFlow() {
     ? `VoxCPM2 · ${referenceDescription} · ${settings.dubbingSubtitleDisplay === "chinese" ? "仅中文字幕" : "中英双语字幕"}`
     : "本流程不生成中配，成片保留原始音轨";
   $("#automationRenderFlow").textContent = renderDescriptions[settings.renderMode];
+  const coverEnabled = settings.coverChoice !== "off";
+  $("#automationCoverFlow").textContent = coverEnabled
+    ? `${settings.coverChoice === "cloud" ? "API 文案 + Pillow" : "本地 Ollama + Pillow"}；失败时使用原封面，其他步骤继续`
+    : "未启用；保留原始封面";
   const metadataLabel = $("#automationMetadataProvider").selectedOptions[0]?.textContent || "自动模型";
-  const silentFlow = settings.silentVideoPolicy === "publish_original"
-    ? "；无配音视频保留原画面与音轨，仅生成中文投稿信息"
-    : "；无配音视频自动跳过";
+  const silentFlow = "；无配音视频保留原画面与音轨，生成中文投稿信息后投稿";
   $("#automationMetadataFlow").textContent = `${metadataLabel}；自动填写标题、标签、简介和分区${silentFlow}`;
   const accountLabel = $("#automationAccount").selectedOptions[0]?.textContent || "自动选择账号";
   $("#automationPublishFlow").textContent = `${accountLabel} · ${settings.onlySelf ? "仅自己可见" : "公开投稿"}；瞬时网络错误自动重试并切换线路`;
@@ -299,6 +309,7 @@ function updateAutomationFlow() {
     ? new Set(["dubbing", "render", "metadata", "publish"])
     : settings.target === "render" ? new Set(["metadata", "publish"]) : new Set();
   if (!settings.dubbingEnabled) omittedStages.add("dubbing");
+  if (!coverEnabled) omittedStages.add("cover");
   for (const stage of $$('[data-automation-stage]')) {
     stage.classList.toggle("omitted", omittedStages.has(stage.dataset.automationStage));
   }
@@ -333,22 +344,16 @@ function updateAutomationFlow() {
     control.closest(".automation-setting").classList.toggle("is-disabled", disabled);
     control.disabled = disabled;
   }
-  const automationButtonLabels = {
-    subtitles: "按设置自动到字幕",
-    render: "按设置自动到成片",
-    publish: "按设置全自动投稿",
-  };
-  $("#autoPublishSelected").textContent = automationButtonLabels[settings.target];
   const reviewOutcome = !settings.dubbingEnabled
     ? ""
     : settings.dubbingReviewPolicy === "continue"
       ? " 中配时槽超限时仍会继续成片与投稿，请仅在接受重叠风险时使用。"
       : settings.dubbingReviewPolicy === "auto_fallback"
         ? " 中配无法安全适配时会自动改为原声中文字幕成片并继续投稿。"
-        : ` 中配时槽超限会在成片前阻止；随后${settings.failurePolicy === "skip" ? "自动跳过并继续队列" : "保留失败状态"}。`;
-  $("#automationFailureFlow").textContent = (settings.failurePolicy === "skip"
-    ? "异常策略：无法安全完成字幕或成片时，记录原因并自动跳过该视频；其他视频继续执行。"
-    : "异常策略：无法安全完成字幕或成片时，将该视频保留为失败状态；不会上传不合格成片。")
+      : ` 中配时槽超限会在成片前自动改用${settings.target === "publish" ? "原视频并继续投稿" : "原始音轨成片"}。`;
+  $("#automationFailureFlow").textContent = (settings.target === "publish"
+    ? "异常策略：字幕或排版无法安全成片时，保留原因并改用原视频，自动生成中文投稿信息和封面继续上传。"
+    : "异常策略：无法安全完成字幕或成片时，将该视频保留为失败状态，不自动跳过。")
     + reviewOutcome
     + " 无可靠语音的视频按上方专用策略处理。";
 }
@@ -450,10 +455,51 @@ function renderHealth(health) {
   renderSetupGuide(health);
 }
 
-function automationRequestValues(autoPublish) {
-  const settings = automationSettingsSnapshot();
+function coverRequestValues(automated) {
+  const prefix = automated ? "automation" : "manual";
+  const choice = $("#" + prefix + "CoverChoice").value;
+  if (choice === "off") {
+    return { cover_choice: "off", cover_enabled: false, cover_cloud_authorized: false };
+  }
+  if (!state.dashboard?.health?.cover?.per_job_options) {
+    throw new Error("后台尚不支持分区封面开关，请在活动任务完成后重启后台再提交");
+  }
+  const authorized = $("#" + prefix + "CoverCloudAuthorized").checked;
+  if (choice === "cloud" && !state.dashboard?.health?.cover?.api_key_configured) {
+    throw new Error("API 文案封面缺少当前翻译供应商的 Key；请先在‘配置服务 → AI 翻译’保存 Key，或关闭封面生成／改用本地模式");
+  }
+  if (choice === "cloud" && !authorized) {
+    const authorization = $("#" + prefix + "CoverCloudAuthorized");
+    authorization.scrollIntoView({ behavior: "smooth", block: "center" });
+    authorization.focus({ preventScroll: true });
+    throw new Error(`已选择${automated ? "自动化" : "手动"} API 封面；请勾选封面文案 API 授权，或关闭封面生成／改用本地模式`);
+  }
+  return { cover_choice: choice, cover_cloud_authorized: choice === "cloud" && authorized };
+}
+
+function updateCoverRequestControls(health = state.dashboard?.health) {
+  for (const prefix of ["automation", "manual"]) {
+    const cloud = $("#" + prefix + "CoverChoice").value === "cloud";
+    const authorization = $("#" + prefix + "CoverCloudAuthorized");
+    // Consent is a user choice, independent of asynchronous service readiness.
+    authorization.disabled = !cloud;
+    if (!cloud) authorization.checked = false;
+    const hint = !cloud
+      ? "仅选择 API 文案模式时需要授权；关闭或本地模式无需授权。"
+      : !health
+        ? "可先勾选授权；正在读取当前翻译供应商的配置状态。"
+        : !health.cover?.api_key_configured
+          ? "可先勾选授权；使用前需在“配置服务 → AI 翻译”保存 Key，也可关闭封面或改用本地模式。"
+          : "只发送标题与限长摘要，可能收费；Pillow 在本地绘图。";
+    authorization.title = hint;
+    $("#" + prefix + "CoverAuthorizationHint").textContent = hint;
+  }
+}
+
+function automationRequestValues(autoPublish, settings = automationSettingsSnapshot()) {
+  if (!autoPublish) return { auto_publish: false };
   return {
-    auto_publish: Boolean(autoPublish),
+    auto_publish: true,
     automation_target: settings.target,
     english_subtitle_policy: settings.englishPolicy,
     automation_chinese_policy: settings.chinesePolicy,
@@ -466,15 +512,20 @@ function automationRequestValues(autoPublish) {
     automation_failure_policy: settings.failurePolicy,
     automation_silent_video_policy: settings.silentVideoPolicy,
     automation_dubbing_review_policy: settings.dubbingReviewPolicy,
-    ...(autoPublish ? {
-      dubbing_enabled: settings.dubbingEnabled,
-      dubbing_reference_mode: settings.dubbingReferenceMode,
-      dubbing_reference_start: settings.dubbingReferenceStart,
-      dubbing_reference_end: settings.dubbingReferenceEnd,
-      dubbing_subtitle_display: settings.dubbingSubtitleDisplay,
-      force_dubbing: false,
-    } : {}),
+    dubbing_enabled: settings.dubbingEnabled,
+    dubbing_reference_mode: settings.dubbingReferenceMode,
+    dubbing_reference_start: settings.dubbingReferenceStart,
+    dubbing_reference_end: settings.dubbingReferenceEnd,
+    dubbing_subtitle_display: settings.dubbingSubtitleDisplay,
+    force_dubbing: false,
   };
+}
+
+function downloadRequestValues() {
+  if (!$("#autoPublishAfterDownload").checked) {
+    return { auto_publish: false, cover_choice: "off", cover_enabled: false, cover_cloud_authorized: false };
+  }
+  return { ...automationRequestValues(true), ...coverRequestValues(true) };
 }
 
 function updateSetupStatus(selector, configured, readyText, missingText) {
@@ -484,6 +535,7 @@ function updateSetupStatus(selector, configured, readyText, missingText) {
 }
 
 function renderSetupGuide(health) {
+  updateCoverRequestControls(health);
   const checks = health.checks || {};
   updateSetupStatus("#youtubeSetupStatus", checks.youtube_api, "已配置", "未配置");
   updateSetupStatus("#youtubeCookiesSetupStatus", checks.youtube_cookies, "已导入", "未导入");
@@ -493,6 +545,36 @@ function renderSetupGuide(health) {
   renderLlmSettings(health.llm);
   renderDiscoverySettings(health.discovery);
   renderPublishingSettings(health.publishing);
+  const coverSupported = Boolean(health.cover);
+  for (const selector of ["#coverEnabled", "#coverAllowPaidCopy", "#saveCoverSettings"]) {
+    $(selector).disabled = !coverSupported;
+  }
+  $("#coverSettingsHint").textContent = coverSupported
+    ? "保存服务配置后，单独重新生成封面会使用这里的模式；下方处理任务使用各自区域的封面选项，普通下载不生成中文封面。"
+    : "后台仍是旧版本。请等待下载、渲染和投稿任务完成后，关闭旧面板并重新运行 start_panel.bat，再刷新页面；仅刷新网页不能更新后台。";
+  if (!coverSupported) state.coverInitialized = false;
+  if (coverSupported && !state.coverInitialized) {
+    $("#coverEnabled").checked = Boolean(health.cover?.enabled);
+    $("#coverAllowPaidCopy").checked = Boolean(health.cover?.allow_paid_copy);
+    $("#coverMode").value = health.cover?.mode || "local";
+    $("#coverAllowCloudApi").checked = Boolean(health.cover?.allow_cloud_api);
+    state.coverInitialized = true;
+  }
+  $("#coverMode").disabled = !health.cover?.modes?.includes("cloud");
+  $("#coverCloudKeyStatus").textContent = health.cover?.api_key_configured
+    ? `将使用 ${health.cover.api_provider_label || "当前翻译供应商"} · ${health.cover.api_model || "当前模型"}`
+    : "当前翻译供应商尚未配置 Key";
+  $("#coverCloudFields").classList.toggle("hidden", $("#coverMode").value !== "cloud");
+  if (coverSupported && !health.cover?.modes?.includes("cloud")) {
+    $("#coverSettingsHint").textContent = "后台尚不支持双模式；请在任务完成后重启后台，才能选择 API 文案 + Pillow。";
+  }
+  updateSetupStatus("#coverSetupStatus", health.cover?.enabled && health.cover?.pillow_ready,
+    "已启用", !coverSupported ? "需重启后台" : health.cover?.enabled ? "缺少 Pillow" : "未启用");
+  if (health.cover?.enabled && health.cover?.mode === "cloud") {
+    const cloudReady = health.cover.pillow_ready && health.cover.api_key_configured && health.cover.allow_cloud_api;
+    updateSetupStatus("#coverSetupStatus", cloudReady, "API + Pillow 已启用",
+      !health.cover.pillow_ready ? "缺少 Pillow" : !health.cover.api_key_configured ? "缺少翻译 API Key" : "等待 API 授权");
+  }
   const hasMissingOption = !checks.youtube_api || !checks.youtube_cookies || !checks.translation_api || !checks.biliup_account;
   const shouldShow = state.setupManuallyOpened || (hasMissingOption && !state.setupDismissed);
   $("#setupGuide").classList.toggle("hidden", !shouldShow);
@@ -578,7 +660,7 @@ function updateLlmProviderFields(providerId, modelId = "", baseUrl = "", resetTh
   }
 }
 
-const stageNames = { download: "下载", english: "英文", translation: "AI 翻译", dubbing: "配音", render: "成片", publish: "投稿" };
+const stageNames = { download: "下载", english: "英文", translation: "AI 翻译", dubbing: "配音", render: "成片", cover: "封面", publish: "投稿" };
 
 function renderTasks(tasks) {
   const taskKeys = new Set(tasks.map((task) => task.task));
@@ -638,12 +720,14 @@ function renderTasks(tasks) {
           : "";
     const layoutReview = !active
       && task.stages.publish.state !== "complete"
-      && task.stages.render.state === "review"
+      && !["ORIGINAL_MEDIA", "FALLBACK_PENDING"].includes(task.automation_status)
+      && task.stage4_status === "REVIEW_REQUIRED"
       && task.review?.code === "SUBTITLE_LAYOUT_REVIEW_REQUIRED";
     const renderAction = layoutReview
       ? `<button class="icon-button review-task" type="button" title="审核过长字幕并继续成片" aria-label="审核过长字幕并继续成片">审</button>`
       : !active
         && task.stages.publish.state !== "complete"
+        && !["ORIGINAL_MEDIA", "FALLBACK_PENDING"].includes(task.automation_status)
         && task.stages.translation.state === "complete"
         && task.stage4_status !== "STAGE4_COMPLETED"
         ? `<button class="icon-button render-task" type="button" title="仅重新成片" aria-label="仅重新成片">▶</button>`
@@ -663,7 +747,7 @@ function renderTasks(tasks) {
         </div>
         <div class="stage-track">${stages}</div>
         <div class="status-cell">
-          <strong title="${escapeHtml(task.overall)}">${escapeHtml(task.overall)}</strong>
+          <strong class="${automationSkipped ? "automation-skip-status" : ""}" title="${escapeHtml(task.overall)}">${escapeHtml(task.overall)}</strong>
           <small class="${summaryClass}" title="${escapeHtml(reviewSummary)}">${escapeHtml(subtitle)}</small>
           <progress class="progress-mini" max="100" value="${Math.max(0, Math.min(100, progress))}" aria-label="进度 ${progress}%"></progress>
         </div>
@@ -673,6 +757,7 @@ function renderTasks(tasks) {
             : ""}
           ${publishAction}
           ${renderAction}
+          <button class="icon-button preview-cover" type="button" title="预览原封面、中文封面或重新生成" aria-label="预览封面与重新生成">封</button>
           ${task.dubbing_available
             ? '<button class="icon-button open-dubbing-folder" type="button" title="打开中文配音目录" aria-label="打开中文配音目录">音</button>'
             : ""}
@@ -707,6 +792,7 @@ function renderJobs(jobs) {
       ? `<button class="button button-danger-outline delete-job-log" type="button" data-job-id="${job.id}">删日志</button>`
       : "";
     const kind = job.kind === "download" ? "DOWNLOAD"
+      : job.kind === "cover" ? "COVER"
       : job.kind === "publish" ? "PUBLISH"
         : job.kind === "discovery" ? "DISCOVERY"
           : "PIPELINE";
@@ -770,10 +856,11 @@ function searchResultCard(item) {
   const qualityTier = item.selection_tier === "reserve"
     ? " · 补量备选"
     : item.heat_tier === "expanded" ? " · 扩展优选" : " · 优选";
+  const capacityTier = item.diversity_backfill ? " · 同频道补位" : "";
   const discoveryMeta = state.discoveryPayload ? `
     <div class="discovery-score-row">
       <strong>机会分 ${Number(item.opportunity_score || 0).toFixed(1)}</strong>
-      <span>${item.llm_status === "scored" ? "Qwen 已评审" : "规则评分"}${qualityTier} · 发布 ${discoveryAge(item.age_hours)}</span>
+      <span>${item.llm_status === "scored" ? "Qwen 已评审" : "规则评分"}${qualityTier}${capacityTier} · 发布 ${discoveryAge(item.age_hours)}</span>
     </div>
     <p class="discovery-reason">${escapeHtml(item.selection_reason || "")}</p>
     <small class="collision-state ${item.similar_candidate ? "warning" : "safe"}">${escapeHtml(item.collision_status || "")}</small>
@@ -830,6 +917,26 @@ function summarizeDiscoveryWarnings(rawWarnings, searchQuotaExhausted = false) {
   return { warningItems, detailedAiWarnings };
 }
 
+function discoveryQueryDiagnosticsMarkup(diagnostics) {
+  if (!Array.isArray(diagnostics) || !diagnostics.length) return "";
+  const orderLabels = { relevance: "相关性", viewCount: "热门", date: "最新" };
+  const count = (value) => Math.max(0, Number(value) || 0);
+  return `<details class="discovery-query-diagnostics">
+    <summary>搜索词效果 · 本轮执行 ${diagnostics.length} 个词</summary>
+    <p>新增合格：通过规则且未出现在保留的历史结果或已处理任务中。频道数统计规则保留的视频；同一视频可命中多个词，各行不可相加。</p>
+    <div class="discovery-query-table-wrap"><table>
+      <thead><tr><th>搜索词</th><th>排序</th><th>调用</th><th>去重召回</th><th>规则保留</th><th>新增合格</th><th>频道</th><th>入选</th></tr></thead>
+      <tbody>${diagnostics.map((item) => `<tr>
+        <td>${escapeHtml(item.query || "")}</td>
+        <td>${escapeHtml((Array.isArray(item.orders) ? item.orders : []).map((order) => orderLabels[order] || order).join(" / "))}</td>
+        <td>${count(item.calls)}</td><td>${count(item.unique_count)}</td>
+        <td>${count(item.eligible_count)}</td><td>${count(item.new_eligible_count)}</td>
+        <td>${count(item.channel_count)}</td><td>${count(item.selected_count)}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>
+  </details>`;
+}
+
 function renderSearchResults() {
   const section = $("#searchResultsSection");
   const isDiscovery = Boolean(state.discoveryPayload);
@@ -860,6 +967,7 @@ function renderSearchResults() {
   const qualityEligibleCount = Number(summary.preferred_eligible_count ?? summary.selection_eligible_count ?? visible.length);
   const expandedResultCount = Number(summary.expanded_result_count || 0);
   const reserveResultCount = Number(summary.reserve_result_count || 0);
+  const diversityBackfillCount = Number(summary.diversity_backfill_result_count || 0);
   const uniqueResultNote = uniqueResultCount < assignmentCount
     ? `（${uniqueResultCount} 个不重复视频）`
     : "";
@@ -868,7 +976,7 @@ function renderSearchResults() {
     + `时长 ${Math.round(Number(summary.minimum_duration_seconds || 0) / 60)}–${Math.round(Number(summary.maximum_duration_seconds || 0) / 60)} 分钟 · `
     + `各领域召回 ${recalledAssignmentCount}/${summary.recall_target || 0} 条、去重 ${summary.raw_candidate_count || 0} 条（搜索 ${summary.search_request_count || 0}/${summary.search_request_limit || 0} 次） → `
     + `规则保留 ${summary.eligible_count || 0} 条 → AI ${summary.llm_scored_count || 0}/${summary.llm_candidate_count || 0} 条 → 优选 ${qualityEligibleCount} 条 → `
-    + `最终 ${assignmentCount} 个领域候选位${uniqueResultNote}（扩展优选 ${expandedResultCount} 条、补量备选 ${reserveResultCount} 条）、当前显示 ${visible.length} 条 · 视觉复评 ${summary.visual_scored_count || 0} 条`;
+    + `最终 ${assignmentCount} 个领域候选位${uniqueResultNote}（扩展优选 ${expandedResultCount} 条、补量备选 ${reserveResultCount} 条、同频道补位 ${diversityBackfillCount} 条）、当前显示 ${visible.length} 条 · 视觉复评 ${summary.visual_scored_count || 0} 条`;
 
   const resultCounts = summary.result_counts_by_pack || {};
   const rawWarnings = Array.isArray(summary.warnings) ? summary.warnings : [];
@@ -916,6 +1024,7 @@ function renderSearchResults() {
           <div><h3>${escapeHtml(group.label)}</h3><p>${escapeHtml(group.description)} · 候选 ${actualCount}/目标 ${limitPerPack}（补量备选 ${reserveCount}） · 当前显示 ${rows.length} 条</p></div>
           ${rows.length ? '<button class="button button-ghost button-small select-discovery-group" type="button">选择本区</button>' : ""}
         </div>
+        ${discoveryQueryDiagnosticsMarkup((Array.isArray(summary.query_diagnostics) ? summary.query_diagnostics : []).filter((item) => item.pack_id === group.id))}
         ${rows.length
     ? `<div class="result-grid">${rows.map(searchResultCard).join("")}</div>`
     : `<div class="result-group-empty">${escapeHtml(emptyMessage)}</div>`}
@@ -1122,7 +1231,7 @@ $("#directForm").addEventListener("submit", async (event) => {
       body: JSON.stringify({
         input: $("#directInput").value,
         confirm_rights: $("#directRights").checked,
-        ...automationRequestValues($("#autoPublishAfterDownload").checked),
+        ...downloadRequestValues(),
       }),
     });
     $("#directInput").value = "";
@@ -1203,7 +1312,7 @@ $("#downloadResults").addEventListener("click", async () => {
       body: JSON.stringify({
         items,
         confirm_rights: $("#searchRights").checked,
-        ...automationRequestValues($("#autoPublishAfterDownload").checked),
+        ...downloadRequestValues(),
       }),
     });
     toast(`${payload.jobs.length} 个视频已加入下载队列`);
@@ -1226,6 +1335,14 @@ $("#taskList").addEventListener("change", (event) => {
 $("#taskList").addEventListener("click", async (event) => {
   const row = event.target.closest(".task-row");
   if (!row) return;
+  if (event.target.closest(".preview-cover")) {
+    state.coverPreviewTask = row.dataset.task;
+    $("#coverRegeneratePaid").checked = false;
+    $("#coverRegenerateCloud").checked = false;
+    updateCoverPreview();
+    $("#coverPreviewDialog").showModal();
+    return;
+  }
   const cancelButton = event.target.closest(".cancel-task-job");
   if (cancelButton) {
     if (!window.confirm("确定终止这个任务的当前进程吗？\n已生成的文件会保留，稍后仍可重试。")) return;
@@ -1303,6 +1420,89 @@ $("#taskList").addEventListener("click", async (event) => {
   }
   if (event.target.closest(".open-bilibili") && row.dataset.bilibiliUrl) {
     window.open(row.dataset.bilibiliUrl, "_blank", "noopener,noreferrer");
+  }
+});
+
+async function updateCoverPreview() {
+  const task = (state.dashboard?.tasks || []).find((item) => item.task === state.coverPreviewTask);
+  if (!task) return;
+  $("#coverPreviewTitle").textContent = task.title;
+  const cloudMode = state.dashboard?.health?.cover?.mode === "cloud";
+  $("#coverPreviewMode").textContent = `本次重新生成模式：${cloudMode ? "当前翻译 API 生成文案 + Pillow 绘制大号中文" : "本地 Ollama + Pillow"}`;
+  $("#coverRegenerateCloud").disabled = !cloudMode;
+  $("#coverRegeneratePaid").disabled = cloudMode;
+  if (!state.dashboard?.health?.cover) {
+    for (const selector of ["#coverOriginalPreview", "#coverLocalizedPreview"]) {
+      $(selector).classList.add("hidden");
+      $(selector).removeAttribute("src");
+    }
+    $("#coverOriginalHint").textContent = "旧版后台不支持封面预览，不能据此判断原图缺失。";
+    $("#coverMissingHint").classList.remove("hidden");
+    $("#coverMissingHint").textContent = "请在任务完成后重启控制面板。";
+    $("#coverPreviewStatus").textContent = "需重启后台：等待活动任务完成，关闭旧面板并重新运行 start_panel.bat，再刷新网页。";
+    $("#coverPreviewCopy").textContent = "";
+    $("#coverPreviewCandidates").textContent = "";
+    $("#coverPreviewLog").textContent = "旧版后台不支持封面日志接口。";
+    $("#regenerateCover").disabled = true;
+    return;
+  }
+  $("#coverMissingHint").textContent = "尚未生成中文封面";
+  $("#coverOriginalHint").textContent = task.cover_original_available ? "" : "任务目录中尚无原始封面。";
+  for (const [selector, variant, available] of [
+    ["#coverOriginalPreview", "original", task.cover_original_available],
+    ["#coverLocalizedPreview", "localized", task.cover_localized_available],
+  ]) {
+    const img = $(selector);
+    img.onerror = () => {
+      img.classList.add("hidden");
+      const hint = $(variant === "original" ? "#coverOriginalHint" : "#coverMissingHint");
+      hint.classList.remove("hidden");
+      hint.textContent = "封面加载失败，请刷新页面；若刚更新程序，请在任务完成后重启后台。";
+    };
+    img.classList.toggle("hidden", !available);
+    if (available) {
+      const url = `/api/cover?task=${encodeURIComponent(task.task)}&variant=${variant}&v=${encodeURIComponent(task.updated_at)}`;
+      if (img.getAttribute("src") !== url) img.src = url;
+    } else img.removeAttribute("src");
+  }
+  $("#coverMissingHint").classList.toggle("hidden", Boolean(task.cover_localized_available));
+  $("#coverPreviewCopy").textContent = task.cover_copy ? `最终文案：${task.cover_copy}` : "尚无最终文案";
+  $("#coverPreviewCandidates").textContent = `候选文案：${(task.cover_candidates || []).join(" / ") || "暂无"}`;
+  $("#coverPreviewCandidates").textContent += (task.cover_warnings || []).length
+    ? `\n注意：${task.cover_warnings.join("；")}` : "";
+  $("#coverPreviewStatus").textContent = task.active_job
+    ? `当前任务正在执行：${task.active_job.step || "处理中"}；完成后可重新生成封面。`
+    : task.stages.cover?.detail || "尚未生成";
+  $("#regenerateCover").disabled = Boolean(task.active_job);
+  try {
+    const details = await api(`/api/cover/details?task=${encodeURIComponent(task.task)}`);
+    if (state.coverPreviewTask === task.task) $("#coverPreviewLog").textContent = details.log || "尚无日志";
+  } catch (error) {
+    if (state.coverPreviewTask === task.task) $("#coverPreviewLog").textContent = error.message;
+  }
+}
+
+$("#closeCoverPreview").addEventListener("click", () => $("#coverPreviewDialog").close());
+$("#coverPreviewDialog").addEventListener("close", () => { state.coverPreviewTask = null; });
+$("#regenerateCover").addEventListener("click", async () => {
+  if (!state.coverPreviewTask) return;
+  const cloudMode = state.dashboard?.health?.cover?.mode === "cloud";
+  if (cloudMode && !$("#coverRegenerateCloud").checked) {
+    toast("请先勾选本次封面文案 API 授权", true);
+    return;
+  }
+  $("#regenerateCover").disabled = true;
+  try {
+    await api("/api/cover", { method: "POST", body: JSON.stringify({
+      task: state.coverPreviewTask, force: true,
+      allow_paid_api: $("#coverRegeneratePaid").checked,
+      allow_cloud_api: cloudMode && $("#coverRegenerateCloud").checked,
+    }) });
+    toast("中文封面已加入生成队列");
+    await refreshDashboard();
+  } catch (error) {
+    toast(error.message, true);
+    $("#regenerateCover").disabled = false;
   }
 });
 
@@ -1472,12 +1672,16 @@ $$("[data-workflow]").forEach((button) => {
   button.addEventListener("click", () => queueWorkflow(button.dataset.workflow));
 });
 $("#regenerateDubbing").addEventListener("click", () => queueWorkflow("dubbing", false, true));
-$("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true));
+$("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true, false, "publish"));
 
-async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false) {
+async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false, automationTarget = "") {
   const tasks = [...state.selectedTasks];
   if (!tasks.length) return toast("请先选择至少一个视频任务", true);
   const automation = automationSettingsSnapshot();
+  if (automationTarget) automation.target = automationTarget;
+  if (automation.target === "publish" && !["hardsub", "both"].includes(automation.renderMode)) {
+    automation.renderMode = "hardsub";
+  }
   const effectiveWorkflow = autoPublish && automation.target === "subtitles"
     ? "subtitles"
     : workflow;
@@ -1541,7 +1745,8 @@ async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false
         dubbing_reference_end: dubbingReferenceEnd,
         dubbing_subtitle_display: dubbingSubtitleDisplay,
         force_dubbing: Boolean(forceDubbing),
-        ...automationRequestValues(autoPublish),
+        ...automationRequestValues(autoPublish, automation),
+        ...coverRequestValues(autoPublish),
       }),
     });
     const targetLabels = { subtitles: "双语字幕", render: "双语成片", publish: "投稿" };
@@ -1587,6 +1792,8 @@ $("#dubbingEnabled").addEventListener("change", updateDubbingControls);
 $("#dubbingReferenceMode").addEventListener("change", updateDubbingControls);
 
 const automationControls = [
+  "#automationCoverChoice",
+  "#automationCoverCloudAuthorized",
   "#autoPublishAfterDownload",
   "#automationTarget",
   "#automationEnglishPolicy",
@@ -1606,12 +1813,22 @@ const automationControls = [
 ];
 for (const selector of automationControls) {
   $(selector).addEventListener("change", () => {
+    updateCoverRequestControls();
     updateAutomationFlow();
     saveAutomationSettings();
   });
 }
 updateChineseSourceControls();
 updateDubbingControls();
+try {
+  const manualCover = localStorage.getItem("ytwf_manual_cover_choice");
+  if (["off", "local", "cloud"].includes(manualCover)) $("#manualCoverChoice").value = manualCover;
+} catch (_error) { /* Browser storage is optional. */ }
+$("#manualCoverChoice").addEventListener("change", () => {
+  updateCoverRequestControls();
+  try { localStorage.setItem("ytwf_manual_cover_choice", $("#manualCoverChoice").value); } catch (_error) {}
+});
+updateCoverRequestControls();
 
 $("#jobList").addEventListener("click", async (event) => {
   const resultButton = event.target.closest(".show-discovery-result");
@@ -1904,6 +2121,44 @@ $("#translationProviderSelect").addEventListener("change", (event) => {
   $("#translationApiKeyInput").value = "";
 });
 
+function coverSettingsValues() {
+  const values = {
+    cover_enabled: $("#coverEnabled").checked,
+    cover_allow_paid_copy: $("#coverAllowPaidCopy").checked,
+  };
+  if (state.dashboard?.health?.cover?.modes?.includes("cloud")) {
+    Object.assign(values, {
+      cover_mode: $("#coverMode").value,
+      cover_allow_cloud_api: $("#coverAllowCloudApi").checked,
+    });
+  }
+  return values;
+}
+
+$("#coverMode").addEventListener("change", () => {
+  $("#coverCloudFields").classList.toggle("hidden", $("#coverMode").value !== "cloud");
+});
+
+$("#saveCoverSettings").addEventListener("click", async () => {
+  if (!state.dashboard?.health?.cover) {
+    toast("请在活动任务完成后重启控制面板后台", true);
+    return;
+  }
+  const button = $("#saveCoverSettings");
+  button.disabled = true;
+  try {
+    const result = await api("/api/settings", { method: "POST", body: JSON.stringify(coverSettingsValues()) });
+    if (!(result.saved || []).includes("cover_enabled")) throw new Error("后台未保存封面开关，请重启面板后重试");
+    state.coverInitialized = false;
+    await refreshDashboard();
+    toast("封面设置已保存，对新提交的任务生效");
+  } catch (error) {
+    toast(error.message, true);
+  } finally {
+    button.disabled = !state.dashboard?.health?.cover;
+  }
+});
+
 $("#settingsForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   const youtube = $("#youtubeApiKeyInput").value.trim();
@@ -1911,6 +2166,7 @@ $("#settingsForm").addEventListener("submit", async (event) => {
   const cookieFile = $("#youtubeCookiesInput").files[0];
   const provider = selectedLlmProvider();
   const body = {
+    ...coverSettingsValues(),
     translation_provider: provider.id,
     translation_model: provider.custom_model
       ? $("#translationCustomModelInput").value.trim()
@@ -1961,6 +2217,7 @@ $("#settingsForm").addEventListener("submit", async (event) => {
     state.llmInitialized = false;
     state.discoveryInitialized = false;
     state.publishingSettingsInitialized = false;
+    state.coverInitialized = false;
     await refreshDashboard();
   } catch (error) {
     toast(error.message, true);
@@ -2030,6 +2287,7 @@ $("#recheckBiliup").addEventListener("click", async () => {
 $("#refreshButton").addEventListener("click", () => refreshDashboard(true));
 
 restoreAutomationSettings();
+updateCoverRequestControls();
 updateAutomationFlow();
 loadDiscoveryCatalog();
 refreshDashboard(true);

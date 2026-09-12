@@ -197,8 +197,8 @@ def run_video_actions(
             result["status"] = f"FAILED_{selection['status']}"
             if "translate" in steps:
                 result["chinese_translation"] = {
-                    "status": "SKIPPED",
-                    "reason": "No subtitle source passed the hard safety checks",
+                    "status": "FAILED",
+                    "reason": "NO_SUBTITLE_SOURCE_PASSED_SAFETY_CHECKS",
                 }
                 return result
     if "translate" in steps:

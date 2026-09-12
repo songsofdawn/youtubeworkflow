@@ -84,6 +84,50 @@ class DiscoveryStore:
             connection.execute(
                 "CREATE INDEX IF NOT EXISTS idx_feedback_kind ON feedback(feedback, updated_at)"
             )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS query_performance (
+                    pack_id TEXT NOT NULL,
+                    query TEXT NOT NULL,
+                    runs INTEGER NOT NULL DEFAULT 0,
+                    calls INTEGER NOT NULL DEFAULT 0,
+                    new_eligible INTEGER NOT NULL DEFAULT 0,
+                    PRIMARY KEY (pack_id, query)
+                )
+                """
+            )
+
+    def choose_queries(self, pack_id: str, queries: list[str], limit: int) -> list[str]:
+        """Explore every pool entry before reusing it; break ties by useful yield."""
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT * FROM query_performance WHERE pack_id = ?", (pack_id,)
+            ).fetchall()
+        history = {str(row["query"]): row for row in rows}
+
+        def priority(item: tuple[int, str]) -> tuple[float, float, int]:
+            index, query = item
+            row = history.get(query.casefold())
+            if row is None:
+                return (0, 0, index)
+            return (row["runs"], -row["new_eligible"] / max(1, row["calls"]), index)
+
+        return [query for _, query in sorted(enumerate(queries), key=priority)[:limit]]
+
+    def record_query_performance(self, diagnostics: list[dict[str, Any]]) -> None:
+        with self._connect() as connection:
+            connection.executemany(
+                """
+                INSERT INTO query_performance(pack_id, query, runs, calls, new_eligible)
+                VALUES (?, ?, 1, ?, ?)
+                ON CONFLICT(pack_id, query) DO UPDATE SET
+                    runs = runs + 1,
+                    calls = calls + excluded.calls,
+                    new_eligible = new_eligible + excluded.new_eligible
+                """,
+                [(row["pack_id"], row["query"].casefold(), row["calls"],
+                  row["new_eligible_count"]) for row in diagnostics],
+            )
 
     def get_evaluation(self, cache_key: str) -> dict[str, Any] | None:
         with self._connect() as connection:

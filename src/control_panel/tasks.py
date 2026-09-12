@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from ..cover_localization import cover_paths
+
 
 def read_json(path: Path) -> dict[str, Any]:
     try:
@@ -54,10 +56,12 @@ _AUTOMATION_SKIP_LABELS = {
     "CHINESE_TRANSLATION_STAGE_FAILED": "中文字幕翻译未通过",
     "STAGE4_RENDER_STAGE_FAILED": "成片安全检查未通过",
     "DUBBING_TIMING_REVIEW_REQUIRED": "配音时槽超限",
+    "TRANSLATION_CONTENT_FILTERED": "翻译服务触发内容安全拦截",
 }
 
 _AUTOMATION_FAILURE_LABELS = {
     "DUBBING_RUNTIME_PREFLIGHT_FAILED": "中文配音运行时预检失败",
+    "PUBLISH_METADATA_STAGE_FAILED": "投稿信息生成失败，可重试",
 }
 
 
@@ -66,7 +70,9 @@ def _automation_skip_label(reason: str) -> str:
 
 
 def _automation_failure_label(reason: str) -> str:
-    return _AUTOMATION_FAILURE_LABELS.get(reason, reason or "自动化处理失败")
+    return _AUTOMATION_FAILURE_LABELS.get(
+        reason, _AUTOMATION_SKIP_LABELS.get(reason, reason or "自动化处理失败")
+    )
 
 
 def deepseek_translation_ready(task_dir: Path) -> bool:
@@ -83,6 +89,30 @@ def deepseek_translation_ready(task_dir: Path) -> bool:
         return False
     clean = task_dir / "subtitles" / "zh.clean.srt"
     return clean.is_file() and clean.stat().st_size > 0
+
+
+def translation_content_filter_failed(task_dir: Path) -> bool:
+    """Return whether a failed translation checkpoint records a content filter."""
+    checkpoint_dir = task_dir / "stage3" / "translation" / "checkpoints"
+    try:
+        checkpoints = list(checkpoint_dir.glob("batch_*.json"))
+        checkpoints.sort(key=lambda path: path.stat().st_mtime, reverse=True)
+    except OSError:
+        return False
+    for checkpoint in checkpoints:
+        payload = read_json(checkpoint)
+        status = str(payload.get("status") or "").casefold()
+        if status != "failed":
+            return False
+        error = str(payload.get("error") or "").casefold()
+        return bool(
+            "1301" in error
+            or "contentfilter" in error
+            or "content filter" in error
+            or "内容安全" in error
+            or "敏感内容" in error
+        )
+    return False
 
 
 def youtube_auto_chinese_path(task_dir: Path) -> Path | None:
@@ -147,16 +177,41 @@ def youtube_chinese_path(task_dir: Path) -> Path | None:
 
 
 def no_english_subtitle_or_recognized_speech(task_dir: Path) -> bool:
-    """Return whether YouTube English is absent and Whisper found no speech."""
+    """Return whether no usable English source exists and Whisper found no speech.
+
+    A few YouTube videos expose a one-cue title track instead of subtitles.
+    Stage 3 correctly rejects that track, but the old check only looked at the
+    source route and therefore missed the safe original-media fallback.
+    """
     assessment = read_json(task_dir / "stage3" / "01_source_assessment.json")
     asr_info = read_json(task_dir / "stage3" / "whisper" / "asr_info.json")
+    if not asr_info:
+        return False
+    try:
+        no_recognized_speech = (
+            int(asr_info.get("segment_count") or 0) == 0
+            and int(asr_info.get("word_count") or 0) == 0
+        )
+    except (TypeError, ValueError):
+        return False
+    if not no_recognized_speech:
+        return False
+
+    selected_path = task_dir / "subtitles" / "en.selected.srt"
+    try:
+        if selected_path.is_file() and selected_path.stat().st_size > 0:
+            return False
+    except OSError:
+        return False
+
     no_youtube_english = str(
         assessment.get("route") or assessment.get("status") or ""
     ) == "NO_YOUTUBE_ENGLISH_SOURCE"
-    return bool(asr_info) and no_youtube_english and (
-        int(asr_info.get("segment_count") or 0) == 0
-        and int(asr_info.get("word_count") or 0) == 0
+    selection_report = read_json(
+        task_dir / "stage3" / "selection" / "selection_report.json"
     )
+    selection_failed = selection_report.get("selection_failed") is True
+    return no_youtube_english or selection_failed
 
 
 class WorkflowScanner:
@@ -194,6 +249,11 @@ class WorkflowScanner:
         stage5 = read_json(task_dir / "stage5" / "publish_manifest.json")
         automation = read_json(automation_path)
         info = read_json(task_dir / "metadata" / "info.json")
+        cover_files = cover_paths(task_dir, self.project_root)
+        cover_manifest_path = cover_files["manifest"]
+        cover_manifest = read_json(cover_manifest_path)
+        original_cover_path = cover_files["original"]
+        localized_cover_path = cover_files["localized"]
 
         download_status = str(download.get("overall_status") or "unknown")
         selected_path = task_dir / "subtitles" / "en.selected.srt"
@@ -258,7 +318,24 @@ class WorkflowScanner:
             and no_english_subtitle_or_recognized_speech(task_dir)
         ):
             automation_display_reason = "NO_ENGLISH_SUBTITLE_OR_RECOGNIZED_SPEECH"
+        elif (
+            automation_reason == "CHINESE_TRANSLATION_STAGE_FAILED"
+            and translation_content_filter_failed(task_dir)
+        ):
+            automation_display_reason = "TRANSLATION_CONTENT_FILTERED"
         published = publish_status == "PUBLISHED"
+        unattended_fallback_active = automation_status in {
+            "FALLBACK_PENDING",
+            "ORIGINAL_MEDIA",
+        }
+        original_media_fallback = automation_status == "ORIGINAL_MEDIA"
+        if unattended_fallback_active:
+            # The unattended fallback path is already the decision; stale
+            # subtitle/layout review artifacts must not ask the user to review
+            # a video that is continuing automatically.
+            review_summary = ""
+            translation_review = False
+            dubbing_review = False
         if published:
             # Publishing is terminal in the dashboard. A later experimental
             # rerender may leave a REVIEW_REQUIRED Stage 4 manifest, but that
@@ -271,8 +348,12 @@ class WorkflowScanner:
         download_complete = download_status in {"success", "skipped"}
         english_complete = selected_path.is_file() and selected_path.stat().st_size > 0
         translation_complete = deepseek_translation_ready(task_dir)
-        render_complete = stage4_status == "STAGE4_COMPLETED" or published
-        render_review = not published and (
+        render_complete = (
+            stage4_status == "STAGE4_COMPLETED"
+            or published
+            or original_media_fallback
+        )
+        render_review = not published and not unattended_fallback_active and (
             stage4_status == "REVIEW_REQUIRED" or stage4_qc == "REVIEW_REQUIRED"
         )
         successful_render_supersedes_skip = (
@@ -293,6 +374,26 @@ class WorkflowScanner:
         )
         if automation_skip_active:
             review_summary = automation_skip_summary
+
+        cover_status = str(cover_manifest.get("status") or "").upper()
+        cover_localized_available = (
+            cover_status == "COMPLETED"
+            and localized_cover_path.is_file() and localized_cover_path.stat().st_size > 0
+        )
+        cover_original_available = (
+            original_cover_path.is_file() and original_cover_path.stat().st_size > 0
+        )
+        if cover_status in {"RUNNING", "ANALYZED"}:
+            cover_stage = {"state": "active", "detail": "正在生成中文封面"}
+        elif cover_localized_available and cover_status == "COMPLETED":
+            cover_stage = {"state": "complete", "detail": "中文封面已完成"}
+        elif cover_manifest:
+            cover_stage = {
+                "state": "failed",
+                "detail": "中文封面失败，已保留原始封面；可手动重试",
+            }
+        else:
+            cover_stage = {"state": "skipped", "detail": "未生成中文封面"}
 
         stages = {
             "download": self._stage_state(
@@ -331,6 +432,9 @@ class WorkflowScanner:
                 else {"state": "skipped", "detail": "未启用中文配音"}
             ),
             "render": (
+                {"state": "complete", "detail": "已改用原视频投稿"}
+                if original_media_fallback
+                else
                 {"state": "review", "detail": review_summary or stage4_status}
                 if render_review
                 else self._stage_state(
@@ -339,6 +443,7 @@ class WorkflowScanner:
                     "双语成片已完成" if render_complete else "成片失败" if stage4_status == "FAILED" else "等待处理",
                 )
             ),
+            "cover": cover_stage,
             "publish": (
                 {"state": "active", "detail": "正在投稿"}
                 if publish_status == "RUNNING"
@@ -356,11 +461,21 @@ class WorkflowScanner:
                 )
             ),
         }
-        if automation_failure_active and automation_reason in _AUTOMATION_FAILURE_LABELS:
+        if automation_failure_active:
             failure_summary = (
                 f"自动化失败：{_automation_failure_label(automation_reason)}"
             )
-            stages["dubbing"] = {
+            details = automation.get("details") or {}
+            failed_stage = {
+                "生成并选择最佳英文字幕": "english",
+                "翻译并检查中文字幕": "translation",
+                "生成中文 AI 配音": "dubbing",
+                "生成并质检中文配音成片": "render",
+                "生成并质检双语成片": "render",
+            }.get(str(details.get("stage_label") or ""), "publish")
+            if automation_reason == "DUBBING_RUNTIME_PREFLIGHT_FAILED":
+                failed_stage = "dubbing"
+            stages[failed_stage] = {
                 "state": "failed",
                 "detail": failure_summary,
             }
@@ -389,6 +504,7 @@ class WorkflowScanner:
                 task_dir / "stage4" / "stage4_manifest.json",
                 task_dir / "stage5" / "publish_manifest.json",
                 task_dir / "stage5" / "automation_manifest.json",
+                cover_manifest_path,
             )
             if path.is_file()
         )
@@ -417,6 +533,17 @@ class WorkflowScanner:
             "chinese_youtube_name": youtube_chinese.name if youtube_chinese else "",
             "stage4_status": stage4_status,
             "dubbing_status": dubbing_status,
+            "cover_status": cover_status,
+            "cover_warnings": [str(item) for item in cover_manifest.get("warnings", [])][:8],
+            "cover_mode": str(cover_manifest.get("mode") or "local"),
+            "cover_original_available": cover_original_available,
+            "cover_localized_available": cover_localized_available,
+            "cover_copy": str(cover_manifest.get("selected_copy") or ""),
+            "cover_candidates": [
+                str(item)
+                for item in cover_manifest.get("candidates") or []
+                if str(item).strip()
+            ][:5],
             "dubbing_available": dubbing_path.is_file(),
             "dubbing_audio_ready": dubbing_audio_ready,
             "dubbing_needs_review": dubbing_review,
@@ -505,6 +632,7 @@ __all__ = [
     "deepseek_translation_ready",
     "no_english_subtitle_or_recognized_speech",
     "read_json",
+    "translation_content_filter_failed",
     "youtube_auto_chinese_path",
     "youtube_chinese_path",
 ]

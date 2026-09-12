@@ -1,0 +1,22 @@
+{
+  "mode": "cloud",
+  "allow_cloud_api": false,
+  "enabled": true,
+  "allow_paid_copy": true,
+  "localized_filename": "thumbnail.zh.jpg",
+  "use_local_vision": true,
+  "jpeg_quality": 94,
+  "max_candidates": 5,
+  "preferred_min_characters": 4,
+  "max_characters": 12,
+  "font_path": "",
+  "text_colors": [
+    "#FFD84D",
+    "#FF6B6B",
+    "#58D68D",
+    "#5DADE2",
+    "#C084FC",
+    "#FF9F43",
+    "#F8F9FA"
+  ]
+}

@@ -236,6 +236,7 @@ class StaticPanelContractTests(TestCase):
             encoding="utf-8"
         )
         self.assertIn('id="deleteSelectedTasks"', page)
+        self.assertIn('id="autoPublishSelected" type="button">一键投稿</button>', page)
         self.assertIn('id="automationRenderMode"', page)
         self.assertIn('id="automationFailurePolicy"', page)
         self.assertIn('id="automationSilentVideoPolicy"', page)
@@ -253,6 +254,10 @@ class StaticPanelContractTests(TestCase):
         self.assertIn("window.confirm", batch_delete_handler)
         self.assertNotIn("window.prompt", batch_delete_handler)
         self.assertIn("updateAutomationFlow", script)
+        self.assertIn(
+            '$("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true, false, "publish"));',
+            script,
+        )
 
     def test_sidebar_can_shrink_inside_the_workspace_grid(self) -> None:
         stylesheet = (
@@ -297,6 +302,9 @@ class StaticPanelContractTests(TestCase):
         self.assertIn("保存、重新检查并继续成片", page)
         self.assertIn("openRenderReview", script)
         self.assertIn("/api/render-review", script)
+        self.assertIn('task.stage4_status === "REVIEW_REQUIRED"', script)
+        self.assertIn("automation-skip-status", script)
+        self.assertIn(".status-cell strong.automation-skip-status", stylesheet)
         self.assertIn("忽略此条并继续生成", script)
         self.assertIn("supports_hide_from_render", script)
         self.assertIn("尚未保存", script)
@@ -1077,6 +1085,65 @@ class ScannerTests(TestCase):
             "已自动跳过：没有英文字幕，音轨也未识别到英语语音",
         )
 
+    def test_title_only_subtitle_with_empty_audio_has_specific_unattended_skip_message(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "stage3" / "01_source_assessment.json",
+                {"route": "YOUTUBE_ENGLISH_SOURCE"},
+            )
+            write_json(
+                task / "stage3" / "selection" / "selection_report.json",
+                {
+                    "selection_failed": True,
+                    "selected_source": "",
+                    "selection_reason": "字幕覆盖率不足",
+                },
+            )
+            write_json(
+                task / "stage3" / "whisper" / "asr_info.json",
+                {"segment_count": 0, "word_count": 0},
+            )
+            write_json(
+                task / "stage5" / "automation_manifest.json",
+                {
+                    "status": "SKIPPED",
+                    "reason": "ENGLISH_SUBTITLE_STAGE_FAILED",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+
+        self.assertEqual(
+            row["review_summary"],
+            "已自动跳过：没有英文字幕，音轨也未识别到英语语音",
+        )
+
+    def test_translation_content_filter_is_visible_on_unattended_card(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "stage3" / "translation" / "checkpoints" / "batch_0001.json",
+                {
+                    "status": "failed",
+                    "error": "Error code: 1301 contentFilter",
+                },
+            )
+            write_json(
+                task / "stage5" / "automation_manifest.json",
+                {
+                    "status": "SKIPPED",
+                    "reason": "CHINESE_TRANSLATION_STAGE_FAILED",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+
+        self.assertEqual(
+            row["review_summary"],
+            "已自动跳过：翻译服务触发内容安全拦截",
+        )
+
     def test_published_manifest_completes_fifth_stage(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
@@ -1312,6 +1379,9 @@ class QueueTests(TestCase):
                 connection.close()
 
             store = JobStore(database, root / "logs")
+            # Merely constructing a second panel must not steal live claims.
+            self.assertEqual(store.get("legacy")["status"], "running")
+            store.recover_interrupted_jobs()
             migrated = store.get("legacy")
 
         self.assertEqual(migrated["status"], "queued")
@@ -1353,6 +1423,34 @@ class QueueTests(TestCase):
         self.assertEqual(claimed_production["id"], production["id"])
         self.assertIsNone(blocked_duplicate)
         self.assertEqual(duplicate["status"], "queued")
+
+    def test_cover_and_pipeline_can_share_target_but_publish_waits_for_both(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            pipeline = store.enqueue(
+                "pipeline", "task-a", {"workflow": "complete"},
+                resource_class="gpu_heavy",
+            )
+            cover = store.enqueue(
+                "cover", "task-a", {"cover_mode": "cloud"},
+                resource_class="paid_api",
+            )
+            publish = store.enqueue(
+                "publish", "task-a", {}, resource_class="upload",
+            )
+
+            claimed_pipeline = store.claim_next({"pipeline"}, {"gpu_heavy"})
+            claimed_cover = store.claim_next({"cover"}, {"paid_api"})
+            self.assertIsNone(store.claim_next({"publish"}, {"upload"}))
+            store.update(cover["id"], status="completed")
+            self.assertIsNone(store.claim_next({"publish"}, {"upload"}))
+            store.update(pipeline["id"], status="completed")
+            claimed_publish = store.claim_next({"publish"}, {"upload"})
+
+        self.assertEqual(claimed_pipeline["id"], pipeline["id"])
+        self.assertEqual(claimed_cover["id"], cover["id"])
+        self.assertEqual(claimed_publish["id"], publish["id"])
 
     def test_worker_runs_download_gpu_and_deepseek_slots_concurrently(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -1453,7 +1551,7 @@ class QueueTests(TestCase):
         self.assertEqual(completed["progress"], 100)
         self.assertEqual(runner.call_count, 3)
 
-    def test_unattended_pipeline_nonzero_exit_is_recorded_as_skip(self) -> None:
+    def test_unattended_pipeline_nonzero_exit_falls_back_to_original_publish(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
             task = make_task(project)
@@ -1500,13 +1598,14 @@ class QueueTests(TestCase):
                     encoding="utf-8"
                 )
             )
-        self.assertEqual(completed["status"], "completed")
-        self.assertEqual(completed["progress"], 100)
-        self.assertEqual(completed["exit_code"], 0)
-        self.assertIn("已自动跳过此视频", completed["step"])
-        self.assertEqual(automation["status"], "SKIPPED")
+        self.assertEqual(completed["status"], "queued")
+        self.assertEqual(completed["resource_class"], "gpu_heavy")
+        self.assertTrue(completed["payload"]["publish_original_video"])
+        self.assertTrue(completed["payload"]["silent_video_mode"])
+        self.assertIn("生成无配音视频投稿信息", completed["step"])
+        self.assertEqual(automation["status"], "ORIGINAL_MEDIA")
         self.assertEqual(automation["reason"], "NO_VALID_CHINESE_SUBTITLE")
-        self.assertEqual(automation["details"]["process_exit_code"], 2)
+        self.assertIn("继续投稿", automation["details"]["message"])
 
     def test_unattended_dubbing_preflight_timeout_retries_then_stays_failed(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -1591,7 +1690,15 @@ class QueueTests(TestCase):
             make_publish_config(project)
             write_json(
                 task / "stage3" / "01_source_assessment.json",
-                {"route": "NO_YOUTUBE_ENGLISH_SOURCE"},
+                {"route": "YOUTUBE_ENGLISH_SOURCE"},
+            )
+            write_json(
+                task / "stage3" / "selection" / "selection_report.json",
+                {
+                    "selection_failed": True,
+                    "selected_source": "",
+                    "selection_reason": "字幕覆盖率不足",
+                },
             )
             write_json(
                 task / "stage3" / "whisper" / "asr_info.json",
@@ -1909,7 +2016,7 @@ class QueueTests(TestCase):
         self.assertEqual(queued["payload"]["automation_target"], "subtitles")
         self.assertFalse(queued["payload"]["auto_publish"])
 
-    def test_unattended_failure_policy_can_preserve_failure(self) -> None:
+    def test_unattended_publish_failure_falls_back_to_original_media(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
             task = make_task(project)
@@ -1939,9 +2046,15 @@ class QueueTests(TestCase):
             with mock.patch.object(worker, "_run_command", return_value=2):
                 worker._execute(claimed)
             failed = store.get(queued["id"])
-        self.assertEqual(failed["status"], "failed")
-        self.assertEqual(failed["exit_code"], 1)
-        self.assertFalse((task / "stage5" / "automation_manifest.json").exists())
+            automation = json.loads(
+                (task / "stage5" / "automation_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        self.assertEqual(failed["status"], "queued")
+        self.assertEqual(failed["payload"]["publish_original_video"], True)
+        self.assertEqual(failed["payload"]["silent_video_mode"], True)
+        self.assertEqual(automation["status"], "ORIGINAL_MEDIA")
 
     def test_download_command_uses_package_module_entrypoint(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -1985,6 +2098,8 @@ class QueueTests(TestCase):
                 WorkflowScanner(project),
                 BiliupIntegration(project),
             )
+            self.assertTrue(stale.exists())
+            worker.start()
             self.assertFalse(stale.exists())
             isolated = worker._create_cookie_copy("job-a")
             self.assertIsNotNone(isolated)
@@ -1993,6 +2108,7 @@ class QueueTests(TestCase):
             isolated.write_text("changed", encoding="utf-8")
             self.assertEqual(master.read_text(encoding="utf-8"), YOUTUBE_COOKIES)
             isolated.unlink()
+            worker.close()
 
     def test_youtube_auto_workflow_skips_paid_translation_and_renders_hardsub(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -2258,6 +2374,33 @@ class QueueTests(TestCase):
         self.assertEqual(saved["payload"]["chinese_subtitle_source"], "deepseek")
         self.assertEqual(saved["payload"]["_stage_index"], 1)
 
+    def test_old_api_layout_review_does_not_force_youtube_first_into_api(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "stage4" / "stage4_manifest.json",
+                {
+                    "status": "REVIEW_REQUIRED",
+                    "chinese_subtitle_source": "deepseek",
+                    "review": {
+                        "code": "SUBTITLE_LAYOUT_REVIEW_REQUIRED",
+                        "issue_codes": ["BILINGUAL_LINE_TOO_WIDE"],
+                    },
+                },
+            )
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                JobStore(project / "jobs.sqlite3", project / "logs"),
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+
+            requires_fallback = worker._youtube_chinese_requires_api_fallback(task)
+
+        self.assertFalse(requires_fallback)
+
     def test_unattended_publish_ignores_only_manual_review_marker(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
@@ -2353,6 +2496,18 @@ class QueueTests(TestCase):
             project = Path(name)
             task = make_task(project)
             make_publish_config(project)
+            source = task / "video" / "source.mp4"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"original-video")
+            write_json(
+                task / "stage3" / "publish_metadata.json",
+                {
+                    "status": "RECOMMENDED",
+                    "title_zh": "可靠的软件系统",
+                    "tags": "软件工程,系统设计",
+                    "tid": 231,
+                },
+            )
             media = task / "stage4" / "video" / "final_bilingual_hardsub.mp4"
             media.parent.mkdir(parents=True)
             media.write_bytes(b"stale-video")
@@ -2374,7 +2529,7 @@ class QueueTests(TestCase):
             message = worker._queue_automatic_publish(
                 {
                     "target": task.relative_to(project / "downloads").as_posix(),
-                    "payload": {},
+                    "payload": {"auto_publish": True},
                 }
             )
             automation = json.loads(
@@ -2383,9 +2538,10 @@ class QueueTests(TestCase):
                 )
             )
             has_publish_job = any(job["kind"] == "publish" for job in store.list())
-        self.assertIn("已自动跳过", message)
-        self.assertFalse(has_publish_job)
+        self.assertIn("已改用原视频", message)
+        self.assertTrue(has_publish_job)
         self.assertEqual(automation["reason"], "SUBTITLE_LAYOUT_REVIEW_REQUIRED")
+        self.assertEqual(automation["status"], "ORIGINAL_MEDIA")
 
     def test_dubbing_fallback_uses_original_video_when_subtitle_render_is_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as name:

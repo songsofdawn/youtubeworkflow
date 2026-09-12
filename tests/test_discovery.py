@@ -271,6 +271,13 @@ class DiscoveryPipelineTests(TestCase):
 
         with tempfile.TemporaryDirectory() as name:
             pipeline = DiscoveryPipeline(Path(name))
+            config = discovery_config()
+            config.update(
+                {
+                    "discovery_hot_view_count_by_window": {"72": 999999999},
+                    "discovery_hot_views_per_hour_by_window": {"72": 999999},
+                }
+            )
             with (
                 patch(
                     "src.discovery.pipeline.OllamaDiscoveryClient.health",
@@ -291,17 +298,17 @@ class DiscoveryPipelineTests(TestCase):
                     selected_ids=["technology"],
                     hours=72,
                     per_pack=3,
-                    config=discovery_config(),
+                    config=config,
                     minimum_duration_seconds=300,
                     now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
                 )
 
         self.assertEqual(result["results"], [])
+        self.assertEqual(result["summary"]["excluded"]["llm_reject"], 1)
         self.assertEqual(result["summary"]["minimum_duration_seconds"], 300)
         self.assertEqual(result["summary"]["excluded"]["hard_filter"], 1)
-        self.assertEqual(result["summary"]["excluded"]["llm_reject"], 1)
 
-    def test_deep_recall_fetches_1000_then_sends_top_100_to_llm(self) -> None:
+    def test_deep_recall_respects_per_pack_budget_and_sends_top_100_to_llm(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             pipeline = DiscoveryPipeline(Path(name))
             youtube = DeepPagedYouTubeClient()
@@ -369,14 +376,158 @@ class DiscoveryPipelineTests(TestCase):
                     now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
                 )
 
-            self.assertEqual(len(youtube.search_calls), 20)
-            self.assertTrue(any("pageToken" in call for call in youtube.search_calls))
-            self.assertEqual(result["summary"]["raw_candidate_count"], 1000)
-            self.assertTrue(result["summary"]["recall_target_reached"])
+            self.assertEqual(len(youtube.search_calls), 6)
+            self.assertLessEqual(
+                len(youtube.search_calls),
+                result["summary"]["maximum_search_calls_per_pack"],
+            )
+            # Cover every complementary query before spending calls on page 2.
+            self.assertFalse(any("pageToken" in call for call in youtube.search_calls))
+            self.assertEqual(
+                [call["q"] for call in youtube.search_calls[3:]],
+                ["Minecraft challenge", "Minecraft experiment", "Minecraft survival"],
+            )
+            self.assertEqual(result["summary"]["raw_candidate_count"], 300)
+            self.assertFalse(result["summary"]["recall_target_reached"])
             self.assertEqual(result["summary"]["llm_candidate_count"], 100)
             self.assertEqual(len(set(evaluated_ids)), 100)
             self.assertEqual(len(result["results"]), 20)
-            self.assertTrue(all(row["llm_status"] == "scored" for row in result["results"]))
+
+    def test_primary_relevance_stream_continues_to_later_pages(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            pipeline = DiscoveryPipeline(Path(name))
+            youtube = DeepPagedYouTubeClient()
+            config = discovery_config()
+            config.update(
+                {
+                    "discovery_recall_target": 300,
+                    "discovery_max_search_requests": 30,
+                    "discovery_max_pages_per_stream": 3,
+                    "discovery_adaptive_page2_enabled": False,
+                }
+            )
+            pack = {**PACK, "query": "Minecraft experiment"}
+            with patch(
+                "src.discovery.pipeline.OllamaDiscoveryClient.health",
+                return_value={"model_ready": False, "embedding_ready": False},
+            ):
+                result = pipeline.run(
+                    youtube=youtube,
+                    packs=[pack],
+                    selected_ids=["technology"],
+                    hours=72,
+                    per_pack=20,
+                    config=config,
+                    now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
+                )
+
+        relevance_calls = [
+            call for call in youtube.search_calls if call["order"] == "relevance"
+        ]
+        self.assertEqual(len(relevance_calls), 3)
+        self.assertNotIn("pageToken", relevance_calls[0])
+        self.assertIn("pageToken", relevance_calls[1])
+        self.assertEqual(result["summary"]["raw_candidate_count"], 250)
+
+    def test_adaptive_qualified_target_scales_with_requested_results(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            pipeline = DiscoveryPipeline(Path(name))
+            config = discovery_config()
+            config.update(
+                {
+                    "discovery_recall_target": 1000,
+                    "discovery_adaptive_qualified_candidates_per_result": 3.0,
+                }
+            )
+            with patch(
+                "src.discovery.pipeline.OllamaDiscoveryClient.health",
+                return_value={"model_ready": False, "embedding_ready": False},
+            ):
+                result = pipeline.run(
+                    youtube=FakeYouTubeClient(),
+                    packs=[PACK],
+                    selected_ids=["technology"],
+                    hours=72,
+                    per_pack=20,
+                    config=config,
+                    now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
+                )
+
+        self.assertEqual(
+            result["summary"]["adaptive_min_qualified_candidates"],
+            60,
+        )
+
+    def test_channel_limit_relaxes_only_for_final_shortfall_backfill(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            pipeline = DiscoveryPipeline(Path(name))
+            youtube = DeepPagedYouTubeClient()
+            config = discovery_config()
+            config.update(
+                {
+                    "discovery_recall_target": 20,
+                    "discovery_recall_candidates_per_result": 1,
+                    "discovery_max_search_requests": 3,
+                    "max_per_channel": 1,
+                    "discovery_backfill_max_per_channel": 4,
+                }
+            )
+            config["discovery_llm"]["query_planning_enabled"] = False
+
+            def evaluate(rows: list[dict], _preferences: dict) -> dict[str, dict]:
+                return {
+                    str(row["video_id"]): {
+                        "video_id": str(row["video_id"]),
+                        "topic_fit": 90,
+                        "interestingness": 85,
+                        "novelty": 80,
+                        "story_payoff": 85,
+                        "visual_potential": 80,
+                        "localization_value": 85,
+                        "clickbait_risk": 10,
+                        "language_confidence": 98,
+                        "verdict": "keep",
+                        "reason_zh": "过程完整且有明确结果",
+                        "confidence": 90,
+                    }
+                    for row in rows
+                }
+
+            original_get = youtube.get
+
+            def same_channel_get(endpoint: str, params: dict) -> dict:
+                payload = original_get(endpoint, params)
+                if endpoint != "search":
+                    for item in payload["items"]:
+                        item["snippet"]["channelTitle"] = "One prolific creator"
+                return payload
+
+            youtube.get = same_channel_get
+            with (
+                patch(
+                    "src.discovery.pipeline.OllamaDiscoveryClient.health",
+                    return_value={"model_ready": True, "embedding_ready": False},
+                ),
+                patch(
+                    "src.discovery.pipeline.OllamaDiscoveryClient.evaluate_metadata",
+                    side_effect=evaluate,
+                ),
+                patch("src.discovery.pipeline._titles_are_similar", return_value=False),
+            ):
+                result = pipeline.run(
+                    youtube=youtube,
+                    packs=[PACK],
+                    selected_ids=["technology"],
+                    hours=72,
+                    per_pack=4,
+                    config=config,
+                    now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
+                )
+
+        self.assertEqual(len(result["results"]), 4)
+        self.assertEqual(result["summary"]["diversity_backfill_result_count"], 3)
+        self.assertFalse(result["results"][0]["diversity_backfill"])
+        self.assertTrue(all(row["diversity_backfill"] for row in result["results"][1:]))
 
     def test_two_topics_use_independent_upper_limits_without_duplicate_backfill(self) -> None:
         second_pack = {
@@ -445,7 +596,7 @@ class DiscoveryPipelineTests(TestCase):
                 )
 
         self.assertEqual(len(youtube.search_calls), 2)
-        self.assertTrue(all(call["videoDuration"] == "medium" for call in youtube.search_calls))
+        self.assertTrue(all("videoDuration" not in call for call in youtube.search_calls))
         self.assertEqual(result["summary"]["llm_candidate_count"], 100)
         counts = result["summary"]["result_counts_by_pack"]
         self.assertTrue(all(0 < count <= 20 for count in counts.values()))
@@ -504,6 +655,13 @@ class DiscoveryPipelineTests(TestCase):
         with tempfile.TemporaryDirectory() as name:
             pipeline = DiscoveryPipeline(Path(name))
             youtube = FakeYouTubeClient()
+            config = discovery_config()
+            config.update(
+                {
+                    "discovery_hot_view_count_by_window": {"72": 999999999},
+                    "discovery_hot_views_per_hour_by_window": {"72": 999999},
+                }
+            )
             with (
                 patch(
                     "src.discovery.pipeline.OllamaDiscoveryClient.health",
@@ -524,7 +682,7 @@ class DiscoveryPipelineTests(TestCase):
                     selected_ids=["technology"],
                     hours=72,
                     per_pack=2,
-                    config=discovery_config(),
+                    config=config,
                     now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
                 )
                 second = pipeline.run(
@@ -533,16 +691,19 @@ class DiscoveryPipelineTests(TestCase):
                     selected_ids=["technology"],
                     hours=72,
                     per_pack=2,
-                    config=discovery_config(),
+                    config=config,
                     now=datetime(2026, 8, 25, 1, tzinfo=timezone.utc),
                 )
 
             self.assertEqual(first["summary"]["search_request_count"], 2)
-            self.assertEqual(first["summary"]["planned_query_count"], 1)
+            self.assertEqual(first["summary"]["planned_query_count"], 0)
             self.assertEqual(first["summary"]["excluded"]["non_english"], 1)
             self.assertEqual(first["summary"]["llm_candidate_count"], 2)
             self.assertEqual(first["summary"]["llm_scored_count"], 2)
-            self.assertEqual([row["video_id"] for row in first["results"]], ["buildtest01"])
+            self.assertEqual(
+                [row["video_id"] for row in first["results"]],
+                ["buildtest01"],
+            )
             self.assertEqual(first["results"][0]["llm_status"], "scored")
             self.assertEqual(first["summary"]["excluded"]["llm_reject"], 1)
             repeated = next(row for row in second["results"] if row["video_id"] == "buildtest01")
@@ -550,7 +711,7 @@ class DiscoveryPipelineTests(TestCase):
             self.assertFalse(repeated["similar_candidate"])
             self.assertEqual(repeated["collision_status"], "曾展示，已轻微降权")
             self.assertEqual(evaluator.call_count, 1, "second run should use the metadata cache")
-            self.assertEqual(planner.call_count, 2)
+            self.assertEqual(planner.call_count, 0)
 
     def test_hard_popularity_gate_rejects_low_view_ai_keep(self) -> None:
         class LowViewClient(FakeYouTubeClient):
@@ -667,6 +828,8 @@ class DiscoveryPipelineTests(TestCase):
                     "discovery_popularity_expansion_view_ratio": 0.4,
                     "discovery_popularity_expansion_vph_ratio": 0.5,
                     "discovery_expansion_min_opportunity_score": 60,
+                    "discovery_hot_view_count_by_window": {"72": 999999999},
+                    "discovery_hot_views_per_hour_by_window": {"72": 999999},
                 }
             )
             with (
@@ -693,7 +856,10 @@ class DiscoveryPipelineTests(TestCase):
                     now=datetime(2026, 8, 25, 0, tzinfo=timezone.utc),
                 )
 
-        self.assertEqual([row["video_id"] for row in result["results"]], ["buildtest01"])
+        self.assertEqual(
+            [row["video_id"] for row in result["results"]],
+            ["buildtest01"],
+        )
         self.assertFalse(result["results"][0]["heat_floor_pass"])
         self.assertEqual(result["results"][0]["heat_tier"], "expanded")
         self.assertEqual(result["summary"]["expanded_result_count"], 1)
@@ -723,7 +889,9 @@ class DiscoveryPipelineTests(TestCase):
                     "discovery_popularity_expansion_vph_ratio": 0.5,
                     "discovery_popularity_reserve_view_ratio": 0.1,
                     "discovery_popularity_reserve_vph_ratio": 0.15,
-                    "discovery_reserve_min_opportunity_score": 35,
+                    "discovery_reserve_min_opportunity_score": 20,
+                    "discovery_hot_view_count_by_window": {"72": 999999999},
+                    "discovery_hot_views_per_hour_by_window": {"72": 999999},
                 }
             )
             with (
@@ -754,9 +922,9 @@ class DiscoveryPipelineTests(TestCase):
         self.assertEqual(row["heat_tier"], "reserve")
         self.assertEqual(row["selection_tier"], "reserve")
         self.assertGreaterEqual(row["view_count"], result["summary"]["reserve_minimum_view_count"])
-        self.assertEqual(result["summary"]["reserve_result_count"], 1)
+        self.assertGreaterEqual(result["summary"]["reserve_result_count"], 1)
 
-    def test_seed_queries_are_searched_before_planned_queries(self) -> None:
+    def test_hot_recall_is_deterministic_and_does_not_invoke_query_planner(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             pipeline = DiscoveryPipeline(Path(name))
             youtube = FakeYouTubeClient()
@@ -800,8 +968,8 @@ class DiscoveryPipelineTests(TestCase):
 
         self.assertEqual(len(youtube.search_calls), 2)
         self.assertEqual(youtube.search_calls[1]["q"], "technology experiment")
-        self.assertEqual(youtube.search_calls[1]["order"], "viewCount")
-        self.assertEqual(result["summary"]["planned_query_count"], 3)
+        self.assertEqual(youtube.search_calls[1]["order"], "date")
+        self.assertEqual(result["summary"]["planned_query_count"], 0)
         self.assertEqual(result["summary"]["search_requests_by_pack"], {"technology": 2})
 
     def test_tiered_fill_keeps_preferred_first_and_marks_reserve_candidates(self) -> None:

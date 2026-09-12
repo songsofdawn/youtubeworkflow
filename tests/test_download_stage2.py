@@ -377,6 +377,64 @@ class SubtitleTests(TestCase):
 
 
 class ResumeAndManualTests(TestCase):
+    def test_metadata_failure_retry_reuses_original_task_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            task = root / download_core.date.today().isoformat() / "abc_abc"
+            write_manifest(
+                task,
+                {
+                    "video_id": "abc",
+                    "overall_status": "failed",
+                    "metadata_status": "failed",
+                },
+            )
+            metadata = {
+                "id": "abc",
+                "title": "Recovered title",
+                "upload_date": "20200102",
+                "webpage_url": "https://youtu.be/abc",
+            }
+            metadata_result = {
+                "success": True,
+                "metadata": metadata,
+                "warning": None,
+                "command_result": {"command": ["yt-dlp"]},
+            }
+            subtitle = {
+                "success": True,
+                "status": "missing",
+                "source": "",
+                "tracks": {
+                    "en": {"status": "missing", "source": "", "vtt_status": "missing", "srt_status": "missing", "vtt_file": None, "srt_file": None},
+                    "zh": {"status": "missing", "source": "", "vtt_status": "missing", "srt_status": "missing", "vtt_file": None, "srt_file": None},
+                },
+                "vtt_status": "missing",
+                "srt_status": "missing",
+                "command_results": [],
+                "warning": None,
+                "error": "",
+            }
+            thumb = {"success": False, "status": "failed", "command_result": None, "error": "missing"}
+            media = {"success": True, "status": "success", "command_result": {"command": ["yt-dlp"]}}
+            probe = {"success": True, "status": "success", "error": "", "command_result": None}
+            audio = {"success": True, "status": "success", "error": "", "command_result": {"command": ["ffmpeg"]}}
+            with mock.patch("src.download_core.fetch_video_metadata", return_value=metadata_result), mock.patch(
+                "src.download_core.download_subtitles", return_value=subtitle
+            ), mock.patch("src.download_core.download_thumbnail", return_value=thumb), mock.patch(
+                "src.download_core.download_video_media", return_value=media
+            ), mock.patch("src.download_core.probe_media", return_value=probe), mock.patch(
+                "src.download_core.extract_audio", return_value=audio
+            ):
+                result = download_core.download_one_video(
+                    "https://youtu.be/abc",
+                    output_root=root,
+                    config=stage2_config(),
+                    tools=fake_tools(ROOT),
+                )
+            self.assertEqual(result["task_dir"], task)
+            self.assertFalse((root / "2020-01-02" / "abc_Recovered title").exists())
+
     def test_successful_task_is_skipped(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name); task = root / "2026-07-21" / "001_abc_Title"

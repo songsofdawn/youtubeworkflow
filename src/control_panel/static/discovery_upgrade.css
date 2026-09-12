@@ -1,3 +1,22 @@
+.discovery-query-diagnostics {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 12px;
+}
+
+.discovery-query-diagnostics summary { cursor: pointer; }
+.discovery-query-diagnostics p { font-size: 13px; opacity: 0.75; }
+.discovery-query-table-wrap { overflow-x: auto; }
+.discovery-query-diagnostics table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.discovery-query-diagnostics th, .discovery-query-diagnostics td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border, #30363d);
+  white-space: nowrap;
+}
+.discovery-query-diagnostics td:first-child { min-width: 160px; white-space: normal; overflow-wrap: anywhere; }
+
 .discovery-pack-editor-dialog {
   width: min(1120px, 94vw);
   max-height: 92vh;

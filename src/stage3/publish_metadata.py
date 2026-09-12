@@ -346,7 +346,7 @@ def fallback_publish_metadata(
         "parent_tid": category["parent_tid"],
         "parent_name": category["parent_name"],
         "category_path": category["path"],
-        "recommendation_reason": "智能推荐暂不可用，已使用通用分区，请在投稿前人工核对。",
+        "recommendation_reason": "智能推荐暂不可用，已使用通用分区并继续自动投稿。",
         "warning": warning[:500],
     }
 

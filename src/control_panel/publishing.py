@@ -23,6 +23,7 @@ from src.stage3.publish_metadata import (
     utf16_code_units,
 )
 
+from ..cover_localization import usable_localized_cover
 from .tasks import (
     deepseek_translation_ready,
     no_english_subtitle_or_recognized_speech,
@@ -109,6 +110,13 @@ class BiliupIntegration:
             self._path_from_setting(category_setting)
         )
         self._version: str | None = None
+
+    def cover_path(self, task_dir: Path) -> Path:
+        """Use a completed localized cover while retaining the original fallback."""
+        localized = usable_localized_cover(task_dir, self.project_root)
+        if localized is not None:
+            return localized
+        return task_dir / "metadata" / "thumbnail.jpg"
 
     def _load_config(self) -> dict[str, Any]:
         if not self.config_path.is_file():
@@ -430,7 +438,7 @@ class BiliupIntegration:
                 or "【原视频简介】"
             ),
         )
-        cover = task_dir / "metadata" / "thumbnail.jpg"
+        cover = self.cover_path(task_dir)
         accounts = self.accounts()
         media = self.media_for_payload(
             task_dir,
@@ -491,6 +499,8 @@ class BiliupIntegration:
             "is_only_self": bool(self.config.get("default_only_self", True)),
             "use_cover": cover.is_file() and cover.stat().st_size > 0,
             "cover_available": cover.is_file() and cover.stat().st_size > 0,
+            "cover_path": str(cover),
+            "cover_is_localized": cover.name != "thumbnail.jpg",
             "media_ready": media.is_file() and media.stat().st_size > 0,
             "translation_ready": translated,
             "media_name": media.name,
@@ -590,7 +600,7 @@ class BiliupIntegration:
         if line not in ALLOWED_UPLOAD_LINES:
             raise ValueError("不支持的上传线路")
         _, account = self.resolve_account(str(values.get("account_id") or ""))
-        cover = task_dir / "metadata" / "thumbnail.jpg"
+        cover = self.cover_path(task_dir)
         use_cover = values.get("use_cover") is True
         if use_cover and (not cover.is_file() or cover.stat().st_size == 0):
             raise ValueError("任务中没有可用的封面文件")
@@ -658,6 +668,8 @@ class BiliupIntegration:
             "no_reprint": values.get("no_reprint") is True,
             "is_only_self": values.get("is_only_self") is True,
             "use_cover": use_cover,
+            "cover_path": str(cover),
+            "cover_is_localized": cover.name != "thumbnail.jpg",
             "account_id": account["id"],
             "account_label": account["label"],
             "prepare_hardsub": not (media.is_file() and media.stat().st_size > 0),
@@ -756,7 +768,10 @@ class BiliupIntegration:
         task_dir: Path,
         *,
         reason: str = "NO_NARRATION_OR_BACKGROUND_MUSIC",
-        message: str = "未检测到可用语音；保留原画面和音轨，仅本地化投稿信息",
+        message: str = (
+            "未检测到可用语音；保留原画面和音轨，"
+            "自动生成中文标题、标签、封面并投稿"
+        ),
     ) -> None:
         atomic_write_json(
             task_dir / "stage5" / "automation_manifest.json",
@@ -951,7 +966,7 @@ class BiliupIntegration:
             raise FileNotFoundError("未找到 biliup.exe")
         account_path, _ = self.resolve_account(str(payload.get("account_id") or ""))
         media = self.media_for_payload(task_dir, payload)
-        cover = task_dir / "metadata" / "thumbnail.jpg"
+        cover = self.cover_path(task_dir)
         command = [
             str(executable),
             "--user-cookie",

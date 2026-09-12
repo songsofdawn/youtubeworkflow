@@ -9,6 +9,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from src.discovery import DiscoveryPipeline
+from src.discovery.query_plan import normalize_queries
 from src.fetch_daily_candidates import (
     YouTubeAPIError,
     YouTubeClient,
@@ -145,7 +146,7 @@ def load_discovery_packs(path: Path | None = None) -> tuple[dict[str, Any], ...]
         pack_id = str(raw_pack.get("id") or "").strip()
         label = str(raw_pack.get("label") or "").strip()
         description = str(raw_pack.get("description") or "").strip()
-        query = " ".join(str(raw_pack.get("query") or "").split())
+        query = "|".join(normalize_queries(raw_pack.get("query")))
         keywords_value = raw_pack.get("keywords")
         keywords = (
             [" ".join(str(value).casefold().split()) for value in keywords_value]
@@ -211,8 +212,7 @@ def save_discovery_packs(
             ]
         else:
             keywords = []
-        query_parts = [item.strip() for item in query.split("|") if item.strip()]
-        query = "|".join(dict.fromkeys(query_parts))
+        query = "|".join(normalize_queries(query))
         keywords = list(dict.fromkeys(keywords))
         if not DISCOVERY_PACK_ID_PATTERN.fullmatch(pack_id):
             raise ValueError(
@@ -237,8 +237,8 @@ def save_discovery_packs(
             }
         )
     payload = {
-        "schema_version": 1,
-        "description": "智能发现可编辑领域关键词包。可在控制面板中新增、删除和修改。",
+        "schema_version": 3,
+        "description": "V5 可编辑领域词池：query 第1项为主查询，后续最多20项轮换，每轮选最多3项；keywords 只参与弱评分。",
         "packs": normalized,
     }
     path.parent.mkdir(parents=True, exist_ok=True)

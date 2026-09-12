@@ -27,6 +27,7 @@ from .ollama_client import (
     OllamaSettings,
 )
 from .store import DiscoveryStore
+from .query_plan import normalize_queries, query_diagnostics
 
 
 HISTORY_VERSION = 1
@@ -59,6 +60,20 @@ def _window_threshold(config: dict[str, Any], name: str, hours: int, default: fl
         return max(0.0, float(config.get(name, default)))
     except (TypeError, ValueError):
         return max(0.0, float(default))
+
+
+def _hard_exclusion_pattern(phrases: list[Any]) -> re.Pattern[str] | None:
+    patterns = []
+    for value in phrases:
+        phrase = str(value).strip().casefold()
+        if not phrase:
+            continue
+        pattern = re.escape(phrase)
+        # Short labels such as OST must not reject "most", "cost" or "almost".
+        if re.fullmatch(r"[a-z0-9]{1,3}", phrase):
+            pattern = rf"(?<!\w){pattern}(?!\w)"
+        patterns.append(pattern)
+    return re.compile("|".join(patterns)) if patterns else None
 
 
 def _rank_percentiles(rows: list[dict[str, Any]], key: str) -> dict[str, float]:
@@ -132,6 +147,22 @@ def _interest_config(config: dict[str, Any]) -> dict[str, Any]:
         ["compilation", "slideshow", "no commentary", "relaxing music", "stock footage", "promo"],
     )
     merged.setdefault("boring_penalty_per_hit", 5)
+    # Speech style alone does not make cleaning, restoration or craft boring.
+    # Keep the shared daily-candidate configuration intact.
+    exempt_phrases = {
+        str(value).strip().casefold()
+        for value in config.get(
+            "discovery_boring_penalty_exempt_phrases", ["asmr", "no commentary"]
+        )
+    }
+    merged["boring_penalty_phrases"] = [
+        value for value in merged["boring_penalty_phrases"]
+        if str(value).strip().casefold() not in exempt_phrases
+    ]
+    merged["topic_penalty_phrases"] = {
+        topic: [value for value in phrases if str(value).strip().casefold() not in exempt_phrases]
+        for topic, phrases in merged["topic_penalty_phrases"].items()
+    }
     return merged
 
 
@@ -281,6 +312,7 @@ class DiscoveryPipeline:
         hits: dict[str, list[dict[str, Any]]],
         ordered_ids: list[str],
         recent_titles: dict[str, list[str]],
+        search_records: list[dict[str, Any]],
         lane: str = "standard",
         page_token: str | None = None,
         page_index: int = 0,
@@ -335,6 +367,10 @@ class DiscoveryPipeline:
             if title and title not in titles and len(titles) < 12:
                 titles.append(title)
         next_page_token = str(payload.get("nextPageToken") or "").strip() or None
+        search_records.append({
+            "pack_id": str(pack["id"]), "query": query, "order": order,
+            "video_ids": page_video_ids,
+        })
         return next_page_token, len(ordered_ids) - before_count, page_video_ids
 
     def _metadata_evaluations(
@@ -356,6 +392,8 @@ class DiscoveryPipeline:
                 row["title"],
                 row.get("description"),
                 row.get("tags"),
+                row.get("pack_label"),
+                row.get("pack_description"),
                 preferences,
             )
             cached = self.store.get_evaluation(key)
@@ -558,8 +596,19 @@ class DiscoveryPipeline:
         )
         recall_target = per_pack_recall_target * len(selected_packs)
         max_requests = max(
-            len(selected_packs),
+            1,
             min(int(config.get("discovery_max_search_requests", 100)), 100),
+        )
+        maximum_search_calls_per_pack = max(
+            3,
+            min(int(config.get("discovery_max_search_calls_per_pack", 8)), 20),
+        )
+        expected_search_calls_per_pack = max(
+            3,
+            min(
+                int(config.get("discovery_expected_search_calls_per_pack", 6)),
+                maximum_search_calls_per_pack,
+            ),
         )
         max_pages_per_stream = max(
             1,
@@ -576,6 +625,13 @@ class DiscoveryPipeline:
         zero_result_searches_by_pack: Counter[str] = Counter()
         quota_exhausted = False
         initial_streams: dict[str, dict[str, Any]] = {}
+        search_records: list[dict[str, Any]] = []
+
+        def search_budget_available(pack_id: str, per_pack_limit: int) -> bool:
+            return (
+                request_count < max_requests
+                and search_requests_by_pack[pack_id] < per_pack_limit
+            )
 
         self._notify(
             progress,
@@ -593,18 +649,19 @@ class DiscoveryPipeline:
         hot_lane_queries: dict[str, str] = {}
         for pack in selected_packs:
             pack_id = str(pack["id"])
-            query_parts = [
-                value.strip()
-                for value in str(pack.get("query") or "").split("|")
-                if value.strip()
-            ]
+            query_parts = normalize_queries(pack.get("query"))
             if not query_parts:
                 raise ValueError(f"领域 {pack_id} 缺少主搜索词")
             primary_query = query_parts[0]
-            supplemental_queries = query_parts[1 : 1 + max_supplemental_queries]
+            supplemental_queries = (
+                self.store.choose_queries(pack_id, query_parts[1:], max_supplemental_queries)
+                if config.get("discovery_query_rotation_enabled", True)
+                else query_parts[1 : 1 + max_supplemental_queries]
+            )
             pack_query_plan[pack_id] = {
                 "primary": primary_query,
                 "supplemental": supplemental_queries,
+                "pool_size": len(query_parts) - 1,
             }
             hot_lane_queries[pack_id] = primary_query
 
@@ -613,8 +670,13 @@ class DiscoveryPipeline:
             for pack in selected_packs:
                 if request_count >= max_requests:
                     break
-                self._cancel(cancelled)
                 pack_id = str(pack["id"])
+                if not search_budget_available(
+                    pack_id,
+                    maximum_search_calls_per_pack,
+                ):
+                    continue
+                self._cancel(cancelled)
                 hot_query = hot_lane_queries.get(pack_id, "")
                 if not hot_query:
                     continue
@@ -633,6 +695,7 @@ class DiscoveryPipeline:
                         hits=hits,
                         ordered_ids=ordered_ids,
                         recent_titles=recent_titles,
+                        search_records=search_records,
                         lane="hot",
                         video_duration=duration_filters[0],
                     )
@@ -656,6 +719,11 @@ class DiscoveryPipeline:
                 break
             self._cancel(cancelled)
             pack_id = str(pack["id"])
+            if not search_budget_available(
+                pack_id,
+                maximum_search_calls_per_pack,
+            ):
+                continue
             primary_query = str(pack_query_plan[pack_id]["primary"])
             request_count += 1
             search_requests_by_pack[pack_id] += 1
@@ -672,6 +740,7 @@ class DiscoveryPipeline:
                     hits=hits,
                     ordered_ids=ordered_ids,
                     recent_titles=recent_titles,
+                    search_records=search_records,
                     video_duration=duration_filters[0],
                 )
             except SearchQuotaExceeded:
@@ -698,14 +767,8 @@ class DiscoveryPipeline:
                 6 + int(6 * (index + 1) / max(1, len(selected_packs))),
             )
 
-        # V4: deterministic recall; LLM no longer plans search phrases.
+        # Query pools rotate locally; never purchase or invoke LLM query planning.
         planned_queries: dict[str, list[str] | str] = {}
-        if False and llm_ready and settings.query_planning_enabled and not quota_exhausted:
-            self._notify(progress, "本地 AI 正在规划补充搜索词", 13)
-            try:
-                planned_queries = llm.plan_queries(selected_packs, recent_titles, preferences)
-            except OllamaDiscoveryError as exc:
-                warnings.append(str(exc))
 
         streams_by_pack: dict[str, list[dict[str, Any]]] = {}
         stream_cursors: Counter[str] = Counter()
@@ -740,6 +803,7 @@ class DiscoveryPipeline:
                 )
 
             query_plan = pack_query_plan[pack_id]
+            initial_primary = initial_streams.get(pack_id)
             supplemental_queries = [
                 str(value)
                 for value in query_plan.get("supplemental", [])
@@ -747,15 +811,21 @@ class DiscoveryPipeline:
             ]
             supplemental_orders = config.get(
                 "discovery_supplemental_search_orders",
-                ["viewCount"],
+                ["relevance", "relevance", "viewCount"],
             )
-            supplemental_order = (
-                str(supplemental_orders[0])
-                if isinstance(supplemental_orders, list) and supplemental_orders
-                else "viewCount"
-            )
-            for query in supplemental_queries:
-                add_stream(query, supplemental_order, None)
+            supplemental_orders = [
+                order for order in supplemental_orders
+                if order in {"viewCount", "date", "relevance"}
+            ] if isinstance(supplemental_orders, list) else []
+            supplemental_orders = supplemental_orders or ["relevance"]
+            for index, query in enumerate(supplemental_queries):
+                add_stream(query, supplemental_orders[index % len(supplemental_orders)], None)
+            # Spend the first-pass budget on different topics before deeper pages.
+            if initial_primary:
+                add_stream(
+                    str(query_plan.get("primary") or ""),
+                    "relevance", None, initial=initial_primary,
+                )
             streams_by_pack[pack_id] = streams
 
         while (
@@ -763,6 +833,8 @@ class DiscoveryPipeline:
             and request_count < max_requests
             and any(
                 len(recalled_by_pack[pack_id]) < per_pack_recall_target
+                and search_requests_by_pack[pack_id]
+                < expected_search_calls_per_pack
                 for pack_id in recalled_by_pack
             )
         ):
@@ -772,6 +844,11 @@ class DiscoveryPipeline:
                     break
                 pack_id = str(pack["id"])
                 if len(recalled_by_pack[pack_id]) >= per_pack_recall_target:
+                    continue
+                if not search_budget_available(
+                    pack_id,
+                    expected_search_calls_per_pack,
+                ):
                     continue
                 streams = streams_by_pack.get(pack_id, [])
                 if not streams:
@@ -802,6 +879,7 @@ class DiscoveryPipeline:
                         hits=hits,
                         ordered_ids=ordered_ids,
                         recent_titles=recent_titles,
+                        search_records=search_records,
                         page_token=(
                             str(selected_stream["page_token"])
                             if selected_stream["page_token"]
@@ -847,15 +925,6 @@ class DiscoveryPipeline:
             if not made_request:
                 break
 
-        recall_shortfalls = {
-            pack_id: max(0, per_pack_recall_target - len(video_ids))
-            for pack_id, video_ids in recalled_by_pack.items()
-        }
-        if any(recall_shortfalls.values()) and not quota_exhausted:
-            warnings.append(
-                "部分领域未达到独立召回目标；可能已达到搜索调用预算或 YouTube 可用结果不足"
-            )
-
         self._cancel(cancelled)
         self._notify(progress, f"正在读取 {len(ordered_ids)} 个视频的详细信息", 28)
         resources = get_video_details(youtube, ordered_ids)
@@ -868,9 +937,25 @@ class DiscoveryPipeline:
             1,
             int(config.get("discovery_adaptive_min_unique_candidates", 80)),
         )
-        adaptive_min_qualified = max(
-            1,
-            int(config.get("discovery_adaptive_min_qualified_candidates", 30)),
+        adaptive_qualified_per_result = max(
+            1.0,
+            min(
+                float(
+                    config.get(
+                        "discovery_adaptive_qualified_candidates_per_result",
+                        3.0,
+                    )
+                ),
+                10.0,
+            ),
+        )
+        adaptive_min_qualified = min(
+            per_pack_recall_target,
+            max(
+                1,
+                int(config.get("discovery_adaptive_min_qualified_candidates", 30)),
+                math.ceil(per_pack * adaptive_qualified_per_result),
+            ),
         )
         raw_adaptive_orders = config.get(
             "discovery_adaptive_page2_orders",
@@ -906,10 +991,7 @@ class DiscoveryPipeline:
             str(value)
             for value in known_video_ids or set()
         }
-        adaptive_hard_excludes = [
-            str(value).casefold()
-            for value in config.get("hard_exclude_phrases", [])
-        ]
+        hard_exclusion_pattern = _hard_exclusion_pattern(config.get("hard_exclude_phrases", []))
         adaptive_strict_english = bool(config.get("english_only", True))
         adaptive_min_views = _window_threshold(
             config,
@@ -1010,10 +1092,7 @@ class DiscoveryPipeline:
             )
             if bool(config.get("exclude_shorts", True)) and is_short:
                 return False
-            if any(
-                phrase in searchable
-                for phrase in adaptive_hard_excludes
-            ):
+            if hard_exclusion_pattern and hard_exclusion_pattern.search(searchable):
                 return False
             has_caption = str(
                 content.get("caption", "")
@@ -1069,6 +1148,13 @@ class DiscoveryPipeline:
                 if request_count >= max_requests:
                     break
                 pack_id = str(pack["id"])
+                if not search_budget_available(
+                    pack_id,
+                    maximum_search_calls_per_pack,
+                ):
+                    adaptive_before[pack_id] = adaptive_pack_counts(pack_id)
+                    adaptive_after[pack_id] = dict(adaptive_before[pack_id])
+                    continue
                 before_counts = adaptive_pack_counts(pack_id)
                 adaptive_before[pack_id] = dict(before_counts)
 
@@ -1086,7 +1172,10 @@ class DiscoveryPipeline:
                 )
 
                 for order in adaptive_orders[:adaptive_max_extra]:
-                    if request_count >= max_requests:
+                    if not search_budget_available(
+                        pack_id,
+                        maximum_search_calls_per_pack,
+                    ):
                         break
                     page_token = adaptive_page2_tokens.get(
                         (pack_id, order)
@@ -1111,6 +1200,7 @@ class DiscoveryPipeline:
                             hits=hits,
                             ordered_ids=ordered_ids,
                             recent_titles=recent_titles,
+                            search_records=search_records,
                             page_token=page_token,
                             page_index=1,
                             lane="adaptive_page2",
@@ -1165,9 +1255,16 @@ class DiscoveryPipeline:
                     ),
                     31,
                 )
+        recall_shortfalls = {
+            pack_id: max(0, per_pack_recall_target - len(video_ids))
+            for pack_id, video_ids in recalled_by_pack.items()
+        }
+        if any(recall_shortfalls.values()) and not quota_exhausted:
+            warnings.append(
+                "部分领域未达到独立召回目标；已达到该领域搜索调用预算或 YouTube 可用结果不足"
+            )
         known = {str(value) for value in known_video_ids or set()}
         local_titles = [str(value) for value in known_titles or [] if str(value).strip()]
-        hard_excludes = [str(value).casefold() for value in config.get("hard_exclude_phrases", [])]
         min_views = _window_threshold(config, "discovery_min_view_count", hours, 300)
         min_vph = _window_threshold(config, "discovery_min_views_per_hour", hours, 20)
         expansion_min_views = max(
@@ -1247,7 +1344,7 @@ class DiscoveryPipeline:
                 hard_filter_reason = "duration"
             elif bool(config.get("exclude_shorts", True)) and is_short:
                 hard_filter_reason = "shorts"
-            elif any(phrase in searchable for phrase in hard_excludes):
+            elif hard_exclusion_pattern and hard_exclusion_pattern.search(searchable):
                 hard_filter_reason = "risk_phrase"
             if hard_filter_reason:
                 excluded["hard_filter"] += 1
@@ -1322,6 +1419,7 @@ class DiscoveryPipeline:
                 "description": description,
                 "tags": [str(value) for value in (snippet.get("tags") or []) if str(value)],
                 "channel_title": str(snippet.get("channelTitle") or ""),
+                "channel_id": str(snippet.get("channelId") or ""),
                 "published_at": published.isoformat().replace("+00:00", "Z"),
                 "age_hours": round(age_hours, 2),
                 "duration": format_duration(duration_seconds),
@@ -1339,6 +1437,7 @@ class DiscoveryPipeline:
                 "rights_status": "PENDING",
                 "pack_id": primary_pack,
                 "pack_label": str(pack_by_id[primary_pack]["label"]),
+                "pack_description": str(pack_by_id[primary_pack].get("description") or ""),
                 "matched_pack_ids": matched_ids,
                 "search_rank": min(int(hit["search_rank"]) for hit in hits[video_id]),
                 "search_source_details": list(hits[video_id]),
@@ -1736,16 +1835,19 @@ class DiscoveryPipeline:
             if row.get("similar_candidate"):
                 excluded["similar_candidate"] += 1
                 continue
-            rejection_reason = ""
-            if row.get("heat_tier") == "reserve":
-                rejection_reason = "reserve_popularity"
-            elif (
+            # An explicit editorial rejection must not re-enter via reserve
+            # backfill, including candidates already below the popularity floor.
+            if (
                 exclude_llm_rejects
                 and row.get("llm_status") == "scored"
                 and row.get("llm_verdict") == "reject"
                 and not row.get("hot_protected")
             ):
-                rejection_reason = "llm_reject"
+                excluded["llm_reject"] += 1
+                continue
+            rejection_reason = ""
+            if row.get("heat_tier") == "reserve":
+                rejection_reason = "reserve_popularity"
             elif (
                 row.get("heat_tier") == "expanded"
                 and not row.get("hot_protected")
@@ -1817,13 +1919,21 @@ class DiscoveryPipeline:
             pack_id: Counter() for pack_id in selected_ids
         }
         max_channel = max(1, int(config.get("max_per_channel", 2)))
+        backfill_max_channel = max(
+            max_channel,
+            int(config.get("discovery_backfill_max_per_channel", 4)),
+        )
         max_event = max(1, int(config.get("max_per_event", 1)))
+        diversity_backfill_count = 0
 
         def add_candidate(
             pack_id: str,
             *,
             hot_only: bool = False,
+            channel_limit: int | None = None,
         ) -> bool:
+            nonlocal diversity_backfill_count
+            effective_channel_limit = channel_limit or max_channel
             for candidate in candidates_by_pack[pack_id]:
                 if hot_only and not candidate.get("hot_protected"):
                     continue
@@ -1835,11 +1945,17 @@ class DiscoveryPipeline:
                 if video_id in globally_used_ids:
                     continue
                 if (
-                    channel_counts[pack_id][channel] >= max_channel
+                    channel_counts[pack_id][channel] >= effective_channel_limit
                     or semantic_counts[pack_id][semantic] >= max_event
                 ):
                     continue
                 copy = dict(candidate)
+                copy["diversity_backfill"] = (
+                    effective_channel_limit > max_channel
+                    and channel_counts[pack_id][channel] >= max_channel
+                )
+                if copy["diversity_backfill"]:
+                    diversity_backfill_count += 1
                 copy["pack_id"] = pack_id
                 copy["pack_label"] = str(pack_by_id[pack_id]["label"])
                 assigned[pack_id].append(copy)
@@ -1872,6 +1988,14 @@ class DiscoveryPipeline:
             for pack_id in pack_fill_order:
                 if len(assigned[pack_id]) < per_pack:
                     add_candidate(pack_id)
+        if backfill_max_channel > max_channel:
+            for _ in range(per_pack):
+                for pack_id in pack_fill_order:
+                    if len(assigned[pack_id]) < per_pack:
+                        add_candidate(
+                            pack_id,
+                            channel_limit=backfill_max_channel,
+                        )
 
         groups = [
             {
@@ -1890,6 +2014,17 @@ class DiscoveryPipeline:
             pack_id: max(0, per_pack - result_counts_by_pack[pack_id])
             for pack_id in selected_ids
         }
+        incomplete_pack_labels = [
+            str(pack_by_id[pack_id]["label"])
+            for pack_id, shortfall in result_shortfalls_by_pack.items()
+            if shortfall
+        ]
+        if incomplete_pack_labels:
+            warnings.append(
+                "以下领域在安全、语言、时长、质量与去重后仍未达到结果目标："
+                + "、".join(incomplete_pack_labels)
+                + "；可扩大时间窗口或补充该领域搜索词"
+            )
         eligible_counts_by_pack = {
             pack_id: sum(pack_id in row["matched_pack_ids"] for row in rows)
             for pack_id in selected_ids
@@ -1902,6 +2037,10 @@ class DiscoveryPipeline:
             pack_id: sum(pack_id in row["matched_pack_ids"] for row in preferred_rows)
             for pack_id in selected_ids
         }
+        diagnostics = query_diagnostics(
+            search_records, rows, flattened, set(history) | known,
+        )
+        self.store.record_query_performance(diagnostics)
         self._save_history(
             history,
             flattened,
@@ -1918,18 +2057,20 @@ class DiscoveryPipeline:
             "groups": groups,
             "results": flattened,
             "summary": {
-                "selection_policy_version": 5,
+                "selection_policy_version": 6,
                 "ranking_mode": ranking_mode,
-                "recall_architecture": "broad_primary_v4_1_adaptive",
-                "expected_search_calls_per_pack": int(
-                    config.get("discovery_expected_search_calls_per_pack", 6)
-                ),
-                "maximum_search_calls_per_pack": int(
-                    config.get("discovery_max_search_calls_per_pack", 8)
-                ),
+                "recall_architecture": "diverse_query_pool_v5",
+                "query_rotation_enabled": bool(config.get("discovery_query_rotation_enabled", True)),
+                "query_pool_sizes": {
+                    pack_id: plan["pool_size"] for pack_id, plan in pack_query_plan.items()
+                },
+                "query_diagnostics": diagnostics,
+                "expected_search_calls_per_pack": expected_search_calls_per_pack,
+                "maximum_search_calls_per_pack": maximum_search_calls_per_pack,
                 "adaptive_page2_enabled": adaptive_enabled,
                 "adaptive_min_unique_candidates": adaptive_min_unique,
                 "adaptive_min_qualified_candidates": adaptive_min_qualified,
+                "adaptive_qualified_candidates_per_result": adaptive_qualified_per_result,
                 "adaptive_triggered_packs": list(adaptive_triggered_packs),
                 "adaptive_extra_calls_total": sum(
                     adaptive_extra_calls_by_pack.values()
@@ -1998,6 +2139,9 @@ class DiscoveryPipeline:
                 "complete_pack_count": sum(
                     shortfall == 0 for shortfall in result_shortfalls_by_pack.values()
                 ),
+                "diversity_max_per_channel": max_channel,
+                "diversity_backfill_max_per_channel": backfill_max_channel,
+                "diversity_backfill_result_count": diversity_backfill_count,
                 "excluded": dict(excluded),
                 "history_repeat_count": sum(bool(row["seen_in_previous_search"]) for row in flattened),
                 "minimum_view_count": min_views,

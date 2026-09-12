@@ -9,7 +9,7 @@ from typing import Any, Iterable
 from .models import SubtitleCue
 
 
-ASS_GENERATOR_VERSION = "1.11"
+ASS_GENERATOR_VERSION = "1.12"
 
 
 def orientation_font_multiplier(width: int, height: int) -> float:
@@ -372,6 +372,8 @@ def build_bilingual_ass(
     chinese_by_id = {cue.identifier: cue for cue in chinese}
     english_font = str(scaled.get("english_font", "Arial"))
     chinese_font = str(scaled.get("chinese_font", "Microsoft YaHei"))
+    english_bold = 1 if bool(scaled.get("english_bold", False)) else 0
+    chinese_bold = 1 if bool(scaled.get("chinese_bold", False)) else 0
     base_font_size = scaled["english_font_size"]
     header = f"""[Script Info]
 Title: English / 中文
@@ -384,7 +386,7 @@ YCbCr Matrix: TV.709
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Bilingual,{english_font},{base_font_size},{scaled.get("primary_color", "&H00FFFFFF")},&H000000FF,{scaled.get("outline_color", "&H00000000")},{scaled.get("shadow_color", "&H80000000")},0,0,0,0,100,100,0,0,1,{scaled["outline"]},{scaled["shadow"]},{int(scaled.get("alignment", 2))},{scaled["margin_lr"]},{scaled["margin_lr"]},{scaled["margin_v"]},1
+Style: Bilingual,{english_font},{base_font_size},{scaled.get("primary_color", "&H00FFFFFF")},&H000000FF,{scaled.get("outline_color", "&H00000000")},{scaled.get("shadow_color", "&H80000000")},{english_bold},0,0,0,100,100,0,0,1,{scaled["outline"]},{scaled["shadow"]},{int(scaled.get("alignment", 2))},{scaled["margin_lr"]},{scaled["margin_lr"]},{scaled["margin_v"]},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -599,9 +601,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                         "combined_line_count": combined_line_count,
                     }
                 )
-            chinese_bold = 1 if bool(scaled.get("chinese_bold", False)) else 0
             english_payload = (
-                rf"{{\fn{english_font}\fs{english_size}\fscx{english_scale}\b0}}{english_text}"
+                rf"{{\fn{english_font}\fs{english_size}\fscx{english_scale}\b{english_bold}}}{english_text}"
             )
             chinese_payload = (
                 rf"{{\fn{chinese_font}\fs{chinese_size}\fscx{chinese_scale}\b{chinese_bold}}}"

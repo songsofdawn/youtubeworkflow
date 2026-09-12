@@ -209,7 +209,7 @@ function Test-Package([string]$PackageRoot, [string]$PythonExe, [string]$Selecte
     $importScript = @"
 import json
 from pathlib import Path
-import requests, dotenv, openai, faster_whisper, ctranslate2, langdetect
+import requests, dotenv, openai, faster_whisper, ctranslate2, langdetect, PIL, cv2
 root = Path(r'$PackageRoot')
 cfg = json.loads((root / 'config' / 'stage3_config.json').read_text(encoding='utf-8-sig'))
 assert cfg['asr']['device'] == '$SelectedEdition'.replace('gpu', 'cuda').replace('cpu', 'cpu')
@@ -220,7 +220,7 @@ print('portable-imports-ok', ctranslate2.__version__, cfg['asr']['device'], cfg[
 "@
     Invoke-External $PythonExe @("-c", $importScript)
     Invoke-External $PythonExe @("-m", "compileall", "-q", (Join-Path $PackageRoot "src"))
-    foreach ($module in @("src.download_video", "src.run_stage3", "src.run_dubbing", "src.run_stage4", "src.run_control_panel")) {
+    foreach ($module in @("src.download_video", "src.run_stage3", "src.run_dubbing", "src.run_stage4", "src.run_cover_localization", "src.run_control_panel")) {
         Invoke-External $PythonExe @("-m", $module, "--help")
     }
     Invoke-External (Join-Path $PackageRoot "tools\bin\yt-dlp.exe") @("--version")

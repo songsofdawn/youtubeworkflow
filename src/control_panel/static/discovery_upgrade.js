@@ -122,9 +122,9 @@
             <input data-field="description" value="${escapeHtml(pack.description)}" maxlength="240" required>
           </label>
           <label class="field discovery-pack-editor-wide">
-            <span>搜索词（第 1 行主搜索词；后 3 行补充搜索词）</span>
+            <span>搜索词池（第 1 行主搜索词；后续最多 20 行轮换）</span>
             <textarea data-field="query" rows="7" placeholder="Minecraft&#10;Minecraft hardcore&#10;Minecraft challenge&#10;Minecraft mod" required>${escapeHtml(queries)}</textarea>
-            <small>第 1 行必须是最宽泛主搜索词；它会跑 viewCount/date/relevance。后面最多 3 行只跑 viewCount。</small>
+            <small>主搜索词覆盖热门、最新和相关性；每轮从词池优先选择较少用过的词，默认执行 3 个补充词（2 个相关性、1 个热门）。相同使用次数优先有效产出较高的词。每行最多 120 字符，保存时不会截断。</small>
           </label>
           <label class="field discovery-pack-editor-wide">
             <span>主题关键词（弱评分，不参与召回/硬过滤）</span>
@@ -217,7 +217,7 @@
           description: String(pack.description || "").trim(),
           enabled: true,
           default_selected: pack.default_selected !== false,
-          query: splitQueries(pack.query).slice(0, 4).join("|"),
+          query: splitQueries(pack.query).join("|"),
           keywords: splitKeywords(
             Array.isArray(pack.keywords) ? pack.keywords.join("\n") : pack.keywords
           ),
@@ -302,9 +302,10 @@
     const checked = document.querySelectorAll(
       '#discoveryPackList input[type="checkbox"]:checked'
     ).length;
-    const baseCalls = checked * 6;
+    const configuredMax = Number(qs("#discoveryMaxSearchRequests")?.value || 96);
+    const globalMax = Math.max(1, Math.min(configuredMax, 100));
+    const baseCalls = Math.min(checked * 6, globalMax);
     const theoreticalMax = checked * 8;
-    const globalMax = 96;
     const maxCalls = Math.min(theoreticalMax, globalMax);
     let node = document.querySelector("#discoveryQuotaEstimate");
     if (!node) {
@@ -317,9 +318,8 @@
     }
     if (node) {
       node.textContent =
-        `V4.1 基础预计：${baseCalls} 次 search.list；` +
-        `若独立候选 <80 或合格候选 <30，会只给主搜索词自适应补第2页，` +
-        `最多约 ${maxCalls} 次（每领域额外 0~2 次，全局封顶 ${globalMax}）。`;
+        `按默认策略与当前设置估算：基础最多 ${baseCalls} 次搜索，候选不足补页后最多 ${maxCalls} 次（总上限 ${globalMax}）。` +
+        `建议每轮选 6–8 个不同领域；每领域默认轮换 3 个补充词，预算不足时未执行的词留待后续轮次。`;
     }
   }
 
@@ -328,6 +328,7 @@
     if (list) {
       list.addEventListener("change", updateDiscoveryQuotaEstimate);
     }
+    qs("#discoveryMaxSearchRequests")?.addEventListener("input", updateDiscoveryQuotaEstimate);
     setTimeout(updateDiscoveryQuotaEstimate, 900);
   }
 

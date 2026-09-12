@@ -1,14 +1,14 @@
 {
-  "schema_version": 2,
-  "description": "V4 宽召回配置：query 以 | 分隔。第1项是主搜索词，固定执行 viewCount/date/relevance；后续最多3项是补充搜索词，仅执行 viewCount。keywords 只用于弱主题相关性评分，不参与 YouTube 召回，也不作为硬过滤条件。",
+  "schema_version": 3,
+  "description": "V5 观看价值选题库：优先解压、新奇、有趣、知识性、科普。22个领域保留原ID，默认8个覆盖清洁修复、工艺制造、自然观察和通俗科学；query第1项为带内容角度的宽泛主查询，后20项为自然简短的互补轮换词，每轮选3项。keywords只作弱评分。",
   "packs": [
     {
       "id": "ai_technology",
-      "label": "AI 与新科技",
-      "description": "AI 模型、智能体、工具、机器人与前沿科技",
+      "label": "AI 与机器人实测",
+      "description": "机器人做事、人机对决与可理解的智能机制；必须有演示、实测或具体知识，少工具盘点、参数播报和推广",
       "enabled": true,
-      "default_selected": true,
-      "query": "AI|artificial intelligence|AI tools|AI agents",
+      "default_selected": false,
+      "query": "robot experiments|AI learns to play games|I built an AI robot|AI vs human challenge|robot obstacle course test|AI controls my computer experiment|AI agents play hide and seek|AI built a video game|robot learns household tasks|AI playing Minecraft|AI wearable prototype test|running AI on old hardware|robot learns from mistakes|AI designs a physical object|AI camera tracking project|AI vs real world puzzles|local AI on Raspberry Pi|robot arm cooking test|AI generated game mechanics|AI simulation emergent behavior|AI controlled RC car",
       "keywords": [
         "ai",
         "artificial intelligence",
@@ -26,11 +26,11 @@
     },
     {
       "id": "software_programming",
-      "label": "软件与编程",
-      "description": "编程、软件开发、开源项目与开发者工具",
+      "label": "编程脑洞与模拟",
+      "description": "能看懂结果的物理模拟、人工生命、可玩程序和创意控制；少环境安装、代码课程和开发日记",
       "enabled": true,
       "default_selected": false,
-      "query": "programming|coding|open source software|developer tools",
+      "query": "creative coding simulation|I coded a physics simulator|I made a game in one day|coding a useless invention|I built my own game engine|programming a virtual ecosystem|game controlled by voice|coding with only one button|I recreated a game from memory|building a tiny operating system|programming a robot swarm|turning spreadsheets into a game|I made a browser from scratch|coding procedural creatures|running games on old hardware|I built a computer in a game|programming an impossible maze|I made my own programming language|coding a fluid simulation|building an interactive projection|I automated a boring task",
       "keywords": [
         "programming",
         "coding",
@@ -49,11 +49,11 @@
     },
     {
       "id": "science",
-      "label": "科学",
-      "description": "科学发现、物理、工程、太空与生命科学",
+      "label": "反直觉实验与科普",
+      "description": "看似不可能的现象、可视化实验与科学疑问；用观察、对照和解释满足好奇心，少事实堆砌和伪科学",
       "enabled": true,
-      "default_selected": false,
-      "query": "science|physics|engineering|space",
+      "default_selected": true,
+      "query": "science experiments explained|counterintuitive physics experiments|vacuum chamber experiments|slow motion science experiments|magnetic levitation explained|non Newtonian fluid experiments|water surface tension experiments|sound wave experiments|gyroscope physics explained|optical illusions explained|cloud chamber particle tracks|ferrofluid experiments|pendulum waves explained|high voltage physics explained|fluid dynamics experiments|invisible light camera experiment|what happens in a vacuum|why hot water freezes faster|physics of spinning objects|acoustic levitation demonstration|superconductor levitation explained",
       "keywords": [
         "science",
         "scientific",
@@ -70,11 +70,11 @@
     },
     {
       "id": "gaming",
-      "label": "游戏",
-      "description": "热门游戏、新作、玩法、挑战与独立游戏",
+      "label": "游戏机制与趣味挑战",
+      "description": "普通观众也能看懂的奇葩限制、机制谜题、玩家实验与自制控制器；少日常实况、版本复述和圈内梗",
       "enabled": true,
-      "default_selected": true,
-      "query": "gaming|new game|gameplay|game challenge",
+      "default_selected": false,
+      "query": "video game experiments|can you beat without attacking|game with a ridiculous controller|I broke the game physics|players simulate a civilization|speedrun impossible challenge|NPC behavior experiment|beating a game with one button|randomizer impossible combination|turning a horror game into comedy|game economy experiment|I modded every enemy|pacifist run hardest difficulty|survival game social experiment|video game myth testing|I built a real game controller|games with unusual mechanics|beating a game backwards|strategy game absurd strategy|I became the final boss|game world boundary exploration",
       "keywords": [
         "gaming",
         "game",
@@ -91,11 +91,11 @@
     },
     {
       "id": "minecraft",
-      "label": "Minecraft",
-      "description": "Minecraft 热门内容、生存、挑战、模组与服务器",
+      "label": "Minecraft 脑洞实验",
+      "description": "红石机关、生态或文明实验与规则变化；有可独立理解的目标和结果，少连续生存日记与常规实况",
       "enabled": true,
-      "default_selected": true,
-      "query": "Minecraft|Minecraft hardcore|Minecraft challenge|Minecraft mod",
+      "default_selected": false,
+      "query": "Minecraft experiments|Minecraft I coded a custom mob|Minecraft civilization experiment|Minecraft impossible redstone machine|Minecraft realistic physics mod|Minecraft beating without mining|Minecraft AI player experiment|Minecraft I built a working computer|Minecraft one chunk civilization|Minecraft custom boss challenge|Minecraft gravity changes challenge|Minecraft ecosystem simulation|Minecraft I made the world alive|Minecraft useless machine competition|Minecraft survive shrinking world|Minecraft horror mod experiment|Minecraft players build an economy|Minecraft I recreated a real city|Minecraft redstone robot|Minecraft random crafting challenge|Minecraft controlling mobs experiment",
       "keywords": [
         "minecraft",
         "hardcore",
@@ -117,11 +117,11 @@
     },
     {
       "id": "chemistry",
-      "label": "化学",
-      "description": "化学反应、实验、材料科学与实验室内容",
+      "label": "奇妙材料与化学",
+      "description": "变色、发光、晶体生长与特殊材料；既能看见变化，也能理解原理，少噱头和无解释的反应拼接",
       "enabled": true,
       "default_selected": false,
-      "query": "chemistry|chemical reaction|chemistry experiment|materials science",
+      "query": "chemistry experiments explained|color changing material experiment|making transparent wood|growing metal crystals|self healing material test|liquid metal experiment|making plastic from algae|glow in the dark chemistry|hydrophobic coating test|aerogel insulation experiment|shape memory material test|edible water bottle experiment|rust to pigment experiment|making biodegradable foam|crystal growth time lapse|temperature changing ink test|chemistry of unbreakable glass|recycling plastic into new material|making a flexible battery|magnetic putty experiment|iridescent color without pigment",
       "keywords": [
         "chemistry",
         "chemical",
@@ -139,11 +139,11 @@
     },
     {
       "id": "challenges_experiments",
-      "label": "挑战与实验",
-      "description": "挑战、真人实验、I tried/I tested 与长周期内容",
+      "label": "脑洞发明与趣味实验",
+      "description": "现实版游戏、巧妙机关、生活谜题和离谱点子实测；目标容易懂，过程有趣，结果可展示",
       "enabled": true,
       "default_selected": true,
-      "query": "challenge|experiment|I tried|I tested",
+      "query": "creative inventions tested|Rube Goldberg machine build|testing cartoon physics|homemade obstacle course|useless robot inventions|giant marble machine|real life video game build|unusual bicycle designs tested|mechanical puzzle box build|homemade hovercraft test|human vs robot challenge|chain reaction machine|walking machine build|real life movie gadget build|testing impossible trick shots|building a tiny working engine|homemade pinball machine|weird musical instruments build|building a mechanical hand|puzzle solving machine|homemade arcade games",
       "keywords": [
         "challenge",
         "experiment",
@@ -161,11 +161,11 @@
     },
     {
       "id": "entertainment",
-      "label": "娱乐",
-      "description": "喜剧、反应、竞赛与高参与度娱乐视频",
+      "label": "趣味游戏与创意互动",
+      "description": "规则易懂的真人游戏、道具竞赛、谜题和即兴喜剧；少名人八卦、英语双关和必须认识嘉宾的笑点",
       "enabled": true,
       "default_selected": false,
-      "query": "comedy|funny|reaction|competition",
+      "query": "creative game show challenges|game show with changing rules|comedians invent useless products|real life prop hunt|improv with random props|human vs robot comedy challenge|guess the secret rule game|turning chores into a competition|comedy escape room challenge|silent acting guessing game|friends design ridiculous costumes|improv fake product pitch|real life video game competition|comedians solve strange puzzles|homemade obstacle course competition|guess the fake invention|improv sound effects challenge|building absurd party games|comedy miniature competition|reverse charades challenge|mystery object invention game",
       "keywords": [
         "funny",
         "comedy",
@@ -181,11 +181,11 @@
     },
     {
       "id": "agriculture_gardening",
-      "label": "农业与园艺",
-      "description": "农业、园艺、农机、收获与家庭农场",
+      "label": "生长奇观与园艺改造",
+      "description": "种子到收获、根系生长、菌菇与微型农场；看时间变化、改造成果或对照实验，少日常巡园",
       "enabled": true,
       "default_selected": false,
-      "query": "farming|gardening|farm machinery|harvest",
+      "query": "plant growing time lapse|seed to harvest time lapse|mushroom growing time lapse|plant roots time lapse|abandoned garden transformation|giant vegetable growing|hydroponics growing experiment|aquaponics system build|compost time lapse|carnivorous plant feeding explained|growing food from scraps experiment|soil comparison growing experiment|tree grafting process|greenhouse harvest process|vertical farming explained|mushrooms growing on waste|sunflower life cycle time lapse|how seeds germinate close up|terrarium plant growth|ancient irrigation explained|small garden transformation",
       "keywords": [
         "farming",
         "farm",
@@ -203,11 +203,11 @@
     },
     {
       "id": "food_cooking",
-      "label": "美食与烹饪",
-      "description": "美食、烹饪、街头食品与挑战",
+      "label": "食物工艺与厨房科学",
+      "description": "糖果、面包、面条等食物的连贯制作、手艺细节和食材变化；兼顾解压与知识，少重复菜谱、吃播和厨具带货",
       "enabled": true,
-      "default_selected": false,
-      "query": "food|cooking|street food|food challenge",
+      "default_selected": true,
+      "query": "food making process|candy making process|hand pulled noodles making|croissant making process|chocolate making bean to bar|traditional cheese making|sugar sculpture making|sourdough fermentation explained|why onions make you cry|ice cream science explained|knife skills food preparation|traditional mochi making|how pasta shapes are made|coffee roasting process explained|butter making process|food texture science|baking ingredient comparison|traditional pastry making|fermentation food science|how popcorn pops slow motion|fruit carving process",
       "keywords": [
         "food",
         "cooking",
@@ -224,11 +224,11 @@
     },
     {
       "id": "outdoor_travel",
-      "label": "户外与旅行",
-      "description": "旅行、露营、探险、生存与地点探索",
+      "label": "地理奇观与实地探秘",
+      "description": "特殊地貌、地下世界、孤立聚落与罕见交通；看陌生生活和地理成因，少酒店打卡与旅行流水账",
       "enabled": true,
       "default_selected": false,
-      "query": "travel|camping|adventure|survival",
+      "query": "unusual places documentary|underground city documentary|living on a remote island|salt mine exploration|how sinkholes form|worlds largest cave exploration|volcanic landscapes explained|desert water systems explained|remote mountain village life|floating villages documentary|abandoned railway documentary|ice caves explained|unusual public transport journey|ocean tides explained|ancient trade route documentary|how people live underground|island water supply documentary|moving sand dunes explained|glacier caves documentary|remote lighthouse life|geology of unusual rock formations",
       "keywords": [
         "travel",
         "outdoor",
@@ -246,11 +246,11 @@
     },
     {
       "id": "tutorials_skills",
-      "label": "教程与技能",
-      "description": "教程、DIY、技能学习与项目制作",
+      "label": "巧手制作与实用原理",
+      "description": "能看到成品效果的机关、修理技巧、老物改造和可玩装置；让外行也能长见识，少入门课堆砌",
       "enabled": true,
       "default_selected": false,
-      "query": "tutorial|how to|DIY|learn a skill",
+      "query": "clever DIY projects|build a custom game controller|Raspberry Pi arcade build|turn an old phone into a robot|DIY motion tracking camera|build a mechanical flip display|DIY interactive LED wall|make a working cosplay prop|build a miniature vending machine|DIY room automation project|repairing an impossible gadget|build a digital microscope|DIY projection mapping room|turning a broken laptop into a console|build a smart mirror from scratch|DIY musical instrument electronics|make a puzzle box mechanism|build a tiny portable computer|DIY camera from scratch|make a kinetic desk toy|build an e ink dashboard",
       "keywords": [
         "tutorial",
         "guide",
@@ -268,11 +268,11 @@
     },
     {
       "id": "art_creativity",
-      "label": "艺术与创意",
-      "description": "艺术、动画、3D、绘画与创意制作",
+      "label": "微缩世界与视觉创作",
+      "description": "微缩场景、陶艺、机械雕塑与视觉错觉；看材料逐步成形、精细操作和成品，少软件教学与作品幻灯片",
       "enabled": true,
       "default_selected": false,
-      "query": "art|animation|3D printing|creative project",
+      "query": "miniature diorama making|pottery wheel throwing process|miniature landscape diorama|kinetic sculpture build|glass sculpture making|wood carving process|paper engineering pop up|stop motion behind the scenes|optical illusion sculpture|miniature food sculpting|sand art process|ceramic glazing process|marble sculpture carving|mechanical puppet making|book nook diorama build|stained glass making|origami tessellation folding|practical creature effects|automaton sculpture build|miniature waterfall diorama|mosaic art making process",
       "keywords": [
         "art",
         "drawing",
@@ -290,11 +290,11 @@
     },
     {
       "id": "social_experiments",
-      "label": "社会实验与真人互动",
-      "description": "社会实验、街访、陌生人互动与公众挑战",
+      "label": "心理谜题与合作游戏",
+      "description": "可观察的人类决策、协作谜题与沟通实验；给出规则、过程与解释，少对立街访和套路煽情",
       "enabled": true,
       "default_selected": false,
-      "query": "social experiment|street interview|public challenge|strangers",
+      "query": "human behavior experiments explained|strangers build something together|crowd controls a robot|strangers solve a puzzle|real life cooperative game|humans play an algorithm|strangers invent a new sport|group decision making experiment|people draw the same description|strangers design a video game|real life trading game experiment|people teach robots a task|strangers make a short film|crowd builds a city simulation|generations test unusual gadgets|human swarm intelligence experiment|strangers create a chain reaction|people recreate a sound challenge|cooperation vs competition game|strangers build a giant sculpture|human communication puzzle game",
       "keywords": [
         "social experiment",
         "strangers",
@@ -306,6 +306,100 @@
         "reaction",
         "psychology",
         "challenge"
+      ]
+    },
+    {
+      "id": "engineering_manufacturing",
+      "label": "制造过程与机械原理",
+      "description": "从原料到成品的工厂流程、精密加工和机械运转；既有秩序感与工艺细节，也能看懂机器如何工作",
+      "enabled": true,
+      "default_selected": true,
+      "query": "manufacturing process explained|glass bottle manufacturing|precision machining process|how bearings are made|metal forging process|how pencils are made|mechanical watch assembly|injection molding explained|steel rolling mill process|how springs are made|gear cutting process|paper recycling process|how zippers are made|ceramic manufacturing process|how locks work animation|industrial weaving machine|wood veneer making process|how ballpoint pens are made|wire drawing process|how engines work animation|mechanical linkage demonstration",
+      "keywords": ["engineering", "factory", "manufacturing", "machine", "invention", "infrastructure", "construction", "mechanical", "industrial", "machining"]
+    },
+    {
+      "id": "restoration_crafts",
+      "label": "旧物修复与精细手艺",
+      "description": "旧工具、钟表、家具和机械复活；优先诊断、拆解、清理、重装与最终使用，过程解压，少伪造破损噱头",
+      "enabled": true,
+      "default_selected": true,
+      "query": "antique restoration process|rusty hand tool restoration|mechanical watch restoration|old furniture restoration|antique clock repair|cast iron pan restoration|vintage toy restoration|leather shoes restoration|old painting restoration|woodworking hand tool making|woodturning bowl process|vintage camera restoration|antique music box restoration|old knife restoration|typewriter restoration|stained glass restoration|broken pottery repair|traditional joinery woodworking|vintage sewing machine restoration|silverware restoration|book restoration process",
+      "keywords": ["restoration", "restore", "woodworking", "metalworking", "furniture", "antique", "craft", "blacksmith", "woodturning", "repair"]
+    },
+    {
+      "id": "nature_animals",
+      "label": "奇妙生物与微观世界",
+      "description": "动物聪明行为、深海奇异生物、昆虫社会与微型生态；让人惊奇或会心一笑，并有真实观察与解释",
+      "enabled": true,
+      "default_selected": true,
+      "query": "animal behavior explained|octopus solving puzzles|crow intelligence experiments|deep sea creatures adaptations|pond life under microscope|beaver building a dam|ant colony bridge building|cuttlefish camouflage explained|pufferfish underwater circles|spider web building close up|bird mimicry explained|slime mold maze experiment|mantis shrimp vision explained|bioluminescence ocean explained|termite mound ventilation|closed terrarium ecosystem|how electric eels work|animal tool use documentary|hummingbird slow motion|tardigrades under microscope|leafcutter ants fungus farming",
+      "keywords": ["wildlife", "animal", "nature", "ocean", "marine", "species", "habitat", "conservation", "ecosystem", "bird", "insect"]
+    },
+    {
+      "id": "history_archaeology",
+      "label": "历史谜题与古代技术",
+      "description": "古人如何制造、生活和解决难题；以文物证据、复原实验和因果解释长见识，少神秘阴谋与故事复述",
+      "enabled": true,
+      "default_selected": false,
+      "query": "ancient technology explained|experimental archaeology|Roman concrete explained|ancient water clock reconstruction|how ancient glass was made|medieval armor making|ancient musical instrument reconstruction|Antikythera mechanism explained|archaeological discovery explained|ancient cooking reconstruction|Egyptian stone cutting experiment|how medieval castles worked|ancient shipbuilding techniques|forgotten inventions explained|Roman road construction explained|ancient textile weaving|historical map mysteries explained|ancient city water systems|medieval engineering explained|archaeological artifact restoration|ancient board games explained",
+      "keywords": ["history", "historical", "archaeology", "ancient", "civilization", "medieval", "artifact", "museum", "excavation", "century"]
+    },
+    {
+      "id": "business_industry",
+      "label": "产业幕后与商业冷知识",
+      "description": "日用品背后的产业链、制造成本与奇特商业机制；用具体案例解释为什么，少财经播报、成功学和投资口号",
+      "enabled": true,
+      "default_selected": false,
+      "query": "everyday products business documentary|why printer ink is expensive|how vending machines work|why repair costs more than replacement|how shipping containers changed trade|pencil supply chain explained|how recycling businesses work|why food packaging changed|how counterfeit electronics are detected|how claw machines work|the economics of spare parts|why products are designed to break|how grocery stores reduce waste|why discontinued products survive|how warehouse sorting works|how cold chain logistics works|how glass recycling works|why train tracks use gravel|failed invention business history|how metal scrap is recycled|how toy manufacturing works",
+      "keywords": ["business", "company", "industry", "supply chain", "logistics", "shipping", "retail", "manufacturing", "trade", "economy"]
+    },
+    {
+      "id": "space_astronomy",
+      "label": "宇宙奇观与航天原理",
+      "description": "天体奇异现象、宇宙尺度和航天难题；用图解、模型或观测解释具体疑问，少快讯和耸动宇宙谜团",
+      "enabled": true,
+      "default_selected": false,
+      "query": "space science explained|why Saturn has rings|how black holes bend light|why Venus spins backwards|orbital mechanics explained|how rocket engines work|neutron stars explained|why the moon has craters|Mars rover wheel design|how space telescopes see|zero gravity water experiments|how astronauts recycle water|why landing on the moon is hard|how gravity assists work|exoplanet detection explained|why stars change color|spacecraft heat shield explained|solar storms explained|how eclipses work|scale of the solar system|space telescope mirror engineering",
+      "keywords": ["space", "astronomy", "rocket", "planet", "universe", "cosmos", "telescope", "galaxy", "orbit", "solar", "mission"]
+    },
+    {
+      "id": "cleaning_transformation",
+      "label": "深度清洁与焕新",
+      "description": "地毯、庭院、车辆和旧物从脏乱到整洁；优先连贯操作、细节变化与前后对比，不因安静或ASMR排除，也不凭夸张封面认定真实",
+      "enabled": true,
+      "default_selected": true,
+      "query": "deep cleaning transformation|rug cleaning process|pressure washing driveway|car detailing transformation|overgrown yard cleanup|tile grout cleaning|carpet washing before after|window cleaning process|rust removal tools|patio pressure washing|sofa deep cleaning|pool cleaning transformation|old floor cleaning restoration|laser cleaning rust removal|sneaker cleaning restoration|car interior deep cleaning|brick cleaning pressure washing|stone polishing process|drain cleaning process|silver polishing process|garden path cleanup",
+      "keywords": [
+        "cleaning",
+        "clean",
+        "washing",
+        "detailing",
+        "pressure washing",
+        "rug",
+        "carpet",
+        "restoration",
+        "polishing",
+        "transformation"
+      ]
+    },
+    {
+      "id": "everyday_science",
+      "label": "日常冷知识与万物原理",
+      "description": "从身边物品和日常疑问出发，解释熟悉却不懂的机制；用实物、图解、对照或证据长见识，少无解释的冷知识清单",
+      "enabled": true,
+      "default_selected": true,
+      "query": "everyday science explained|how microwave ovens work|why soap cleans|how noise cancelling works|why ice is slippery|how induction cooking works|why popcorn pops|how touchscreens work|why cats purr science|how a refrigerator works|why metal feels colder|how vacuum flasks work|why bread rises|why birds can sit on power lines|how polarized sunglasses work|why bubbles are round|how water filters work|why mirrors reverse images|how batteries store energy|why airplane windows are round|how matchsticks work",
+      "keywords": [
+        "explained",
+        "how it works",
+        "why",
+        "science",
+        "everyday",
+        "physics",
+        "mechanism",
+        "demonstration",
+        "experiment",
+        "animation"
       ]
     }
   ]

@@ -10,6 +10,12 @@ from typing import Any
 from urllib.parse import urlparse
 
 from ..dubbing.config import public_dubbing_health
+from ..cover_localization import (
+    cover_paths,
+    load_cover_config,
+    public_cover_health,
+    update_cover_settings,
+)
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
 from ..stage4.layout_review import load_layout_review, save_layout_review
 from ..stage3.llm_providers import (
@@ -100,6 +106,7 @@ class ControlPanelApp:
         cookie_status = youtube_cookie_status(cookie_path)
         publishing = self.publisher.health()
         dubbing = public_dubbing_health(self.project_root)
+        cover = public_cover_health(self.project_root)
         profile = load_portable_manifest(self.project_root)
         stage3_config = read_json(self.project_root / "config" / "stage3_config.json")
         asr_config = stage3_config.get("asr") if isinstance(stage3_config.get("asr"), dict) else {}
@@ -150,6 +157,7 @@ class ControlPanelApp:
             "tools": tools,
             "publishing": publishing,
             "dubbing": dubbing,
+            "cover": cover,
             "youtube_cookies": cookie_status,
             "llm": llm,
             "discovery": discovery,
@@ -235,7 +243,8 @@ class ControlPanelApp:
             values,
         )
         publish_saved = self.publisher.update_publish_settings(values)
-        if not updates and not discovery_saved and not publish_saved:
+        cover_saved = update_cover_settings(self.project_root, values)
+        if not updates and not discovery_saved and not publish_saved and not cover_saved:
             raise ValueError("没有需要保存的设置")
         if updates:
             update_env_file(self.project_root / ".env", updates)
@@ -243,7 +252,7 @@ class ControlPanelApp:
             for name, value in updates.items():
                 os.environ[name] = value
         return {
-            "saved": [*sorted(updates), *discovery_saved, *publish_saved],
+            "saved": [*sorted(updates), *discovery_saved, *publish_saved, *cover_saved],
             "health": self.health(),
         }
 
@@ -480,6 +489,37 @@ class ControlPanelApp:
     ) -> dict[str, Any]:
         return self.searcher.record_discovery_feedback(item, feedback)
 
+    def _cover_request_options(self, choice: str | None, cloud_authorized: bool,
+                               enabled: bool | None = None) -> dict[str, Any]:
+        config = load_cover_config(self.project_root)
+        if choice is None:
+            # Keep older clients and internal callers compatible.
+            options = {"cover_enabled": config["enabled"] if enabled is None else bool(enabled),
+                       "cover_mode": config["mode"],
+                       "cover_allow_cloud_api": config["allow_cloud_api"],
+                       "cover_allow_paid_api": config["allow_paid_copy"]}
+            if (options["cover_enabled"] and options["cover_mode"] == "cloud"
+                    and options["cover_allow_cloud_api"]
+                    and not public_cover_health(self.project_root)["api_key_configured"]):
+                raise ValueError(
+                    "API 文案封面缺少当前翻译供应商的 Key；"
+                    "请先在‘配置服务 → AI 翻译’保存 Key"
+                )
+            return options
+        if not isinstance(choice, str) or choice not in {"off", "local", "cloud"}:
+            raise ValueError("封面选项必须为 off、local 或 cloud")
+        if choice == "cloud" and cloud_authorized is not True:
+            raise ValueError("请在当前操作区授权当前翻译 API 生成封面文案")
+        if (choice == "cloud"
+                and not public_cover_health(self.project_root)["api_key_configured"]):
+            raise ValueError(
+                "API 文案封面缺少当前翻译供应商的 Key；"
+                "请先在‘配置服务 → AI 翻译’保存 Key"
+            )
+        return {"cover_enabled": choice != "off", "cover_mode": "cloud" if choice == "cloud" else "local",
+                "cover_allow_cloud_api": choice == "cloud" and cloud_authorized is True,
+                "cover_allow_paid_api": False}
+
     def queue_downloads(
         self,
         *,
@@ -487,13 +527,16 @@ class ControlPanelApp:
         items: list[dict[str, Any]] | None = None,
         confirm_rights: bool,
         auto_publish: bool = False,
+        cover_enabled: bool | None = None,
+        cover_choice: str | None = None,
+        cover_cloud_authorized: bool = False,
         whisper_for_auto_subtitles: bool = True,
         auto_translate_missing: bool = True,
         publish_metadata_provider: str = "auto",
         account_id: str = "",
         publish_only_self: bool = False,
         automation_render_mode: str = "hardsub",
-        automation_failure_policy: str = "skip",
+        automation_failure_policy: str = "fail",
         automation_target: str = "publish",
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
@@ -508,6 +551,10 @@ class ControlPanelApp:
     ) -> list[dict[str, Any]]:
         if not confirm_rights:
             raise ValueError("下载前必须确认拥有下载和使用这些视频的权利")
+        # A plain download must not inherit an optional, possibly paid cover job.
+        if not auto_publish and cover_choice is None and cover_enabled is None:
+            cover_choice = "off"
+        cover_options = self._cover_request_options(cover_choice, cover_cloud_authorized, cover_enabled)
         normalized: list[dict[str, str]]
         if items:
             raw_urls = " ".join(str(item.get("youtube_url") or item.get("url") or "") for item in items)
@@ -577,6 +624,7 @@ class ControlPanelApp:
                 {
                     "url": item["url"],
                     "video_id": item["video_id"],
+                    **cover_options,
                     **dubbing,
                     **automation,
                 },
@@ -595,13 +643,16 @@ class ControlPanelApp:
         render_mode: str,
         chinese_subtitle_source: str,
         allow_paid_api: bool,
+        cover_enabled: bool | None = None,
+        cover_choice: str | None = None,
+        cover_cloud_authorized: bool = False,
         whisper_for_auto_subtitles: bool = True,
         auto_translate_missing: bool = True,
         auto_publish: bool = False,
         publish_metadata_provider: str = "auto",
         account_id: str = "",
         publish_only_self: bool = False,
-        automation_failure_policy: str = "skip",
+        automation_failure_policy: str = "fail",
         automation_target: str = "publish",
         english_subtitle_policy: str = "",
         automation_chinese_policy: str = "",
@@ -614,6 +665,7 @@ class ControlPanelApp:
         dubbing_subtitle_display: str = "chinese",
         force_dubbing: bool = False,
     ) -> list[dict[str, Any]]:
+        cover_options = self._cover_request_options(cover_choice, cover_cloud_authorized, cover_enabled)
         normalized_target = str(automation_target or "publish").strip().casefold()
         normalized_english_policy = str(
             english_subtitle_policy
@@ -774,8 +826,24 @@ class ControlPanelApp:
             silent_video_policy=automation_silent_video_policy,
             dubbing_review_policy=automation_dubbing_review_policy,
         )
-        jobs = [
-            self.store.enqueue(
+        jobs: list[dict[str, Any]] = []
+        for task in validated:
+            if cover_options["cover_enabled"] and not self.store.has_active(
+                "cover", task
+            ):
+                cover_payload = {
+                    **cover_options,
+                    "cover_force": False,
+                }
+                self.store.enqueue(
+                    "cover",
+                    task,
+                    cover_payload,
+                    resource_class=self.worker.initial_resource(
+                        "cover", cover_payload
+                    ),
+                )
+            jobs.append(self.store.enqueue(
                 "pipeline",
                 task,
                 {
@@ -783,6 +851,10 @@ class ControlPanelApp:
                     "render_mode": render_mode,
                     "chinese_subtitle_source": chinese_subtitle_source,
                     "allow_paid_api": bool(allow_paid_api),
+                    # Cover work is an independent job so API copy and Pillow
+                    # can run beside subtitle selection/encoding. Publishing still
+                    # waits for the companion cover job at the store boundary.
+                    "cover_enabled": False,
                     "whisper_for_auto_subtitles": bool(
                         whisper_for_auto_subtitles
                     ),
@@ -792,9 +864,7 @@ class ControlPanelApp:
                     **automation,
                 },
                 resource_class="gpu_heavy",
-            )
-            for task in validated
-        ]
+            ))
         self.worker.wake()
         return jobs
 
@@ -917,13 +987,21 @@ class ControlPanelApp:
             and normalized_render_mode not in {"hardsub", "both"}
         ):
             raise ValueError("无人值守投稿必须生成硬字幕 MP4")
-        normalized_failure_policy = str(failure_policy or "skip").strip().casefold()
-        if normalized_failure_policy not in {"skip", "fail"}:
+        normalized_failure_policy = str(failure_policy or "fail").strip().casefold()
+        # ``skip`` was the old unattended default.  Keep accepting it from
+        # stale browser settings/API clients, but normalize it so a new job
+        # can never be completed as an automatic skip.
+        if normalized_failure_policy == "skip":
+            normalized_failure_policy = "fail"
+        if normalized_failure_policy != "fail":
             raise ValueError("不支持的无人值守异常策略")
         normalized_silent_video_policy = str(
             silent_video_policy or "publish_original"
         ).strip().casefold()
-        if normalized_silent_video_policy not in {"publish_original", "skip"}:
+        # Legacy ``skip`` means the same as the current original-media path.
+        if normalized_silent_video_policy == "skip":
+            normalized_silent_video_policy = "publish_original"
+        if normalized_silent_video_policy != "publish_original":
             raise ValueError("不支持的无配音视频处理策略")
         normalized_dubbing_review_policy = str(
             dubbing_review_policy or "auto_fallback"
@@ -1149,6 +1227,72 @@ class ControlPanelApp:
     def publish_defaults(self, task: str) -> dict[str, Any]:
         task_dir = self.scanner.resolve_task(task)
         return self.publisher.defaults(task_dir) | {"task": task}
+
+    def cover_file(self, task: str, variant: str) -> Path:
+        task_dir = self.scanner.resolve_task(task)
+        paths = cover_paths(task_dir, self.project_root)
+        normalized = str(variant or "localized").strip().casefold()
+        if normalized in {"localized", "zh", "中文"}:
+            path = paths["localized"]
+        elif normalized in {"original", "raw", "原图"}:
+            path = paths["original"]
+        else:
+            raise ValueError("不支持的封面预览类型")
+        if not path.resolve().is_relative_to(task_dir.resolve()):
+            raise ValueError("封面路径超出任务目录")
+        if not path.is_file() or path.stat().st_size <= 0:
+            raise FileNotFoundError("封面文件尚未生成")
+        return path
+
+    def cover_details(self, task: str) -> dict[str, Any]:
+        task_dir = self.scanner.resolve_task(task)
+        path = cover_paths(task_dir, self.project_root)["log"]
+        if not path.resolve().is_relative_to(task_dir):
+            raise ValueError("封面日志路径超出任务目录")
+        log = ""
+        if path.is_file():
+            with path.open("rb") as stream:
+                stream.seek(max(0, path.stat().st_size - 12000))
+                log = stream.read(12000).decode("utf-8", errors="replace")
+        return {"log": log}
+
+    def queue_cover(
+        self,
+        task: str,
+        *,
+        force: bool = True,
+        allow_paid_api: bool = False,
+        allow_cloud_api: bool = False,
+    ) -> dict[str, Any]:
+        self.scanner.resolve_task(task)
+        active = self.store.active_for_targets({task})
+        if any(
+            row["kind"] in {"cover", "download"}
+            or (row["kind"] == "publish" and row["status"] == "running")
+            for row in active
+        ):
+            raise ValueError("这个视频的封面、下载或上传正在执行，请稍后重试")
+        payload = {
+            "cover_enabled": True,
+            "cover_mode": load_cover_config(self.project_root)["mode"],
+            "cover_allow_cloud_api": bool(allow_cloud_api),
+            "cover_allow_paid_api": bool(allow_paid_api),
+            "cover_force": bool(force),
+        }
+        if (payload["cover_mode"] == "cloud"
+                and not public_cover_health(self.project_root)["api_key_configured"]):
+            raise ValueError(
+                "API 文案封面缺少当前翻译供应商的 Key；"
+                "请先在‘配置服务 → AI 翻译’保存 Key"
+            )
+        job = self.store.enqueue(
+            "cover",
+            task,
+            payload,
+            resource_class=self.worker.initial_resource("cover", payload),
+        )
+        self.worker.wake()
+        return job
 
     def queue_publish(self, task: str, values: dict[str, Any]) -> dict[str, Any]:
         task_dir = self.scanner.resolve_task(task)
