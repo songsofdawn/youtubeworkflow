@@ -948,17 +948,17 @@
   "discovery_hot_lane_min_per_pack": 3,
   "discovery_default_ranking_mode": "hot",
   "discovery_primary_search_orders": [
-    "viewCount",
     "date",
     "relevance"
   ],
   "discovery_supplemental_search_orders": [
     "relevance",
     "relevance",
+    "relevance",
     "viewCount"
   ],
   "discovery_query_rotation_enabled": true,
-  "discovery_max_supplemental_queries": 3,
+  "discovery_max_supplemental_queries": 4,
   "discovery_expected_search_calls_per_pack": 6,
   "discovery_adaptive_page2_enabled": true,
   "discovery_adaptive_min_unique_candidates": 80,

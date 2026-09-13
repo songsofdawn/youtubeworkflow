@@ -158,6 +158,7 @@ class JobStore:
         payload: dict[str, Any],
         *,
         resource_class: str | None = None,
+        exclusive_targets: set[str] | None = None,
     ) -> dict[str, Any]:
         job_id = uuid.uuid4().hex
         log_path = self.logs_dir / f"{job_id}.log"
@@ -182,6 +183,16 @@ class JobStore:
             "log_path": str(log_path),
         }
         with self._connect() as connection:
+            if exclusive_targets:
+                connection.execute("BEGIN IMMEDIATE")
+                placeholders = ", ".join("?" for _ in exclusive_targets)
+                active = connection.execute(
+                    f"SELECT 1 FROM jobs WHERE target IN ({placeholders}) "
+                    "AND status IN ('queued', 'running') LIMIT 1",
+                    tuple(sorted(exclusive_targets)),
+                ).fetchone()
+                if active:
+                    raise ValueError("视频仍有运行中或排队中的任务，请先终止或等待完成")
             connection.execute(
                 """
                 INSERT INTO jobs
@@ -2333,6 +2344,14 @@ class WorkflowWorker:
         payload = job["payload"]
         if job["kind"] == "download":
             python = resolve_python_executable(self.project_root)
+            if payload.get("redownload"):
+                if payload.get("confirm_rights") is not True:
+                    raise ValueError("重新下载缺少权利确认")
+                task_dir = self.scanner.resolve_task(str(job["target"]))
+                return [("重新下载并校验原始素材", [
+                    str(python), "-m", "src.redownload_video",
+                    "--task-dir", str(task_dir), "--confirm-rights",
+                ])]
             command = [
                 str(python),
                 "-m",

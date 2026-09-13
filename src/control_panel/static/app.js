@@ -50,6 +50,9 @@ async function api(path, options = {}) {
   });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
+    if (response.status === 404 && path === "/api/tasks/redownload") {
+      throw new Error("当前面板服务未加载重新下载接口，请完全退出并重新启动面板（不要只刷新网页）。");
+    }
     throw new Error(payload.error || `请求失败（${response.status}）`);
   }
   return payload;
@@ -660,7 +663,7 @@ function updateLlmProviderFields(providerId, modelId = "", baseUrl = "", resetTh
   }
 }
 
-const stageNames = { download: "下载", english: "英文", translation: "AI 翻译", dubbing: "配音", render: "成片", cover: "封面", publish: "投稿" };
+const stageNames = { download: "下载", english: "英文", translation: "AI翻译", dubbing: "配音", render: "成片", cover: "封面", publish: "投稿" };
 
 function renderTasks(tasks) {
   const taskKeys = new Set(tasks.map((task) => task.task));
@@ -671,6 +674,10 @@ function renderTasks(tasks) {
   const selectedRows = tasks.filter((task) => state.selectedTasks.has(task.task));
   const deletableCount = selectedRows.filter((task) => !task.active_job).length;
   const activeCount = selectedRows.length - deletableCount;
+  const redownloadSelectedButton = $("#redownloadSelectedTasks");
+  redownloadSelectedButton.disabled = deletableCount === 0;
+  redownloadSelectedButton.textContent = deletableCount ? `重新下载 (${deletableCount})` : "重新下载";
+  redownloadSelectedButton.title = "重新下载原始素材；运行中或排队中的项目会跳过";
   const deleteSelectedButton = $("#deleteSelectedTasks");
   deleteSelectedButton.disabled = deletableCount === 0;
   deleteSelectedButton.textContent = deletableCount
@@ -700,9 +707,30 @@ function renderTasks(tasks) {
     const summaryClass = automationSkipped
       ? "automation-skip-summary"
       : reviewSummary ? "review-summary" : "";
+    const progressPercent = Math.max(0, Math.min(100, Math.round(Number(progress) || 0)));
     const subtitle = active
       ? active.status === "queued" ? "队列中" : "执行中"
-      : reviewSummary || `${task.progress}%`;
+      : reviewSummary || (progressPercent >= 100 ? "已完成" : "等待继续");
+    const author = task.channel || task.video_id || task.task;
+    const subtitleStatus = task.chinese_auto_available
+      ? `YouTube 自动中文可用 · ${task.chinese_auto_name}`
+      : "没有 YouTube 自动中文字幕";
+    const subtitleStatusLabel = task.chinese_auto_available
+      ? `自动中文 · ${task.chinese_auto_name}`
+      : "无自动中文字幕";
+    const rawStatusLabel = String(task.overall ?? "");
+    const compactStatusLabels = {
+      "翻译并检查中文字幕": "生成中文字幕",
+      "生成中文 AI 配音": "生成中文配音",
+      "生成并质检中文配音成片": "生成配音成片",
+      "生成并质检双语成片": "生成双语成片",
+      "生成无配音视频投稿信息": "投稿哔哩哔哩",
+      "自动生成投稿标题、标签与分区": "投稿哔哩哔哩",
+    };
+    const statusLabel = compactStatusLabels[rawStatusLabel]
+      || (rawStatusLabel === "正在投稿" || rawStatusLabel.startsWith("投稿解析")
+        ? "投稿哔哩哔哩"
+        : rawStatusLabel);
     const stages = Object.entries(task.stages).map(([key, value]) =>
       `<span class="stage ${escapeHtml(value.state)}" title="${escapeHtml(value.detail)}">${stageNames[key]}</span>`
     ).join("");
@@ -711,12 +739,12 @@ function renderTasks(tasks) {
       : `<div class="task-thumb"></div>`;
     const publishAction = active ? "" : task.stages.publish.state === "complete"
       ? task.bilibili_url
-        ? `<button class="icon-button open-bilibili" type="button" title="打开B站稿件" aria-label="打开B站稿件">B</button>`
+        ? `<button class="task-menu-item open-bilibili" type="button" role="menuitem" title="打开B站稿件" aria-label="打开B站稿件">打开B站稿件</button>`
         : ""
       : task.stages.publish.state === "active"
         ? ""
       : task.stages.render.state === "complete"
-          ? `<button class="icon-button publish-task" type="button" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">↑</button>`
+          ? `<button class="task-menu-item publish-task" type="button" role="menuitem" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">投稿到哔哩哔哩</button>`
           : "";
     const layoutReview = !active
       && task.stages.publish.state !== "complete"
@@ -724,45 +752,57 @@ function renderTasks(tasks) {
       && task.stage4_status === "REVIEW_REQUIRED"
       && task.review?.code === "SUBTITLE_LAYOUT_REVIEW_REQUIRED";
     const renderAction = layoutReview
-      ? `<button class="icon-button review-task" type="button" title="审核过长字幕并继续成片" aria-label="审核过长字幕并继续成片">审</button>`
+      ? `<button class="task-menu-item review-task" type="button" role="menuitem" title="审核过长字幕并继续成片" aria-label="审核过长字幕并继续成片">审核字幕并继续成片</button>`
       : !active
         && task.stages.publish.state !== "complete"
         && !["ORIGINAL_MEDIA", "FALLBACK_PENDING"].includes(task.automation_status)
         && task.stages.translation.state === "complete"
         && task.stage4_status !== "STAGE4_COMPLETED"
-        ? `<button class="icon-button render-task" type="button" title="仅重新成片" aria-label="仅重新成片">▶</button>`
+        ? `<button class="task-menu-item render-task" type="button" role="menuitem" title="仅重新成片" aria-label="仅重新成片">仅重新成片</button>`
         : "";
     return `
       <article class="task-row ${selected ? "selected" : ""}" data-task="${escapeHtml(task.task)}" data-video-id="${escapeHtml(task.video_id)}" data-title="${escapeHtml(task.title)}" data-bilibili-url="${escapeHtml(task.bilibili_url || "")}">
-        <input class="task-check" type="checkbox" aria-label="选择 ${escapeHtml(task.title)}" ${selected ? "checked" : ""}>
-        ${image}
-        <div class="task-title">
-          <strong title="${escapeHtml(task.title)}">${escapeHtml(task.title)}</strong>
-          <span>${escapeHtml(task.channel || task.video_id || task.task)}</span>
-          <small class="${task.chinese_auto_available ? "available" : "missing"}">
-            ${task.chinese_auto_available
-              ? `YouTube 自动中文可用 · ${escapeHtml(task.chinese_auto_name)}`
-              : "没有 YouTube 自动中文字幕"}
-          </small>
+        <div class="task-info">
+          <input class="task-check" type="checkbox" aria-label="选择 ${escapeHtml(task.title)}" ${selected ? "checked" : ""}>
+          ${image}
+          <div class="task-title">
+            <strong title="${escapeHtml(task.title)}">${escapeHtml(task.title)}</strong>
+            <div class="task-meta">
+              <span class="task-author" title="${escapeHtml(author)}">${escapeHtml(author)}</span>
+              <small class="task-subtitle-status ${task.chinese_auto_available ? "available" : "missing"}" title="${escapeHtml(subtitleStatus)}">${escapeHtml(subtitleStatusLabel)}</small>
+            </div>
+          </div>
         </div>
-        <div class="stage-track">${stages}</div>
-        <div class="status-cell">
-          <strong class="${automationSkipped ? "automation-skip-status" : ""}" title="${escapeHtml(task.overall)}">${escapeHtml(task.overall)}</strong>
-          <small class="${summaryClass}" title="${escapeHtml(reviewSummary)}">${escapeHtml(subtitle)}</small>
-          <progress class="progress-mini" max="100" value="${Math.max(0, Math.min(100, progress))}" aria-label="进度 ${progress}%"></progress>
+        <div class="task-workflow">
+          <div class="status-cell">
+            <div class="status-line">
+              <strong class="${automationSkipped ? "automation-skip-status" : ""}" title="${escapeHtml(task.overall)}">${escapeHtml(statusLabel)}</strong>
+              <span class="status-separator" aria-hidden="true">·</span>
+              <small class="${summaryClass}" title="${escapeHtml(reviewSummary || subtitle)}">${escapeHtml(subtitle)}</small>
+              <span class="status-percent">${progressPercent}%</span>
+            </div>
+            <div class="status-progress">
+              <progress class="progress-mini" max="100" value="${progressPercent}" aria-label="进度 ${progressPercent}%"></progress>
+            </div>
+          </div>
+          <div class="stage-track">${stages}</div>
         </div>
         <div class="task-actions">
           ${active
             ? `<button class="icon-button danger cancel-task-job" type="button" data-job-id="${escapeHtml(active.id)}" title="终止当前进程" aria-label="终止当前进程">■</button>`
             : ""}
-          ${publishAction}
-          ${renderAction}
-          <button class="icon-button preview-cover" type="button" title="预览原封面、中文封面或重新生成" aria-label="预览封面与重新生成">封</button>
-          ${task.dubbing_available
-            ? '<button class="icon-button open-dubbing-folder" type="button" title="打开中文配音目录" aria-label="打开中文配音目录">音</button>'
-            : ""}
           <button class="icon-button open-folder" type="button" title="打开任务目录" aria-label="打开任务目录">↗</button>
-          <button class="icon-button danger delete-task" type="button" title="${active ? "请先终止运行中的任务" : "删除视频任务及全部文件"}" aria-label="删除视频任务及全部文件" ${active ? "disabled" : ""}>×</button>
+          <button class="icon-button task-more" type="button" title="更多任务操作" aria-label="更多任务操作" aria-haspopup="menu" aria-expanded="false">…</button>
+          <div class="task-more-menu" role="menu" hidden>
+            ${publishAction}
+            ${renderAction}
+            <button class="task-menu-item redownload-task" type="button" role="menuitem" title="${active ? "请先终止或等待当前任务完成" : "重新下载并修复原始素材"}" ${active ? "disabled" : ""}>重新下载</button>
+            <button class="task-menu-item preview-cover" type="button" role="menuitem" title="预览原封面、中文封面或重新生成">封面与封面文案</button>
+            ${task.dubbing_available
+              ? '<button class="task-menu-item open-dubbing-folder" type="button" role="menuitem" title="打开中文配音目录">打开配音目录</button>'
+              : ""}
+            <button class="task-menu-item danger delete-task" type="button" role="menuitem" title="${active ? "请先终止运行中的任务" : "删除视频任务及全部文件"}" ${active ? "disabled" : ""}>删除任务</button>
+          </div>
         </div>
       </article>`;
   }).join("");
@@ -1332,9 +1372,38 @@ $("#taskList").addEventListener("change", (event) => {
   renderTasks(state.dashboard?.tasks || []);
 });
 
+function closeTaskMenus() {
+  $$(".task-more-menu").forEach((menu) => {
+    menu.hidden = true;
+    menu.closest(".task-row")?.classList.remove("menu-open");
+    menu.closest(".task-actions")?.querySelector(".task-more")?.setAttribute("aria-expanded", "false");
+  });
+}
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".task-more, .task-more-menu")) closeTaskMenus();
+});
+
 $("#taskList").addEventListener("click", async (event) => {
   const row = event.target.closest(".task-row");
   if (!row) return;
+  const moreButton = event.target.closest(".task-more");
+  if (moreButton) {
+    const menu = $(".task-more-menu", row);
+    const shouldOpen = menu.hidden;
+    closeTaskMenus();
+    menu.hidden = !shouldOpen;
+    row.classList.toggle("menu-open", shouldOpen);
+    moreButton.setAttribute("aria-expanded", String(shouldOpen));
+    event.stopPropagation();
+    return;
+  }
+  if (event.target.closest(".task-more-menu")) closeTaskMenus();
+  const redownloadButton = event.target.closest(".redownload-task");
+  if (redownloadButton) {
+    await queueRedownloads([row.dataset.task], redownloadButton);
+    return;
+  }
   if (event.target.closest(".preview-cover")) {
     state.coverPreviewTask = row.dataset.task;
     $("#coverRegeneratePaid").checked = false;
@@ -1631,6 +1700,38 @@ $("#selectAllTasks").addEventListener("click", () => {
   state.selectedTasks = allSelected ? new Set() : new Set(tasks.map((task) => task.task));
   renderTasks(tasks);
 });
+
+$("#redownloadSelectedTasks").addEventListener("click", async () => {
+  const tasks = (state.dashboard?.tasks || [])
+    .filter((task) => state.selectedTasks.has(task.task) && !task.active_job)
+    .map((task) => task.task);
+  await queueRedownloads(tasks, $("#redownloadSelectedTasks"));
+});
+
+async function queueRedownloads(tasks, button) {
+  if (!tasks.length) return toast("请先选择没有运行或排队作业的视频任务", true);
+  if (tasks.length > 50) return toast("一次最多重新下载 50 个视频", true);
+  if (!window.confirm(
+    `重新下载这 ${tasks.length} 个项目的原始素材？\n\n新素材校验通过后放回原目录，旧素材会备份。已有翻译、审核字幕和成片会保留；完成后可手动继续处理。\n\n继续即确认你拥有下载和使用这些视频的权利。`,
+  )) return;
+  button.disabled = true;
+  try {
+    const payload = await api("/api/tasks/redownload", {
+      method: "POST",
+      body: JSON.stringify({ tasks, confirm_rights: true }),
+    });
+    const errors = payload.errors || [];
+    const summary = `${payload.jobs.length} 个重新下载任务已加入队列`;
+    toast(errors.length ? `${summary}；${errors.length} 个未加入：${errors[0].error}` : summary, errors.length > 0);
+    for (const job of payload.jobs) state.selectedTasks.delete(job.target);
+    await refreshDashboard();
+  } catch (error) {
+    toast(error.message, true);
+  } finally {
+    button.disabled = false;
+    renderTasks(state.dashboard?.tasks || []);
+  }
+}
 
 $("#deleteSelectedTasks").addEventListener("click", async () => {
   const selected = (state.dashboard?.tasks || [])

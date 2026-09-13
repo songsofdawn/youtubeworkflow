@@ -17,6 +17,7 @@ from ..cover_localization import (
     update_cover_settings,
 )
 from ..portable_runtime import load_portable_manifest, resolve_python_executable
+from ..redownload_video import redownload_context
 from ..stage4.layout_review import load_layout_review, save_layout_review
 from ..stage3.llm_providers import (
     API_KEY_ENV_NAMES,
@@ -634,6 +635,33 @@ class ControlPanelApp:
         ]
         self.worker.wake()
         return jobs
+
+    def queue_redownloads(
+        self, *, tasks: list[str], confirm_rights: bool,
+    ) -> dict[str, Any]:
+        if not confirm_rights:
+            raise ValueError("重新下载前必须确认拥有下载和使用这些视频的权利")
+        if not tasks or len(tasks) > 50 or any(not isinstance(task, str) or not task for task in tasks):
+            raise ValueError("请提供 1–50 个视频任务目录")
+        jobs = []
+        errors = []
+        for task in dict.fromkeys(tasks):
+            try:
+                task_dir = self.scanner.resolve_task(task)
+                context = redownload_context(task_dir, self.project_root, confirm_rights=True)
+                reference = task_dir.relative_to(self.scanner.downloads_root).as_posix()
+                jobs.append(self.store.enqueue(
+                    "download", reference,
+                    {"redownload": True, "confirm_rights": True,
+                     "video_id": context["video_id"], "url": context["url"]},
+                    resource_class="network",
+                    exclusive_targets={reference, context["video_id"]},
+                ))
+            except (OSError, ValueError) as exc:
+                errors.append({"task": task, "error": str(exc)})
+        if jobs:
+            self.worker.wake()
+        return {"jobs": jobs, "errors": errors}
 
     def queue_pipeline(
         self,

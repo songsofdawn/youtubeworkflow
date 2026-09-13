@@ -180,6 +180,13 @@ def make_handler(
                 if parsed.path == "/api/biliup/login":
                     self._json(HTTPStatus.OK, app.open_biliup_login())
                     return
+                if parsed.path == "/api/tasks/redownload":
+                    result = app.queue_redownloads(
+                        tasks=body.get("tasks") if isinstance(body.get("tasks"), list) else [],
+                        confirm_rights=body.get("confirm_rights") is True,
+                    )
+                    self._json(HTTPStatus.ACCEPTED if result["jobs"] else HTTPStatus.OK, result)
+                    return
                 if parsed.path == "/api/downloads":
                     jobs = app.queue_downloads(
                         raw_input=str(body.get("input") or ""),

@@ -308,6 +308,8 @@ def _download_network_options(config: dict[str, Any]) -> list[str]:
     ]
     if config.get("force_ipv4", True):
         options.append("--force-ipv4")
+    if config.get("abort_on_unavailable_fragments", False):
+        options.append("--abort-on-unavailable-fragments")
     retry_ceiling = max(
         int(config.get("retry_sleep_seconds", 2)),
         int(config.get("retry_sleep_max_seconds", 20)),
@@ -763,9 +765,12 @@ def _download_subtitle_track(
         if _normalize_vtt(directory, raw_prefix, destination):
             source, vtt = "auto", destination
     if not source or vtt is None:
+        failed = [result for result in commands if not result["success"]]
+        status = "failed" if failed else "missing"
         return {
-            "language": label, "status": "missing", "source": "", "vtt_status": "missing", "srt_status": "missing",
-            "vtt_file": None, "srt_file": None, "command_results": commands, "error": "未找到字幕",
+            "language": label, "status": status, "source": "", "vtt_status": status, "srt_status": status,
+            "vtt_file": None, "srt_file": None, "command_results": commands,
+            "error": _short_error(failed[-1]) if failed else "未找到字幕",
         }
     srt = directory / f"{label}.{source}.srt"
     srt_status = "success" if srt.is_file() and srt.stat().st_size > 0 else "not_requested"
@@ -797,10 +802,11 @@ def download_subtitles(url: str, task_dir: Path | str, tools: dict[str, Path] | 
     if preferred["status"] != "success":
         preferred = next((track for track in tracks.values() if track["status"] == "success"), preferred)
     commands = [result for track in tracks.values() for result in track["command_results"]]
-    conversion_errors = [f"{label}: {track['error']}" for label, track in tracks.items() if track.get("error") and track["status"] == "success"]
+    conversion_errors = [f"{label}: {track['error']}" for label, track in tracks.items() if track.get("error") and track["status"] != "missing"]
+    failed = any(track["srt_status"] == "failed" for track in tracks.values())
     return {
-        "success": True,
-        "status": "success" if any(track["status"] == "success" for track in tracks.values()) else "missing",
+        "success": not failed,
+        "status": "failed" if failed else "success" if any(track["status"] == "success" for track in tracks.values()) else "missing",
         "source": preferred["source"], "vtt_status": preferred["vtt_status"], "srt_status": preferred["srt_status"],
         "vtt_file": preferred["vtt_file"], "srt_file": preferred["srt_file"], "tracks": tracks,
         "command_results": commands, "warning": warning, "error": "; ".join(conversion_errors),

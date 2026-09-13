@@ -434,6 +434,14 @@ ollama pull qwen3-embedding:0.6b
 .venv\Scripts\python.exe -m src.repair_failed_downloads --root downloads\candidates --dry-run
 ```
 
+网络中断或素材损坏时，点击任务右侧的 **↻ 重新下载**，或勾选多个项目后点击
+**重新下载**。确认下载和使用权利后，程序会重新获取视频、音频、原字幕和元数据，
+校验新视频可完整解码后放回原任务目录；旧素材保存在任务内的 `download_backups\`。
+失败时原项目保留，本次下载详情保存在 `work\redownload\`，可从作业日志定位。
+运行中或排队中的项目不能同时重新下载，候选项目仍需通过 `selected` / `rights_status` 检查。
+已有翻译、人工审核字幕、配音和成片保持原样；下载成功后可按需手动继续处理，不会自动调用付费 API 或投稿。
+如果按钮提示“接口不存在”，请完全退出旧的控制面板进程后重新运行 `START_HERE.bat`；仅刷新网页不会更新已运行的后端。
+
 ### 2. 生成英文字幕
 
 项目会根据任务设置使用以下来源：

@@ -1,81 +1,66 @@
 {
-  "schema_version": 3,
+  "schema_version": 5,
   "description": "V7 精简弱评分 + 丰富搜索词池：每领域仅保留5个高度切题的主题关键词，避免泛词抬高无关内容；搜索词池仍为第1行主查询 + 后20行轮换词，但轮换词覆盖实验、过程、纪录、测试、解释、构建等不同搜索意图。",
   "packs": [
-    {
+      {
       "id": "ai_technology",
-      "label": "AI 与机器人实测",
-      "description": "实体机器人、智能控制与真实环境测试；优先可视化演示、任务学习和人机对比，减少模型新闻、软件工具盘点与参数测评",
-      "enabled": true,
-      "default_selected": false,
-      "keywords": [
-        "robotics",
-        "humanoid robot",
-        "robot learning",
-        "autonomous robot",
-        "robot arm"
-      ],
-      "query": "robotics experiments|humanoid robot real world test|robot learns household tasks|robot arm manipulation challenge|robot vs human task test|quadruped robot obstacle course|autonomous robot navigation|robot vision experiment|home robot real world test|robot learns by trial and error|robot swarm experiment|soft robot demonstration|robotic hand dexterity test|exoskeleton prototype test|warehouse robot demonstration|robot cooking challenge|robot balance recovery test|delivery robot street test|teleoperation robot demonstration|robot grasping unusual objects|robot imitation learning demo"
-    },
-    {
-      "id": "software_programming",
-      "label": "编程脑洞与模拟",
-      "description": "代码驱动的物理世界、人工生命和涌现行为；优先结果直观、普通观众能看懂的模拟，减少开发教程、环境配置和软件测评",
-      "enabled": true,
-      "default_selected": false,
-      "keywords": [
-        "simulation",
-        "artificial life",
-        "procedural",
-        "emergent behavior",
-        "physics simulation"
-      ],
-      "query": "coding simulations|physics simulation coding|artificial life simulation|evolution simulation|procedural creature simulation|fluid simulation coding|cellular automata simulation|emergent behavior simulation|ecosystem simulation|particle simulation coding|traffic simulation experiment|crowd simulation experiment|genetic algorithm creatures|boids flocking simulation|soft body physics simulation|destruction physics simulation|procedural world generation|ant colony simulation|neural network learns game|reaction diffusion simulation|sand simulation coding"
-    },
-    {
-      "id": "science",
-      "label": "反直觉实验与科普",
-      "description": "反直觉现象、可视化实验与经典物理演示；优先能看见现象并解释原因的内容，减少事实罗列、伪科学和纯理论讲座",
+      "label": "AI 模型测试与前沿动态",
+      "description": "关注最新 AI 模型发布、真实能力测试、横向对比、基准评测、价格性能和重要行业动态；优先 GPT、Claude、Gemini、DeepSeek、Qwen、Grok、Llama 等主流模型的实测与重大更新，减少纯教程、营销软文和泛机器人内容",
       "enabled": true,
       "default_selected": true,
       "keywords": [
-        "physics",
-        "experiment",
-        "visualization",
-        "vacuum",
-        "fluid dynamics"
+        "AI model",
+        "LLM",
+        "model comparison",
+        "benchmark",
+        "AI news"
       ],
-      "query": "science experiments|counterintuitive physics experiments|vacuum chamber experiments|slow motion science experiments|schlieren imaging experiment|cavitation experiment|resonance experiment|surface tension experiment|standing wave experiment|gyroscope experiment|cloud chamber particle tracks|ferrofluid experiment|pendulum wave experiment|fluid dynamics visualization|polarization experiment|acoustic levitation experiment|superconductor levitation|high speed camera physics|vacuum slow motion experiment|non Newtonian fluid experiment|magnetic levitation experiment"
+      "query": "AI model comparison|latest AI model news|new AI model release|LLM benchmark|AI model benchmark|GPT vs Claude|Claude vs Gemini|GPT vs Gemini|DeepSeek vs GPT|Qwen model benchmark|Grok model test|Llama model benchmark|AI reasoning model comparison|AI coding model comparison|multimodal AI model comparison|open source LLM comparison|AI model hallucination test|AI long context test|AI coding benchmark|AI model price performance|new foundation model"
+    },
+    {
+      "id": "science",
+      "label": "化学实验与物质奇观",
+      "description": "视觉冲击强的化学实验、晶体生长、沉淀与变色、燃烧与放热反应、电化学和物质制备过程；优先真实实验、明显现象和过程展示，减少纯理论讲解、课堂录屏和危险操作教学",
+      "enabled": true,
+      "default_selected": true,
+      "keywords": [
+        "chemistry experiment",
+        "crystal growth",
+        "chemical reaction",
+        "chemical synthesis",
+        "reaction demonstration"
+      ],
+      "query": "chemistry experiments|crystal growth experiment|growing crystals chemistry|chemical reaction color change|precipitation reaction experiment|metal displacement reaction|chemical reaction slow motion|combustion chemistry demonstration|exothermic reaction demonstration|endothermic reaction experiment|electrochemistry experiment|electroplating experiment|chemical garden experiment|oscillating chemical reaction|chemiluminescence experiment|making chemicals in the lab|chemical synthesis demonstration|industrial chemistry process|how chemicals are made|unusual chemistry reactions|energetic chemistry demonstration"
     },
     {
       "id": "gaming",
-      "label": "游戏机制与趣味挑战",
-      "description": "围绕游戏规则、物理系统、NPC行为和特殊控制方式的实验；优先无需了解圈内梗也能看懂的目标与结果，减少普通实况和版本内容",
+      "label": "新游测评与爽快实况",
+      "description": "关注新游戏实测、首发体验、高难挑战通关、Boss战、爽快实况、联机整活和网游高光时刻；优先节奏快、画面爽、目标明确、有强烈情绪反馈的视频，减少纯机制分析、开发者讨论和枯燥攻略教学",
       "enabled": true,
-      "default_selected": false,
+      "default_selected": true,
       "keywords": [
-        "game mechanics",
-        "game physics",
-        "NPC",
-        "game AI",
-        "simulation"
+        "new game",
+        "gameplay",
+        "challenge run",
+        "funny moments",
+        "gaming highlights"
       ],
-      "query": "video game experiments|video game physics experiment|game AI experiment|NPC behavior experiment|video game myth testing|breaking game physics|weird game controller|game boundary exploration|hidden game mechanics|one button game challenge|pacifist game challenge|randomizer game challenge|players simulate civilization|game economy experiment|survival game social experiment|custom controller challenge|impossible game rules|game glitches explained|AI plays video game|modded game experiment|unusual game mechanics"
+      "query": "new game gameplay|new game review|new game first impressions|new release gameplay|best new games gameplay|game challenge run|hardest difficulty challenge|no hit boss challenge|one life challenge run|impossible game challenge|hardest boss fight|boss rush challenge|full gameplay highlights|open world gameplay chaos|multiplayer funny moments|online game funny moments|MMO funny moments|co op funny moments|PvP highlights|insane gaming moments|gaming rage funny moments"
     },
     {
       "id": "minecraft",
-      "label": "Minecraft 脑洞实验",
-      "description": "Minecraft 中的红石工程、规则实验、生态模拟和文明系统；优先目标明确且结果可展示的内容，减少普通生存、SMP日记和常规挑战",
+      "label": "Minecraft 极限生存与模组建筑",
+      "description": "关注 Minecraft 极限生存、长期实况、模组与整合包体验、大型建筑、光影材质和视觉升级；优先进度爽、变化大、画面漂亮、目标明确的视频，减少红石理论、命令方块教学和纯机制实验",
       "enabled": true,
-      "default_selected": false,
+      "default_selected": true,
       "keywords": [
-        "minecraft",
-        "redstone",
-        "simulation",
-        "civilization",
-        "command block"
+        "Minecraft hardcore",
+        "Minecraft mods",
+        "Minecraft building",
+        "Minecraft shaders",
+        "Minecraft survival"
       ],
-      "query": "Minecraft experiments|Minecraft redstone experiment|Minecraft redstone computer|Minecraft civilization experiment|Minecraft physics experiment|Minecraft ecosystem simulation|Minecraft mob AI experiment|Minecraft command block experiment|Minecraft impossible machine|Minecraft engineering build|Minecraft simulation experiment|Minecraft redstone robot|Minecraft working computer|Minecraft economy experiment|Minecraft one chunk civilization|Minecraft realistic physics|Minecraft custom mob experiment|Minecraft automation machine|Minecraft logic circuit|Minecraft player behavior experiment|Minecraft world generation experiment"
+      "query": "Minecraft hardcore survival|Minecraft hardcore series|Minecraft survival gameplay|Minecraft 100 days hardcore|Minecraft extreme survival challenge|Minecraft mod showcase|Minecraft mod review|Minecraft best mods|Minecraft modpack gameplay|Minecraft modpack review|Minecraft survival modpack|Minecraft huge build|Minecraft mega build|Minecraft building timelapse|Minecraft survival building|Minecraft base transformation|Minecraft shader showcase|Minecraft best shaders|Minecraft realistic graphics|Minecraft RTX gameplay|Minecraft resource pack showcase"
     },
     {
       "id": "chemistry",
@@ -106,21 +91,6 @@
         "machine"
       ],
       "query": "engineering inventions|Rube Goldberg machine build|giant marble machine|walking machine build|mechanical puzzle box|homemade hovercraft test|real life video game build|unusual bicycle prototype|chain reaction machine|tiny working engine|homemade pinball machine|weird musical instrument build|mechanical hand build|puzzle solving machine|homemade arcade machine|kinetic machine build|useless machine invention|mechanical automaton build|human powered machine|strange vehicle prototype|cartoon physics experiment"
-    },
-    {
-      "id": "entertainment",
-      "label": "趣味游戏与创意互动",
-      "description": "规则直观的真人谜题、实体游戏和团队协作；优先视觉与规则本身有趣的内容，减少依赖英语双关、名人和纯reaction的节目",
-      "enabled": true,
-      "default_selected": false,
-      "keywords": [
-        "physical game",
-        "puzzle",
-        "team",
-        "cooperation",
-        "escape room"
-      ],
-      "query": "creative physical games|real life prop hunt|team puzzle challenge|secret rule game|physical puzzle competition|escape room challenge|real life video game challenge|homemade game show|human maze challenge|blindfold communication challenge|cooperative puzzle challenge|giant board game challenge|mystery object game|team coordination challenge|logic game competition|real life puzzle game|build your own game challenge|silent communication game|giant obstacle puzzle|creative party game challenge|human vs machine game"
     },
     {
       "id": "agriculture_gardening",
