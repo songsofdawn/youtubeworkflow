@@ -1189,6 +1189,35 @@ class ScannerTests(TestCase):
         self.assertEqual(row["review_summary"], "")
         self.assertEqual(row["bvid"], "BV1xx411c7mD")
 
+    def test_original_media_publish_is_terminal_even_without_subtitle_stages(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            write_json(
+                task / "stage5" / "automation_manifest.json",
+                {
+                    "status": "ORIGINAL_MEDIA",
+                    "reason": "ENGLISH_SUBTITLE_STAGE_FAILED",
+                    "media_variant": "original",
+                },
+            )
+            write_json(
+                task / "stage5" / "publish_manifest.json",
+                {
+                    "status": "PUBLISHED",
+                    "bvid": "BV1fallback",
+                    "url": "https://www.bilibili.com/video/BV1fallback",
+                },
+            )
+            row = WorkflowScanner(project).scan()[0]
+
+        self.assertEqual(row["overall"], "投稿完成")
+        self.assertEqual(row["progress"], 100)
+        self.assertEqual(row["stages"]["english"]["state"], "pending")
+        self.assertEqual(row["stages"]["translation"]["state"], "pending")
+        self.assertEqual(row["stages"]["render"]["state"], "complete")
+        self.assertEqual(row["stages"]["publish"]["state"], "complete")
+
     def test_downloaded_auto_chinese_does_not_mark_deepseek_translation_complete(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)

@@ -522,7 +522,7 @@ class WorkflowScanner:
             "overall": overall,
             "progress": (
                 100
-                if automation_skip_active
+                if published or automation_skip_active
                 else round(100 * completed_count / len(progress_stage_names))
             ),
             "stages": stages,
