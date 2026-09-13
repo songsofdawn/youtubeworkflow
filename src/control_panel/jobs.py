@@ -39,6 +39,10 @@ class JobCancelled(RuntimeError):
     pass
 
 
+class WorkerStopping(RuntimeError):
+    """The panel is shutting down; preserve the job for checkpoint resume."""
+
+
 class JobStore:
     def __init__(self, database_path: Path, logs_dir: Path) -> None:
         self.database_path = database_path
@@ -159,6 +163,8 @@ class JobStore:
         *,
         resource_class: str | None = None,
         exclusive_targets: set[str] | None = None,
+        reuse_active_kinds: set[str] | None = None,
+        reuse_active_targets: set[str] | None = None,
     ) -> dict[str, Any]:
         job_id = uuid.uuid4().hex
         log_path = self.logs_dir / f"{job_id}.log"
@@ -182,9 +188,37 @@ class JobStore:
             "created_at": utc_now(),
             "log_path": str(log_path),
         }
+        normalized_reuse_kinds = sorted(
+            {str(item) for item in (reuse_active_kinds or set()) if str(item)}
+        )
+        normalized_reuse_targets = sorted(
+            {
+                str(item)
+                for item in (reuse_active_targets or {str(target)})
+                if str(item)
+            }
+        )
         with self._connect() as connection:
-            if exclusive_targets:
+            if exclusive_targets or normalized_reuse_kinds:
                 connection.execute("BEGIN IMMEDIATE")
+            if normalized_reuse_kinds:
+                reuse_placeholders = ", ".join("?" for _ in normalized_reuse_kinds)
+                target_placeholders = ", ".join("?" for _ in normalized_reuse_targets)
+                existing = connection.execute(
+                    f"""
+                    SELECT * FROM jobs
+                    WHERE target IN ({target_placeholders})
+                      AND kind IN ({reuse_placeholders})
+                      AND status IN ('queued', 'running')
+                    ORDER BY CASE status WHEN 'running' THEN 0 ELSE 1 END,
+                             created_at
+                    LIMIT 1
+                    """,
+                    (*normalized_reuse_targets, *normalized_reuse_kinds),
+                ).fetchone()
+                if existing is not None:
+                    return self._serialize(existing)
+            if exclusive_targets:
                 placeholders = ", ".join("?" for _ in exclusive_targets)
                 active = connection.execute(
                     f"SELECT 1 FROM jobs WHERE target IN ({placeholders}) "
@@ -214,6 +248,19 @@ class JobStore:
         with self._connect() as connection:
             rows = connection.execute(
                 "SELECT * FROM jobs ORDER BY created_at DESC LIMIT ?", (max(1, min(limit, 200)),)
+            ).fetchall()
+        return [self._serialize(row) for row in rows]
+
+    def list_active(self) -> list[dict[str, Any]]:
+        """Return every queued/running job, without the history display limit."""
+        with self._connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT * FROM jobs
+                WHERE status IN ('queued', 'running')
+                ORDER BY CASE status WHEN 'running' THEN 0 ELSE 1 END,
+                         created_at
+                """
             ).fetchall()
         return [self._serialize(row) for row in rows]
 
@@ -505,23 +552,65 @@ class JobStore:
             )
         return self.get(job_id)
 
-    def retry(self, job_id: str) -> dict[str, Any]:
-        job = self.get(job_id)
-        if job["status"] not in {"failed", "cancelled"}:
-            raise ValueError("只有失败或已取消的任务可以重试")
+    def retry(
+        self,
+        job_id: str,
+        *,
+        conflict_targets: set[str] | None = None,
+    ) -> dict[str, Any]:
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute(
+                "SELECT * FROM jobs WHERE id = ?",
+                (str(job_id),),
+            ).fetchone()
+            if row is None:
+                raise KeyError(job_id)
+            job = self._serialize(row)
+            if job["status"] not in {"failed", "cancelled"}:
+                raise ValueError("只有失败或已取消的任务可以重试")
+            normalized_targets = sorted(
+                {
+                    str(item)
+                    for item in (conflict_targets or {str(job["target"])})
+                    if str(item)
+                }
+            )
+            target_placeholders = ", ".join("?" for _ in normalized_targets)
+            conflict = connection.execute(
+                f"""
+                SELECT 1 FROM jobs
+                WHERE id != ? AND target IN ({target_placeholders})
+                  AND status IN ('queued', 'running')
+                  AND NOT (
+                      (? = 'cover' AND kind = 'pipeline')
+                      OR (? = 'pipeline' AND kind = 'cover')
+                  )
+                LIMIT 1
+                """,
+                (
+                    str(job_id),
+                    *normalized_targets,
+                    str(job["kind"]),
+                    str(job["kind"]),
+                ),
+            ).fetchone()
+            if conflict is not None:
+                raise ValueError("这个视频已有运行中或排队中的任务，不能重复重试")
+            connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'queued', step = '等待重试', progress = 0,
+                    started_at = '', finished_at = '', exit_code = NULL,
+                    error = ''
+                WHERE id = ? AND status IN ('failed', 'cancelled')
+                """,
+                (str(job_id),),
+            )
         log_path = Path(job["log_path"])
         with log_path.open("a", encoding="utf-8") as handle:
             handle.write("\n\n===== 用户请求重试 =====\n")
-        return self.update(
-            job_id,
-            status="queued",
-            step="等待重试",
-            progress=0,
-            started_at="",
-            finished_at="",
-            exit_code=None,
-            error="",
-        )
+        return self.get(job_id)
 
     def has_active(self, kind: str, target: str) -> bool:
         with self._connect() as connection:
@@ -848,7 +937,7 @@ class WorkflowWorker:
         return "publish_original" if policy in {"", "skip", "publish_original"} else policy
 
     def snapshot(self, jobs: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-        rows = jobs if jobs is not None else self.store.list(limit=200)
+        rows = jobs if jobs is not None else self.store.list_active()
         publish_guard = self.publish_guard()
         running = {
             "network": 0,
@@ -1135,7 +1224,7 @@ class WorkflowWorker:
         publish_task: Path | None = None
         cookie_copy: Path | None = None
         try:
-            self._raise_if_cancelled(job_id)
+            self._raise_if_interrupted(job_id)
             try:
                 stage_index = max(0, int(job["payload"].get("_stage_index") or 0))
             except (TypeError, ValueError):
@@ -1190,9 +1279,7 @@ class WorkflowWorker:
                 return
             if cookie_copy is not None:
                 command = [*command, "--cookies-path", str(cookie_copy)]
-            self._raise_if_cancelled(job_id)
-            if self._stop_event.is_set():
-                raise RuntimeError("控制面板正在关闭，任务已停止")
+            self._raise_if_interrupted(job_id)
             self.store.update(
                 job_id,
                 step=label,
@@ -1236,7 +1323,7 @@ class WorkflowWorker:
                     stage_progress_start=stage_index / total * 100,
                     stage_progress_span=100 / total,
                 )
-            self._raise_if_cancelled(job_id)
+            self._raise_if_interrupted(job_id)
             if exit_code != 0:
                 if job["kind"] == "pipeline" and self._automation_enabled(
                     job["payload"]
@@ -1403,6 +1490,7 @@ class WorkflowWorker:
                         target,
                         cover_payload,
                         resource_class=self.initial_resource("cover", cover_payload),
+                        reuse_active_kinds={"cover"},
                     )
                     followup_step = "下载完成，已自动接续生成中文封面"
                 elif (
@@ -1425,6 +1513,45 @@ class WorkflowWorker:
                     exit_code=1,
                     error=str(exc),
                     finished_at=utc_now(),
+                )
+        except WorkerStopping:
+            if job["kind"] == "publish":
+                message = (
+                    "控制面板在投稿期间关闭；为避免重复投稿，"
+                    "请先到创作中心确认后再重试"
+                )
+                self._append_log(log_path, f"\n[投稿安全暂停] {message}。\n")
+                if publish_task is not None:
+                    try:
+                        self.publisher.mark_failed(
+                            publish_task,
+                            job["payload"],
+                            message,
+                        )
+                    except Exception:
+                        pass
+                self.store.update(
+                    job_id,
+                    status="failed",
+                    step="投稿中断，需确认后重试",
+                    exit_code=1,
+                    error=message,
+                    finished_at=utc_now(),
+                )
+            else:
+                self._append_log(
+                    log_path,
+                    "\n[安全暂停] 控制面板正在关闭；当前作业已保留，"
+                    "下次启动将从检查点继续。\n",
+                )
+                self.store.update(
+                    job_id,
+                    status="queued",
+                    step="控制面板已停止，等待下次续跑",
+                    started_at="",
+                    finished_at="",
+                    exit_code=None,
+                    error="",
                 )
         except JobCancelled:
             self._append_log(log_path, "\n[任务已终止] 用户从控制面板终止了这个任务。\n")
@@ -2059,6 +2186,7 @@ class WorkflowWorker:
                 target,
                 cover_payload,
                 resource_class=self.initial_resource("cover", cover_payload),
+                reuse_active_kinds={"cover"},
             )
         self.store.enqueue(
             "pipeline",
@@ -2115,6 +2243,7 @@ class WorkflowWorker:
                 "force_dubbing": bool(payload.get("force_dubbing")),
             },
             resource_class="gpu_heavy",
+            reuse_active_kinds={"pipeline", "publish"},
         )
         return {
             "subtitles": "下载完成，已自动接续到双语字幕",
@@ -2161,6 +2290,7 @@ class WorkflowWorker:
                     target,
                     original_payload,
                     resource_class=self.initial_resource("publish", original_payload),
+                    reuse_active_kinds={"publish"},
                 )
             return "中文配音需要复核，已改用原视频加入投稿队列"
         manifest = read_json(task_dir / "stage4" / "stage4_manifest.json")
@@ -2213,6 +2343,7 @@ class WorkflowWorker:
                         resource_class=self.initial_resource(
                             "publish", original_payload
                         ),
+                        reuse_active_kinds={"publish"},
                     )
                 return "字幕成片未通过安全检查，已改用原视频加入投稿队列"
             raise RuntimeError(
@@ -2240,6 +2371,7 @@ class WorkflowWorker:
             target,
             publish_payload,
             resource_class=self.initial_resource("publish", publish_payload),
+            reuse_active_kinds={"publish"},
         )
         return (
             "无配音视频投稿信息完成，已使用原视频加入投稿队列"
@@ -2256,7 +2388,7 @@ class WorkflowWorker:
         self._append_log(log_path, "\n===== 智能发现 [gpu_heavy] =====\n")
 
         def update_progress(step: str, progress: int) -> None:
-            self._raise_if_cancelled(job_id)
+            self._raise_if_interrupted(job_id)
             self.store.update(
                 job_id,
                 step=str(step)[:300],
@@ -2266,9 +2398,9 @@ class WorkflowWorker:
         result = self.discovery_runner(
             dict(job["payload"]),
             progress=update_progress,
-            cancelled=lambda: self._raise_if_cancelled(job_id),
+            cancelled=lambda: self._raise_if_interrupted(job_id),
         )
-        self._raise_if_cancelled(job_id)
+        self._raise_if_interrupted(job_id)
         result_dir = self.project_root / "work" / "control_panel" / "discovery_results"
         result_dir.mkdir(parents=True, exist_ok=True)
         result_path = result_dir / f"{job_id}.json"
@@ -2640,7 +2772,7 @@ class WorkflowWorker:
         task_dir = Path(command[command.index("--video-dir") + 1])
         try:
             result = self._run_command(job_id, command, log_path, **progress)
-            self._raise_if_cancelled(job_id)
+            self._raise_if_interrupted(job_id)
             if result == 0:
                 manifest = read_json(task_dir / "cover" / "cover_manifest.json")
                 if not standalone_cover or str(manifest.get("status") or "").upper() != "FAILED":
@@ -2650,7 +2782,7 @@ class WorkflowWorker:
                 result = 2
             else:
                 error = f"封面子进程退出代码 {result}"
-        except JobCancelled:
+        except (JobCancelled, WorkerStopping):
             raise
         except Exception as exc:
             error = f"封面子进程无法运行：{type(exc).__name__}"
@@ -2894,6 +3026,10 @@ class WorkflowWorker:
                 self._dubbing_worker_client = None
             return exit_code
         except DubbingWorkerCrashed as exc:
+            if self._stop_event.is_set():
+                client.terminate()
+                self._dubbing_worker_client = None
+                raise WorkerStopping() from exc
             self._append_log(
                 log_path,
                 f"\n[DUBBING] Persistent worker crashed: {exc}. "
@@ -3021,12 +3157,17 @@ class WorkflowWorker:
             )
             deadline = time.monotonic() + delay
             while time.monotonic() < deadline:
-                self._raise_if_cancelled(job_id)
+                self._raise_if_interrupted(job_id)
                 if self._stop_event.wait(
                     timeout=min(0.25, max(0.0, deadline - time.monotonic()))
                 ):
-                    raise RuntimeError("控制面板正在关闭，投稿自动重试已停止")
+                    raise WorkerStopping()
         return 1
+
+    def _raise_if_interrupted(self, job_id: str) -> None:
+        self._raise_if_cancelled(job_id)
+        if self._stop_event.is_set():
+            raise WorkerStopping()
 
     def _raise_if_cancelled(self, job_id: str) -> None:
         with self._process_lock:
@@ -3071,4 +3212,4 @@ class WorkflowWorker:
             handle.write(text)
 
 
-__all__ = ["JobCancelled", "JobStore", "WorkflowWorker"]
+__all__ = ["JobCancelled", "JobStore", "WorkerStopping", "WorkflowWorker"]

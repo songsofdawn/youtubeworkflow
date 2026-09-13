@@ -1776,8 +1776,19 @@ $("#regenerateDubbing").addEventListener("click", () => queueWorkflow("dubbing",
 $("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true, false, "publish"));
 
 async function queueWorkflow(workflow, autoPublish = false, forceDubbing = false, automationTarget = "") {
-  const tasks = [...state.selectedTasks];
-  if (!tasks.length) return toast("请先选择至少一个视频任务", true);
+  const selected = (state.dashboard?.tasks || [])
+    .filter((task) => state.selectedTasks.has(task.task));
+  const tasks = selected
+    .filter((task) => !task.active_job)
+    .map((task) => task.task);
+  if (!tasks.length) {
+    return toast(
+      selected.length
+        ? "选中的视频都已有运行中或排队中的作业"
+        : "请先选择至少一个视频任务",
+      true,
+    );
+  }
   const automation = automationSettingsSnapshot();
   if (automationTarget) automation.target = automationTarget;
   if (automation.target === "publish" && !["hardsub", "both"].includes(automation.renderMode)) {

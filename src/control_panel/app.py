@@ -280,12 +280,15 @@ class ControlPanelApp:
         return {"opened": True}
 
     def dashboard(self) -> dict[str, Any]:
+        # ``jobs`` is deliberately capped for the history panel.  Active jobs
+        # must come from an uncapped query: a large batch can otherwise push an
+        # older queued upload out of the history window and make its task card
+        # look cancelled even though the worker will still execute it.
         jobs = self.store.list()
+        active_jobs = self.store.list_active()
         tasks = self.scanner.scan()
         active_by_target: dict[str, dict[str, Any]] = {}
-        for job in jobs:
-            if job["status"] not in {"queued", "running"}:
-                continue
+        for job in active_jobs:
             active_by_target.setdefault(str(job["target"]), job)
         for task in tasks:
             active = active_by_target.get(str(task["task"])) or active_by_target.get(
@@ -302,13 +305,13 @@ class ControlPanelApp:
 
         return {
             "health": self.health(),
-            "scheduler": self.worker.snapshot(jobs),
+            "scheduler": self.worker.snapshot(active_jobs),
             "tasks": tasks,
             "jobs": jobs,
             "summary": {
                 "tasks": len(tasks),
-                "queued": sum(job["status"] == "queued" for job in jobs),
-                "running": sum(job["status"] == "running" for job in jobs),
+                "queued": sum(job["status"] == "queued" for job in active_jobs),
+                "running": sum(job["status"] == "running" for job in active_jobs),
                 "failed": sum(job["status"] == "failed" for job in jobs),
                 "rendered": sum(
                     task["stages"]["render"]["state"] == "complete" for task in tasks
@@ -618,6 +621,11 @@ class ControlPanelApp:
             silent_video_policy=automation_silent_video_policy,
             dubbing_review_policy=automation_dubbing_review_policy,
         )
+        known_task_by_video_id = {
+            str(task.get("video_id") or ""): str(task.get("task") or "")
+            for task in self.scanner.scan()
+            if str(task.get("video_id") or "") and str(task.get("task") or "")
+        }
         jobs = [
             self.store.enqueue(
                 "download",
@@ -630,6 +638,11 @@ class ControlPanelApp:
                     **automation,
                 },
                 resource_class="network",
+                reuse_active_kinds={"download"},
+                reuse_active_targets={
+                    item["video_id"],
+                    known_task_by_video_id.get(item["video_id"], ""),
+                },
             )
             for item in normalized
         ]
@@ -870,6 +883,7 @@ class ControlPanelApp:
                     resource_class=self.worker.initial_resource(
                         "cover", cover_payload
                     ),
+                    reuse_active_kinds={"cover"},
                 )
             jobs.append(self.store.enqueue(
                 "pipeline",
@@ -892,6 +906,16 @@ class ControlPanelApp:
                     **automation,
                 },
                 resource_class="gpu_heavy",
+                reuse_active_kinds={"download", "pipeline", "publish"},
+                reuse_active_targets={
+                    task,
+                    str(
+                        read_json(task_dirs[task] / "download_manifest.json").get(
+                            "video_id"
+                        )
+                        or ""
+                    ),
+                },
             ))
         self.worker.wake()
         return jobs
@@ -1152,7 +1176,15 @@ class ControlPanelApp:
                     "无法确认上次投稿是否已在哔哩哔哩创建稿件；"
                     "为避免重复投稿，请先到创作中心确认。"
                 )
-        job = self.store.retry(job_id)
+        target = str(existing["target"])
+        conflict_targets = {target}
+        for task in self.scanner.scan():
+            task_reference = str(task.get("task") or "")
+            video_id = str(task.get("video_id") or "")
+            if target in {task_reference, video_id}:
+                conflict_targets.update({task_reference, video_id})
+                break
+        job = self.store.retry(job_id, conflict_targets=conflict_targets)
         self.worker.wake()
         return job
 
@@ -1318,6 +1350,7 @@ class ControlPanelApp:
             task,
             payload,
             resource_class=self.worker.initial_resource("cover", payload),
+            reuse_active_kinds={"cover"},
         )
         self.worker.wake()
         return job
@@ -1332,6 +1365,7 @@ class ControlPanelApp:
             task,
             payload,
             resource_class=self.worker.initial_resource("publish", payload),
+            reuse_active_kinds={"publish"},
         )
         self.worker.wake()
         return job

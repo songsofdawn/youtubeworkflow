@@ -6,6 +6,7 @@ import sqlite3
 import tempfile
 import threading
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
 from http.server import ThreadingHTTPServer
@@ -258,6 +259,8 @@ class StaticPanelContractTests(TestCase):
             '$("#autoPublishSelected").addEventListener("click", () => queueWorkflow("complete", true, false, "publish"));',
             script,
         )
+        self.assertIn(".filter((task) => !task.active_job)", script)
+        self.assertIn("选中的视频都已有运行中或排队中的作业", script)
 
     def test_sidebar_can_shrink_inside_the_workspace_grid(self) -> None:
         stylesheet = (
@@ -1401,6 +1404,28 @@ class QueueTests(TestCase):
             retried = store.retry(job["id"])
             self.assertEqual(retried["status"], "queued")
 
+    def test_concurrent_idempotent_enqueue_reuses_one_active_job(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+
+            def enqueue_once(index: int) -> str:
+                return str(store.enqueue(
+                    "publish",
+                    "video-id" if index % 2 else "task/ref",
+                    {"title": "same submission"},
+                    resource_class="upload",
+                    reuse_active_kinds={"publish"},
+                    reuse_active_targets={"video-id", "task/ref"},
+                )["id"])
+
+            with ThreadPoolExecutor(max_workers=8) as executor:
+                ids = list(executor.map(enqueue_once, range(20)))
+            active_count = len(store.list_active())
+
+        self.assertEqual(len(set(ids)), 1)
+        self.assertEqual(active_count, 1)
+
     def test_worker_pools_claim_only_their_kinds_and_lock_running_target(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
@@ -1423,6 +1448,121 @@ class QueueTests(TestCase):
         self.assertEqual(claimed_production["id"], production["id"])
         self.assertIsNone(blocked_duplicate)
         self.assertEqual(duplicate["status"], "queued")
+
+    def test_dashboard_keeps_active_jobs_visible_beyond_history_limit(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            try:
+                active = app.store.enqueue(
+                    "publish",
+                    reference,
+                    {"title": "queued upload"},
+                    resource_class="upload",
+                )
+                for index in range(81):
+                    historical = app.store.enqueue(
+                        "pipeline",
+                        f"history-{index}",
+                        {"workflow": "complete"},
+                    )
+                    app.store.update(
+                        historical["id"],
+                        status="completed",
+                        step="已完成",
+                        progress=100,
+                    )
+
+                dashboard = app.dashboard()
+            finally:
+                app.close()
+
+        self.assertEqual(len(dashboard["jobs"]), 80)
+        self.assertNotIn(active["id"], {job["id"] for job in dashboard["jobs"]})
+        self.assertEqual(dashboard["summary"]["queued"], 1)
+        self.assertEqual(dashboard["summary"]["running"], 0)
+        self.assertEqual(dashboard["tasks"][0]["active_job"]["id"], active["id"])
+        self.assertEqual(dashboard["tasks"][0]["active_job"]["status"], "queued")
+
+    def test_dashboard_prefers_running_job_over_newer_queued_duplicate(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            try:
+                running = app.store.enqueue(
+                    "pipeline", reference, {"workflow": "complete"}
+                )
+                app.store.claim_id(running["id"])
+                queued = app.store.enqueue(
+                    "pipeline", reference, {"workflow": "complete"}
+                )
+                dashboard = app.dashboard()
+            finally:
+                app.close()
+
+        self.assertNotEqual(running["id"], queued["id"])
+        self.assertEqual(dashboard["tasks"][0]["active_job"]["id"], running["id"])
+        self.assertEqual(dashboard["tasks"][0]["active_job"]["status"], "running")
+
+    def test_pipeline_queue_reuses_existing_publish_instead_of_reprocessing(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.auto.srt").write_text(
+                "自动中文", encoding="utf-8"
+            )
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            try:
+                publish = app.store.enqueue(
+                    "publish", reference, {}, resource_class="upload"
+                )
+                jobs = app.queue_pipeline(
+                    tasks=[reference],
+                    workflow="complete",
+                    render_mode="hardsub",
+                    chinese_subtitle_source="youtube_auto",
+                    allow_paid_api=False,
+                    cover_enabled=False,
+                )
+                active = app.store.active_for_targets({reference})
+            finally:
+                app.close()
+
+        self.assertEqual(jobs[0]["id"], publish["id"])
+        self.assertEqual([(job["kind"], job["id"]) for job in active], [
+            ("publish", publish["id"]),
+        ])
+
+    def test_retry_rejects_active_job_using_video_id_alias(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            make_publish_config(project)
+            app = ControlPanelApp(project)
+            reference = task.relative_to(project / "downloads").as_posix()
+            try:
+                failed = app.store.enqueue(
+                    "pipeline", reference, {"workflow": "complete"}
+                )
+                app.store.update(failed["id"], status="failed", error="test")
+                app.store.enqueue(
+                    "download",
+                    "abcdefghijk",
+                    {"url": "https://youtu.be/abcdefghijk"},
+                )
+                with self.assertRaisesRegex(ValueError, "不能重复重试"):
+                    app.retry_job(failed["id"])
+            finally:
+                app.close()
 
     def test_cover_and_pipeline_can_share_target_but_publish_waits_for_both(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -2648,6 +2788,100 @@ class QueueTests(TestCase):
             self.assertEqual(result["step"], "正在终止")
             with self.assertRaises(JobCancelled):
                 worker._raise_if_cancelled(running["id"])
+
+    def test_panel_shutdown_requeues_running_job_without_failure_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            make_publish_config(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+            queued = store.enqueue(
+                "pipeline",
+                "task-a",
+                {
+                    "workflow": "complete",
+                    "automation_enabled": True,
+                    "automation_target": "publish",
+                },
+                resource_class="gpu_heavy",
+            )
+            running = store.claim_id(queued["id"])
+
+            def stop_during_stage(*_args, **_kwargs) -> int:
+                worker._stop_event.set()
+                return 1
+
+            with mock.patch.object(
+                worker,
+                "_build_stages",
+                return_value=[("测试阶段", ["unused"], "gpu_heavy")],
+            ), mock.patch.object(
+                worker, "_run_command", side_effect=stop_during_stage
+            ), mock.patch.object(
+                worker, "_finish_unattended_pipeline_failure"
+            ) as fallback:
+                worker._execute(running)
+
+            preserved = store.get(queued["id"])
+
+        fallback.assert_not_called()
+        self.assertEqual(preserved["status"], "queued")
+        self.assertEqual(preserved["step"], "控制面板已停止，等待下次续跑")
+        self.assertEqual(preserved["started_at"], "")
+        self.assertEqual(preserved["error"], "")
+
+    def test_panel_shutdown_does_not_automatically_retry_uncertain_publish(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            task = make_task(project)
+            source = task / "video" / "source.mp4"
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_bytes(b"video")
+            make_publish_config(project)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            publisher = BiliupIntegration(project)
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                publisher,
+            )
+            reference = task.relative_to(project / "downloads").as_posix()
+            queued = store.enqueue(
+                "publish",
+                reference,
+                {"title": "test"},
+                resource_class="upload",
+            )
+            running = store.claim_id(queued["id"])
+
+            def stop_during_upload(*_args, **_kwargs) -> int:
+                worker._stop_event.set()
+                return 1
+
+            with mock.patch.object(
+                worker,
+                "_build_stages",
+                return_value=[("上传并提交到哔哩哔哩", ["unused"], "upload")],
+            ), mock.patch.object(
+                worker,
+                "_run_publish_upload_with_retries",
+                side_effect=stop_during_upload,
+            ), mock.patch.object(
+                publisher, "media_for_payload", return_value=source
+            ):
+                worker._execute(running)
+
+            preserved = store.get(queued["id"])
+
+        self.assertEqual(preserved["status"], "failed")
+        self.assertEqual(preserved["step"], "投稿中断，需确认后重试")
+        self.assertIn("避免重复投稿", preserved["error"])
 
     def test_log_cleanup_removes_inactive_history_and_skips_active_jobs(self) -> None:
         with tempfile.TemporaryDirectory() as name:
