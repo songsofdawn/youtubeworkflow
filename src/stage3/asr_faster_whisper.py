@@ -20,7 +20,7 @@ from .translation_qc import qc_text
 
 
 LOGGER = logging.getLogger(__name__)
-ASR_PIPELINE_VERSION = "stage3-faster-whisper-v2"
+ASR_PIPELINE_VERSION = "stage3-faster-whisper-v3-semantic-boundaries"
 REQUIRED_MODEL_FILES = ("config.json", "model.bin", "tokenizer.json", "vocabulary.json")
 AUDIO_PRIORITY = (
     Path("audio/source_audio.wav"),
@@ -172,6 +172,21 @@ def _load_model(model_path: Path, config: dict[str, Any]) -> tuple[Any, dict[str
 
 def _asr_config(config: dict[str, Any], max_seconds: float | None) -> dict[str, Any]:
     result = {key: value for key, value in config.items() if key.startswith("asr_")}
+    # Clean ASR subtitle artifacts also depend on the shared sentence/timeline
+    # settings.  Include them so changing boundary repair cannot silently reuse
+    # a checkpoint generated with the old segmentation policy.
+    for key in (
+        "sentence_gap_seconds",
+        "semantic_join_gap_seconds",
+        "orphan_fragment_max_words",
+        "min_segment_duration",
+        "max_segment_duration",
+        "hard_max_segment_duration",
+        "minimum_gap_ms",
+        "english_max_chars_per_line",
+        "max_lines",
+    ):
+        result[key] = config.get(key)
     result["asr_max_seconds"] = max_seconds
     return result
 

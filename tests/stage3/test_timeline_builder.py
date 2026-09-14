@@ -25,3 +25,13 @@ class TimelineBuilderTests(TestCase):
     def test_media_duration_caps_last_segment(self) -> None:
         fixed = rebuild_timeline([SubtitleSegment(1, 4, 8, "end")], CONFIG, 5)
         self.assertLessEqual(fixed[-1].end, 5)
+
+    def test_short_segment_merge_never_breaks_caption_capacity(self) -> None:
+        config = {**CONFIG, "english_max_chars_per_line": 5, "max_lines": 2}
+        segments = [
+            SubtitleSegment(1, 0, 1, "123456789"),
+            SubtitleSegment(2, 1.05, 1.2, "tail"),
+        ]
+        fixed = rebuild_timeline(segments, config, 2)
+        self.assertEqual([item.text for item in fixed], ["123456789", "tail"])
+        self.assertTrue(all(len(item.text) <= 10 for item in fixed))

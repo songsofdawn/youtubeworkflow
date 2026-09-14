@@ -13,6 +13,15 @@ def _merge(left: SubtitleSegment, right: SubtitleSegment) -> SubtitleSegment:
     return left
 
 
+def _merge_fits(left: SubtitleSegment, right: SubtitleSegment, config: dict) -> bool:
+    width = int(config.get("english_max_chars_per_line", 0) or 0)
+    lines = int(config.get("max_lines", 0) or 0)
+    if width and lines and len(f"{left.text} {right.text}".strip()) > width * lines:
+        return False
+    hard_max = float(config.get("hard_max_segment_duration", config["max_segment_duration"]))
+    return max(left.end, right.end) - min(left.start, right.start) <= hard_max
+
+
 def rebuild_timeline(
     segments: list[SubtitleSegment], config: dict, media_duration: float | None = None
 ) -> list[SubtitleSegment]:
@@ -27,7 +36,12 @@ def rebuild_timeline(
             merged[-1].words.extend(segment.words)
             merged[-1].source_cue_ids = sorted(set(merged[-1].source_cue_ids + segment.source_cue_ids))
             merged[-1].warnings.append("ADJACENT_DUPLICATE_MERGED")
-        elif merged and segment.duration < 0.3 and segment.start - merged[-1].end <= 0.6:
+        elif (
+            merged
+            and segment.duration < 0.3
+            and segment.start - merged[-1].end <= 0.6
+            and _merge_fits(merged[-1], segment, config)
+        ):
             _merge(merged[-1], segment)
         else:
             merged.append(segment)
@@ -44,7 +58,7 @@ def rebuild_timeline(
         if media_duration is not None:
             desired_end = min(desired_end, media_duration)
         if desired_end <= start:
-            if fixed:
+            if fixed and _merge_fits(fixed[-1], segment, config):
                 _merge(fixed[-1], segment)
                 continue
             desired_end = start + 0.05
@@ -57,9 +71,14 @@ def rebuild_timeline(
     for index, segment in enumerate(fixed):
         if index == skip_index:
             continue
-        if segment.duration < 0.3 and without_tiny:
+        if segment.duration < 0.3 and without_tiny and _merge_fits(without_tiny[-1], segment, config):
             _merge(without_tiny[-1], segment)
-        elif segment.duration < 0.3 and index == 0 and len(fixed) > 1:
+        elif (
+            segment.duration < 0.3
+            and index == 0
+            and len(fixed) > 1
+            and _merge_fits(segment, fixed[index + 1], config)
+        ):
             next_segment = fixed[index + 1]
             segment.text = f"{segment.text} {next_segment.text}".strip()
             segment.end = next_segment.end

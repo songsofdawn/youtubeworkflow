@@ -54,7 +54,7 @@ GLOSSARY_DEFAULT = {
     "preferred_translations": {},
     "notes": [],
 }
-YOUTUBE_CLEANER_VERSION = "stage3-youtube-clean-v3"
+YOUTUBE_CLEANER_VERSION = "stage3-youtube-clean-v4-semantic-boundaries"
 TRANSLATION_STAGE_VERSION = "stage3-translation-stage-v3-canonical-dubbing"
 
 
@@ -217,6 +217,8 @@ class Stage3Pipeline:
             "rolling_context_cues",
             "fuzzy_matching_enabled",
             "sentence_gap_seconds",
+            "semantic_join_gap_seconds",
+            "orphan_fragment_max_words",
             "min_segment_duration",
             "max_segment_duration",
             "hard_max_segment_duration",

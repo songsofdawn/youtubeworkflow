@@ -110,7 +110,11 @@ def _sections_from_legacy(legacy: dict[str, Any]) -> dict[str, Any]:
                 "max_lines", "english_max_cps", "chinese_max_cps",
             )
         }
-        | {"hard_max_segment_duration": legacy.get("hard_max_segment_duration", 8.0)},
+        | {
+            "hard_max_segment_duration": legacy.get("hard_max_segment_duration", 8.0),
+            "semantic_join_gap_seconds": legacy.get("semantic_join_gap_seconds", 1.0),
+            "orphan_fragment_max_words": legacy.get("orphan_fragment_max_words", 2),
+        },
         "asr": {
             "enabled": legacy.get("asr_enabled", True),
             "model_path": legacy["asr_model_path"],
