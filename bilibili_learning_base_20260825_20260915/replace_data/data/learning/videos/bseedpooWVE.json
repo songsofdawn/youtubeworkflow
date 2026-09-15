@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "minecraft",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "pvp",
+      "多人联机",
+      "minecraft",
+      "收集全物品",
+      "生存挑战",
+      "mine",
+      "边界扩张"
+    ],
+    "video_id": "bseedpooWVE"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSTUCK In a Border Until We Collect Every Item...\n\nThanks to SimonDMC for this great map: https://simondmc.com/projects/border-hoarder\n\nJOIN OUR DISCORD: http://discord.bloxmc.net/\nFollow BLOXMC: https://x.com/thebloxmc\n\nFollow Us:\nWisp - https://www.youtube.com/@wisp\nHenwy - https://www.youtube.com/@Henwy\nShadow - https://www.youtube.com/@ShadowApples\n\nServer provided by Nodecraft https://nodecraft.com/r/blox",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1877,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T13:59:54+00:00",
+    "tags": [
+      "我的世界",
+      "PVP",
+      "多人联机",
+      "搞笑",
+      "单机游戏",
+      "Minecraft",
+      "收集全物品",
+      "生存挑战",
+      "mine",
+      "边界扩张"
+    ],
+    "title": "被边界困住！收集所有物品才能逃出我的世界｜STUCK In a Border Until We Collect Every Item...",
+    "video_id": "bseedpooWVE",
+    "views": 120
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZrYR6BE3j",
+    "published_at": "2026/9/12 21:59:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZrYR6BE3j"
+  },
+  "version": 1
+}

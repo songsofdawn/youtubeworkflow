@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "GPT-6",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "gpt-6",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "虚幻引擎",
+      "艾尔登法环",
+      "chatgpt",
+      "ai做游戏",
+      "类魂游戏",
+      "ai开发",
+      "chatgpt 6 astra is i",
+      "chatgpt 6 astra"
+    ],
+    "video_id": "bseedhG1eKe"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nChatGPT 6 Astra is nothing short of Incredible.\n\n0:00 ChatGPT 6 Astra and Unreal Engine 5.8\n0:52 ChatGPT 6 Astra makes Prototype Game in Unreal Engine\n4:24 ChatGPT 6 Astra Fine Tunes Game in Unreal Engine\n6:52 GPT 6 Makes Final Prompt +  Animations + Assets\n10:36 Final Results + Costs: ChatGPT 6 Astra Makes Soulslike in Unreal Engine!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 688,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T16:22:59+00:00",
+    "tags": [
+      "游戏开发",
+      "虚幻引擎",
+      "艾尔登法环",
+      "ChatGPT",
+      "AI做游戏",
+      "计算机技术",
+      "类魂游戏",
+      "AI开发",
+      "chatgpt 6 astra is i",
+      "chatgpt 6 astra"
+    ],
+    "title": "用ChatGPT 6 Astra+虚幻引擎做类魂游戏！｜ChatGPT 6 Astra + Unreal Engine = Insanity.",
+    "video_id": "bseedhG1eKe",
+    "views": 451
+  },
+  "seed_provenance": {
+    "bvid": "BV1wHY26HEBS",
+    "published_at": "2026/9/12 00:22:59",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1wHY26HEBS"
+  },
+  "version": 1
+}

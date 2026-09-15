@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "3d建模",
+      "3d",
+      "大模型评测",
+      "技术演示",
+      "开源项目",
+      "编程工具",
+      "代码生成"
+    ],
+    "video_id": "bseed58yYlw"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=HuazpqxKBgA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI gave Qwen 3.8 27B, Ox Alpha, Muse Spark 1.2, and Gemini 3.7 Flash the same open-ended assignment: build an app that turns a text prompt into the best 3D model it can, then test and improve its own result.\n\nThe implementations made radically different choices. This edit follows the benchmark across the full stream, compares the visible apps and failure modes, and ends with the goal-weighted ranking and the architecture I would actually keep.\n\nLINKS\nhttps://research.meta.ai/blog/multimodal-intelligence-of-muse-spark-1-2\nhttps://x.com/sundarpichai/status/2091006815295373717\nhttps://x.com/opencode/status/2090544355824038300\nhttps://x.com/NousResearch/status/2090899914700054780\nhttps://x.com/OpenRouter/status/2090544970923184269\n\nCHAPTERS\n0:00 One identical brief\n3:58 Qwen 3.8 27B\n7:19 Ox Alpha\n14:17 Muse Spark 1.2\n20:43 Gemini 3.7 Flash\n27:20 The four-model verdict",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1791,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T13:12:09+00:00",
+    "tags": [
+      "3D建模",
+      "人工智能",
+      "3D",
+      "大模型评测",
+      "中英双语",
+      "中文翻译",
+      "技术演示",
+      "开源项目",
+      "编程工具",
+      "代码生成"
+    ],
+    "title": "【中英双语】实测4款AI模型：谁最擅长用文本生成3D应用？｜I Tested 4 AI Models on the Same 3D Coding Task",
+    "video_id": "bseed58yYlw",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1M4496BEmw",
+    "published_at": "2026/8/27 21:12:09",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1M4496BEmw"
+  },
+  "version": 1
+}

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "模组玩法",
+      "恐怖模组",
+      "现代武器",
+      "生存挑战",
+      "凋灵风暴",
+      "i killed the wither"
+    ],
+    "video_id": "bseedqeJwIl"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=VBCaNXFQ10g\n【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n#minecraft #meme #memes #witherstorm \n\nI KILLED the WITHER STORM Using MODERN GUNS in Minecraft Survival (2026) !!\n\nmod used in this video:\nWither Storm Mod: [https://www.curseforge.com/minecraft/mc-mods/crackers-wither-storm-mod]\n\n🔔 Subscribe for more Minecraft adventures!\n👍 Like the video if you enjoy!\n📝 Comment below on what you'd like to see next!\n\nMusic Provided by : Antimo & Welles\nMusic Link : https://youtu.be/WvZ3hwwRSkY?si=r1BHwsB9njLm3dZN\nCreative Commons — Attribution 4.0 International — CC BY 4.0\nhttps://creativecommons.org/licenses/by/4.0\n\n#Minecraft #WitherStorm #MinecraftMods #MinecraftStory #MinecraftAttack #Mimicer #minecraftsurvivalseriesepisode1 \n\nminecraft wither storm\nmimicer minecraft\nminecraft horror mod\nminecraft story gameplay\nwither storm mod\nminecraft base attack",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 828,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T22:05:15+00:00",
+    "tags": [
+      "游戏实况",
+      "单机游戏",
+      "我的世界",
+      "模组玩法",
+      "无配音",
+      "恐怖模组",
+      "现代武器",
+      "生存挑战",
+      "凋灵风暴",
+      "i killed the wither"
+    ],
+    "title": "我的世界生存：用现代枪械击杀凋灵风暴｜I KILLED the WITHER STORM Using MODERN GUNS in Minecraft Sur…",
+    "video_id": "bseedqeJwIl",
+    "views": 202
+  },
+  "seed_provenance": {
+    "bvid": "BV1Mgt76qE5z",
+    "published_at": "2026/9/2 06:05:15",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Mgt76qE5z"
+  },
+  "version": 1
+}

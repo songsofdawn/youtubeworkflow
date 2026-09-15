@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY",
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "乐器配件",
+      "科技测评",
+      "搞笑实验",
+      "吉他评测",
+      "数码好物",
+      "极客diy"
+    ],
+    "video_id": "bseedZZvPt4"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=qeLGGM5Q6XI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🙏  Channel Members (Stairway to Heaven Tier & Higher):\n➼ Cheetopufffs48\n➼ TheAwesomeSauceArt\n➼ amnotcooool\n➼ BW_1785\n➼ GinoUmpo\n➼ Ciro732\n➼ Francis Johan Gabriel De Guzman\n➼ BarayHanim\n➼ Jovana Stankovic\n➼ adsadad\n➼ ISimplyExist\n➼ Gacha with Matthew!!!\n➼ Chay Laurido\n➼ Weshk\n➼ IpGa13\n➼ Liam Borg\n➼ John.  DINGO\n\n🚨 Become a member for $1.00/month to get access to SPECIAL PERKS: https://www.youtube.com/channel/UCxB9Q63kRbgUyjDpqfXpS3w/join\n\n👇 Gear That I Recommend You Check Out (Affiliate Links) \n\n🎸 Best Budget Capo:\nhttps://sweetwater.sjv.io/9LWYyQ\n\n🎸 Guitar Tuner I Use: \nhttps://sweetwater.sjv.io/9LWY2Q\n\n🎸 Picks I Use:\nhttps://sweetwater.sjv.io/4GeN2G\n\n🎸 Cheap Guitar Stand:\nhttps://sweetwater.sjv.io/OeRxzG\n\n🎸 Best Budget Distortion Pedal:\nhttps://sweetwater.sjv.io/LKPNgO\n\n🎸 Great Beginner Acoustic Guitar:\nhttps://sweetwater.sjv.io/gObEJ0\n\n🎸 Great Beginner Electric Guitar:\n\n0:00 - Intro\n0:30 - Cantareel\n1:52 - Guit-Arco\n3:20 - SamJam Snare\n4:18 - Flatter \n5:47 - Hipshot\n7:45 - Sitar Express\n9:08 - Chordinero Capo\n10:48 - Automatic Tuner\n\n\n\n\n\nhttps://sweetwater.sjv.io/zxaVR7\n\n🎸 The Amp I Use: \nhttps://sweetwater.sjv.io/jeWLJn\n\n🎤 My Microphone I Use:\nhttps://sweetwater.sjv.io/e14WkZ\n\n🎸 The Audio Interface I Use:\nhttps://sweetwater.sjv.io/Z6dAYW\n\n🎸My Acoustic Guitar that I use (you get a discount!):\nhttps://zagerguitars.sjv.io/c/5412281/1928080/23170\n\n🎸 Get 20% Off Simply Guitar Using My Link: https://hellosimply.pxf.io/c/54122…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 751,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:25:02+00:00",
+    "tags": [
+      "乐器配件",
+      "中英双语",
+      "中文翻译",
+      "科技测评",
+      "搞笑实验",
+      "吉他评测",
+      "数码好物",
+      "极客DIY"
+    ],
+    "title": "【中英双语】实测离谱吉他产品：自动调音器与中世纪刑具？｜I Tested Ridiculous Guitar Product Claims",
+    "video_id": "bseedZZvPt4",
+    "views": 6
+  },
+  "seed_provenance": {
+    "bvid": "BV1zM4y6fE5g",
+    "published_at": "2026/8/29 17:25:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zM4y6fE5g"
+  },
+  "version": 1
+}

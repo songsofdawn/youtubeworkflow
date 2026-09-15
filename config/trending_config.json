@@ -50,6 +50,71 @@
     "relevance"
   ],
   "discovery_max_search_requests": 96,
+  "discovery_next": {
+    "strengths": {
+      "quick": {
+        "search_budget": 24,
+        "ai_candidate_budget": 60
+      },
+      "standard": {
+        "search_budget": 48,
+        "ai_candidate_budget": 120
+      },
+      "deep": {
+        "search_budget": 96,
+        "ai_candidate_budget": 240
+      }
+    },
+    "exploration_min": 0.12,
+    "exploration_max": 0.3,
+    "domain_allocation_floor": 0.01,
+    "domain_allocation_ceiling": 0.38,
+    "recall_source_budget": {
+      "exploitation": 0.22,
+      "learned_concept": 0.18,
+      "emerging": 0.14,
+      "preferred_channel": 0.1,
+      "ai_query": 0.2,
+      "coverage": 0.07,
+      "exploration": 0.06,
+      "cross_domain": 0.03
+    },
+    "candidate_bucket_ratios": {
+      "hot": 0.16,
+      "relevance": 0.2,
+      "user_preference": 0.16,
+      "novelty": 0.12,
+      "emerging": 0.1,
+      "exploration": 0.1,
+      "low_pop_high_relevance": 0.12,
+      "rare_domain": 0.04
+    },
+    "query_cooldown_hours": 72,
+    "query_diversity_threshold": 0.72,
+    "bad_query_suppression_threshold": 0.08,
+    "query_performance_decay_days": 45,
+    "potential_ranking_weights": {
+      "ai": 0.42,
+      "user": 0.16,
+      "relevance": 0.12,
+      "novelty": 0.1,
+      "emerging": 0.07,
+      "localization": 0.06,
+      "diversity": 0.05,
+      "heat": 0.02
+    },
+    "hot_ranking_weights": {
+      "velocity": 0.36,
+      "views": 0.18,
+      "freshness": 0.16,
+      "engagement": 0.12,
+      "ai": 0.12,
+      "user": 0.06
+    },
+    "channel_repetition_limit": 2,
+    "domain_diversity_factor": 0.08,
+    "semantic_diversity_factor": 0.12
+  },
   "discovery_recall_candidates_per_result": 8,
   "discovery_max_pages_per_stream": 3,
   "discovery_semantic_similarity_threshold": 0.9,
@@ -58,9 +123,9 @@
     "base_url": "http://127.0.0.1:11434",
     "model": "qwen3.5:9b",
     "embedding_model": "qwen3-embedding:0.6b",
-    "embedding_enabled": true,
-    "query_planning_enabled": false,
-    "visual_enabled": true,
+    "embedding_enabled": false,
+    "query_planning_enabled": true,
+    "visual_enabled": false,
     "metadata_batch_size": 10,
     "metadata_candidates_per_pack": 100,
     "metadata_max_candidates": 100,
@@ -946,7 +1011,7 @@
     "720": 400
   },
   "discovery_hot_lane_min_per_pack": 3,
-  "discovery_default_ranking_mode": "hot",
+  "discovery_default_ranking_mode": "potential",
   "discovery_primary_search_orders": [
     "date",
     "relevance"

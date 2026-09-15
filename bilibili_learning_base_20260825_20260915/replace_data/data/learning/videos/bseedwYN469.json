@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "engineering"
+    ],
+    "formats": [
+      "documentary",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "制造",
+      "纪录片",
+      "工艺",
+      "how its made",
+      "生产线",
+      "食品加工",
+      "工业·工程·机械"
+    ],
+    "video_id": "bseedwYN469"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFrom chocolate chip cookies to hot sauce, watch as we show you how the most popular items in How It's Made history are made!\n\nHot Sauce - 00:00 - 05:01 \nRazor Blades - 05:01 - 10:00\nChocolate - 10:00 - 14:50\nLever Action Rifles - 14:50 - 24:50\nChocolate Chip Cookies - 24:50 - 29:50\nKetchup - 29:50 - 34:49\nWhoopie Pies - 34:49 - 39:56\nDoughnuts - 39:56 - 44:56\nIce Cream Treats - 44:56 - 49:56\nCotton - 49:56 - 55:30\nCandy Canes - 55:30 - 1:00:38",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3643,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T22:03:22+00:00",
+    "tags": [
+      "制造",
+      "科普",
+      "纪录片",
+      "工艺",
+      "How Its Made",
+      "生产线",
+      "食品加工",
+      "工业·工程·机械"
+    ],
+    "title": "曲奇饼干制造过程",
+    "video_id": "bseedwYN469",
+    "views": 40
+  },
+  "seed_provenance": {
+    "bvid": "BV1ndb46DEpi",
+    "published_at": "2026/9/7 06:03:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ndb46DEpi"
+  },
+  "version": 1
+}

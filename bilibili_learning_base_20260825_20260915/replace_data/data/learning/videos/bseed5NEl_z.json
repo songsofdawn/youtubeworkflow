@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPU"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gpu hardware",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "科技评测",
+      "显卡矿场",
+      "gpu算力租赁",
+      "ai挖矿",
+      "被动收入",
+      "极客diy",
+      "加密货币挖矿",
+      "salad ai"
+    ],
+    "video_id": "bseed5NEl_z"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=xXfxn-hGE6w\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n💵 *EARN From Your PC* →  https://bit.ly/Salad-Modern-Mining\n🔥 *Sign Up to ViaBTC Pool Today!* → https://geni.us/viabtcc\n\nMy Salad AI farm just had its most profitable day ever, and in this video I'm breaking down exactly what happened. We'll look at earnings across my GPU rigs, which hardware is getting the best AI container jobs, current utilization, electricity costs, and how much profit the entire farm generated in a single day. Salad earnings depend heavily on customer workload demand, and container jobs can be substantially more profitable than fallback crypto mining when they're available. If you've been wondering whether building dedicated AI rigs for Salad is still worth it in 2026, these are my real-world results.\n\n#SaladAI #AImining #GPUmining #passiveincome #AIrig\n\n👉 *A Monitor Worth Checking Out (affiliate)* → https://geni.us/ATYWJl\n\n🔥 *TRY SALAD TODAY:* 🔥 \nhttps://bit.ly/Salad-Modern-Mining\n\n📝 *THE BEST CRYPTO TAX SOFTWARE* 📝 \nhttps://koinly.io/?via=1B2A4041&utm_source=affiliate\n\n🔒 *THE BEST CRYPTO WALLET* 🔒\nhttps://redirect.sale/tangem/?promocode=QET52S\n\n⭐️ *JOIN THE MODERN MINING DISCORD* ⭐️\nhttps://discord.gg/48KvKj8weg\n\n🎉 *CLICK THE \"JOIN\" BUTTON TO GET SPECIAL MEMBER PERKS* 🎉\nhttps://www.youtube.com/channel/UCdbmNBwxeziIf21q2Xl5vpw/join\n\n🔔 *SUBSCRIBE FOR FUTURE CONTENT* 🔔\nhttps://www.youtube.com/channel/UCdbmNBwxeziIf21q2Xl5vpw?sub_confirmation=1\n\n☎️ *1:1 CONSULTING WITH MODERN MINING* ☎️\nEmail ModernMiningHub@gmail.com to…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 919,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:29:35+00:00",
+    "tags": [
+      "科技评测",
+      "显卡矿场",
+      "GPU算力租赁",
+      "AI挖矿",
+      "中文翻译",
+      "中英双语",
+      "被动收入",
+      "极客DIY",
+      "加密货币挖矿",
+      "Salad AI"
+    ],
+    "title": "【中英双语】2026年AI算力挖矿实测：Salad平台单日最高收益与硬件回报分析｜I Spent $15,000 on AI Computers for PR…",
+    "video_id": "bseed5NEl_z",
+    "views": 62
+  },
+  "seed_provenance": {
+    "bvid": "BV16D4y6cE1A",
+    "published_at": "2026/8/29 15:29:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16D4y6cE1A"
+  },
+  "version": 1
+}

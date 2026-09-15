@@ -80,7 +80,9 @@ class JobStore:
                     finished_at TEXT NOT NULL DEFAULT '',
                     exit_code INTEGER,
                     error TEXT NOT NULL DEFAULT '',
-                    log_path TEXT NOT NULL
+                    log_path TEXT NOT NULL,
+                    priority INTEGER NOT NULL DEFAULT 0,
+                    queue_order INTEGER NOT NULL DEFAULT 0
                 )
                 """
             )
@@ -91,6 +93,23 @@ class JobStore:
             if "resource_class" not in columns:
                 connection.execute(
                     "ALTER TABLE jobs ADD COLUMN resource_class TEXT NOT NULL DEFAULT ''"
+                )
+            if "priority" not in columns:
+                connection.execute(
+                    "ALTER TABLE jobs ADD COLUMN priority INTEGER NOT NULL DEFAULT 0"
+                )
+            queue_order_added = "queue_order" not in columns
+            if queue_order_added:
+                connection.execute(
+                    "ALTER TABLE jobs ADD COLUMN queue_order INTEGER NOT NULL DEFAULT 0"
+                )
+                connection.execute(
+                    """
+                    UPDATE jobs
+                    SET queue_order = -1
+                    WHERE kind = 'publish' AND status IN ('queued', 'running')
+                      AND priority = 1
+                    """
                 )
             connection.execute(
                 """
@@ -165,6 +184,7 @@ class JobStore:
         exclusive_targets: set[str] | None = None,
         reuse_active_kinds: set[str] | None = None,
         reuse_active_targets: set[str] | None = None,
+        priority: int = 0,
     ) -> dict[str, Any]:
         job_id = uuid.uuid4().hex
         log_path = self.logs_dir / f"{job_id}.log"
@@ -187,6 +207,8 @@ class JobStore:
             "progress": 0,
             "created_at": utc_now(),
             "log_path": str(log_path),
+            "priority": max(0, min(int(priority), 1)),
+            "queue_order": 0,
         }
         normalized_reuse_kinds = sorted(
             {str(item) for item in (reuse_active_kinds or set()) if str(item)}
@@ -217,6 +239,28 @@ class JobStore:
                     (*normalized_reuse_targets, *normalized_reuse_kinds),
                 ).fetchone()
                 if existing is not None:
+                    if (
+                        kind == "publish"
+                        and existing["status"] == "queued"
+                        and int(priority) > int(existing["priority"] or 0)
+                    ):
+                        top_order = connection.execute(
+                            """
+                            SELECT COALESCE(MIN(queue_order), 0) - 1
+                            FROM jobs
+                            WHERE kind = 'publish' AND status = 'queued'
+                              AND id != ?
+                            """,
+                            (existing["id"],),
+                        ).fetchone()[0]
+                        connection.execute(
+                            "UPDATE jobs SET priority = ?, queue_order = ?, step = ? WHERE id = ?",
+                            (1, int(top_order), "优先投稿：等待上传", existing["id"]),
+                        )
+                        existing = connection.execute(
+                            "SELECT * FROM jobs WHERE id = ?",
+                            (existing["id"],),
+                        ).fetchone()
                     return self._serialize(existing)
             if exclusive_targets:
                 placeholders = ", ".join("?" for _ in exclusive_targets)
@@ -227,11 +271,31 @@ class JobStore:
                 ).fetchone()
                 if active:
                     raise ValueError("视频仍有运行中或排队中的任务，请先终止或等待完成")
+            if kind == "publish":
+                if record["priority"]:
+                    next_order = connection.execute(
+                        """
+                        SELECT COALESCE(MIN(queue_order), 0) - 1
+                        FROM jobs
+                        WHERE kind = 'publish' AND status IN ('queued', 'running')
+                        """
+                    ).fetchone()[0]
+                else:
+                    next_order = connection.execute(
+                        """
+                        SELECT COALESCE(MAX(queue_order), -1) + 1
+                        FROM jobs
+                        WHERE kind = 'publish' AND status IN ('queued', 'running')
+                        """
+                    ).fetchone()[0]
+                record["queue_order"] = int(next_order)
             connection.execute(
                 """
                 INSERT INTO jobs
-                (id, kind, target, payload_json, resource_class, status, step, progress, created_at, log_path)
-                VALUES (:id, :kind, :target, :payload_json, :resource_class, :status, :step, :progress, :created_at, :log_path)
+                (id, kind, target, payload_json, resource_class, status, step, progress,
+                 created_at, log_path, priority, queue_order)
+                VALUES (:id, :kind, :target, :payload_json, :resource_class, :status, :step,
+                        :progress, :created_at, :log_path, :priority, :queue_order)
                 """,
                 record,
             )
@@ -259,7 +323,8 @@ class JobStore:
                 SELECT * FROM jobs
                 WHERE status IN ('queued', 'running')
                 ORDER BY CASE status WHEN 'running' THEN 0 ELSE 1 END,
-                         created_at
+                         CASE WHEN kind = 'publish' THEN queue_order ELSE 0 END,
+                         created_at, id
                 """
             ).fetchall()
         return [self._serialize(row) for row in rows]
@@ -337,6 +402,117 @@ class JobStore:
             )
         return int(cursor.rowcount)
 
+    def active_job(self, kind: str, target: str) -> dict[str, Any] | None:
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                SELECT * FROM jobs
+                WHERE kind = ? AND target = ? AND status IN ('queued', 'running')
+                ORDER BY CASE status WHEN 'running' THEN 0 ELSE 1 END,
+                         queue_order, created_at, id
+                LIMIT 1
+                """,
+                (str(kind), str(target)),
+            ).fetchone()
+        return self._serialize(row) if row is not None else None
+
+    def promote_publish(self, job_id: str) -> dict[str, Any]:
+        with self._connect() as connection:
+            row = connection.execute(
+                "SELECT * FROM jobs WHERE id = ?", (str(job_id),)
+            ).fetchone()
+            if row is None:
+                raise KeyError(job_id)
+            if row["kind"] != "publish":
+                raise ValueError("只有投稿任务可以调整投稿顺序")
+            if row["status"] != "queued":
+                raise ValueError("只有排队中的投稿任务可以置顶")
+            top_order = connection.execute(
+                """
+                SELECT COALESCE(MIN(queue_order), 0) - 1
+                FROM jobs
+                WHERE kind = 'publish' AND status = 'queued' AND id != ?
+                """,
+                (str(job_id),),
+            ).fetchone()[0]
+            connection.execute(
+                "UPDATE jobs SET priority = 1, queue_order = ?, step = ? WHERE id = ?",
+                (int(top_order), "优先投稿：等待上传", str(job_id)),
+            )
+        return self.get(str(job_id))
+
+    def move_publish(self, job_id: str, direction: str) -> dict[str, Any]:
+        """Move a queued publish job one slot within its priority group."""
+        normalized_direction = str(direction or "").strip().lower()
+        if normalized_direction not in {"up", "down"}:
+            raise ValueError("投稿顺序方向无效")
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute(
+                "SELECT id, priority, status FROM jobs WHERE id = ? AND kind = 'publish'",
+                (str(job_id),),
+            ).fetchone()
+            if row is None:
+                raise KeyError(str(job_id))
+            if row["status"] != "queued":
+                raise ValueError("只有排队中的投稿任务可以调整顺序")
+            rows = connection.execute(
+                """
+                SELECT id
+                FROM jobs
+                WHERE kind = 'publish' AND status = 'queued'
+                ORDER BY queue_order, created_at, id
+                """,
+            ).fetchall()
+            ids = [str(item["id"]) for item in rows]
+            try:
+                index = ids.index(str(job_id))
+            except ValueError as exc:
+                raise KeyError(str(job_id)) from exc
+            neighbor_index = index - 1 if normalized_direction == "up" else index + 1
+            if not 0 <= neighbor_index < len(ids):
+                connection.commit()
+                return self.get(str(job_id))
+            ids[index], ids[neighbor_index] = ids[neighbor_index], ids[index]
+            for order, moved_id in enumerate(ids):
+                connection.execute(
+                    "UPDATE jobs SET queue_order = ? WHERE id = ?",
+                    (order, moved_id),
+                )
+        return self.get(str(job_id))
+
+    def publish_queue(self, limit: int = 50) -> list[dict[str, Any]]:
+        with self._connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT id, kind, target, status, step, progress, created_at,
+                       started_at, priority, queue_order, payload_json
+                FROM jobs
+                WHERE kind = 'publish' AND status IN ('queued', 'running')
+                ORDER BY CASE status WHEN 'running' THEN 0 ELSE 1 END,
+                         queue_order, created_at, id
+                LIMIT ?
+                """,
+                (max(1, min(int(limit), 200)),),
+            ).fetchall()
+        queue: list[dict[str, Any]] = []
+        for index, row in enumerate(rows, 1):
+            item = dict(row)
+            payload_json = item.pop("payload_json", "")
+            try:
+                payload = json.loads(str(payload_json or "{}"))
+            except (TypeError, ValueError):
+                payload = {}
+            if isinstance(payload, dict):
+                if isinstance(payload.get("payload"), dict):
+                    payload = payload["payload"]
+                title = payload.get("original_title") or payload.get("title")
+                if title:
+                    item["title"] = str(title)
+            item["position"] = index
+            queue.append(item)
+        return queue
+
     def claim_next(
         self,
         kinds: set[str] | None = None,
@@ -390,7 +566,8 @@ class JobStore:
                             AND pending_cover.status IN ('queued', 'running')
                       )
                   )
-                ORDER BY queued.created_at
+                ORDER BY CASE WHEN queued.kind = 'publish' THEN queued.queue_order ELSE 0 END,
+                         queued.created_at, queued.id
                 LIMIT 1
                 """,
                 parameters,
@@ -424,7 +601,8 @@ class JobStore:
                 f"""
                 SELECT * FROM jobs
                 WHERE status = 'queued' {clause}
-                ORDER BY created_at
+                ORDER BY CASE WHEN kind = 'publish' THEN queue_order ELSE 0 END,
+                         created_at, id
                 LIMIT {max(1, min(int(limit), 2000))}
                 """,
                 parameters,
@@ -993,6 +1171,7 @@ class WorkflowWorker:
         )
         daily_limit = self.publisher.publish_daily_limit()
         minimum_interval = self.publisher.publish_min_interval_seconds()
+        publish_queue = self.store.publish_queue()
         barriers: list[tuple[datetime, str]] = []
 
         cooldown_until = self._parse_datetime(
@@ -1041,6 +1220,9 @@ class WorkflowWorker:
                 "completed_today": completed_today,
                 "daily_limit": daily_limit,
                 "minimum_interval_seconds": minimum_interval,
+                "queue": publish_queue,
+                "queue_count": len(publish_queue),
+                "auto_next": True,
             }
 
         resume_at, reason = max(barriers, key=lambda item: item[0])
@@ -1057,6 +1239,9 @@ class WorkflowWorker:
             "completed_today": completed_today,
             "daily_limit": daily_limit,
             "minimum_interval_seconds": minimum_interval,
+            "queue": publish_queue,
+            "queue_count": len(publish_queue),
+            "auto_next": True,
         }
 
     def _activate_publish_cooldown(self) -> dict[str, Any]:

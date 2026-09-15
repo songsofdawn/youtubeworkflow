@@ -1,0 +1,107 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Seedance",
+      "AI video generation"
+    ],
+    "formats": [
+      "experiment",
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "seedance",
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "文本转视频",
+      "minimax",
+      "ai 视频生成",
+      "ai 工作流",
+      "seedance 2.5",
+      "minimax h3",
+      "商业广告制作",
+      "运动设计",
+      "ai 视频评测"
+    ],
+    "video_id": "bseed8j1lua"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=RupHazHFWcw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMiniMax H3 is here — but how good is it really, and can it compete with Seedance 2.5?\n \nIn this video, I’m putting MiniMax H3 through a series of completely different AI video tests to see where the model shines, where it struggles, and how its results compare with one of the strongest AI video models right now.\n\nWe’ll test how MiniMax H3 handles recognizable TV show aesthetics, cinematic openings, videos with generated text, realistic characters and environments, product ads, and motion design.\n\nEach test focuses on a different challenge — from maintaining visual consistency and creating believable movement to handling typography, commercial-style visuals, complex compositions, and polished motion.\n\nAlong the way, we’ll compare the results with Seedance 2.5 to see how MiniMax H3 performs across different use cases and whether it can genuinely stand as a strong new competitor in AI video generation.\n\n⚡ Try FlashBoards:\nhttps://flashboards.yaroflasher.com/\n\nUse code FLASH10 to get 10% off your first subscription and credit top-ups.\n\n🔗 All prompts used in this video:\nhttps://flashboards.yaroflasher.com/share/minimax-h3-vs-seedance-2-5\n\nTimecodes:\n\n00:00 Introduction — Made With MiniMax H3\n00:15 Breakdown — Everything That Will Be in This Video\n00:25 Famous TV Show\n01:33 Openings\n03:32 Videos With Texts\n05:40 Realism\n07:43 Ads Product\n09:08 Motion Design\n10:06 Great News!\n\n#MiniMaxH3 #AIVideo #FlashBoards #Seedance25 #Seedance2 #AIFilmmaking #AIVideoGeneration #AIRealism #MotionDesign",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 633,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T18:18:50+00:00",
+    "tags": [
+      "文本转视频",
+      "MiniMax",
+      "AI 视频生成",
+      "AI 工作流",
+      "Seedance 2.5",
+      "MiniMax H3",
+      "计算机技术",
+      "商业广告制作",
+      "运动设计",
+      "AI 视频评测"
+    ],
+    "title": "【中英双语】MiniMax H3 实测：能否超越 Seedance 2.5？｜I Tested MiniMax H3 — Is It Better Than…",
+    "video_id": "bseed8j1lua",
+    "views": 152
+  },
+  "seed_provenance": {
+    "bvid": "BV16ntp6NEGG",
+    "published_at": "2026/8/31 02:18:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16ntp6NEGG"
+  },
+  "version": 1
+}

@@ -1,0 +1,107 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "ChatGPT",
+      "Astra",
+      "AI image generation"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "openai",
+      "chatgpt",
+      "astra",
+      "ai image generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai新闻",
+      "ai图像编辑",
+      "chatgpt",
+      "ai news",
+      "openai",
+      "astra",
+      "ai绘画",
+      "deepseek"
+    ],
+    "video_id": "bseedutqLRa"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nChatGPT Images 2.5 adds Sketch and new editing controls. See OpenAI’s editing examples, Charlie Guo’s butterfly stop motion, and a closer look at OpenAI’s internal model compared with Astra. I also use Astra Low to draw the DeepSeek logo and turn it into a whale stop motion.\n\nThis roundup also covers OpenAI’s separate internal-model research announcement, fresh Nex-N2.5-Max weight uploads, an unverified DeepSeek V4.1 Flash private-preview claim, and Adam Whitcroft’s Astra-assisted Tithe game.\n\nCHAPTERS\n\nChatGPT Images 2.5 is here with new sketch-to-image capabilities and editing controls. See how these updates work in practice.\n\nOpenAI has launched ChatGPT Images 2.5, featuring refined AI image editing and sketch-based generation. This video demonstrates these new tools in action, including Charlie Guo’s butterfly stop motion and Adam Whitcroft’s Astra-assisted game, Tithe. We also compare OpenAI’s internal model against Astra to see how the performance stacks up for creative workflows.\n\nBeyond the image updates, we look at the latest AI model research from OpenAI and fresh weight uploads for Nex-N2.5-Max. There is also a breakdown of the unverified DeepSeek V4.1 private-preview claims circulating online. This update provides a clear look at where current generative models are heading and how to use these new features effectively.\n\nSubscribe for weekly AI updates and practical breakdowns. Let me know in the comments if you want to see more testing on the new DeepSeek models.\n\n00:00 Ch…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 323,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T02:12:05+00:00",
+    "tags": [
+      "人工智能",
+      "AI新闻",
+      "AI图像编辑",
+      "ChatGPT",
+      "AI news",
+      "计算机技术",
+      "OpenAI",
+      "Astra",
+      "AI绘画",
+      "DeepSeek"
+    ],
+    "title": "ChatGPT图像2.5来了：草图秒变画作还能精准改图｜Everything New in ChatGPT Images 2.5 (It’s Finally…",
+    "video_id": "bseedutqLRa",
+    "views": 30
+  },
+  "seed_provenance": {
+    "bvid": "BV1cFYp6EEqw",
+    "published_at": "2026/9/9 10:12:05",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1cFYp6EEqw"
+  },
+  "version": 1
+}

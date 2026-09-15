@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "animation"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "animation process",
+      "animation"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "动画短片",
+      "剧情向",
+      "原创动画",
+      "动物医院",
+      "治愈系",
+      "角色背景",
+      "情感故事",
+      "animation",
+      "短片·手书·配音",
+      "animal hospital anim"
+    ],
+    "video_id": "bseedS7-ifg"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=6x4WvYDR1_I\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#animation #animalhospital #bunnytoons\nStalker SAD Origin Story | Animal Hospital Animation\n\nIn this emotional Animal Hospital story, we uncover Stalker’s sad origin and the painful events that changed him forever. While the doctors can heal injured bodies, can anyone reach a heart broken by abandonment, rejection, and loneliness?\n\nStalker’s journey reminds us that the deepest wounds are not always visible. Kindness and understanding can help someone begin to heal—but pain should never become a reason to hurt others. Every choice matters, and even in the darkest moment, it is never too late to choose a better path.\n\nWatch until the end to discover the heartbreaking truth behind Stalker and the moment that shaped his destiny.\n\nIf this story touched your heart, please LIKE, SHARE, and SUBSCRIBE for more emotional and inspiring Animal Hospital animations! Don't forget to hit the bell icon 🔔 so you never miss a new adventure!\n\nThis video is designed for viewers aged 13 and above. While suitable for teens and general audiences, some content may not be appropriate for young children.\n---------------------------------\n🌟Bunny Toons Production Team\nProduction Director: Nguyen Ngoc Minh\nIdea: Do Thi Lan Anh, Nguyen Ha Ngan\nCharacter Design: Nguyen Khanh Van\nAnimation: Tran Van Khanh, Nham Xuan Mai, Tran Viet Anh, Nguyen Phuong Chi\nArtist (Background & Assets): Dang Thanh Hai Yen, Pham Thi Hue, Pham Thi Huong, Ngo Minh Trang\nMix & Sound: Le Hong Phong, Pham Thi Ngoc Anh\n\n3-4 days are dedicated to th…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 508,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T13:09:06+00:00",
+    "tags": [
+      "动画短片",
+      "剧情向",
+      "原创动画",
+      "动物医院",
+      "治愈系",
+      "角色背景",
+      "情感故事",
+      "Animation",
+      "短片·手书·配音",
+      "Animal Hospital Anim"
+    ],
+    "title": "【中英双语】被遗弃的史托克：动物医院里的伤痛与救赎｜Stalker SAD Origin Story | Animal Hospital Animation",
+    "video_id": "bseedS7-ifg",
+    "views": 139
+  },
+  "seed_provenance": {
+    "bvid": "BV1mntH6jEMu",
+    "published_at": "2026/8/30 21:09:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1mntH6jEMu"
+  },
+  "version": 1
+}

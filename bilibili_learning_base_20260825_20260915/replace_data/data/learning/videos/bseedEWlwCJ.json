@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "experiment",
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "奇葩食谱",
+      "食物吐槽",
+      "吃货日常",
+      "创意料理",
+      "翻车现场",
+      "厨房实验",
+      "短视频挑战"
+    ],
+    "video_id": "bseedEWlwCJ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=c8AeSUUCPFA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTo get 50% off your first order of CookUnity meals, go to https://www.cookunity.com/DANCOOKEDIT CookUnity connects you with top chefs from across the US, delivering their signature dishes fresh to your door. With hundreds of meals to choose from, there’s something for everyone! Thanks to CookUnity for sponsoring this video!\n\nWhich one of these recipes would you try?\n\nI tested more weird and viral shorts recipes. Some were totally clickbait, but some were actually really good.\n\nIf you enjoyed subscribe :)",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1166,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T14:19:22+00:00",
+    "tags": [
+      "奇葩食谱",
+      "食物吐槽",
+      "中英双语",
+      "吃货日常",
+      "中文翻译",
+      "创意料理",
+      "美食测评",
+      "翻车现场",
+      "厨房实验",
+      "短视频挑战"
+    ],
+    "title": "【中英双语】挑战全网最离谱短视频食谱，有的难吃到怀疑人生｜I Tested Clickbait Shorts Recipes (again...)",
+    "video_id": "bseedEWlwCJ",
+    "views": 21
+  },
+  "seed_provenance": {
+    "bvid": "BV1C48R6MEMK",
+    "published_at": "2026/8/26 22:19:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1C48R6MEMK"
+  },
+  "version": 1
+}

@@ -1,0 +1,107 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Fable 5.1",
+      "AI agents"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "fable 5.1",
+      "ai agents",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "独立游戏开发",
+      "chatgpt",
+      "大模型评测",
+      "生成式渲染",
+      "ai",
+      "技术评论",
+      "agentic ai",
+      "软件开发生态",
+      "fable 引擎"
+    ],
+    "video_id": "bseedCoELA2"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=cmDVxxOILq8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nModel releases aren't what they used to be.\n\nFull video and write-up: https://atmoio.substack.com/p/nobody-can-test-ai-models-anymore\n\nhttps://shipacademy.com\nA transformative course on creating, launching, and monetizing your own software business using agentic AI — for beginners and experts alike. Learn not just how to build, but how to *ship*.\n\nPrimary channel: https://youtube.com/@atmoio",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 353,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T09:32:29+00:00",
+    "tags": [
+      "人工智能",
+      "独立游戏开发",
+      "chatgpt",
+      "大模型评测",
+      "生成式渲染",
+      "ai",
+      "技术评论",
+      "Agentic AI",
+      "软件开发生态",
+      "Fable 引擎"
+    ],
+    "title": "AI 模型测试变难：Fable 5.1 与游戏开发现状｜I gave up trying to test it",
+    "video_id": "bseedCoELA2",
+    "views": 36
+  },
+  "seed_provenance": {
+    "bvid": "BV1hYtR6jEZ6",
+    "published_at": "2026/9/3 17:32:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hYtR6jEZ6"
+  },
+  "version": 1
+}

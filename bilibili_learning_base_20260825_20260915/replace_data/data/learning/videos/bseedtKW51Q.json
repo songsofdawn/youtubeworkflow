@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "every x comparison"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手机游戏",
+      "efootball",
+      "前锋推荐",
+      "免费球员",
+      "手游攻略",
+      "足球游戏",
+      "战术分析",
+      "konami",
+      "阵容搭配"
+    ],
+    "video_id": "bseedtKW51Q"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=_42617rwRDw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nKonami has given F2P players a ridiculous number of quality strikers in eFootball 27 — Aguero, Aubameyang, Luis Suarez, Eto'o, Diouf and Batistuta.\nBut with so many good FREE CFs available, which one should you actually use?\nIn this video, I break down each striker, explain their strengths and weaknesses, show the formations they work best in, and reveal how I personally use them in my squad.\nI'll also show you which players I recommend as starters and which ones are better used as super subs.\nIf you're an F2P player and you're confused about which FREE striker deserves a place in your squad, this video is for you.\nI'm Total Efootball. Let's Dominate! #efootball #efootballmobile #efootball2026 #konami #efootballtips #division1 #efootballgameplay #efootballguide #totalefootball #efootballformation",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 525,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T06:17:05+00:00",
+    "tags": [
+      "手机游戏",
+      "eFootball",
+      "前锋推荐",
+      "免费球员",
+      "手游攻略",
+      "足球游戏",
+      "战术分析",
+      "Konami",
+      "阵容搭配"
+    ],
+    "title": "eFootball 27 免费前锋全测评：F2P 玩家该用谁？｜I Tested Every FREE CF in eFootball 27… Here’s…",
+    "video_id": "bseedtKW51Q",
+    "views": 678
+  },
+  "seed_provenance": {
+    "bvid": "BV1fYt76DEny",
+    "published_at": "2026/9/2 14:17:05",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1fYt76DEny"
+  },
+  "version": 1
+}

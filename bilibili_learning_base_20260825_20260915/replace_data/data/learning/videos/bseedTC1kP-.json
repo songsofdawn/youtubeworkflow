@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "uranium"
+    ],
+    "formats": [
+      "full_process",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "nuclear materials"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "核反应堆原理",
+      "气体离心机",
+      "核能科普",
+      "核燃料制造",
+      "工业流程解析",
+      "能源安全",
+      "铀矿开采",
+      "how enriched uranium"
+    ],
+    "video_id": "bseedTC1kP-"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=68lNiatVLfc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHave you ever wondered how enriched uranium is made? From deep underground mining to high-speed centrifuges and nuclear fuel production, uranium processing is one of the most complex and powerful industrial processes in the modern world.\n\nIn this video, we break down how uranium is extracted, refined, enriched, and transformed into nuclear fuel pellets. Discover how a material found in rock becomes the energy source powering millions of homes—and why even a tiny pellet can produce enormous amounts of electricity.\n\n🎯 What You’ll Learn:\n\n✅ What uranium is and how it was discovered\n✅ The difference between uranium-238 and uranium-235\n✅ How uranium ore is mined and processed\n✅ What uranium enrichment is and how centrifuges work\n✅ How nuclear fuel pellets are manufactured\n✅ How nuclear reactors generate electricity\n\n⚡ Topics Covered:\n\nUranium mining and high-grade deposits\nArtificial ground freezing techniques\nCrushing and chemical processing\nUranium hexafluoride gas conversion\nGas centrifuge enrichment process\nNuclear fuel pellet production\nFuel rods and reactor assemblies\nNuclear fission and energy generation\n\nEnriched uranium is one of the most powerful materials ever used by humanity. From nuclear reactors to global energy production, it plays a critical role in generating electricity for millions of people worldwide.\n\n\nIf you searched for:\nhow enriched uranium is made,\nuranium enrichment process,\nhow nuclear fuel is made,\ngas centrifuge explained,\nhow nuclear power works,\nthis vi…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 648,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:46:23+00:00",
+    "tags": [
+      "核反应堆原理",
+      "气体离心机",
+      "核能科普",
+      "核燃料制造",
+      "工业流程解析",
+      "中英双语",
+      "中文翻译",
+      "能源安全",
+      "铀矿开采",
+      "how enriched uranium"
+    ],
+    "title": "【中英双语】铀矿开采与浓缩：核燃料如何制成？｜How Is Enriched Uranium Made? The Dangerous Process Behi…",
+    "video_id": "bseedTC1kP-",
+    "views": 21
+  },
+  "seed_provenance": {
+    "bvid": "BV1vf4y6REGy",
+    "published_at": "2026/8/29 15:46:23",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vf4y6REGy"
+  },
+  "version": 1
+}

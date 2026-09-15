@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "电摩测试",
+      "非公路车辆",
+      "科技数码",
+      "电动摩托车",
+      "越野摩托评测",
+      "户外骑行",
+      "electrek",
+      "70 英里时速",
+      "juiced nomadix",
+      "juiced nomad x r"
+    ],
+    "video_id": "bseedd70Ro9"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=PoNtbiKGHnM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFTC: We use income earning auto affiliate links: https://9to5mac.com/about/#affiliate",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 376,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T06:58:55+00:00",
+    "tags": [
+      "电摩测试",
+      "非公路车辆",
+      "科技数码",
+      "电动摩托车",
+      "越野摩托评测",
+      "户外骑行",
+      "Electrek",
+      "70 英里时速",
+      "juiced nomadix",
+      "Juiced Nomad X R"
+    ],
+    "title": "Juiced Nomad X R 电动越野摩托实测：性能与价格平衡点｜70 MPH E-Moto: I Tested the Juiced Nomadix R…",
+    "video_id": "bseedd70Ro9",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1Yttn6QEAh",
+    "published_at": "2026/9/2 14:58:55",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Yttn6QEAh"
+  },
+  "version": 1
+}

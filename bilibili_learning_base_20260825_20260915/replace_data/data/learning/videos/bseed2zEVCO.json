@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY",
+      "challenges"
+    ],
+    "formats": [
+      "build",
+      "challenge",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "risc-v",
+      "工程挑战",
+      "电子制作",
+      "超级计算机",
+      "开源硬件",
+      "硬核科技",
+      "个人项目",
+      "极客diy"
+    ],
+    "video_id": "bseed2zEVCO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=HRfbQJ6FdF0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTake back your personal data with Incogni! Use code BITLUNI at the link\nbelow and get 60% off an annual plan: https://incogni.com/BITLUNI (sponsor)\n\nCode & Designs: https://github.com/bitluni/Supercluster2\n\nTools and parts (affiliate links):\nRISC-V CH32V208: https://aliexpress.bitluni.net/ch32v208\nCH32V003: https://aliexpress.bitluni.net/ch32v003\nLinkE RISC-V Programmer: https://aliexpress.bitluni.net/LinkE\nCH32V003 with LinkE: https://aliexpress.bitluni.net/ch32003Linke\nVertical Connector: https://aliexpress.bitluni.net/vertm2\nLow Temp Solder Paste: https://aliexpress.bitluni.net/lowTempPaste\nFlux: https://aliexpress.bitluni.net/flux\nThermal Camera Infiray T2S+: https://aliexpress.bitluni.net/t2splus\nTweezer set: https://aliexpress.bitluni.net/tweezers\nSoldering iron TS80P: https://aliexpress.bitluni.net/TS80P\nPreheating Station: https://aliexpress.bitluni.net/heatingStation\nUltrasonic Cleaner: https://aliexpress.bitluni.net/cleaner\n\nGithub Sponsors: https://github.com/sponsors/bitluni\nPatreon: https://www.patreon.com/bitluni\nChannel membership: https://www.youtube.com/channel/UCp_5PO66faM4dBFbFFBdPSQ/join\nPaypal: https://paypal.me/bitluni\n\nbitluni live: https://www.youtube.com/@bitluniLive\nTwitch: https://www.twitch.tv/bitluni\nMastodon: https://chaos.social/@bitluni\nTwitter: @bitluni\nDiscord: https://link.bitluni.net/discord",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 872,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T05:58:25+00:00",
+    "tags": [
+      "RISC-V",
+      "工程挑战",
+      "中文翻译",
+      "电子制作",
+      "超级计算机",
+      "中英双语",
+      "开源硬件",
+      "硬核科技",
+      "个人项目",
+      "极客DIY"
+    ],
+    "title": "【中英双语】在家自制160核RISC-V超集群GPU：从设计到失败教训｜I made a GPU at home",
+    "video_id": "bseed2zEVCO",
+    "views": 48
+  },
+  "seed_provenance": {
+    "bvid": "BV1zK4k6pEWb",
+    "published_at": "2026/8/29 13:58:25",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zK4k6pEWb"
+  },
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "engineering"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "铸剑",
+      "锻造",
+      "中世纪",
+      "长剑",
+      "铁匠",
+      "金属工艺"
+    ],
+    "video_id": "bseedjMCqlD"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nFrom a colossal spring to a legendary longsword… witness the birth of a weapon worthy of knights. 🔥 Each hammer strike, each fold of steel, breathes life into raw metal, shaping it into a blade that could carve through history itself.\n\nPicture it on the battlefields of the Crusades—shining under the sun, held by warriors driven by faith, honor, and the weight of destiny. Every swing tells a story of courage, sacrifice, and the relentless fight for survival in a world of chaos and conflict.\n\nThis is not just forging—it’s history reborn, a tribute to the strength and spirit of those who shaped an era.\n\nLike, comment, and subscribe to follow the journey from steel to legend.\n\n#blacksmithing #forging #swordmaking #crusades #medieval #knights #metalwork #history #legendary #handmade #battle",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1045,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T05:44:17+00:00",
+    "tags": [
+      "铸剑",
+      "锻造",
+      "中世纪",
+      "手工",
+      "长剑",
+      "无配音",
+      "铁匠",
+      "金属工艺"
+    ],
+    "title": "把巨型弹簧锻造成一把传奇骑士长剑｜Forging a massive spring into a legendary longsword.",
+    "video_id": "bseedjMCqlD",
+    "views": 42
+  },
+  "seed_provenance": {
+    "bvid": "BV1c9bP69EMq",
+    "published_at": "2026/9/7 13:44:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1c9bP69EMq"
+  },
+  "version": 1
+}

@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "challenges"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "minecraft",
+      "模组游戏",
+      "搞笑实况",
+      "创意玩法",
+      "朋友联机",
+      "怪物复制",
+      "hardcore 生存",
+      "bedwars 玩法"
+    ],
+    "video_id": "bseedm2Zs_N"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=2LiPc78YIsQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMinecraft, But Mobs DUPLICATE When Hit...\n\n✅SUBSCRIBE ✅  @Wallibear  \n@CheapPickle @tinymacdude  @estabr0k \n\n🖥️ MY MODS: https://www.patreon.com/c/ADHDCory\n👕 MY LUNAR COSMETICS: https://www.lunarclient.com/wallibear\n🔥 JOIN DISCORD:  https://discord.gg/Wallibear\n💸  Use Code \"Wallibear\" on The Hypixel Store!!!\n🔴 WATCH LIVE:  https://www.twitch.tv/Wallibear\n📱   TWITTER: https://www.twitter.com/Wallibear\n🎥 EDITED BY:  ⁨@joopidge \n──────────────────────────────────\nTO DAY!...I played with my friends Cheappickle TINYMACDUDE ESTABR0K GOOFY GANG! BUT WE PLAYED Minecraft, but if you look at a mob it DUPLICATES!! As we go on this video gets crazier it gets. This was super hard...and we Made each other rage!! I hope you enjoy this hardcore Minecraft gameplay video\nIn this video We played on minecraft, not roblox bedwars\n──────────────────────────────────\n#Minecraft #MinecraftSurvival #Hardcore",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1649,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T16:53:06+00:00",
+    "tags": [
+      "Minecraft",
+      "模组游戏",
+      "搞笑实况",
+      "创意玩法",
+      "朋友联机",
+      "怪物复制",
+      "Hardcore 生存",
+      "Bedwars 玩法"
+    ],
+    "title": "Minecraft：被攻击时怪物会无限复制的极限生存挑战！",
+    "video_id": "bseedm2Zs_N",
+    "views": 67
+  },
+  "seed_provenance": {
+    "bvid": "BV1Eq8R6hEjq",
+    "published_at": "2026/8/27 00:53:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Eq8R6hEjq"
+  },
+  "version": 1
+}

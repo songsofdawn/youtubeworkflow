@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "full_process",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "趣味科普",
+      "化学反应",
+      "科学实验",
+      "视觉特效",
+      "碳酸饮料",
+      "创意手工",
+      "diy制作",
+      "曼妥思反应"
+    ],
+    "video_id": "bseedRY0oaW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=nhSYHEwvUw4\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHow to make Giant Rainbow Ice Cream pit with Cement, Big Coca Cola, Sprite, Orbeez, Fanta vs Mentos\n\n#Experiment #Mentos #Cocacola #Fanta #IceCream #HowtoMake\n\nWelcome to our channel! \n\nWatch as Spiderman creates a massive toothpaste eruption by dropping Mentos into giant bottles of Pepsi, Fanta, and Coca-Cola! The epic explosion from the pit is both satisfying and exciting. Don't miss this fun and colorful experiment! 🚀💥🥤\n\n👉 If you love this video, don't forget to LIKE and share it with your friends! 👉 Remember to SUBSCRIBE to the channel and turn on the notification bell so you don't miss any upcoming interesting experiments!\n\nThank you for watching and supporting our channel!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1346,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:15:20+00:00",
+    "tags": [
+      "趣味科普",
+      "化学反应",
+      "中英双语",
+      "科学实验",
+      "视觉特效",
+      "中文翻译",
+      "碳酸饮料",
+      "创意手工",
+      "DIY制作",
+      "曼妥思反应"
+    ],
+    "title": "【中英双语】水泥与可乐混合制造巨型彩虹冰淇淋坑实验｜How to make Giant Rainbow Ice Cream pit with Cement,…",
+    "video_id": "bseedRY0oaW",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1F2496REy3",
+    "published_at": "2026/8/27 20:15:20",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1F2496REy3"
+  },
+  "version": 1
+}

@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "servers",
+      "CPU",
+      "RAM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "server build",
+      "cpu engineering",
+      "pc memory",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "服务器改装",
+      "rtx 4090",
+      "游戏性能测试",
+      "硬件评测",
+      "cyberpunk",
+      "ddr5 内存",
+      "高端 pc",
+      "xeon cpu"
+    ],
+    "video_id": "bseedKo0VuU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=IIrtvKZzHrw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMy Patreon — STL + BTS: https://www.patreon.com/c/WHATPC\n\nFor advertising inquiries, please contact us here: dendyden9998@gmail.com\n\nChannel support: https://www.youtube.com/channel/UCBwEuK4PiyCW_CUzF-iGDPg/join\nCheap SSD NVMe M.2: https://s.click.aliexpress.com/e/_ooPOPeI  \nCheap DDR4 RAM: https://s.click.aliexpress.com/e/_ok0Sd1c\ni5 12400F: https://s.click.aliexpress.com/e/_opUVIb4\ni5 14400F: https://s.click.aliexpress.com/e/_oCYAXh4\nMACHINIST B760: https://s.click.aliexpress.com/e/_opPQSDC\n\nI got my hands on this insane $15,000 server PC and decided to test it for gaming! It features dual Intel Xeon Gold CPUs, 2TB of DDR5 RAM, and an RTX 4090 to see how well it can handle modern games. Can this high-end monster outperform gaming PCs? Can a server build actually work for gaming? Let's put it to the test with games like Cyberpunk 2077, GTA,  stalker 2 and more! Don't forget to subscribe for more crazy PC builds!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 729,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:38:34+00:00",
+    "tags": [
+      "服务器改装",
+      "RTX 4090",
+      "中文翻译",
+      "中英双语",
+      "游戏性能测试",
+      "硬件评测",
+      "Cyberpunk",
+      "DDR5 内存",
+      "高端 PC",
+      "Xeon CPU"
+    ],
+    "title": "【中英双语】2TB 内存双路 Xeon 服务器改游戏机实测｜2TB RAM PC vs Games",
+    "video_id": "bseedKo0VuU",
+    "views": 3
+  },
+  "seed_provenance": {
+    "bvid": "BV1VT416JEFK",
+    "published_at": "2026/8/29 15:38:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1VT416JEFK"
+  },
+  "version": 1
+}

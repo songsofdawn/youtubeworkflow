@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPT-6",
+      "Astra",
+      "AI coding"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "gpt-6",
+      "astra",
+      "ai coding",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "虚幻引擎",
+      "minecraft",
+      "unity",
+      "gpt",
+      "godot",
+      "ai生成",
+      "ai编程"
+    ],
+    "video_id": "bseedsftHV3"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🟡Higgsfield: https://higgsfield.ai/s/minimunchdev-MIvrYt\n\nGPT 6 Astra Makes Minecraft 3x - In Unity, Godot, and Unreal Engine 5. results were ridiculous\n\n00:00 Intro\n00:22 Unity\n03:54 Godot\n05:51 Unreal Engine",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 569,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T11:27:39+00:00",
+    "tags": [
+      "单机游戏",
+      "虚幻引擎",
+      "游戏开发",
+      "Minecraft",
+      "Unity",
+      "GPT",
+      "Godot",
+      "AI生成",
+      "AI编程"
+    ],
+    "title": "GPT-6 Astra用三大游戏引擎做Minecraft，结果离谱了！！！",
+    "video_id": "bseedsftHV3",
+    "views": 452
+  },
+  "seed_provenance": {
+    "bvid": "BV1qjY76cE1q",
+    "published_at": "2026/9/11 19:27:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qjY76cE1q"
+  },
+  "version": 1
+}

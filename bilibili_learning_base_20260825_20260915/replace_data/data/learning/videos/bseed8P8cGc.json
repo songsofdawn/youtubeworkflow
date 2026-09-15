@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界动画",
+      "搞笑动画",
+      "minecraft",
+      "among us",
+      "太空狼人杀",
+      "迷你船员",
+      "among us动画",
+      "击杀动画",
+      "内鬼",
+      "among us animation"
+    ],
+    "video_id": "bseed8P8cGc"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHappy Ending!\n----------------------------------------\nMore among us animations to come,\nso please subscribe if you liked the video!\n\nsubscribe▶ https://bit.ly/subscribeyall\nemail▶ hellow_204701@gmail.com\n----------------------------------------\n\nThanks for watching!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 643,
+    "likes": 11,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T16:15:05+00:00",
+    "tags": [
+      "我的世界动画",
+      "搞笑动画",
+      "Minecraft",
+      "among us",
+      "太空狼人杀",
+      "迷你船员",
+      "Among Us动画",
+      "击杀动画",
+      "内鬼",
+      "among us animation"
+    ],
+    "title": "小小船员勇闯MC世界营救Verity大结局｜Mini Crewmate Save Verity Minecraft - Final | Among Us",
+    "video_id": "bseed8P8cGc",
+    "views": 876
+  },
+  "seed_provenance": {
+    "bvid": "BV15MYR6wEvp",
+    "published_at": "2026/9/13 00:15:05",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15MYR6wEvp"
+  },
+  "version": 1
+}

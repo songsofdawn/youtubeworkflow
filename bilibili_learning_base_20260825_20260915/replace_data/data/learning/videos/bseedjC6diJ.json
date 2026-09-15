@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "3D art",
+      "animation"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "3d art",
+      "animation process",
+      "animation"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ui设计",
+      "教程演示",
+      "aftereffects",
+      "motiongraphics",
+      "深度图",
+      "3d轮播",
+      "saas动画",
+      "动效技巧"
+    ],
+    "video_id": "bseedjC6diJ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=GVSKq40wWiA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔗 SaaS Kit: https://solairmotion.gumroad.com/l/SaaSKit\n\n\nFull After Effects tutorial: a complete viral SaaS product animation from scratch. Depth reveal transition, animated UI panel, cursor interaction, exploding text and a 3D carousel.\n\n⏱ CHAPTERS\n0:00 Intro\n0:23 Depth Reveal transition\n1:04 Building the UI panel\n4:47 UI Animation\n6:57 Scene 2\n9:11 Text Animation\n9:48 Random shapes background\n12:57 3D carousel\n16:05 Outro\n\n🧰 WHAT YOU'LL LEARN\n- Depth reveal transition with an AI depth map\n- Building a clean SaaS UI panel with shape layers\n- Stroke icons — rounded caps, corners, proper scaling\n- Typing and word-by-word text reveals with stagger\n- Cursor animation that drives the button state\n- Sharp easing graphs that make motion feel expensive\n- A layered 3D-style carousel with real depth\n\nOur website: https://solairmotion.com/\n\n\n#AfterEffects #MotionDesign #SaaSAnimation",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 980,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T13:20:59+00:00",
+    "tags": [
+      "UI设计",
+      "教程演示",
+      "计算机技术",
+      "AfterEffects",
+      "MotionGraphics",
+      "深度图",
+      "3D轮播",
+      "SaaS动画",
+      "动效技巧"
+    ],
+    "title": "【中英双语】从零制作SaaS动画：深度转场与UI交互全流程教程｜SaaS Animation Like Base44 Tutotial | Motion Gr…",
+    "video_id": "bseedjC6diJ",
+    "views": 105
+  },
+  "seed_provenance": {
+    "bvid": "BV1VutH69EXp",
+    "published_at": "2026/8/30 21:20:59",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1VutH69EXp"
+  },
+  "version": 1
+}

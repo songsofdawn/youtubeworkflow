@@ -1,0 +1,122 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1",
+      "AI agents",
+      "local AI"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "fable 5.1",
+      "ai agents",
+      "local ai",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程辅助",
+      "大模型评测",
+      "本地ai部署",
+      "claude fable",
+      "智能体工作流",
+      "windows 2000 模拟",
+      "tech2wild"
+    ],
+    "video_id": "bseedzPLDTq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=ZGcgwWtJHks\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nClaude Fable 5.1 just dropped, and I’m putting it to work immediately. The new model is aimed heavily at coding, knowledge work, computer use, and agentic workflows—and some of the early benchmark jumps over Fable 5 and Opus 5 are pretty wild.\n\nIn this video, I break down the new benchmarks and then actually TEST Fable 5.1 by having it build:\n\n🔥 A Windows 2000-inspired interactive desktop\n🔥 A complete Tech2Wild website from scratch\n🔥 A 3D voxel simulation\n🔥 Coding, design, and agentic-style workflows\n\nAnd the results got way more interesting than I expected. The website even pulled together information around my hardware, repos, models, benchmarks, and Tech2Wild content.\n\nI also talk about where Fable 5.1 could fit inside my AI agent stack, how it compares to Opus 5, and whether frontier cloud models are striking back after local models like DeepSeek and GLM have been absolutely killing it lately.\n\nIs Fable 5.1 actually better than Opus 5? And is this enough to keep me using Claude?\n\nSubscribe for more Local AI, DGX Spark, RTX 3090, open-model deployments, agents, benchmarks, and real-world AI testing.\n\n#Claude #Fable51 #Anthropic #AI #LocalAI #LLM #Coding #AgenticAI #Tech2Wild\n\n━━━━━━━━━━━━━━━━━━\n💻 GitHub → https://github.com/tonyd2wild\n🐦 Follow on X → https://x.com/Tech2Wild\n━━━━━━━━━━━━━━━━━━",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 955,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T13:21:37+00:00",
+    "tags": [
+      "编程辅助",
+      "大模型评测",
+      "本地AI部署",
+      "Claude Fable",
+      "计算机技术",
+      "智能体工作流",
+      "Windows 2000 模拟",
+      "Tech2Wild"
+    ],
+    "title": "Claude Fable 5.1 实测：代码与代理工作流表现如何？｜Claude Fable 5.1 Is HERE — Better Than Opus 5…",
+    "video_id": "bseedzPLDTq",
+    "views": 63
+  },
+  "seed_provenance": {
+    "bvid": "BV1XEtU6aE9G",
+    "published_at": "2026/9/2 21:21:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1XEtU6aE9G"
+  },
+  "version": 1
+}

@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "测评",
+      "ai产品",
+      "广告带货",
+      "开箱实测"
+    ],
+    "video_id": "bseedA_wEbH"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nReacts Channel : https://www.youtube.com/@VladandChrisReacts\nGaming Channel: https://www.youtube.com/@vladandchrisgaming\nInstagram: https://www.instagram.com/vladandchris/",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2283,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T14:33:35+00:00",
+    "tags": [
+      "测评",
+      "日常",
+      "搞笑",
+      "AI产品",
+      "广告带货",
+      "开箱实测"
+    ],
+    "title": "实测网上真假难辨的AI广告产品｜I Tested AI Scam Products",
+    "video_id": "bseedA_wEbH",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1fEbL6jEPV",
+    "published_at": "2026/9/5 22:33:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1fEbL6jEPV"
+  },
+  "version": 1
+}

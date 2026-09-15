@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "园艺",
+      "家庭种植",
+      "果园管理",
+      "盆栽",
+      "扦插",
+      "火龙果",
+      "种植教程",
+      "阳台种菜",
+      "john garden",
+      "diy garden"
+    ],
+    "video_id": "bseedaIrMio"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHow to grow Purple dragon fruit from cuttings for beginners\nSubscribe and View more here: https://www.youtube.com/channel/UCKoMmMDJYMOMmZ7PbAWusgw/\n==================================================================\n*More video:#DIYgardenideas #johnideas #ideas\nView more ideas\nFacebook: https://www.facebook.com/5T1TV\nTwitter: https://twitter.com/namtrinhhau\nPinterest: https://www.pinterest.com/ideas2034/\nInstagram: https://www.instagram.com/john_ideas_garden/",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 580,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T06:55:46+00:00",
+    "tags": [
+      "园艺",
+      "家庭种植",
+      "果园管理",
+      "盆栽",
+      "扦插",
+      "火龙果",
+      "种植教程",
+      "阳台种菜",
+      "John garden",
+      "diy garden"
+    ],
+    "title": "新手教程：火龙果扦插种植方法｜How to grow Purple dragon fruit from cuttings for beginners",
+    "video_id": "bseedaIrMio",
+    "views": 83
+  },
+  "seed_provenance": {
+    "bvid": "BV1EXbp6TEVR",
+    "published_at": "2026/9/6 14:55:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1EXbp6TEVR"
+  },
+  "version": 1
+}

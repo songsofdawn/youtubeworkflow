@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.52,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "wildlife"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "wildlife documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "濒危物种",
+      "狮子",
+      "野生动物",
+      "摩洛哥",
+      "动物科普",
+      "lion",
+      "物种保护",
+      "巴巴里狮",
+      "阿特拉斯狮",
+      "atlas lion"
+    ],
+    "video_id": "bseed9bnnyo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 6,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn January 2024, Morocco erupted with impossible reports: wild lions spotted in the Atlas Mountains for the first time in nearly 100 years. Truck drivers swore they saw massive cats crossing roads. Shepherds reported brutal attacks on their flocks. Social media exploded with low-quality videos and alleged footprints. Had the legendary Atlas Lion—the king of the mountains that once terrorized North Africa and fought in Roman arenas—truly returned from extinction?\n\nThe truth is even more incredible than the legend. While government investigators debunked the 2024 sightings as misidentified jackals and foxes, they uncovered something extraordinary: 90 purebred Atlas Lions still exist, hidden away as direct descendants of Morocco's royal collection. These aren't just any lions - they're the last genetic remnants of the mountain giants that ruled North Africa for centuries until the final wild specimen was shot in 1922.\n\nBut here's the shocking twist: those legendary 660-pound behemoths? Historical exaggeration. Real Atlas Lions were the same size as today's African lions, but uniquely adapted with flowing belly-length manes for brutal mountain winters and robust builds for rocky terrain. \n\nNow, Morocco is planning the largest national park in North Africa specifically to bring these royal lions home. Could the king of the mountains actually roar free again?\n\n#AtlasLion #BarbaryLion #Morocco #Lions #Extinction #Wildlife #Conservation #BigCats #Africa #AtlasMountains #RoyalLions #WildlifeConservation #…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 709,
+    "likes": 28,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T14:47:13+00:00",
+    "tags": [
+      "濒危物种",
+      "狮子",
+      "野生动物",
+      "摩洛哥",
+      "动物科普",
+      "lion",
+      "物种保护",
+      "巴巴里狮",
+      "阿特拉斯狮",
+      "atlas lion"
+    ],
+    "title": "阿特拉斯狮子并未灭绝？摩洛哥目击事件真相｜Scientists Found the “Extinct” Atlas Lion — And It Shouldn…",
+    "video_id": "bseed9bnnyo",
+    "views": 1457
+  },
+  "seed_provenance": {
+    "bvid": "BV1SqbL6PEG1",
+    "published_at": "2026/9/5 22:47:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1SqbL6PEG1"
+  },
+  "version": 1
+}

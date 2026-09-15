@@ -1,0 +1,99 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "我的世界",
+      "整活视频",
+      "模组玩法",
+      "ai 合成",
+      "游戏搞笑",
+      "讽刺喜剧",
+      "美国总统",
+      "联机互动",
+      "us presidents play m"
+    ],
+    "video_id": "bseeda-1IGj"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=9QH4w0RZOO8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEpisode 141 of The US Presidents Trump, Biden, Obama, and Bush and even Bill playing Modded Minecraft together and mess around. This video is ENTIRELY satire/comedy and is only made to entertain and create laughs. I am in no way trying to offend or impersonate anyone nor trying to create false information. Neither figure in this video is real and what you can see and hear is made by an A.I. tool that allows the user to recreate and synthesize voices.\n\nBecome a Channel Member to get special perks! https://www.youtube.com/channel/UCPI8BwGKJE0a1cNJ3hsXikA/join\n\nLongest Minecraft Video 100 HOURS https://www.youtube.com/watch?v=mhQdaj3LNzM&t=7170s\n\nUS Presidents Play Modded Minecraft 1-100\nhttps://www.youtube.com/watch?v=K5wp-t2Cx7I&t=74616s\n\nUS Presidents Play Simulator Games Marathon https://www.youtube.com/watch?v=t2fgzQqEqEY&t=44s\n\nPresidents Play Modded Minecraft Christmas Special https://www.youtube.com/watch?v=Iv08PjswkDw&t=6s\n\nPresidents Play Supermarket Simulator 1-15 https://www.youtube.com/watch?v=FABPCCmF4_c&t=1261s\n\nUS Presidents Play Modded Minecraft 140\n\nFollow The Schmozzle Twitter (X) https://twitter.com/SchmozzleYT\nCheck out my Vlog Channel! @Jeffincats \nGaming Channel:@jeffplayedgames \n#minecraft #presidentsplay #verity",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 965,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T20:19:50+00:00",
+    "tags": [
+      "我的世界",
+      "整活视频",
+      "模组玩法",
+      "AI 合成",
+      "游戏搞笑",
+      "讽刺喜剧",
+      "美国总统",
+      "计算机技术",
+      "联机互动",
+      "US Presidents Play M"
+    ],
+    "title": "【中英双语】AI 总统玩修改版我的世界第 141 集恶搞整活｜US Presidents Play Modded Minecraft (WebDisplays)",
+    "video_id": "bseeda-1IGj",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV13Jtx6YEdD",
+    "published_at": "2026/8/31 04:19:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13Jtx6YEdD"
+  },
+  "version": 1
+}

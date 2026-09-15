@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "engineering"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "农场",
+      "农场日常",
+      "无人驾驶拖拉机",
+      "农业机械",
+      "拖拉机",
+      "自动化",
+      "约翰迪尔",
+      "farm",
+      "agriculture",
+      "工业·工程·机械"
+    ],
+    "video_id": "bseedGhq36H"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTaking care of your health just got easier, thanks to my sponsor Zocdoc — start here at: https://zocdoc.com/laurafarms\n\n\"Roger's Hay Day\" is available for Pre-order at https://laurafarmsbook.com My mission is to get this book in as many kids' hands as possible. We are over 30% of the way to our goal!! \n\nWe are SO proud to offer you and your family First Market Beef: https://firstmarketbeef.com/ Inventory goes VERY fast!! Check out the website and get your email entered to be notified when we restock. Thank you so much to everyone who has placed orders already. We are so grateful you trust us to help feed your family. We have shipped to 49 states!\n\nHow is September here already? Today on the farm we hire a new worker. We see if Bessie can make our lives a little easier. What do you think? Would you hire a robot? Thank you for spending Fridays with us here on the farm. We love doing what we do every day! Have a great weekend. \n\n#farming #tractor #home #robot \n\nCheck out the shirts I love to wear! Happy 250th America!  https://www.bunkerbranding.com/pages/laura-farms\n\nGRANT AND LAURA ARE HAPPILY MARRIED!! There are so many scams these days, be sure to visit https://laurafarms.com to see my REAL and ONLY social media accounts, check local weather, news, and markets, and stay up to date! I am not messaging anyone. I'm so sorry, but if you think you're messaging me privately, that is a scam: Don't fall for it!!! \n\nWhether you're curious about farm life, technology and practices, or just want to see some…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2124,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T17:14:44+00:00",
+    "tags": [
+      "农场",
+      "农场日常",
+      "无人驾驶拖拉机",
+      "农业机械",
+      "拖拉机",
+      "自动化",
+      "约翰迪尔",
+      "Farm",
+      "Agriculture",
+      "工业·工程·机械"
+    ],
+    "title": "让无人驾驶拖拉机接管我的农场｜I Let a Robot Take Over My Farm",
+    "video_id": "bseedGhq36H",
+    "views": 170
+  },
+  "seed_provenance": {
+    "bvid": "BV1uRbx6YEU8",
+    "published_at": "2026/9/7 01:14:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1uRbx6YEU8"
+  },
+  "version": 1
+}

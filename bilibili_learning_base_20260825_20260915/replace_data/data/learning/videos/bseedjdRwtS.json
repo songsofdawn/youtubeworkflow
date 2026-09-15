@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "engineering"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "高铁",
+      "轨道交通",
+      "基建狂魔",
+      "火车站",
+      "外国人在中国",
+      "广州",
+      "中国基建",
+      "广州白云站",
+      "megaprojects",
+      "high speed train"
+    ],
+    "video_id": "bseedjdRwtS"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThe US Can't Compete with China's Train Stations!\n\nGuangzhou Baiyun Railway Station is not just a train station — it feels more like a futuristic airport built for high-speed rail.\n\nIn this video, I explore one of China’s most impressive new railway stations and show the massive scale, modern design, huge waiting halls, platforms, passenger flow, and futuristic architecture inside Guangzhou Baiyun Railway Station.\n\nThis station is part of China’s rapidly expanding rail network and plays an important role in the Greater Bay Area, connecting Guangzhou with high-speed rail, intercity rail, and conventional train services. The size of this place is hard to understand until you see it in person.\n\nI also compare China’s modern railway infrastructure with stations in the West, where many major transport hubs are old, overcrowded, outdated, and struggling to keep up with modern passenger demand.\n\nIf you’re interested in China high-speed rail, Guangzhou infrastructure, Chinese train stations, modern China, Greater Bay Area development, China transport, Chinese railways, and the future of public transport, this video gives you a first-hand look inside one of China’s newest mega railway hubs.\n\nThis is what railway travel looks like when a country builds for the future.\n\n#China #Guangzhou #HighSpeedRail #ChinaRailway #GuangzhouBaiyunStation #ChineseInfrastructure #GreaterBayArea #ModernChina #TrainStation #chinatravel \n\nA massive shoutout to @rayneo_global for sponsoring this video and sending over t…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1792,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T20:53:39+00:00",
+    "tags": [
+      "高铁",
+      "轨道交通",
+      "基建狂魔",
+      "火车站",
+      "外国人在中国",
+      "广州",
+      "中国基建",
+      "广州白云站",
+      "megaprojects",
+      "high speed train"
+    ],
+    "title": "老外实探广州白云站：这哪是火车站，简直是科幻机场｜America ain't got sh*t compared to China...",
+    "video_id": "bseedjdRwtS",
+    "views": 75
+  },
+  "seed_provenance": {
+    "bvid": "BV1PobM6MET5",
+    "published_at": "2026/9/8 04:53:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PobM6MET5"
+  },
+  "version": 1
+}

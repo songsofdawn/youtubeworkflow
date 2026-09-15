@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "铸铁锅美食",
+      "培根包裹",
+      "荷兰锅料理",
+      "鹿肉烹饪",
+      "免解冻烹饪",
+      "野味食谱",
+      "狩猎食材",
+      "慢炖技巧"
+    ],
+    "video_id": "bseedDg2jZe"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=Gkijk4GvJko\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEvery hunter has one of these buried in the freezer — a whole frozen venison shoulder that nobody really wants to deal with. But what if you don't thaw it at all?\nI took a rock-solid venison shoulder straight from the deep freezer, put it into a cast-iron Dutch oven, and used a cooking method with roots going back nearly 90 years. Old U.S. government and military references suggested cooking meat from frozen wasn't nearly as crazy as it sounds.\nI wasn't convinced.\nThe result genuinely surprised me. Tender, moist venison, bacon mashed potatoes, green beans and homemade gravy — all starting with a frozen-solid deer shoulder.\nFrozen Venison Shoulder — Dutch Oven Method\n\nAmazon Links:\nCast Iron Dutch Oven: https://amzn.to/3UCUd8w\nLarge Cutting Board: https://amzn.to/4xrYOJk\nBeef Bouillon: https://amzn.to/3Svb24K\nHenckels Chef Knife: https://amzn.to/4xrZ6jo\n\nIngredients\n1 whole bone-in venison shoulder, frozen solid\n1 package bacon\nKosher salt\nCoarse black pepper\nGarlic powder\nOnion powder\nRosemary\nThyme\n2–3 onions, roughly chopped\nCarrots, roughly chopped\nCelery, roughly chopped\nGarlic\nBetter Than Bouillon Beef Base\nWater\nWorcestershire sauce\nButter, as needed\nFlour, for gravy\nThe Method\nStart with the venison shoulder completely frozen. Mine came directly from the deep freezer and was roughly 20°F.\nPlace the frozen shoulder uncovered in a heavy cast-iron Dutch oven and put it into a 300°F oven for approximately one hour. Don't worry about trying to season it heavily yet — seasoning doesn't s…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 835,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:50:27+00:00",
+    "tags": [
+      "铸铁锅美食",
+      "培根包裹",
+      "荷兰锅料理",
+      "中文翻译",
+      "中英双语",
+      "鹿肉烹饪",
+      "免解冻烹饪",
+      "野味食谱",
+      "狩猎食材",
+      "慢炖技巧"
+    ],
+    "title": "【中英双语】免解冻直接炖：冷冻鹿肩肉的美味做法｜Every Hunter Has One, I thought this Frozen Deer Should…",
+    "video_id": "bseedDg2jZe",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1Yn4y6DEWv",
+    "published_at": "2026/8/29 17:50:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Yn4y6DEWv"
+  },
+  "version": 1
+}

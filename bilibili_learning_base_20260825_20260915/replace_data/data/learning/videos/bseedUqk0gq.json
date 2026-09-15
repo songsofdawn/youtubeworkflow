@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Qwen",
+      "LLM"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "qwen",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "本地部署",
+      "apple silicon",
+      "大语言模型",
+      "llama.cpp",
+      "ai 测试",
+      "moe 架构",
+      "qwen3.8",
+      "qwen3.8-flash-next",
+      "unsloth",
+      "qwen 3.8 flash next"
+    ],
+    "video_id": "bseedUqk0gq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=RTydhfQNBak\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI got this title inspiration from this Tweet 🐥 🤷‍♂️ https://x.com/UnslothAI/status/2092639558815060281?s=20\n\nIn this video, we take a deep dive into Qwen3.8-Flash-Next, explore its architecture, and run the model locally using Unsloth GGUF + llama.cpp on Apple Silicon.\n\nWe’ll look at how a model with 125B total parameters and approximately 6B activated parameters works, including its 512-expert MoE architecture, Gated DeltaNet, Qwen Sparse Attention, Gated Residual, N-gram Embeddings, and Multi-Token Prediction (MTP).\n\nChapters:\n00:00 - Introduction\n01:54 - Additional 51B Embedding Parameters\n05:02 - Setting up Llama.cpp to run the 1Bit Quant Model\n09:42 - Running 4-Bit Quant QWEN3.8Flash-Next Model\n\nMy AI related Courses for you to empower today:\nLearn my latest course launched this week on ZERO Code AI Tests: Automate Software Tests in Plain English: https://www.udemy.com/course/zero-code-ai-testing/?couponCode=LEARN_AUG_26\n\nUse code: LEARN_AUG_26 for 85% OFF (limited time)\n\nMy Other AI related Courses for you to empower today:\nTo Learn more about building your own AI Agents and Testing AI Agents, follow the courses below available in Udemy with Discount coupon codes.\n\nUse coupon code : LEARN_AUG_26\n\n🤖 AI-Driven Test Automation: Playwright, Selenium, LLMs & More\nhttps://www.udemy.com/course/ai-test-automation-selenium-playwright-llms/?couponCode=LEARN_AUG_26\n\n🤖 https://www.udemy.com/course/genai-multi-agent-software-testing/?couponCode=LEARN_AUG_26\n\n🤖Test AI & LLM App with De…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 821,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T18:49:14+00:00",
+    "tags": [
+      "本地部署",
+      "Apple Silicon",
+      "大语言模型",
+      "llama.cpp",
+      "AI 测试",
+      "MoE 架构",
+      "Qwen3.8",
+      "Qwen3.8-Flash-Next",
+      "Unsloth",
+      "Qwen 3.8 Flash Next"
+    ],
+    "title": "【中英双语】本地运行 Qwen3.8-Flash-Next：125B MoE 模型在｜Qwen3.8-Flash-Next: 125B MoE Model O…",
+    "video_id": "bseedUqk0gq",
+    "views": 119
+  },
+  "seed_provenance": {
+    "bvid": "BV1Qetp6xEg8",
+    "published_at": "2026/8/31 02:49:14",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Qetp6xEg8"
+  },
+  "version": 1
+}

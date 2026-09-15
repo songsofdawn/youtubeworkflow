@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "baking"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "baking",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "甜点",
+      "黄油派皮",
+      "烘焙科学",
+      "苹果派",
+      "派皮",
+      "烘焙教程",
+      "apple pie",
+      "apple pie recipe"
+    ],
+    "video_id": "bseedyqdeB3"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCompletely Updated Apple Pie Recipe with Precooked Caramel Juices & All-Butter Crust for a Never-Runny Perfect Slice\nIf apple pie has intimidated you — shrinking crusts, soggy bottoms, or filling that boils over — this step-by-step masterclass shows you how to fix it for good.\n\n📌 This is my 2026 COMPLETE REMAKE — newly filmed start to finish with a new all-butter shingled crust and precooked caramel-juice method. Not a re-upload of my classic apple pie.  Here is a link to my original apple pie: https://youtu.be/KQHJCpZZOK8  (This was my very first video ever.  I knew how to make a pie, but did not know how to make a video LOL).\n\nPRINTABLE RECIPE:  https://docs.google.com/document/d/1o2vwmO8qE82-p-nlOLV57cRX8UWdkL1WIKOl6h30DGg/edit?usp=sharing\n\nLook how beautiful this is! Today I'm sharing my completely updated apple pie — tender, shatteringly flaky all-butter crust (shingled, no laminating folds) and Granny Smith apples that hold their shape in a glossy, perfect-consistency filling.\n\nTHE SCIENCE: We macerate the apples with sugars to draw out the juices, then precook those juices with flour into a rich caramel sauce on the stovetop. Once cooled to about 70°F, we stir it back into the apples before baking. Result: the filling is already set, bake time is shorter, and you'll never get that filling eruption or watery pool.\n\nIN THIS VIDEO YOU'LL LEARN:\n• How to shingle cold butter for a tender, flaky all-butter crust that doesn't shrink or melt\n• Why to macerate first, then cook juices in…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1241,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T04:58:58+00:00",
+    "tags": [
+      "美食制作",
+      "甜点",
+      "黄油派皮",
+      "烘焙科学",
+      "苹果派",
+      "派皮",
+      "烘焙教程",
+      "apple pie",
+      "apple pie recipe"
+    ],
+    "title": "苹果派大师课：永远不流汤的完美切块秘诀｜Apple Pie Masterclass: The Science of the Perfect Apple Pie!",
+    "video_id": "bseedyqdeB3",
+    "views": 245
+  },
+  "seed_provenance": {
+    "bvid": "BV1iZY66hEXq",
+    "published_at": "2026/9/14 12:58:58",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1iZY66hEXq"
+  },
+  "version": 1
+}

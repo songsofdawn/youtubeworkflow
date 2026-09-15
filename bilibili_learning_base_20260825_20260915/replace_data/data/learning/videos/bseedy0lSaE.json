@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "100_days",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft 100 days",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "生存实况",
+      "minecraft",
+      "minecraft hardcore",
+      "荒岛生存",
+      "极限模式",
+      "100天生存",
+      "100 days",
+      "硬核挑战"
+    ],
+    "video_id": "bseedy0lSaE"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI Survived 100 Days in ULTRA Minecraft Hardcore...\n\n🔥Merch: http://creatormerch.com/blooh \n\n🔴 WATCH MORE TRIOS VIDEOS HERE: https://www.youtube.com/playlist?list=PL9kK6TNaqLl49ElMs-tnwp4BiMkcBeuoN\n\nFOLLOW ME HERE: \n❤️Patreon » https://patreon.com/bloooh\n💬Discord » https://discord.gg/deJrBhqAWZ\n🎙️Twitch » https://www.twitch.tv/bloohmc\n🦜Twitter » https://x.com/PossiblyBlooh\n\nServer Hosting 🡆 https://billing.rocketnode.com/aff.php?aff=960500\nUse code 'BLOOH' for 25% off!\n\n🎶 Music (epidemic sounds):\nhttps://www.epidemicsound.com/referral/wgt3mx\n\nToday I attempted to survive 100 days in ULTRA Minecraft Hardcore, \nHardcore mode in Minecraft is the hardest difficulty of the game, so why not try and challenge myself to survive 100 days in the hardest Minecraft difficulty Minecraft Hardcore, making this video 100 Days in ultra hardcore in 26.2 Minecraft Hardcore! I survived 100 Days on a deserted island on 26.2 Minecraft Hardcore and this is what happened, how much can I achieve in these 100 Days? What crazy builds and farms will I make with-in these 100 Days on ultra minecraft in Minecraft hardcore?\n\n#minecraft100days #minecrafthardcore #100day",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1929,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T09:21:38+00:00",
+    "tags": [
+      "我的世界",
+      "生存实况",
+      "单机游戏",
+      "Minecraft",
+      "minecraft hardcore",
+      "荒岛生存",
+      "极限模式",
+      "100天生存",
+      "100 days",
+      "硬核挑战"
+    ],
+    "title": "荒岛极限生存！我在ULTRA极限模式硬扛100天｜I Survived 100 Days in ULTRA Minecraft Hardcore...",
+    "video_id": "bseedy0lSaE",
+    "views": 127
+  },
+  "seed_provenance": {
+    "bvid": "BV1jxbK6DEtx",
+    "published_at": "2026/9/7 17:21:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1jxbK6DEtx"
+  },
+  "version": 1
+}

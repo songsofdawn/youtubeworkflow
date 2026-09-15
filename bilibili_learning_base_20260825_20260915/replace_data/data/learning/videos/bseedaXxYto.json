@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "street food"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "street food",
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "街头小吃",
+      "小吃",
+      "孟加拉国",
+      "street food",
+      "达卡",
+      "mohommadpur street f"
+    ],
+    "video_id": "bseedaXxYto"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 3,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this episode, we try the street food of Uttara, Mohommadpur, Mirpur, Banani and yo I gained 3 kgs right after \n\nI hope you watch the video and umm if you like or nah bolo",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1897,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T17:26:52+00:00",
+    "tags": [
+      "街头小吃",
+      "小吃",
+      "美食记录",
+      "孟加拉国",
+      "美食测评",
+      "美食探店",
+      "street food",
+      "达卡",
+      "Mohommadpur street f"
+    ],
+    "title": "吃遍达卡各区街头小吃，寻找孟加拉最强街头美食｜Trying Every Street Food in Dhaka (FINAL BOSS)",
+    "video_id": "bseedaXxYto",
+    "views": 103
+  },
+  "seed_provenance": {
+    "bvid": "BV1uLbx6FEto",
+    "published_at": "2026/9/7 01:26:52",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1uLbx6FEto"
+  },
+  "version": 1
+}

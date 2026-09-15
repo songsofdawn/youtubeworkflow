@@ -1,0 +1,88 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening",
+      "self-sufficient farming"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening",
+      "self sufficient farm",
+      "vegetable garden"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "垂直种植",
+      "vegetable garden",
+      "自给自足",
+      "家庭园艺",
+      "蔬菜种植",
+      "阳台种菜",
+      "有机农业",
+      "种植技巧",
+      "teo garden",
+      "高产花园"
+    ],
+    "video_id": "bseed5Sc0lA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=nQPXZ6d4Zxg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nKeeping fresh vegetables growing in my garden isn't just about planting more—it's about making every growing area work together so there is always something developing for the next harvest.\n\nIn this video, I share how I organize my garden to keep a variety of fresh vegetables growing through different stages. Leafy greens fill productive beds and containers, while tomatoes, cucumbers, herbs, and climbing vegetables have their own growing areas and supports.\n\nBy combining raised beds, containers, vertical trellises, and well-organized planting zones, I can use the garden efficiently while giving each crop the space it needs. As some vegetables become ready to harvest, others are already growing behind them.\n\nThe goal is simple: keep the garden productive instead of relying on one large harvest. With thoughtful planting, good use of available growing areas, and a mix of vegetables at different stages, my garden can provide fresh food one harvest after another.\n\nIf you enjoy growing your own vegetables and want inspiration for keeping your garden productive, organized, and full of fresh food, I hope this garden gives you some useful ideas.\n\n\n#VegetableGarden #GrowVegetables #GrowYourOwnFood #FreshVegetables #ProductiveGarden #HomeGardening #VegetableGardening #KitchenGarden #GardenHarvest #HomegrownFood #EdibleGarden #ContainerGardening #VerticalGardening #GrowFoodAtHome #GardeningIdeas\n\n🌳 This is how I mix the soil to grow vegetables at home\nhttps://youtu.be/0802EJmksIY\nHope useful for you.\n\n🌳…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1063,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T23:09:17+00:00",
+    "tags": [
+      "垂直种植",
+      "vegetable garden",
+      "自给自足",
+      "家庭园艺",
+      "蔬菜种植",
+      "阳台种菜",
+      "有机农业",
+      "种植技巧",
+      "TEO Garden",
+      "高产花园"
+    ],
+    "title": "【中英双语】让菜园持续丰收：分层种植与空间利用技巧｜How I Keep My Garden Growing Fresh Vegetables for One…",
+    "video_id": "bseed5Sc0lA",
+    "views": 519
+  },
+  "seed_provenance": {
+    "bvid": "BV1RXtW6wEgv",
+    "published_at": "2026/8/31 07:09:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1RXtW6wEgv"
+  },
+  "version": 1
+}

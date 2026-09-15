@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "experiment",
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "科技前沿",
+      "大模型对比",
+      "ai 游戏开发",
+      "独立游戏制作",
+      "软件评测",
+      "ai",
+      "生成式 ai",
+      "ai builds game"
+    ],
+    "video_id": "bseed_4rC1n"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=5MIo3HhFddo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYoo twins, so after testing Opus 5 vs Sonnet 5 i just had to test GPT 5.6 Sol vs GPT 5.6 Terra. so today i made them each create 4 games that got more complex throughout the video. Let me know your favorite Game!\n\nI hope you guys enjoyed the Video\n\nAlso join the Discord: \nhttps://discord.gg/g2KFCg95P\nYou can show off your own AI creations and chat with others about them there\n\nChapters\n00:00 Intro\n01:03 Game 1\n02:51 Game 2\n04:48 Intermission\n05:04 Game 3\n06:46 Game 4",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 604,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T16:17:06+00:00",
+    "tags": [
+      "科技前沿",
+      "大模型对比",
+      "AI 游戏开发",
+      "独立游戏制作",
+      "计算机技术",
+      "软件评测",
+      "ai",
+      "生成式 AI",
+      "ai builds game"
+    ],
+    "title": "【中英双语】GPT 5.6 Sol与Terra游戏开发成本实测对比｜I tested GPT 5.6 Sol against 5.6 Terra for ma…",
+    "video_id": "bseed_4rC1n",
+    "views": 134
+  },
+  "seed_provenance": {
+    "bvid": "BV1oNtW6NEHk",
+    "published_at": "2026/8/31 00:17:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1oNtW6NEHk"
+  },
+  "version": 1
+}

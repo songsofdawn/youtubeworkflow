@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Bitcoin"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "bitcoin industry"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "bitaxe gamma",
+      "nerdminer 2",
+      "musk miners",
+      "bitcoin mining for b",
+      "asic miner 2025",
+      "hosted bitcoin minin",
+      "solo bitcoin mining",
+      "how to mine bitcoin",
+      "luqee mining",
+      "bitmain s21 xp hydro"
+    ],
+    "video_id": "bseedW2pGOd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEvery ten minutes, the Bitcoin network pays out 3.125 BTC to a winner. That's about $200,000 right now. And you don't need a warehouse full of machines to be in that race. In this video, I cover three completely different ways to mine Bitcoin, from a $35 USB stick on your desk to a no-hardware subscription starting at $5 a month to owning real industrial mining machines at a professional facility. Three budgets, three levels of effort, and real numbers from machines I personally run so you can figure out which one actually makes sense for you.\n\n➤Super EASY Bitcoin mining with LuqEE: https://a.ndy.fyi/LuqEE\nPROMO CODE: YOURFRIENDANDY\n\n➤Mine Bitcoin with ViaBTC pool here: https://a.ndy.fyi/ViaBTC\n\n➤Buy and host a machine with Musk Miners: https://a.ndy.fyi/MuskMiners \n\n➤NerdMiner 2: https://a.ndy.fyi/NerdMiner2-BTCmerch\n7x Miner Combo: https://a.ndy.fyi/NerdMiner2Combo-BTCmerch\nDiscount code: ANDY\n\n➤Bitaxe Gamma: https://a.ndy.fyi/BitAxe-SoloSatoshi\n\n➤BitAxe Touch: https://a.ndy.fyi/BitaxeTouch-SoloSatoshi\nDiscount code: YOURFRIENDANDY\n\nClaim your FREE Passive Income Course and set up your first passive income stream this week 👉 https://zzzmoney.club/passive-income-course\n\n➤Book time with me: https://a.ndy.fyi/BookMe\n\n➤Join Zzz Money Club: https://a.ndy.fyi/ZZZ\n\n➤Join my newsletter: https://a.ndy.fyi/Email\n\n➤ Follow Me On Twitter: https://a.ndy.fyi/twtr\n\nChapters:\n00:00 Intro\n00:30 How Does Mining Work?\n02:19 Method 1\n03:59 Who Is the First Method For?\n04:52 Method 2\n08:52 Who Is…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 910,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T00:59:16+00:00",
+    "tags": [
+      "Bitaxe Gamma",
+      "NerdMiner 2",
+      "Musk Miners",
+      "Bitcoin mining for b",
+      "ASIC miner 2025",
+      "hosted Bitcoin minin",
+      "solo Bitcoin mining",
+      "how to mine Bitcoin",
+      "LuqEE mining",
+      "Bitmain S21 XP Hydro"
+    ],
+    "title": "中英双语精选｜3 EASY Ways To Mine Bitcoin (Start for $3)",
+    "video_id": "bseedW2pGOd",
+    "views": 3
+  },
+  "seed_provenance": {
+    "bvid": "BV1pYbE6eEn6",
+    "published_at": "2026/9/6 08:59:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1pYbE6eEn6"
+  },
+  "version": 1
+}

@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "GPT-6",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "openai",
+      "gpt-6",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "魔兽世界",
+      "赛博朋克",
+      "ai做游戏",
+      "gpt-6",
+      "openai",
+      "blender",
+      "openai astra",
+      "gpt-6 astra"
+    ],
+    "video_id": "bseed-tGsjB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn todays video I'm testing out the new flagship model from OpenAI (ChatGPT 6 Astra). The benchmarks along with everyone is saying it's better than Fable 5.. so I'm putting it to the test by having it create 3 games Red dead Redemption 2, Cyberpunk, and World of Warcraft. \n\n0:00 Intro\n0:15 CyberPUNK \n0:43 Showing off some weapons\n1:06 Wall running\n1:44 Talking about bugs\n2:11 Getting turnt in the CLUB\n3:00 Getting a workout in\n3:10 Parkour\n3:22 Combat\n3:59 Using some abilities \n4:13 First person time\n4:24 Coolest weapon in first person \n4:33 Ninja time (favorite part)\n5:18 Talking about process of creating game\n6:30 World of warcraft\n7:00 Mage combat\n7:50 Dragon Time (targaryen vibes)\n8:35 Showing last moves of mage\n8:58 Warrior gameplay\n10:03 Hunter gameplay\n10:37 Red Dead Redemption 2 \n11:36 Combat\n11:53 Nah you gotta hear this\n12:23 Fishing and walking thru water\n13:16 Talking to Store owner\n13:38 Trying to double my money\n14:57 Attacking the town\n16:00 Overall thoughts Astra vs Fable",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 992,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T11:38:49+00:00",
+    "tags": [
+      "魔兽世界",
+      "赛博朋克",
+      "游戏开发",
+      "人工智能",
+      "AI做游戏",
+      "GPT-6",
+      "OpenAI",
+      "Blender",
+      "openai astra",
+      "gpt-6 astra"
+    ],
+    "title": "用GPT-6 Astra和Blender从零复刻三款大作游戏",
+    "video_id": "bseed-tGsjB",
+    "views": 621
+  },
+  "seed_provenance": {
+    "bvid": "BV1bHt26QEvR",
+    "published_at": "2026/9/5 19:38:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1bHt26QEvR"
+  },
+  "version": 1
+}

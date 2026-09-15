@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "PC building"
+    ],
+    "formats": [
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i built",
+      "pc build",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "amd",
+      "装机",
+      "minecraft",
+      "预算装机",
+      "pc",
+      "linux",
+      "游戏pc",
+      "arch linux",
+      "极客diy",
+      "pc build"
+    ],
+    "video_id": "bseedAL72Jj"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nsub n lik so i can feed my cat :p\n\nAerynOS:\nhttps://aerynos.com/\nThe install guide:\nhttps://aerynos.dev/users/getting-started/downloading/\n\nmy dot files:\nhttps://github.com/Zeibytes/\n\nSETUP:\nMouse: Endgame gear xm1r\nController: 8bitdo something i forgot\nMic: Fantech something i forgot\n\n💻 Dell Inspiron 2010-2011\nOS: FreeBSD (KDE)\nIntel i5 2nd Gen\n4GB RAM\n700GB HDD\n\n💻 MacBook Air 2015\nOS: a lot lol\nIntel Core i7 5th Gen\n8GB RAM\n256GB SSD\n\n💻 Asus EeePC\nOS: Antix Linux\nIntel Atom\n2GB RAM\n20GB HDD\n\n💻 Lenovo Thinkpad X1 gen 11 (for work)\nOS: Fedora Linux (KDE)\nNeovim (for coding)\nIntel Core i7 13th Gen\n32GB RAM\n512GB SSD\n\n💻 Lenovo Thinkpad L14 gen 1 (for larping)\nOS: Haiku\nRyzen 7 4750U\n16GB RAM\n256GB SSD\n\n🖥️ Zei PC (for videos)\nOS: Arch (dwm)\nRyzen 7 5700X\nRX 7600\n16GB 3200mhz\n256GB m.2 SSD\n1TB HDD\n\n$100 PC:\nIntel Core I5 3570K\nAMD RX 550\n8GB RAM\n128GB SSD\nwallpaper:\nhttps://github.com/43PR/dotfiles/blob/main/Wallpapers/%24.jpg\n\n\nWays to contact me:\nemail:\nzeibytes@proton.me\n\n#linux #pc #larp",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 757,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T13:06:25+00:00",
+    "tags": [
+      "AMD",
+      "装机",
+      "Minecraft",
+      "预算装机",
+      "pc",
+      "Linux",
+      "游戏PC",
+      "Arch Linux",
+      "极客DIY",
+      "pc build"
+    ],
+    "title": "花100美元装一台能跑400帧的Linux游戏PC｜I Built The Best $100 Gaming PC That Gets 400+ FPS",
+    "video_id": "bseedAL72Jj",
+    "views": 60
+  },
+  "seed_provenance": {
+    "bvid": "BV1dNbN6LEcd",
+    "published_at": "2026/9/7 21:06:25",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1dNbN6LEcd"
+  },
+  "version": 1
+}

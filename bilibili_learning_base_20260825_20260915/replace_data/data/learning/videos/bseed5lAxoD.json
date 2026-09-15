@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "blacksmithing",
+      "knife making"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "blacksmith forging",
+      "knife making"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "日本铁匠",
+      "菜刀",
+      "传统工艺",
+      "匠人精神",
+      "手工锻造",
+      "手工技艺",
+      "青纸钢",
+      "厨刀制作",
+      "食えもん"
+    ],
+    "video_id": "bseed5lAxoD"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWe're back to visit our favorite 86 year old Japanese artisan, Nakamura Blacksmith! This time he is taking on the challenging Aogami Super steel to make a knife that his son says he doesn't have the skills to copy. We thought the knife came out beautiful! Let us know what you think about these hand made knives in the comments below!\n\n🛍️Get your Nakamura Blacksmith Aogami Super Damascus Pattern Gyuto Knife in our store:\nhttps://shop.japanese-food-craftsman.com/nakamurablacksmith-aogamisuper-damascus-gyuto\n\n🏠 Shop Name: Nakamura Blacksmith\n📍Google Maps: https://maps.app.goo.gl/rHp93hSmCdQ9ibiN7\n\n🏠 STEAK HOUSE OUROBOROS\n📍GoogleMaps：https://maps.app.goo.gl/EjNVyPziWxdXoN2r6\n📌Instagram：https://www.instagram.com/steakhouse.ouroboros/\n\n📸Follow us on our newly created Instagram & Facebook channels to discover the art of Japanese knives. Links below 👇\nhttps://www.instagram.com/japanesefoodcraftsman_shop/\nhttps://www.facebook.com/profile.php?id=61590283452814\n\n🏡Check out the lodgings our channel manages in Fukuoka city!\n　Website Link: https://www.shokuemon-yado.com/\n\nーーーーーーーーーーーーーーーーーーーーーー\n\n🎥 Members-Only Video Now Available! 🎉\nAn unexpected problem! The furnace they’ve relied on for years suddenly broke down...\nhttps://youtu.be/kbnZWCTtGvo\n\n\n0:00 Intro\n0:55 Knife Making Begins!\n1:36 We've Never Seen this Method!\n4:19 This Knife Is Different\n6:12 Chefs Love This Sharpness\n8:29 The Secret to Aogami Steel!?\n10:16 70+ Years of…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1215,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T15:06:16+00:00",
+    "tags": [
+      "日本铁匠",
+      "菜刀",
+      "传统工艺",
+      "匠人精神",
+      "手工锻造",
+      "手工技艺",
+      "yt:cc=on",
+      "青纸钢",
+      "厨刀制作",
+      "食えもん"
+    ],
+    "title": "86岁日本铁匠锻造青纸钢菜刀，儿子直言无法复制｜86 Year Old Japanese Blacksmith Makes a Knife His Son C…",
+    "video_id": "bseed5lAxoD",
+    "views": 66
+  },
+  "seed_provenance": {
+    "bvid": "BV1LWe56XESA",
+    "published_at": "2026/9/14 23:06:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1LWe56XESA"
+  },
+  "version": 1
+}

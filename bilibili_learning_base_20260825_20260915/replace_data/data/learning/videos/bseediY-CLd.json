@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "redstone",
+      "building"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft redstone",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "红石教程",
+      "红石",
+      "我的世界",
+      "minecraft",
+      "建筑红石",
+      "avogaado",
+      "吊扇",
+      "红石机械",
+      "redstone"
+    ],
+    "video_id": "bseediY-CLd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nShoutout to @Peutron for being in this! Go sub to him\n\nWorld download https://www.mediafire.com/file/61w79mojswcv0e6/Ceiling_Fans_2.zip/file\n\nThanks to @uhfirefly for help with the thumbnail",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 724,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:39:40+00:00",
+    "tags": [
+      "红石教程",
+      "红石",
+      "单机游戏",
+      "我的世界",
+      "Minecraft",
+      "建筑红石",
+      "avogaado",
+      "吊扇",
+      "红石机械",
+      "redstone"
+    ],
+    "title": "用红石打造5x5四叶吊扇｜I spent WEEKS making this",
+    "video_id": "bseediY-CLd",
+    "views": 239
+  },
+  "seed_provenance": {
+    "bvid": "BV17ztk69EhY",
+    "published_at": "2026/9/5 02:39:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV17ztk69EhY"
+  },
+  "version": 1
+}

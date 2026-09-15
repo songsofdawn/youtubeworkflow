@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "health science"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "what happens if",
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "代谢健康",
+      "低血糖饮食",
+      "碳水化合物",
+      "肠道菌群",
+      "生酮饮食",
+      "断糖挑战",
+      "营养科普",
+      "mike fave"
+    ],
+    "video_id": "bseedPlLiGQ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=o36IRjt5o2Y\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWork With Me: https://mikefave.com/082626/COACHING\nPro-Metabolic Food Guide & Calculator: https://mikefave.com/0826266/FREE-CALCULATOR-GUIDE\n\n\n0:00 Does quitting sugar really cause these benefits?\n0:46 Initial weight loss is water, not fat\n1:44 Electrolyte shifts: sodium and potassium loss\n3:14 Stress hormones rise to compensate (cortisol, glucagon, adrenaline)\n4:30 Adaptation phase: cortisol stays elevated at the tissue level\n5:22 Thyroid function declines on low carb\n6:40 Carnivore/low-fiber diets damage the gut microbiome\n9:15 The real issue is processed food, not carbs\n10:07 \"High sugar\" foods are actually high fat + sugar combos\n11:58 True high-carb whole foods are nutrient-dense\n14:51 How to structure meals with the right carb sources\n\n\nDisclaimer:\nThis video is for informational purposes only and does not constitute medical, nursing, or healthcare advice, nor does it establish a doctor-patient relationship. The use of this information is at the user’s own risk and is not a substitute for professional medical advice, diagnosis, or treatment. Users should not delay seeking medical advice and should consult a qualified healthcare provider before making any dietary, lifestyle, or medical changes. The views expressed are for educational discussion and do not constitute medical treatment or diagnosis.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1065,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:27:06+00:00",
+    "tags": [
+      "代谢健康",
+      "低血糖饮食",
+      "中英双语",
+      "中文翻译",
+      "碳水化合物",
+      "肠道菌群",
+      "生酮饮食",
+      "断糖挑战",
+      "营养科普",
+      "mike fave"
+    ],
+    "title": "【中英双语】断糖30天：是健康还是肠道受损？｜What Happens if You Stop Eating Sugar for 30 Days",
+    "video_id": "bseedPlLiGQ",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV16M4y6fE4F",
+    "published_at": "2026/8/29 17:27:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16M4y6fE4F"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "social_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "strangers",
+      "social experiment"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "social experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "中餐",
+      "社会实验",
+      "街头实验",
+      "美食",
+      "美国小镇",
+      "chinese",
+      "chef",
+      "海外生活",
+      "文化碰撞",
+      "人文纪实"
+    ],
+    "video_id": "bseedVkLlQi"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTry Squarespace FREE for 2 weeks: https://www.squarespace.com/?channel=youtube&subchannel=cantomando&source=cantomando . This video is sponsored by Squarespace.\n\nEdward's spending the week in America’s ‘Most Racist Town,’ and he wanted to test the hospitality of strangers by asking if he could cook dinner in their homes. How open will they be?\n\nFollow us on Instagram: @cantomando\nEdward: @eleungg\nMike: @mizwu\nSheldon: @sheldonhoho\n\n⭐Support our mission + exclusive perks:  ►https://www.patreon.com/Cantomando\n🚨 Cantonese Speakers: Get our Free Guide to Rapid Mandarin Fluency: http://www.thecmblueprint.com/maincantomandoyt\n📧 For business inquiries: contact@cantomandomedia.com",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1060,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T03:41:01+00:00",
+    "tags": [
+      "中餐",
+      "社会实验",
+      "街头实验",
+      "美食",
+      "美国小镇",
+      "chinese",
+      "chef",
+      "海外生活",
+      "文化碰撞",
+      "人文纪实"
+    ],
+    "title": "我去美国“最种族歧视小镇”敲陌生人的门：让我给你做顿饭吧｜Asking Strangers in America's Most Racist Town to…",
+    "video_id": "bseedVkLlQi",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV1NFbV6QExz",
+    "published_at": "2026/9/8 11:41:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1NFbV6QExz"
+  },
+  "version": 1
+}

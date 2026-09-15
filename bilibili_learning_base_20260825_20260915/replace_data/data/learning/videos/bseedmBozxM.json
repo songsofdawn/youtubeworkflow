@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "土豆",
+      "园艺",
+      "废物利用",
+      "种植",
+      "有机种植",
+      "家庭园艺",
+      "阳台种菜",
+      "container gardening",
+      "container garden",
+      "纸袋种菜"
+    ],
+    "video_id": "bseedmBozxM"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI collected 48 used Uber Eats paper bags, doubled them up into 24 planters, and grew potatoes, tomatoes, carrots, broccoli, and more. But could flimsy takeaway bags really survive months of weather, watering and growing, or would the whole experiment fall apart? Let’s see if this crazy paper bag free vegetable garden actually worked!\n\nTry my HomeGrow App here: https://studio.com/mark-valencia/homegrow\n\nList of top products I recommend: https://selfsufficientme.com/support-me/ \n\nSelf Sufficient Me Online Shop: https://shop.selfsufficientme.com/ \n\nOrder my book here: https://www.briobooks.store/products/100-top-crops-you-can-grow\nOr, order my book from Vego (USA Only): https://www.vegogarden.com/products/100-top-crops-you-can-grow\n\nMy Garden Plan: https://selfsufficientme.gardenplanner.com/garden-plans/1890355/\n\nBirdies Raised Garden Beds Australia: go to https://birdiesgardenproducts.com.au/ and use Code SSMEbird for a 5% discount. \n\nBirdies Raised Garden Beds USA: https://birdiesgardenproducts.com/SSMEbird Use code SSMEbird at checkout for 5% off. \n\nBirdies Raised Garden Beds New Zealand, go to https://birdiesgardenproducts.co.nz/ and use Code SSMEBIRD26 for 5% off your first purchase.\n\nIn South Africa, get Birdies Beds here https://www.birdiesgardenproducts.co.za/ and use code: self-sufficient\n\nVego Garden 5% Sitewide Discount:\nUse code SELF_SUFFICIENT_ME5\nLink https://get.aspr.app/SH1qQK\n\nVego Garden Special Offer:\nUse code SELF_SUFFICIENT_ME30OFF\nLink https://get.aspr.app/SH1qQd   \n\nChicken stuf…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2287,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T18:02:01+00:00",
+    "tags": [
+      "土豆",
+      "园艺",
+      "废物利用",
+      "种植",
+      "有机种植",
+      "家庭园艺",
+      "阳台种菜",
+      "container gardening",
+      "container garden",
+      "纸袋种菜"
+    ],
+    "title": "用48个外卖纸袋种菜，最后竟大丰收？｜I Grew a Vegetable Garden in 48 USED Uber Eats Bags!",
+    "video_id": "bseedmBozxM",
+    "views": 127
+  },
+  "seed_provenance": {
+    "bvid": "BV1MEY86EED6",
+    "published_at": "2026/9/10 02:02:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1MEY86EED6"
+  },
+  "version": 1
+}

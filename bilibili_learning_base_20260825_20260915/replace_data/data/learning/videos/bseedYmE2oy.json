@@ -1,0 +1,120 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "GLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "glm",
+      "claude code",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "免费额度",
+      "ai 编程",
+      "claude code",
+      "开发教程",
+      "命令行工具",
+      "glm 5.3",
+      "glm 5.3 claude code",
+      "大模型 api",
+      "nararouter"
+    ],
+    "video_id": "bseedYmE2oy"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=xET08YruTIE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nUse GLM 5.3 inside Claude Code and get up to 10 million tokens every day through NaraRouter.** In this video, I'll show you how to get your NaraRouter API key, configure it, and connect GLM 5.3 to the Claude Code CLI.\n\nSupport Me:\nhttps://www.buymeacoffee.com/codewithyousaf\n\nYou'll see the complete setup from start to finish and how to use GLM 5.3 directly from Claude Code for AI coding and development.\n\n### In this video:\n* How to get a NaraRouter API key\n* How to use NaraRouter's daily token allowance\n* How to configure GLM 5.3\n* How to connect GLM 5.3 with Claude Code\n* How to use GLM 5.3 from the Claude Code CLI\n* Practical testing with Claude Code\n\nIf you're looking for a way to use **GLM 5.3 with Claude Code without paying for a separate GLM API**, this tutorial will show you the complete setup.\n\nSubscribe to **Code With Yousaf** for more tutorials on AI models, AI coding tools, Claude Code, APIs, and AI agents.\n\n#ClaudeCode #GLM53 #NaraRouter #AICoding #GLM",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 522,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T17:11:57+00:00",
+    "tags": [
+      "免费额度",
+      "AI 编程",
+      "Claude Code",
+      "开发教程",
+      "计算机技术",
+      "命令行工具",
+      "GLM 5.3",
+      "glm 5.3 claude code",
+      "大模型 API",
+      "NaraRouter"
+    ],
+    "title": "【中英双语】免费获取 GLM 5.3 每日 1000 万 Token 并接入 Cla｜GLM 5.3 in Claude Code for FREE | 10…",
+    "video_id": "bseedYmE2oy",
+    "views": 112
+  },
+  "seed_provenance": {
+    "bvid": "BV1tytp6UESQ",
+    "published_at": "2026/8/31 01:11:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tytp6UESQ"
+  },
+  "version": 1
+}

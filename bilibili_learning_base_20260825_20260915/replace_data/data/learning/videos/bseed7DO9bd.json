@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "生活技能",
+      "科学实验",
+      "化学科普",
+      "动漫还原",
+      "手工 diy",
+      "石纪元"
+    ],
+    "video_id": "bseed7DO9bd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=1rgxBxiAjm4\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDoes the science in Dr. STONE actually work in the real world, or is it just anime exaggeration? In this video, we put Senku’s recipes to the test in real life!\n\nWe kick off Season 1 by replicating 4 iconic experiments from the anime using real lab equipment and chemicals. From basic survival essentials to vibrant chemical reactions, let's find out if anime science holds up in real life!\n\n00:46 - Experiment 1: Salt Extraction (Episode 1)\n02:16 - Experiment 2: Making Bar Soap (Episode 2)\n04:23 - Experiment 3: Accelerated Copper Oxidation (Episode 3)\n06:00 - Experiment 4: The Colorful Flame Test \"Magic\" (Episode 7)\n\nAll experiments were conducted under controlled conditions with proper lab safety gear (PPE). Chemical reactions involving strong bases, oxidizers, and open flames should not be attempted without appropriate safety precautions and supervision.\n\nWhich Dr. STONE invention should we test next in Part 2? let me know in the comments below!\n\nDon't forget to Like, Share, and Subscribe for more real-world anime science experiments!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 486,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T13:24:52+00:00",
+    "tags": [
+      "生活技能",
+      "中文翻译",
+      "科学实验",
+      "中英双语",
+      "化学科普",
+      "科学科普",
+      "动漫还原",
+      "手工 DIY",
+      "石纪元"
+    ],
+    "title": "【中英双语】《石纪元》科学复刻：盐提取、制皂与焰色反应实测",
+    "video_id": "bseed7DO9bd",
+    "views": 52
+  },
+  "seed_provenance": {
+    "bvid": "BV12C8d6LEkt",
+    "published_at": "2026/8/26 21:24:52",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV12C8d6LEkt"
+  },
+  "version": 1
+}

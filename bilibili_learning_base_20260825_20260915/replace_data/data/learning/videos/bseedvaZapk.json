@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "chemistry",
+      "crystals",
+      "materials"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chemistry experiment",
+      "crystal growth",
+      "materials science"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "化学实验",
+      "结晶过程",
+      "家庭实验",
+      "手工 diy",
+      "晶体生长",
+      "材料清单",
+      "monoammonium phospha"
+    ],
+    "video_id": "bseedvaZapk"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=Pl2o388CWeg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis is the largest crystal I’ve ever grown.\n\nAnd the coolest part is, it's completely made from common fertilizer, so anyone can do it too!\n\nFor a detailed written guide on making this work, check out my son's blog post at https://crystalverse.com/growing-crystals/\n\n---\n\nMATERIALS\n\nI bought my materials in Malaysia, but the items below are similar ones available on Amazon — they work just as well if you’d like to try this experiment yourself.\n\n• Monoammonium phosphate fertilizer: https://amzn.to/49fcy0Q\n• Alum stone: https://amzn.to/47WEog4\n• 250 mL beaker: https://amzn.to/49P4mob\n• 500 mL beaker: https://amzn.to/49OegX7\n• 2000 mL beaker: https://amzn.to/48efiJM\n• 3000 mL beaker: https://amzn.to/43q3dzy\n• 5000 mL beaker: https://amzn.to/48wI9tW\n• Glass stirring rods: https://amzn.to/49fEx0q\n• Electric burner: https://amzn.to/47MeHi8\n• Ice pick: https://amzn.to/3XmbGAb\n• Precision tweezers: https://amzn.to/47AS0yB\n• Plastic petri dish (90 × 15 mm): https://amzn.to/4r05jjS\n• Black nitrile gloves: https://amzn.to/3XecEi8\n• Digital scale: https://amzn.to/4olYTsy\n\nThese are Amazon affiliate links — I may earn a small commission if you purchase through them, at no extra cost to you.\n\nThank you for supporting this channel!\n\n---\n\nVIDEO CHAPTERS  \n\n00:00 Preparing the materials\n00:26 Making the solution\n01:07 Growing seed crystals\n02:51 2 months later\n04:12 4 months later\n05:38 7 months later\n07:48 9 months later\n09:40 Harvesting the crystal\n\n---\n\nDisclosure: As an Amazon…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 652,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:50:21+00:00",
+    "tags": [
+      "化学实验",
+      "结晶过程",
+      "中文翻译",
+      "家庭实验",
+      "中英双语",
+      "科学科普",
+      "手工 DIY",
+      "晶体生长",
+      "材料清单",
+      "monoammonium phospha"
+    ],
+    "title": "【中英双语】用化肥养出巨型晶体：耗时一年全过程记录｜I Spent 1 Year Growing This Giant Crystal",
+    "video_id": "bseedvaZapk",
+    "views": 113
+  },
+  "seed_provenance": {
+    "bvid": "BV1ug4167Eds",
+    "published_at": "2026/8/29 15:50:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ug4167Eds"
+  },
+  "version": 1
+}

@@ -1,0 +1,98 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "fable 5.1",
+      "claude code",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "anthropic",
+      "大模型评测",
+      "claude code",
+      "fable"
+    ],
+    "video_id": "bseedkcHs1R"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=onL8VFMzxsA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n⚡Master Claude Code, Build Your Agency, Land Your First Client⚡\nhttps://www.skool.com/chase-ai\n\n🔥FREE community🔥 \nhttps://www.skool.com/chase-ai-community\n\n💻 Need custom work? Book a consult 💻\nhttps://chaseai.io\n\nAnthropic just released Fable and Mythos 5.1 and it's not only benchmarking as the strongest AI model ever, its also cheaper than its predecessors.\n\n⏰TIMESTAMPS:\n\n0:00 - Intro\n0:49 - Benchmarks\n3:41 - Guardrails\n5:50 - Cost\n\nRESOURCES FROM THIS VIDEO:\n➡️ Master Claude Code: https://www.skool.com/chase-ai\n➡️ My Website: https://www.chaseai.io\n\n#claudecode",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 435,
+    "likes": 9,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T20:57:15+00:00",
+    "tags": [
+      "人工智能",
+      "Anthropic",
+      "大模型评测",
+      "Claude Code",
+      "软件应用",
+      "科技资讯",
+      "fable"
+    ],
+    "title": "Anthropic发布Fable 5.1：性能更强且成本更低｜Fable 5.1 Is The Greatest Model Ever (And Cheape…",
+    "video_id": "bseedkcHs1R",
+    "views": 1336
+  },
+  "seed_provenance": {
+    "bvid": "BV18Ht56aEEu",
+    "published_at": "2026/9/2 04:57:15",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18Ht56aEEu"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "redstone",
+      "building"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft redstone",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "lifesteal",
+      "smp",
+      "红石农场",
+      "建筑比赛",
+      "grian",
+      "sb737"
+    ],
+    "video_id": "bseedaj_y9d"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGET THE LIFESTEAL MERCH: https://lifesteal.shop/sb\nUSE CODE: sb737\n\nToday Grian and SmallishBeans joined Lifesteal to judge our builds, as they're masters of building over on Hermitcraft and let's just say they are BRUTAL! \n\nThe Lifesteal SMP is a private content SMP, consisting of 46 members and 22 guests. Often dubbed “The Deadliest Minecraft SMP”, it is a highly competitive server with one central mechanic: if you die, you lose a heart, and if you kill someone, you gain a heart. If you get to zero hearts, you are banned from the server until someone revives you, although not everyone is so quick to revive the dead.\n\nThis is an official SB737 channel where I upload all the best stream highlights and BONUS content! so please SUBSCRIBE! \n\n►MERCH -\nhttps://sb737.store/\n\n►Watch me stream Minecraft LIVE - \nhttp://twitch.tv/SB737\n\n►Become a Channel Member - https://www.youtube.com/channel/UCFrVj6wBM42y3XuKCAj8n5A/join",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1543,
+    "likes": 29,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T01:02:30+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "Lifesteal",
+      "SMP",
+      "红石农场",
+      "建筑比赛",
+      "Grian",
+      "SB737"
+    ],
+    "title": "Grian空降Lifesteal当评委，我的建筑被批到体无完肤｜These PRO BUILDERS Joined The Lifesteal SMP…",
+    "video_id": "bseedaj_y9d",
+    "views": 556
+  },
+  "seed_provenance": {
+    "bvid": "BV1CyYK6GE6h",
+    "published_at": "2026/9/10 09:02:30",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1CyYK6GE6h"
+  },
+  "version": 1
+}

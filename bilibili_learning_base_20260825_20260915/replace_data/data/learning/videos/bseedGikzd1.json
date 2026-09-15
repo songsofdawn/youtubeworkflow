@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "本地部署",
+      "语音克隆",
+      "语音设计",
+      "tts评测",
+      "开源tts",
+      "breezeblue",
+      "语音合成",
+      "ai语音",
+      "breezetts2",
+      "breeze tts 2"
+    ],
+    "video_id": "bseedGikzd1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=xDHD09fDUkQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, I look at BreezeTTS2, which is a 3B open weights model for doing TTS that can run 100% locally in real time.  \n\nThanks to Dell for Sponsoring the Compute\n#DellProPrecision #DellProMax #DellTech #NVIDIA\n\n📖 Blog: https://breezeblue.ai/breeze-tts-2\n🤗 HF: https://huggingface.co/BreezeBlue/Breeze-TTS-2\n\nTwitter: https://x.com/Sam_Witteveen \n\n🕵️ Interested in building LLM Agents? Fill out the form below\nBuilding LLM Agents Form: https://drp.li/dIMes\n\n👨‍💻Github:\nhttps://github.com/samwit/llm-tutorials\n\n⏱️Time Stamps:\n00:00 Intro\n00:13 Breeze TTS 2\n00:36 Blog\n01:08 Voice Design\n02:52 Voice Direction\n04:24 Voice Events\n04:46 Multi-lingual\n05:23 Low Latency\n05:36 Breeze TTS 2 Hugging Face\n05:58 Benchmarks\n06:21 License\n07:03 Demo Voice Design\n08:11 Demo Voice Clone\n08:46 Demo Voice Direction\n09:15 Voice Events\n10:01 Demo Streaming Version",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 882,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T07:26:20+00:00",
+    "tags": [
+      "本地部署",
+      "语音克隆",
+      "语音设计",
+      "TTS评测",
+      "开源TTS",
+      "BreezeBlue",
+      "语音合成",
+      "AI语音",
+      "BreezeTTS2",
+      "Breeze TTS 2"
+    ],
+    "title": "【中配】BreezeTTS2本地实时语音合成评测与演示｜BreezeTTS2 - 100% Local Real-Time Voice",
+    "video_id": "bseedGikzd1",
+    "views": 191
+  },
+  "seed_provenance": {
+    "bvid": "BV1dJtu6tEyt",
+    "published_at": "2026/9/1 15:26:20",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1dJtu6tEyt"
+  },
+  "version": 1
+}

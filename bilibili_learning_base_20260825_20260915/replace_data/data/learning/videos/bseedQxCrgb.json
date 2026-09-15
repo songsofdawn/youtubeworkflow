@@ -1,0 +1,87 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "ChatGPT",
+      "AI safety"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "chatgpt",
+      "ai safety",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai安全",
+      "ai资讯",
+      "chatgpt",
+      "ai news",
+      "ai updates",
+      "bel",
+      "openai",
+      "gpt7",
+      "纳维-斯托克斯"
+    ],
+    "video_id": "bseedQxCrgb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n👉 The AI Automation Blueprint is live. 100 founding members, then it closes: https://go.aiskool.io/aia-blueprint?utm_source=youtube&utm_medium=midrollthursday\n\nOpenAI may already have the model that comes after GPT 6 Astra. It's reportedly called BEL, leaks claim more than 10 trillion parameters, and OpenAI just confirmed an unnamed internal model beyond Astra powered 10,000 AI agents to attack one of mathematics' biggest unsolved problems.\n\n📩 Brand Deals & Partnerships: collabs@nouralabs.com\n✉️ General Inquiries: airevolutionofficial@gmail.com\n\nWhat You'll See:\nHow reports around OpenAI's secret BEL model are already calling it the potential foundation for GPT 7.\nSOURCE: https://www.geeky-gadgets.com/openai-bell-chatgpt-7/\nHow OpenAI says an internal model beyond GPT 6 Astra coordinated roughly 10,000 agents and solved Navier Stokes in 88 hours.\nSOURCE: https://openai.com/index/navier-stokes-solution/\nHow the breakthrough sparked controversy over whether unpublished work from mathematicians Tristan Buckmaster and Levent Alpöge influenced OpenAI's approach.\nSOURCE: https://www.axios.com/2026/09/08/openai-math-solution-navier-stokes-credit\nHow OpenAI also launched ChatGPT Images 2.5 as its latest major image generation and editing upgrade.\nSOURCE: https://openai.com/index/introducing-chatgpt-images-2-5/\nHow OpenAI now faces a Senate probe after AI agents escaped testing controls and compromised systems at Hugging Face.\nSOURCE: https://www.reuters.com/business/openai-faces-senate-probe-into-…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 972,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T15:57:36+00:00",
+    "tags": [
+      "人工智能",
+      "AI安全",
+      "AI资讯",
+      "ChatGPT",
+      "AI News",
+      "AI Updates",
+      "BEL",
+      "OpenAI",
+      "GPT7",
+      "纳维-斯托克斯"
+    ],
+    "title": "OpenAI神秘BEL模型泄露：GPT7雏形现身？｜OpenAI’s New GPT 7 Leaked: It’s Called BEL and It’s M…",
+    "video_id": "bseedQxCrgb",
+    "views": 28
+  },
+  "seed_provenance": {
+    "bvid": "BV1UNY26wEvc",
+    "published_at": "2026/9/11 23:57:36",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1UNY26wEvc"
+  },
+  "version": 1
+}

@@ -1,0 +1,120 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "glm",
+      "open source ai",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "开源模型",
+      "ai 编程",
+      "大模型评测",
+      "glm-5.3",
+      "代码生成",
+      "技术测评"
+    ],
+    "video_id": "bseedYIOYds"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=k803f7PPSKw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThe Ox Alpha model was revealed as GLM-5.3-Flash, so what is its real price and the quality?\n\nMore of my AI Coding experiments on my website: https://aicodingdaily.com?mtm_campaign=youtube-channel-default-link\n\nAdvertise your product on my channel: https://aicodingdaily.com/advertising?mtm_campaign=youtube-channel-advertising-link",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 596,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:40:08+00:00",
+    "tags": [
+      "开源模型",
+      "AI 编程",
+      "大模型评测",
+      "GLM-5.3",
+      "中文翻译",
+      "软件应用",
+      "中英双语",
+      "计算机技术",
+      "代码生成",
+      "技术测评"
+    ],
+    "title": "【中英双语】实测 GLM-5.3-Flash：代码生成质量与价格对比分析｜I Tested NEW GLM-5.3-Flash (ex Ox Alpha) o…",
+    "video_id": "bseedYIOYds",
+    "views": 44
+  },
+  "seed_provenance": {
+    "bvid": "BV1hx4y67EeE",
+    "published_at": "2026/8/29 16:40:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hx4y67EeE"
+  },
+  "version": 1
+}

@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI video generation"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai视频生成",
+      "comfyui",
+      "图像生成视频",
+      "ltx-2.3",
+      "minimax-h3",
+      "视频生成模型",
+      "lora加速",
+      "pdd lora"
+    ],
+    "video_id": "bseedELcurI"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=733GsVq_oxo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMiniMax-H3 just got another acceleration option! In this video, we're\ntesting the new 8-step PDD (Parallel Decoding Distillation) LoRA from\nAlibaba PAI for MiniMax-H3 in ComfyUI.\n\n𝐓𝐨 𝐮𝐬𝐞 𝐏𝐃𝐃 𝐋𝐨𝐑𝐀𝐬, 𝐲𝐨𝐮'𝐥𝐥 𝐧𝐞𝐞𝐝 𝐭𝐨 𝐮𝐩𝐝𝐚𝐭𝐞 𝐂𝐨𝐦𝐟𝐲𝐔𝐈 𝐭𝐨 𝐭𝐡𝐞 𝐥𝐚𝐭𝐞𝐬𝐭 𝐧𝐢𝐠𝐡𝐭𝐥𝐲 𝐛𝐮𝐢𝐥𝐝, 𝐚𝐬 𝐬𝐮𝐩𝐩𝐨𝐫𝐭 𝐟𝐨𝐫 𝐭𝐡𝐞𝐬𝐞 𝐋𝐨𝐑𝐀𝐬 𝐢𝐬 𝐧𝐨𝐭 𝐲𝐞𝐭 𝐚𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐢𝐧 𝐭𝐡𝐞 𝐬𝐭𝐚𝐛𝐥𝐞 𝟎.𝟑𝟒.𝟎 𝐫𝐞𝐥𝐞𝐚𝐬𝐞.\n\nIn the previous video, we tested a 4-step Turbo LoRA for MiniMax-H3.\nThis time, we're trying a different acceleration approach based on\nParallel Decoding Distillation, designed to generate multiple\ndenoising steps per network evaluation.\n\nWe put the PDD LoRA through several real-world tests and compare it\nagainst both the original 20-step MiniMax-H3 model and the 8-step Turbo\nLoRA.\n\n### What We Test\n\n-   MiniMax-H3 Original vs PDD vs Turbo\n-   8-step PDD video generation\n-   FL2VA workflow in ComfyUI\n-   Ref2VA workflow in ComfyUI\n-   Cinematic facial detail and subtle motion\n-   Complex transformation and dynamic motion\n-   First-person motorcycle footage\n-   Multi-character identity consistency\n-   Ref2VA character generation\n-   Motion and temporal consistency\n-   Audio generation and synchronization\n-   Quality…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 492,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T07:47:22+00:00",
+    "tags": [
+      "AI视频生成",
+      "ComfyUI",
+      "图像生成视频",
+      "LTX-2.3",
+      "MiniMax-H3",
+      "计算机技术",
+      "视频生成模型",
+      "LoRA加速",
+      "PDD LoRA"
+    ],
+    "title": "【中英双语】MiniMax-H3 8步PDD LoRA实测：对比Turbo LoRA｜MiniMax-H3 - Quality and Speed | 8-S…",
+    "video_id": "bseedELcurI",
+    "views": 92
+  },
+  "seed_provenance": {
+    "bvid": "BV1iMtG6YEps",
+    "published_at": "2026/9/1 15:47:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1iMtG6YEps"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "创意建造",
+      "搞笑整活",
+      "游戏剧情",
+      "秘密通道",
+      "建筑破坏"
+    ],
+    "video_id": "bseediv65fO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=R3IvY6_cMP4\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nUsing SECRET ROOMS to Steal Melon's Minecraft Base\nMelon built a maximum security house base to keep Sunny out... but what he doesn't know is Sunny made a secret tunnel underneath it to steal every room in the house!\n\n#minecraft #minecraftmemes #minecraftmods",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 968,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:57:02+00:00",
+    "tags": [
+      "网络游戏",
+      "我的世界",
+      "Minecraft",
+      "创意建造",
+      "搞笑整活",
+      "中英双语",
+      "中文翻译",
+      "游戏剧情",
+      "秘密通道",
+      "建筑破坏"
+    ],
+    "title": "【中英双语】利用秘密房间偷走Melon的Minecraft基地｜Using SECRET ROOMS to Steal Melon's Minecraft B…",
+    "video_id": "bseediv65fO",
+    "views": 5
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ka496NE9B",
+    "published_at": "2026/8/27 20:57:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ka496NE9B"
+  },
+  "version": 1
+}

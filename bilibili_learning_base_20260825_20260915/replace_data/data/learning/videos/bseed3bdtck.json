@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "traditional food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "traditional food",
+      "countryside food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "柴火烹饪",
+      "田园生活",
+      "烤全羊",
+      "传统美食",
+      "大锅饭",
+      "乡村生活",
+      "乡村美食",
+      "伊朗乡村",
+      "kand hayati",
+      "kand matbaxi"
+    ],
+    "video_id": "bseed3bdtck"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=ggopB3FyUBk\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#IranVillageLife #RuralIran #VillageCooking #TraditionalFood\n\nExperience an authentic Iranian village feast as fresh lamb is prepared and cooked with a huge amount of rice over a traditional wood fire. This video takes you deep into rural Iran, showing traditional food preparation, outdoor cooking, village life, and the communal atmosphere surrounding a large homemade meal.\n\nFrom preparing the lamb to cooking the rice over fire and bringing everything together for a traditional feast, this is a glimpse into the simple and authentic lifestyle of rural Iran.\n\nWatch the traditional cooking process, peaceful countryside surroundings, wood-fire cooking, fresh ingredients, and the way food brings family and village communities together.\n\nIf you enjoy Iran village life, traditional Iranian food, rural cooking, giant food preparation, wood-fire cooking, mountain villages, and authentic countryside living, subscribe for more real village-life videos from Iran.\n\nThank you for watching and supporting authentic rural life content.\n\n#IranianFood #WoodFireCooking #RuralLife #VillageLife",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 948,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T15:31:35+00:00",
+    "tags": [
+      "柴火烹饪",
+      "田园生活",
+      "烤全羊",
+      "传统美食",
+      "大锅饭",
+      "乡村生活",
+      "乡村美食",
+      "伊朗乡村",
+      "kand hayati",
+      "kand matbaxi"
+    ],
+    "title": "【中英双语】伊朗乡村盛宴：柴火烤全羊配大锅米饭｜Village Feast in IRAN | Fresh Lamb & Giant Rice Cooked…",
+    "video_id": "bseed3bdtck",
+    "views": 45
+  },
+  "seed_provenance": {
+    "bvid": "BV1j2tW6TECA",
+    "published_at": "2026/8/30 23:31:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1j2tW6TECA"
+  },
+  "version": 1
+}

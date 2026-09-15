@@ -1,0 +1,96 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "space_astronomy",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "astronomy",
+      "NASA"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "space science"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "nasa",
+      "日球层顶",
+      "深空探测",
+      "天文科普",
+      "星际空间",
+      "旅行者2号",
+      "太阳系边界"
+    ],
+    "video_id": "bseedM9feHn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nVoyager 2 just found something impossible in interstellar space — and scientists are stunned. This video breaks down NASA's Voyager 2 spacecraft, its historic 2018 heliopause crossing, and the bizarre discovery that the edge of our solar system isn't a solid wall but a leaky, ever-shifting boundary between the sun and interstellar space. We cover the Voyager 1 vs Voyager 2 naming mystery, the legendary Grand Tour of Jupiter, Saturn, Uranus, and Neptune, the 2019 Nature Astronomy findings that stunned physicists, and NASA's high-risk 2026 \"Big Bang\" power procedure that could keep this 49-year-old spacecraft alive for years longer — or end the mission for good. If you love deep space exploration, NASA history, and real interstellar science explained simply, this one's for you.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2088,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T06:48:20+00:00",
+    "tags": [
+      "NASA",
+      "日球层顶",
+      "深空探测",
+      "天文科普",
+      "星际空间",
+      "科学科普",
+      "旅行者2号",
+      "太阳系边界"
+    ],
+    "title": "旅行者2号在星际空间边缘的惊人发现｜Voyager 2 Just Found Something Impossible in Interstellar Spa…",
+    "video_id": "bseedM9feHn",
+    "views": 29
+  },
+  "seed_provenance": {
+    "bvid": "BV13HY46UESx",
+    "published_at": "2026/9/9 14:48:20",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13HY46UESx"
+  },
+  "version": 1
+}

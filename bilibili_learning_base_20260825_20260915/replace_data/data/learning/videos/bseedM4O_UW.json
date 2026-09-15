@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "fast food"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "试吃",
+      "黑暗料理",
+      "烹饪挑战",
+      "快餐挑战",
+      "ai美食",
+      "汉堡",
+      "创意料理"
+    ],
+    "video_id": "bseedM4O_UW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=bDwNj77MoeQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nReady for a wild taste adventure? In this video, we let AI invent totally outrageous fast food recipes and put them to the test—from croissant burgers to charcoal buns and even a chocolate popcorn burger! There are epic wins, hilarious fails, and a LOT of laughs along the way. Don’t forget to subscribe for more crazy food experiments and tell us in the comments which weird recipe you’d dare to try! #food #fastfood #challenge #AI #cooking\n\n👉 This channel was created in collaboration with https://www.youtube.com/@pi-wan\n\n0:00 - Introduction and AI Food Concepts\n1:33 - First AI Recipe: Croissant Burger Intro\n3:56 - Making and Tasting the Croissant Burger\n7:44 - Crunchy Sweet It’s Burger Experience\n14:51 - Polar Solar Eruption Burger Creation\n20:57 - Choco Bacon Dessert Burger\n23:54 - Conclusion and Farewell",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1479,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-25T10:11:32+00:00",
+    "tags": [
+      "试吃",
+      "黑暗料理",
+      "烹饪挑战",
+      "快餐挑战",
+      "AI美食",
+      "中英双语",
+      "汉堡",
+      "创意料理",
+      "中文翻译",
+      "美食测评"
+    ],
+    "title": "【中英双语】AI发明的疯狂快餐：牛角包汉堡、巧克力爆米花汉堡试吃｜Trying AI-Invented Fast Food Creations 😳",
+    "video_id": "bseedM4O_UW",
+    "views": 31
+  },
+  "seed_provenance": {
+    "bvid": "BV1M8hG6FE1x",
+    "published_at": "2026/8/25 18:11:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1M8hG6FE1x"
+  },
+  "version": 1
+}

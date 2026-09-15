@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "drawing"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "drawing"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "绘画",
+      "成人绘画",
+      "丙烯画教程",
+      "日常创作",
+      "居家艺术",
+      "making art",
+      "重拾艺术",
+      "慢生活灵感",
+      "make art",
+      "创意习惯"
+    ],
+    "video_id": "bseedOkHxvo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=yzqgzshzwHk\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI don't want to spend my life waiting for the weekend.\nOr the next holiday.\nOr until I have more time, more money, a better studio, or until everything else in life is finally under control.\n\nBecause what if we spend so much time waiting for our lives to become more interesting that we forget to actually live the life we already have?\n\nAnd what if creativity could be part of that?\n\nIn this video, I'm talking about making art in the life you actually have — rather than waiting for the perfect time, perfect space or perfect circumstances to finally begin.\n\nFrom the tiny paintings that grew out of my 365-day Daily Art Challenge, to painting places I can't visit yet, finding little pockets of time to sketch, and learning to notice the ordinary things around me, this is really a conversation about not putting your creative life on hold while you're waiting for your “real” life to begin.\n\nYou don't have to give up on your big dreams. You can still take those tiny steps towards them.\n\nBut you can also make something today.\n\nYou can paint the big picture on a tiny canvas.\n\nYou can sketch for ten minutes.\n\nYou can find inspiration on an ordinary dog walk.\n\nYou can make something at the kitchen table.\n\nYou can bring a tiny piece of the life you're dreaming about into the life you're living right now.\n\nAnd maybe that's where a little bit of everyday magic begins. 🌿✨\n\n🌿 COME FIND MORE ELM & BEE\n\n🎨 Original art from my 365-day Daily Art Challenge / Elm & Bee shop:\nhttps://www.elmandbee.co.uk/orig…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1080,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T12:54:51+00:00",
+    "tags": [
+      "绘画",
+      "成人绘画",
+      "丙烯画教程",
+      "日常创作",
+      "居家艺术",
+      "making art",
+      "重拾艺术",
+      "慢生活灵感",
+      "make art",
+      "创意习惯"
+    ],
+    "title": "【中英双语】别等完美时机，在当下生活中开始艺术创作吧",
+    "video_id": "bseedOkHxvo",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1BctH6FEps",
+    "published_at": "2026/8/30 20:54:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1BctH6FEps"
+  },
+  "version": 1
+}

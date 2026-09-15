@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "redstone",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft redstone",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑教程",
+      "minecraft",
+      "ldshadowlady",
+      "红石机械",
+      "生存建造",
+      "趣味解说"
+    ],
+    "video_id": "bseedWZiYM5"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=8FcbudfyUmw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWelcome to a brand new Minecraft Single player Let's Play World currently in Minecraft Version Update 26.1. This is a forever world which means I will keep this world updated with each new Minecraft update throughout the years and one day hopefully share it with my daughter. 💕\nToday I'm building a whimsical little iron farm using the power of villagers, zombies and many many iron golems but of course I had to add a little whimsy to the whole operation by decorating it with an ancient overgrown iron golem statue.\n\nPlease boop the like button if you enjoy the video! :)\n\nFOLLOW ME HERE:\nTwitter: https://twitter.com/LDShadowLady\nInstagram: http://www.instagram.com/ldshadowlady\nTwitch: http://www.twitch.tv/ldshadowlady\n\nCheck out Joel's gaming channel:\nhttp://www.youtube.com/SmallishBeans",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 905,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T10:49:37+00:00",
+    "tags": [
+      "单机游戏",
+      "建筑教程",
+      "Minecraft",
+      "LDShadowLady",
+      "红石机械",
+      "中文翻译",
+      "中英双语",
+      "生存建造",
+      "趣味解说"
+    ],
+    "title": "【中英双语】MC永恒世界：用村民僵尸打造奇幻铁傀儡农场｜Ancient Iron Golem | Minecraft Forever World | Ep. 2",
+    "video_id": "bseedWZiYM5",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV1cwtA6mE9a",
+    "published_at": "2026/8/28 18:49:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1cwtA6mE9a"
+  },
+  "version": 1
+}

@@ -1,0 +1,97 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "animals"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "山羊",
+      "动物迷惑行为",
+      "搞笑动物",
+      "萌宠日常",
+      "动物搞笑合集",
+      "农场动物",
+      "戏精动物",
+      "动物综合",
+      "funny pet’s life",
+      "pet’s life"
+    ],
+    "video_id": "bseedaYMoDI"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDon’t Forget That Farm Animals Are Dramatic Too! 😂🤣 Funny Animal Videos 2026\nYou think cats and dogs hold the trophy for drama? Wait until you see these dramatic farm animals lose their minds over absolute nonsense! Watch goats do theatrical faints over tiny noises, pigs scream like opera singers for food, and cows give the sassiest side-eyes.\n----------------------------------------------------\n🐾Like funny, real animals clips?\n🔔 Hit subscribe and never miss a moment: https://bit.ly/4je5Tp2 \n🌟Welcome to Funny Pets Life, your daily dose of genuine animal joy - see dogs, pets, and wildlife in their funniest, most natural moments.\n\nFunny Pets Life brings you real, laugh-out-loud moments of dogs, pets, and wildlife just as they happen.🤣\n🎥 Check out our playlist now and enjoy all the funniest clips: https://bit.ly/3FhUwhM  \n-----------------------------------\nThank you for watching!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1857,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T12:49:42+00:00",
+    "tags": [
+      "山羊",
+      "动物迷惑行为",
+      "搞笑动物",
+      "萌宠日常",
+      "动物搞笑合集",
+      "农场动物",
+      "戏精动物",
+      "动物综合",
+      "Funny pet’s life",
+      "pet’s life"
+    ],
+    "title": "农场动物戏精附体！山羊一秒晕倒笑翻天｜Don’t Forget That Farm Animals Are Dramatic Too! 😂🤣 Funny…",
+    "video_id": "bseedaYMoDI",
+    "views": 26
+  },
+  "seed_provenance": {
+    "bvid": "BV1XMYu6eEDf",
+    "published_at": "2026/9/10 20:49:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1XMYu6eEDf"
+  },
+  "version": 1
+}

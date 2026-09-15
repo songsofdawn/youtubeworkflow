@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude"
+    ],
+    "formats": [
+      "build",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai",
+      "实验",
+      "joebartolozzi",
+      "柠檬水",
+      "反应视频",
+      "react",
+      "claude"
+    ],
+    "video_id": "bseedstqwOA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n@GensparkAIOfficial OG VID: https://www.youtube.com/watch?v=6Ide5pRLR8Y\n\nTRY OUT GAMER SUPPS AND USE CODE: Bart FOR 10% OFF AND FREE SHIPPING: https://gamersupps.gg/bart\n\n☆Socials:\n➥ Gaming Channel: https://www.youtube.com/@JoeBartGames\n➥ Vod Channel: https://www.youtube.com/channel/UC-lfGGqb5hHLBqVnVnWyrsw\n➥Philosophy Channel: https://www.youtube.com/@Joe-Bart-Philosophy\n➥Twitch: https://www.twitch.tv/joe_bartolozzi\n➥Twitter: https://twitter.com/joebartolozzi_?lang=en\n➥ Instagram: https://www.instagram.com/joe.bartolozzi/?hl=en\n\nEditor:\n➥@Jdyo \nThumbnails: @EvanJohnson2 \n\n☆Discord:\n➥ https://discord.gg/joebart\n\nOutro Song:  @PlayaPhonkOfficial   https://www.youtube.com/watch?v=1oC_WYWJx9A",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2385,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T09:53:27+00:00",
+    "tags": [
+      "AI",
+      "搞笑",
+      "人工智能",
+      "实验",
+      "joebartolozzi",
+      "柠檬水",
+      "反应视频",
+      "react",
+      "Claude"
+    ],
+    "title": "让两个AI自己开柠檬水摊，谁能先赚到100美元？｜When You Let A.I. Build A Lemonade Stand Business",
+    "video_id": "bseedstqwOA",
+    "views": 23
+  },
+  "seed_provenance": {
+    "bvid": "BV1gBbK6CEfW",
+    "published_at": "2026/9/7 17:53:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1gBbK6CEfW"
+  },
+  "version": 1
+}

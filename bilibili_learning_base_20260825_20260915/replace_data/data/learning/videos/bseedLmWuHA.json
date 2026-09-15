@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "noodles"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "泡面",
+      "oh nino",
+      "治愈美食",
+      "nino",
+      "dessert",
+      "自制方便面",
+      "手工面条"
+    ],
+    "video_id": "bseedLmWuHA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHow To Make Instant Noodles Homemade Recipe [ASMR]\nHomemade Instant Noodles\n家でインスタントラーメン作り の作り方  [Eating sound]\nMy new channel for Cat Vlog: https://www.youtube.com/channel/UCcm5BscpsXkuvRsQF1J9ZOA\nInstagram: https://www.instagram.com/ohnino2/\nFacebook: https://www.facebook.com/Ninos-Home-105401167869371/\n●● Recipe (レシピ):\n- Corn\n- Cabbage\n- Carrot\n- Green onion\n- 300g Lean pork\n- 1Tsp Salt\n- 1Tsp Sugar\n- 1/4Tsp Ground pepper\n- 100g Chicken powder\n- 50g Salt\n- 20g Sugar\n- 5g Chili powder\n- 5g Ground pepper\n- 20g Shallot\n- 20g Garlic\n- 100g Vegetable oil\n- 500g Bread flour\n- 130g Water\n- 5g Salt\n1 Egg\n#ASMR #OhNino #NinosHome #noodles #Mukbang\nI learned most of these recipes online and tweaked the measurements to suit my own taste. You can absolutely follow my recipes and adjust them to your liking too. I’m definitely not the first person to make them. I hope my videos can help you successfully make the dishes you love.\nAnd finally, I’m just a home cook, not a professional chef. Thank you so much!\nTrans:\n1. 집에서 인스턴트 라면 만들기\n2. Tự Làm MÌ TÔM GÓI ở nhà siêu dễ nhaaa\n3. Membuat Mi Instan di Rumah\n4. ทำบะหมี่กึ่งสำเร็จรูปที่บ้าน\n5. 在家做方便面\n6. घर पर इंस्टेंट नूडल्स बनाना\n7. صنع النودلز السريعة في المنزل\n8.  Evde Hazır Noodle Yapımı",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 686,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T09:18:50+00:00",
+    "tags": [
+      "美食制作",
+      "泡面",
+      "oh nino",
+      "治愈美食",
+      "Nino",
+      "dessert",
+      "自制方便面",
+      "手工面条"
+    ],
+    "title": "从面粉开始自制方便面，味道和超市买的一样？｜Making Instant Noodles At Home",
+    "video_id": "bseedLmWuHA",
+    "views": 85
+  },
+  "seed_provenance": {
+    "bvid": "BV1qnY96PEze",
+    "published_at": "2026/9/12 17:18:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qnY96PEze"
+  },
+  "version": 1
+}

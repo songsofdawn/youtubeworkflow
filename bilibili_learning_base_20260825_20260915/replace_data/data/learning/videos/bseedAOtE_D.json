@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "极限挑战",
+      "我的世界",
+      "搞笑解说",
+      "minecraft",
+      "区块生存",
+      "prestonplayz",
+      "preston"
+    ],
+    "video_id": "bseedAOtE_D"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n❇️Need new glasses? Check out our partner Zenni Optical: https://preston.gg/ZenniPlayz\nFor 10% off your purchase at checkout use code: PRESTON10\n\n👕 FIRE MERCH - https://www.firemerch.com/\n\n⛏ MOD LINK - https://www.minecraft.net/en-us/marketplace/pdp?id=b8f36e7d-24e7-4ff4-85e3-841cec3306c6\n\n👀 FOLLOW ME HERE!\n☛ TikTok -  https://prestonplayz.gg/TikTokIRL\n☛ Instagram -  https://www.instagram.com/prestonplayz\n☛ Twitter -  https://prestonplayz.gg/XTwitterIRL\n\n🎮 OUR COMMUNITY DISCORD! \n☛ https://prestonplayz.gg/Discord\n\n📬 Use this address to send me mail! It can be fan art, letters, etc.\nPO BOX 191212\nDallas Texas 75219\n------------------------------\n\nIf you believe your copyrighted work was unintentionally used in this video without permission, please contact us at copyright@tbnr.net",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 868,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T16:08:00+00:00",
+    "tags": [
+      "单机游戏",
+      "极限挑战",
+      "我的世界",
+      "搞笑解说",
+      "游戏实况",
+      "Minecraft",
+      "区块生存",
+      "PrestonPlayz",
+      "Preston"
+    ],
+    "title": "我的世界：随机层方块生存！挖穿一个区块挑战｜Minecraft, But It's a RANDOM LAYER Chunk!",
+    "video_id": "bseedAOtE_D",
+    "views": 405
+  },
+  "seed_provenance": {
+    "bvid": "BV1k9Y96rEef",
+    "published_at": "2026/9/13 00:08:00",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1k9Y96rEef"
+  },
+  "version": 1
+}

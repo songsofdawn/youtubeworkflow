@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "history",
+      "Roman history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "历史",
+      "古罗马",
+      "罗马帝国",
+      "罗马",
+      "人文历史",
+      "世界史"
+    ],
+    "video_id": "bseed_GTb1o"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🍕💰Make sure to join the 500$ Pizza giveaway! (terms apply): https://bit.ly/4t389oE and claim your free 10$!\n🕊️SUPPORT OUR CHANNEL: https://heyhistorically.com/join\nJoin as a channel member, and get exclusive badges, emotes and early access to our videos! (It really helps us!!)\n\n🌐 Be part of Historically everywhere:\n➡ https://heyhistorically.com/youtube\n➡ https://heyhistorically.com/discord\n➡ https://heyhistorically.com/twitter\n➡ https://heyhistorically.com/tiktok\n\nGot ideas? Our want to work with us?\n➡ IDEAS: suggestions@heyhistorically.com\n➡ WORK: jobs@heyhistorically.com\n➡ BUSINESS: contact@heyhistorically.com\n\n🧭 Timestamps:\n0:00 Hello!\n0:13 Alba Longa\n4:05 Rome\n5:39 Roman Kingdom\n8:52 Roman Republic\n16:08 Roman Empire\n32:17 The Roman Split\n37:20 It's dead guys\n\n🎵 All sounds and music via Envato Elements. Proof of license available on request. Some SFX may be copyright free.\n\n#history #4k #funny \n\n   (•‿•)\n  /(     )\\   ← your friendly neighborhood doodlie\n   ^^  ^^\n\nRoman empire history, full history rome, entire history of roman empire, the entire roman history",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2310,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T17:03:08+00:00",
+    "tags": [
+      "科普",
+      "历史",
+      "古罗马",
+      "罗马帝国",
+      "罗马",
+      "人文历史",
+      "世界史"
+    ],
+    "title": "一口气看完罗马千年兴衰全史｜The ENTIRE History of ROME",
+    "video_id": "bseed_GTb1o",
+    "views": 197
+  },
+  "seed_provenance": {
+    "bvid": "BV1uHbT6VEeg",
+    "published_at": "2026/9/8 01:03:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1uHbT6VEeg"
+  },
+  "version": 1
+}

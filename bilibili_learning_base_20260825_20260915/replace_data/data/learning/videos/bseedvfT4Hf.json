@@ -1,0 +1,87 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "everyday science"
+    ],
+    "formats": [
+      "investigation",
+      "comparison",
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "explained",
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "发酵原理",
+      "食材知识",
+      "面包科普",
+      "烘焙科学",
+      "美食文化",
+      "烹饪技巧",
+      "bread",
+      "食物历史",
+      "breadtypes"
+    ],
+    "video_id": "bseedvfT4Hf"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=Zj3GdwUEtAg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBread may seem like one of the simplest foods in the world, but every loaf has its own chemistry, history, and technique behind it. Some rise with wild microorganisms, some puff through trapped steam, and others depend on fermentation, extreme heat, or days of careful preparation.\nThis video explores major types of bread including sourdough, baguette, naan, pita, rye bread, focaccia, ciabatta, brioche, pretzels, injera, and panettone. \n\nYou’ll discover where each bread originated, how ingredients and baking methods shape its texture and flavor, why some breads develop huge air pockets while others stay dense, and how fermentation, hydration, gluten, steam, and fat change the final loaf. \n\nWe’ll also explore traditional cooking methods, cultural uses, unusual techniques, and the fascinating stories behind breads eaten around the world.\n\nWatch to discover how flour, water, heat, and time can produce completely different breads. Subscribe for more simple and fascinating explanations about food, ingredients, and culinary history.\n\n______________________________________________\n\n#Bread #BreadTypes #FoodExplained #BakingScience #foodhistory",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 550,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T06:18:56+00:00",
+    "tags": [
+      "发酵原理",
+      "食材知识",
+      "面包科普",
+      "烘焙科学",
+      "美食文化",
+      "科学科普",
+      "烹饪技巧",
+      "Bread",
+      "食物历史",
+      "BreadTypes"
+    ],
+    "title": "从酸种到布里欧修：全球面包种类与科学原理详解｜Every Type of Bread Explained",
+    "video_id": "bseedvfT4Hf",
+    "views": 71
+  },
+  "seed_provenance": {
+    "bvid": "BV1Jat76pEX5",
+    "published_at": "2026/9/2 14:18:56",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Jat76pEX5"
+  },
+  "version": 1
+}

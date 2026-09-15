@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Bitcoin"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "every x comparison",
+      "bitcoin industry"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "bitcoin mining",
+      "比特币挖矿",
+      "硬件科普",
+      "被动收入",
+      "极客 diy",
+      "bitaxe gamma",
+      "家用矿机评测",
+      "nerdminer 2"
+    ],
+    "video_id": "bseedJfFRQW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=_UP-08k9rGs\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWant to start Bitcoin mining but not sure where to begin? In this video, I break down Bitcoin mining at EVERY level, from completely free options like NiceHash, Unmineable, and Kryptex, all the way up to professional ASIC miners like the Bitmain Antminer S21 XP Hydro. We cover NerdMiner 2, Gold Nugget Miner, Bitaxe Gamma, GekkoAxe GT, Bitaxe Touch, Canaan Avalon Nano 3S, Avalon Mini 3, Avalon Q, and hosted Bitcoin mining with Musk Miners. Whether you're looking for a beginner-friendly way to earn Bitcoin, a home mining setup that doubles as a heater, a solo mining lottery machine, or a serious passive income investment, this guide covers the best Bitcoin miners for every budget in 2026. Check out the links and discount codes below for all the miners mentioned in this video.\n\n➤Super EASY Bitcoin mining with LuqEE: https://a.ndy.fyi/LuqEE\nPROMO CODE: YOURFRIENDANDY\n\nClaim your FREE Passive Income Course and set up your first passive income stream this week 👉 https://zzzmoney.club/passive-income-course\n\n➤Musk Miners: https://a.ndy.fyi/MuskMiners \nTheir sale details: https://a.ndy.fyi/MuskMinersSale\n\n➤Nicehash: https://a.ndy.fyi/NiceHash\n➤Unmineable: https://a.ndy.fyi/Unmineable\n➤Kryptex: https://a.ndy.fyi/Kryptex\n\n➤NerdMiner 2: https://a.ndy.fyi/NerdMiner2-BTCmerch\n7x Miner Combo: https://a.ndy.fyi/NerdMiner2Combo-BTCmerch\nDiscount code: ANDY\n\n➤Gold Nugget Miner: https://a.ndy.fyi/GoldNugget-BTCmerch\nCombo: https://a.ndy.fyi/GoldNuggetCombo-BTCmerch\nDiscount code: ANDY\n\n➤Bitaxe Gamma:…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1014,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:03:46+00:00",
+    "tags": [
+      "bitcoin mining",
+      "中英双语",
+      "中文翻译",
+      "比特币挖矿",
+      "硬件科普",
+      "被动收入",
+      "极客 DIY",
+      "Bitaxe Gamma",
+      "家用矿机评测",
+      "NerdMiner 2"
+    ],
+    "title": "【中英双语】从免费到专业：2026年比特币挖矿全价位设备实测指南｜I Tested Bitcoin Miners at EVERY Price Point",
+    "video_id": "bseedJfFRQW",
+    "views": 75
+  },
+  "seed_provenance": {
+    "bvid": "BV1if4y6RE58",
+    "published_at": "2026/8/29 16:03:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1if4y6RE58"
+  },
+  "version": 1
+}

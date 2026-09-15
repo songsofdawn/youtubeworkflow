@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "restoration"
+    ],
+    "formats": [
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "丰田",
+      "越野车",
+      "老爷车",
+      "兰德酷路泽",
+      "修复",
+      "abandoned",
+      "汽车翻新",
+      "restoration"
+    ],
+    "video_id": "bseede6MQ2O"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nRestoration of an abandoned Toyota Land Cruiser 80. This legendary Toyota Land Cruiser 80 was abandoned until today! Enjoy!\n#restoration #toyota #abandoned",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1943,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T13:39:48+00:00",
+    "tags": [
+      "丰田",
+      "手工",
+      "越野车",
+      "老爷车",
+      "兰德酷路泽",
+      "无配音",
+      "修复",
+      "abandoned",
+      "汽车翻新",
+      "restoration"
+    ],
+    "title": "废墟里翻出丰田陆巡80，暴力修复脱胎换骨｜Restoration Abandoned Toyota Land Cruiser Truck | ULTIMATE…",
+    "video_id": "bseede6MQ2O",
+    "views": 148
+  },
+  "seed_provenance": {
+    "bvid": "BV1x1YM6nES5",
+    "published_at": "2026/9/10 21:39:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1x1YM6nES5"
+  },
+  "version": 1
+}

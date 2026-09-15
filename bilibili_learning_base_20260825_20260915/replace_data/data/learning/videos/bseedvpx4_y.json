@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM",
+      "LLM",
+      "local LLM"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "glm",
+      "llm",
+      "local llm",
+      "open source ai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "开源模型",
+      "本地大模型",
+      "ai 评测",
+      "llm 部署",
+      "ai",
+      "极客 diy",
+      "local ai",
+      "glm 5.3",
+      "rtx 3090 多卡",
+      "threadripper wrx80"
+    ],
+    "video_id": "bseedvpx4_y"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=ZWS2JVN2iBI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGLM 5.3 Flash local AI testing on the quad 3090s and the Threadripper WRX80 platform build.\nPlay Flippy Bit at the DSP arcade! https://arcade.digitalspaceport.com/\n\nThreadripper WRX80 Build\nMOBO - WRX80  \nAsrock Creator https://geni.us/ASRock_wrx80_creator\nGigabyte MC62-G40 https://geni.us/MC62-G40_MOBO\n\nCPU  - AMD Threadripper PRO\n3945WX https://geni.us/AMD-TR-3945WX\n\nGPUs\n3090 24GB https://geni.us/GPU3090\n4090 24GB https://geni.us/4090_24GB_GPU\n\nRAM\n256GB DDR4 DIMMs https://geni.us/256GB_DDR4_RAM\n\nRISER CABLES\nx16 wide PCIe Risers https://geni.us/PCIe4_Riser_Cable\n\nRack Frame Chassis https://geni.us/GPU_Rack_Frame\n\nPSUs\n1500W Power Supply https://geni.us/Corsair_HX1500iPSU\n1000W Power Supply https://geni.us/1000W_PSU\n\nH170i CAPELLIX Liquid CPU Cooler https://geni.us/iCUE_H170i_Capellix\n\nLocal Ai Server Build Playlist https://www.youtube.com/playlist?list=PLarJAzZsWRGDktdCjcN51G4xVkvvjC0ZB\n\n\nWays to Support:\n🚀 Join as a member for members-only content and extra perks https://www.youtube.com/c/digitalspaceport/join\n☕ Buy Me a Coffee https://www.buymeacoffee.com/digitalspaceport\n🔳 Patreon https://www.patreon.com/digitalspaceport\n👍 Subscribe youtube.com/c/digitalspaceport?sub_confirmation=1\n🌐 Check out the Website https://digitalspaceport.com\n\nChapters\n0:00 GLM 5.3 Local Ai Review\n3:00 SVG of a Cat\n5:05 Random Sentence about a Cat\n5:30 Arbitrary Arrays\n6:01 Flippybit Extreme\n9:36 Parsing Peppermints\n9:51 Armageddon with a Twist\n\n\n*****\nAs an Amazon Associate I earn from qualifying purchas…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 858,
+    "likes": 5,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T19:02:33+00:00",
+    "tags": [
+      "开源模型",
+      "本地大模型",
+      "AI 评测",
+      "LLM 部署",
+      "ai",
+      "极客 DIY",
+      "local ai",
+      "GLM 5.3",
+      "RTX 3090 多卡",
+      "Threadripper WRX80"
+    ],
+    "title": "【中英双语】GLM 5.3 Flash 本地 AI 测试：Threadripper WRX8｜GLM 5.3 Flash Local Ai Test",
+    "video_id": "bseedvpx4_y",
+    "views": 148
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZWtp6AE7A",
+    "published_at": "2026/8/31 03:02:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZWtp6AE7A"
+  },
+  "version": 1
+}

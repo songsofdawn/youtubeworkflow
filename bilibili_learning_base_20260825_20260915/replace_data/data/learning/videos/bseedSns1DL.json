@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "archaeology",
+      "history"
+    ],
+    "formats": [
+      "documentary",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "考古",
+      "中世纪",
+      "人文历史",
+      "archaeology",
+      "瓦特·泰勒起义",
+      "黑死病",
+      "历史科普",
+      "英国历史",
+      "农民起义",
+      "history"
+    ],
+    "video_id": "bseedSns1DL"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn the summer of 1381, an army of tens of thousands of ordinary people marched on London, triggering the largest social uprising in medieval English history. It was the only time the Tower of London was ever overrun, resulting in broken prisons, burned palaces, and royal executions. But what actually caused this massive revolt, and what clues did these rebels leave behind in the archaeological record? Through examining plague pits and remains, Giselle has the answers!\n\nThank you to History Hit for sponsoring this video! Sign up to History Hit and start watching today: https://eu1.hubs.ly/H0gFQZ50\n\n00:00 Intro\n01:03 The background\n12:27 The key players\n14:17 History Hit\n14:53 The revolt\n\n🪏 You can become a certified Dirt Nerd and watch exclusive content by becoming a channel member here: https://www.youtube.com/channel/UCCJyzOQzeHJfZJMZ9-r_h3A/join\n\nWelcome to The Archaeologist's Notebook! Your hub for uncovering and understanding thousands of years of human history, with working archaeologist Giselle Király.\n\nLet's Connect! 🪏\nSpotify: https://open.spotify.com/show/033DlqRpihoehFNXa6Zg8Z?si=d460dc1e9c1d47a6\nSubstack: https://historyhit.substack.com/\nInstagram: https://www.instagram.com/archaeologistsnotebook/\nTikTok: https://www.tiktok.com/@ArchaeologistsNotebook \nBusiness Inquiries: archaeology@littledotstudios.com\n\n--\n\nSource Materials:\nAlamy\n\n#PeasantsRevolt #TheUprising #Medieval",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1757,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T10:14:39+00:00",
+    "tags": [
+      "考古",
+      "中世纪",
+      "人文历史",
+      "Archaeology",
+      "瓦特·泰勒起义",
+      "黑死病",
+      "历史科普",
+      "英国历史",
+      "农民起义",
+      "History"
+    ],
+    "title": "考古学家揭秘1381年英国农民起义真相｜The real archaeology behind the Peasants Revolt",
+    "video_id": "bseedSns1DL",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV14AYg6oEc8",
+    "published_at": "2026/9/10 18:14:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV14AYg6oEc8"
+  },
+  "version": 1
+}

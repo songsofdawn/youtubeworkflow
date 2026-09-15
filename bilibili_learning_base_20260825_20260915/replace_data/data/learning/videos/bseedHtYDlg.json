@@ -1,0 +1,73 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手游",
+      "游戏杂谈",
+      "手机游戏",
+      "scottthewoz",
+      "游戏文化",
+      "怀旧游戏",
+      "手机游戏史"
+    ],
+    "video_id": "bseedHtYDlg"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nScott finally says the term, \"Tiny Wings\".\n\nMerchandise: https://blueborder.store\nSecond Channel: @ScottsStash \nHighlights Channel: @ScottsSnippets \n\nTwitter: https://www.twitter.com/ScottTheWoz\nBluesky: https://bsky.app/profile/scottthewoz.bsky.social\nFacebook: https://www.facebook.com/ScottTheWoz/\nInstagram: https://www.instagram.com/scottthewoz/\n\nBlue Border Entertainment's Twitter: https://x.com/BlueBorderEnt\nBlue Border Entertainment's Bluesky: https://bsky.app/profile/blueborderent.bsky.social\nBlue Border Entertainment's Instagram: https://www.instagram.com/blueborderentertainment/\n\nMusic Used:\nComing Soon",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3578,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T20:53:53+00:00",
+    "tags": [
+      "手游",
+      "游戏杂谈",
+      "手机游戏",
+      "ScottTheWoz",
+      "游戏文化",
+      "怀旧游戏",
+      "手机游戏史"
+    ],
+    "title": "斯科特聊手游的黄金年代｜The Golden Age of Mobile Gaming - Scott The Woz",
+    "video_id": "bseedHtYDlg",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV1Mjbt6TEow",
+    "published_at": "2026/9/7 04:53:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Mjbt6TEow"
+  },
+  "version": 1
+}

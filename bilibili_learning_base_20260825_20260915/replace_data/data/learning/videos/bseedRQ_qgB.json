@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "化学",
+      "晶体培养",
+      "结晶",
+      "科学实验",
+      "蔗糖",
+      "diy实验"
+    ],
+    "video_id": "bseedRQ_qgB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nIt is quite difficult to grow large, single crystals of table sugar (sucrose).\n\nCrystals form easily enough, but they often clump together to form clusters. In this video, I'm going to try and grow a single crystal.\n\nFor a detailed written guide on making this work, check out my son's blog post at https://crystalverse.com/sugar-crystals\n\n---\n\nMATERIALS\n\nI bought my materials in Malaysia, but the items below are similar ones available on Amazon — they work just as well if you’d like to try this experiment yourself.\n\n• 600 mL beaker: https://amzn.to/445FbKh\n• Digital scale: https://amzn.to/4olYTsy\n• Electric burner: https://amzn.to/47MeHi8\n• Nylon fishing line (clear, 0.14 mm): https://amzn.to/3LvU9mF\n• Precision tweezers: https://amzn.to/47AS0yB\n• Plastic petri dish (90 × 15 mm): https://amzn.to/4r05jjS\n• Pipettes: https://amzn.to/4awMvCt\n\nThese are Amazon affiliate links — I may earn a small commission if you purchase through them, at no extra cost to you.\n\nThank you for supporting this channel!\n\n---\n\nVIDEO CHAPTERS  \n\n00:00 Getting coarse sugar \n00:15 Making sugar crystal solution\n00:57 Growing seed crystals (1st try)\n02:35 Growing seed crystals (2nd try)\n03:54 Hanging the seed crystal\n04:47 Observing the crystal \n05:18 Cleaning up crystal solution\n06:34 Harvesting the crystal\n07:43 Final result\n\n\n---\n\nDisclosure: As an Amazon Associate I earn from qualifying purchases.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 512,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T09:28:29+00:00",
+    "tags": [
+      "科普",
+      "化学",
+      "晶体培养",
+      "结晶",
+      "无配音",
+      "科学实验",
+      "科学科普",
+      "蔗糖",
+      "DIY实验"
+    ],
+    "title": "用厨房白糖养出一颗大晶体｜I Turned Kitchen Sugar into a Crystal",
+    "video_id": "bseedRQ_qgB",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1Tutm6SEem",
+    "published_at": "2026/9/5 17:28:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Tutm6SEem"
+  },
+  "version": 1
+}

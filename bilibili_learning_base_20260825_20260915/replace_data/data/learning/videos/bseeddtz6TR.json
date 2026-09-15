@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "redstone",
+      "Bedrock"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft redstone",
+      "minecraft bedrock"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "刷怪农场",
+      "绿宝石",
+      "经验农场",
+      "基岩版",
+      "袭击农场",
+      "blazed mc",
+      "blazedmc",
+      "红石 farm 教程"
+    ],
+    "video_id": "bseeddtz6TR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nINFINITE Emeralds, Totems, Enchanted Items & More with this NEW EASIEST Raid XP Farm!\nThis design will work on Windows 11, Nintendo Switch, MCPE, Playstation, and Xbox!\n❤️SUB FOR MORE❤️\n---------------------------------------\nJava Channel: https://www.youtube.com/@BlazedMC-Java\nSeeds Channel: https://www.youtube.com/@BlazedMC-Seeds\n---------------------------------------\nFeel free to support the channel 🙏🏻\nhttps://www.youtube.com/channel/UCMA8gSFju-p6W-Xh1SxriZA/join\n---------------------------------------\n⬇️Download World Here⬇️\nhttps://discord.gg/bT8AR8v3t2\n---------------------------------------\nTime Stamps:\n0:00 EASIEST Raid XP Farm Tutorial\n0:17 Materials List\n0:22 Building Location\n1:02 Full Tutorial\n3:09 Villager Section\n5:42 Important Notes\n6:02 How to Use the Farm\n6:17 Thanks for Watching ❤️\n---------------------------------------\nMusic:\nMusic track: honey jam, hillside, taro swirl by massobeats\nSource: https://freetouse.com/music",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 389,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T10:14:16+00:00",
+    "tags": [
+      "我的世界",
+      "Minecraft",
+      "刷怪农场",
+      "绿宝石",
+      "经验农场",
+      "基岩版",
+      "袭击农场",
+      "blazed mc",
+      "blazedmc",
+      "红石 farm 教程"
+    ],
+    "title": "我的世界基岩版超简易袭击经验农场教程｜New EASIEST RAID XP FARM Minecraft Bedrock 26.4/1.21+!",
+    "video_id": "bseeddtz6TR",
+    "views": 58
+  },
+  "seed_provenance": {
+    "bvid": "BV1umbH6QExy",
+    "published_at": "2026/9/6 18:14:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1umbH6QExy"
+  },
+  "version": 1
+}

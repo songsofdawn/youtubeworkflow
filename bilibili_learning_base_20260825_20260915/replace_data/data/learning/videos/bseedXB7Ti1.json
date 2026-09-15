@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "末地",
+      "末影珍珠",
+      "末影人",
+      "游戏考据",
+      "游戏冷知识"
+    ],
+    "video_id": "bseedXB7Ti1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhy does water damage Endermen? Where do Ender Pearls actually come from? And why is there an empty void in the End dimension?\n\nJoin me as we dive deep into the End and its ocean-like elements. We'll explore a document that reveals the Endermen's true mission, what Shulkers actually are, and uncover how the End Dimension was once filled with water.\n\nJoin My Discord Server: https://discord.gg/uDj8vNaCpP\n\nBecome a Member Access Perks: https://www.youtube.com/channel/UC9aJ-FXIdQAhFm2H2RO4pmw/join\n\nI spend way too much time looking for the weirdest secrets in Minecraft so you don't have to. If you enjoy my content, commentary, or even me, please subscribe and smash like.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 552,
+    "likes": 14,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T03:46:09+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "末地",
+      "末影珍珠",
+      "末影人",
+      "游戏考据",
+      "游戏冷知识"
+    ],
+    "title": "末地曾经是一片海洋？探究末影人的秘密｜The End Used to Be Full of Water",
+    "video_id": "bseedXB7Ti1",
+    "views": 466
+  },
+  "seed_provenance": {
+    "bvid": "BV1Cdt166EF1",
+    "published_at": "2026/9/5 11:46:09",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Cdt166EF1"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "street food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "street food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "街头小吃",
+      "印度美食",
+      "素食料理",
+      "土豆卷饼",
+      "asmr烹饪",
+      "辣味酱料",
+      "家常菜制作",
+      "无解说做饭",
+      "aloo frankie"
+    ],
+    "video_id": "bseedGTW5k9"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=-mAUKOYEh70\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nEnjoy this delicious homemade Aloo Frankie made with spicy potato filling, fresh vegetables, Schezwan sauce, and a soft homemade frankie roti. Crispy on the outside, flavorful on the inside, and packed with street-style flavors, this easy frankie is perfect for breakfast, lunch, dinner, or an evening snack.\n\n🥙Ingredients\n\nPotato Filling\n• 3 medium potatoes\n• 1 large onion\n• 4–5 green chillies (adjust to taste)\n• 1 tsp cumin\n• Mustard oil (or any cooking oil)\n• 1 tbsp ginger-garlic\n• 1 tsp turmeric\n• 1 tbsp chilli powder (adjust to preference)\n• Chilli-Garlic Sauce or Schezwan Sauce\n• 1 tsp sugar (optional)\n• Salt to taste\n• Fresh coriander\n\nFrankie Roti\n• 350 g all-purpose flour (or whole wheat atta)\n• Salt\n• A little oil\n• Water (add gradually)\n\nFrankie Roll Assembly\n• Frankie roti\n• Garlic Chilli Sauce or Schezwan Sauce\n• Potato filling\n• Raw cabbage\n• Raw onion (optional)\n• Fresh coriander\n• Cheese (optional)\n• Fried noodles (optional, for extra crunch)\n\nFor Cooking\n• Oil\n• Butter\n• Garlic Chilli Sauce (optional, for brushing on top)\n\n🥄To Serve With\n• Garlic Chilli Sauce\n• Schezwan Sauce\n• Fried Noodles (Chinese Sev)\n• Raw Onion\n• Green Chillies\n• Chilled Soft Drink\n\n🌿Featured In This Video\n• Aloo Frankie\n• Homemade Frankie Roll\n• Street-Style Aloo Frankie\n• Potato Frankie Recipe\n• Schezwan Frankie\n• Veg Frankie Roll\n• Indian Street Food Recipe\n• Lunch Box Recipe\n• Evening Snack Recipe\n• Homemade Wrap Recipe\n• Vegetarian Street Food\n• Easy Indian Snack Recipe\n• ASMR Cooking Recipe\n\n🎧Video Style\n• ASMR Cooking\n• Real Cooking Sounds\n• No Talking\n• Relaxing Cooking Experie…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 375,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:51:02+00:00",
+    "tags": [
+      "街头小吃",
+      "印度美食",
+      "素食料理",
+      "土豆卷饼",
+      "ASMR烹饪",
+      "辣味酱料",
+      "无配音",
+      "家常菜制作",
+      "无解说做饭",
+      "aloo frankie"
+    ],
+    "title": "【无配音】自制印度街头美食Aloo Frankie，酥脆外皮带辣味土豆馅｜I Tried Making Aloo Frankie at Home.. It T…",
+    "video_id": "bseedGTW5k9",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1qj4y6WEeV",
+    "published_at": "2026/8/29 17:51:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qj4y6WEeV"
+  },
+  "version": 1
+}

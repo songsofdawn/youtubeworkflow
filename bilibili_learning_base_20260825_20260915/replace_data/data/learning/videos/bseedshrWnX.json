@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "飞行实验室",
+      "波音747",
+      "发动机测试",
+      "航空工程",
+      "工业机械",
+      "空客a350对比",
+      "ge9x引擎",
+      "farnborough航展"
+    ],
+    "video_id": "bseedshrWnX"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=fJ-I1qbiBK0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGE Aerospace and its CFM International joint venture partner Safran use a former Japan Airlines Boeing 747 widebody to evaluate new engines such as the Leap 1B, the GE9X, and the forthcoming RISE Open Fan technology. Test pilots can replicate real-world operations at altitude while teams of engineers log and process multiple data points in what acts as a flying laboratory.\n___________________________________________________\n\n_Aviation International News_ https://www.ainonline.com\n_Business Jet Traveler_ https://www.bjtonline.com\n_FutureFlight_ https://www.ainonline.com/futureflight\n_Leeham News and Analysis_ https://leehamnews.com/\n\nSubscribe to the daily *AIN* Alerts newsletter https://www.ainonline.com/ain-alerts-subscribe\nSubscribe to the *FutureFlight* newsletter https://connect.ainonline.com/futureflight-newsletter\nSubscribe to *BJT* Waypoints https://www.bjtonline.com/subscribe\nSubscribe to *Leeham News and Analysis* https://leehamnews.com/subscriptions/\n\nFollow *AIN* on Instagram https://www.instagram.com/ain_online\nLike *AIN* on Facebook https://www.facebook.com/AINPublications\nFollow *AIN* on Twitter https://twitter.com/AINonline\nFollow *AIN* on LinkedIn https://www.linkedin.com/company/aviationinternationalnews\n\nFollow *FutureFlight* on Instagram https://www.instagram.com/futureflightain\nLike *FutureFlight* on Facebook https://www.facebook.com/FutureFlightAIN\nFollow *FutureFlight* on Twitter https://twitter.com/FutureFlightAIN\nFollow *FutureFlight* on LinkedIn https://www.linkedin.com/compa…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 459,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:14:44+00:00",
+    "tags": [
+      "飞行实验室",
+      "中英双语",
+      "波音747",
+      "中文翻译",
+      "发动机测试",
+      "航空工程",
+      "工业机械",
+      "空客A350对比",
+      "GE9X引擎",
+      "Farnborough航展"
+    ],
+    "title": "【中英双语】GE航空用波音747改装飞行实验室测试新发动机技术｜GE Aerospace Flies Boeing 747 To Test New Engin…",
+    "video_id": "bseedshrWnX",
+    "views": 22
+  },
+  "seed_provenance": {
+    "bvid": "BV18b4y6LELd",
+    "published_at": "2026/8/29 16:14:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18b4y6LELd"
+  },
+  "version": 1
+}

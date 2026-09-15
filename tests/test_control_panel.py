@@ -1429,6 +1429,35 @@ class QueueTests(TestCase):
             retried = store.retry(job["id"])
             self.assertEqual(retried["status"], "queued")
 
+    def test_publish_queue_prioritizes_and_reuses_existing_submission(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            first = store.enqueue(
+                "publish", "task-first", {"title": "First video"}, resource_class="upload",
+                reuse_active_kinds={"publish"},
+            )
+            second = store.enqueue(
+                "publish", "task-second", {}, resource_class="upload",
+                priority=1,
+            )
+            reused = store.enqueue(
+                "publish", "task-first", {}, resource_class="upload",
+                priority=1,
+                reuse_active_kinds={"publish"},
+            )
+            queue = store.publish_queue()
+            self.assertEqual(queue[0]["title"], "First video")
+            store.move_publish(second["id"], "up")
+            moved_queue = store.publish_queue()
+            claimed = store.claim_next({"publish"}, {"upload"})
+
+        self.assertEqual(reused["id"], first["id"])
+        self.assertEqual(reused["priority"], 1)
+        self.assertEqual([row["target"] for row in queue], ["task-first", "task-second"])
+        self.assertEqual([row["target"] for row in moved_queue], ["task-second", "task-first"])
+        self.assertEqual(claimed["target"], "task-second")
+
     def test_concurrent_idempotent_enqueue_reuses_one_active_job(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
@@ -1830,6 +1859,7 @@ class QueueTests(TestCase):
 
         self.assertTrue(handled_first)
         self.assertEqual(retried["status"], "queued")
+
         self.assertEqual(retried["payload"]["_dubbing_preflight_retry_count"], 1)
         self.assertTrue(handled_second)
         self.assertEqual(failed["status"], "failed")

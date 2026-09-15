@@ -1,0 +1,110 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "building",
+      "civilization"
+    ],
+    "formats": [
+      "build",
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft build",
+      "minecraft civilization",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "pvp",
+      "建筑",
+      "极限生存",
+      "我的世界",
+      "minecraft",
+      "服务器剧情",
+      "smp",
+      "sx",
+      "文明建设",
+      "the name's sx"
+    ],
+    "video_id": "bseed1l2tcp"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMake sure to check out Wynncraft: https://wynncraft.com/thenamessx\nIP: thenamessx.wynncraft.com\n\nFar out in our server lies the City of Polaris, the ultimate civilization that could protect anyone on the Heartless Horizon. This is the story of how I Built Minecraft's ULTIMATE Civilization.\n\nWhere I get my music: https://share.epidemicsound.com/jbwsft\n\nHeartless Horizon:\n➤ @TheNamesSX \n➤ @Evourai \n➤ @Minotaurmc \n\nWant to be in Heartless Horizon? Join the events discord\n➤ https://discord.gg/hrznevents\n\nLike TheNamesSX and his other videos on the Heartless Horizon, a scripted Minecraft Hardcore Anarchy SMP / Server created by SX, Mino, and Evourai. Inspired by Hermitcraft, on this staged survival server, whether it be from PVP or natural causes, any death forces you to lose 2 permanent hearts, and when you run out of hearts you are banned forever.\n\n#HeartlessHorizon",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 4728,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T14:40:11+00:00",
+    "tags": [
+      "PVP",
+      "建筑",
+      "极限生存",
+      "我的世界",
+      "Minecraft",
+      "服务器剧情",
+      "SMP",
+      "SX",
+      "文明建设",
+      "The Name's SX"
+    ],
+    "title": "我在Minecraft建造了保护所有人的终极文明｜I Created Minecraft's ULTIMATE Civilization",
+    "video_id": "bseed1l2tcp",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1T8Yi6NEch",
+    "published_at": "2026/9/13 22:40:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1T8Yi6NEch"
+  },
+  "version": 1
+}

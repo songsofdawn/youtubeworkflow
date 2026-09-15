@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "steak"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "steak recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "牛排",
+      "餐厅探店",
+      "迈阿密美食",
+      "主厨推荐",
+      "韩式融合菜",
+      "西班牙海鲜饭",
+      "炖牛小排",
+      "amelia’s 1931",
+      "chef eileen andrade"
+    ],
+    "video_id": "bseed_4tUt9"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThanks to Graza for sponsoring this video! Find Graza Extra Virgin Olive Oil at a grocery store near you at https://graza.yt.link/JiurvTA\n\nI visited Amelia’s 1931, where Chef Eileen honors her grandmother through a bold Cuban and Korean-inspired menu. We tried frita, beef tartare, braised short rib, crispy octopus, seafood paella, and steak to discover whether this deeply personal restaurant delivers.\n\nCheck out The Restaurant Amelia 1931\nhttps://www.instagram.com/amelias1931\n13601 SW 26th St, Miami, FL 33175\n\nGet products now available at every Walmart https://linktr.ee/shop.guga\nBuy my cook book: https://linktr.ee/shop.guga\n\n* Subscribe! It's free.\nhttps://www.youtube.com/guga?sub_confirmation=1\n----------------------------------------------- \nSubscribe to my Grilling Channel \nhttps://www.youtube.com/gugafoods?sub_confirmation=1\n-----------------------------------------------\nSUBSCRIBE to my Sous Vide Channel\nhttps://www.youtube.com/SousVideEverything?sub_confirmation=1 \n----------------------------------------------- \n* SVE MERCH *\nShirts: https://teespring.com/stores/sve\nCups & Boards: https://gugamerch.com/\n-----------------------------------------------\n* MAIL TIME Want to send something?\n13876 SW 56th Street (№128)\nMiami FL 33175\n\nFOLLOW ME ON\nTikTok: https://www.tiktok.com/@gugafoods\nInstagram: https://www.instagram.com/sveverything/\nFacebook: https://www.facebook.com/Sous-Vide-Everything\n\n*************************************************\nTHE EQUIPMENT I OFTEN USE IN MOST VIDEOS \n\n* SOUS…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1016,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T05:59:42+00:00",
+    "tags": [
+      "牛排",
+      "餐厅探店",
+      "迈阿密美食",
+      "主厨推荐",
+      "韩式融合菜",
+      "西班牙海鲜饭",
+      "美食测评",
+      "炖牛小排",
+      "Amelia’s 1931",
+      "Chef Eileen Andrade"
+    ],
+    "title": "为纪念已故祖母而开的餐厅，值得吗？｜I Tried a Restaurant Built for Someone Who’ll NEVER Eat There!",
+    "video_id": "bseed_4tUt9",
+    "views": 49
+  },
+  "seed_provenance": {
+    "bvid": "BV1VSYC6eE59",
+    "published_at": "2026/9/14 13:59:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1VSYC6eE59"
+  },
+  "version": 1
+}

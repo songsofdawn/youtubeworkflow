@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "space_astronomy",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "space",
+      "meteorites"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "space science"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "宇宙化学",
+      "陨石研究",
+      "生命起源",
+      "bbc earth",
+      "科学纪录片",
+      "天体生物学",
+      "dna 起源",
+      "bbc earth lab"
+    ],
+    "video_id": "bseedl-S16H"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=YROHERE_fYQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSome of the chemistry that makes up our genetic code may have existed before Earth itself. Found inside 4.6-billion-year-old meteorites, these ancient compounds came from the stars…carrying chemical secrets that pre-date our planet.\n\nBest of Earth Science: http://bit.ly/EarthLabOriginals \nBest of BBC Earth: http://bit.ly/TheBestOfBBCEarthVideos \n\nThis is a channel from BBC Studios who help fund new BBC programmes. Service information and feedback: http://bbcworldwide.com/vod-feedback--contact-details.aspx",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 315,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:56:22+00:00",
+    "tags": [
+      "宇宙化学",
+      "陨石研究",
+      "生命起源",
+      "中英双语",
+      "中文翻译",
+      "BBC Earth",
+      "科学纪录片",
+      "天体生物学",
+      "DNA 起源",
+      "bbc earth lab"
+    ],
+    "title": "【中英双语】46亿年前陨石揭示DNA起源：生命化学前史｜What 4.6-Billion-Year-Old Meteorites Reveal About O…",
+    "video_id": "bseedl-S16H",
+    "views": 17
+  },
+  "seed_provenance": {
+    "bvid": "BV1tv4y63ELB",
+    "published_at": "2026/8/29 16:56:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tv4y63ELB"
+  },
+  "version": 1
+}

@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Xbox",
+      "PlayStation"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "xbox",
+      "xbox series x",
+      "ps5",
+      "二手游戏",
+      "游戏收藏",
+      "数字版权",
+      "光盘转数字",
+      "disc to digital",
+      "xbox disc to digital"
+    ],
+    "video_id": "bseedHUwKtQ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMicrosoft says you can turn your Xbox discs into digital licenses for free so I bought a stack of used games and found out how many actually work.\n\nSubscribe for more! https://www.youtube.com/austinevans\nCheck out our @thisis channel! https://www.youtube.com/thisis\nAs well as the @Denki channel! https://www.youtube.com/@Denki\nInstagram: https://instagram.com/austinnotduncan\nThreads: https://www.threads.net/@austinnotduncan\n\nChapter Titles:\n0:00 Xbox's Big Play\n2:45 Testing Used Games\n6:51 What About Xbox One?\n9:29 The Future",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 718,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T04:30:13+00:00",
+    "tags": [
+      "单机游戏",
+      "Xbox",
+      "Xbox Series X",
+      "PS5",
+      "二手游戏",
+      "游戏收藏",
+      "数字版权",
+      "光盘转数字",
+      "disc to digital",
+      "xbox disc to digital"
+    ],
+    "title": "我买了一堆二手Xbox光盘，实测免费转数字版｜I Bought Used Games to Test Xbox Disc to Digital",
+    "video_id": "bseedHUwKtQ",
+    "views": 368
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZeYj6fEq8",
+    "published_at": "2026/9/11 12:30:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZeYj6fEq8"
+  },
+  "version": 1
+}

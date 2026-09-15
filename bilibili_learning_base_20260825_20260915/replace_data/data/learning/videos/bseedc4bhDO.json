@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "animation"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "animation process",
+      "animation"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "搞笑动画",
+      "原创动画",
+      "网络迷因",
+      "短视频梗",
+      "脑腐动画",
+      "短片·手书·配音",
+      "抽象文化",
+      "沙雕动画"
+    ],
+    "video_id": "bseedc4bhDO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYou could say this is our most expensive shitpost yet.\n\n𝗧𝘄𝗶𝘀𝗼𝗵 𝗠𝗲𝗱𝗶𝗮\n_________________________\nCheck out our social media for more infos and updates!\n\nYoutube: @twisohmedia\nTwitter X: https://x.com/senukin69\nInstagram: https://www.instagram.com/senukin69/\nFacebook: https://www.facebook.com/twisohmediaenglish/\n\n#animation #anime #senukin #twisoh #brainrot #67",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 91,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T12:59:48+00:00",
+    "tags": [
+      "搞笑动画",
+      "原创动画",
+      "网络迷因",
+      "短视频梗",
+      "脑腐动画",
+      "短片·手书·配音",
+      "抽象文化",
+      "沙雕动画"
+    ],
+    "title": "脑腐女友动画：当代互联网嘴替恋爱的尽头｜BRAINROT GIRLFRIEND THE ANIMATION",
+    "video_id": "bseedc4bhDO",
+    "views": 204
+  },
+  "seed_provenance": {
+    "bvid": "BV163Y76eEQQ",
+    "published_at": "2026/9/11 20:59:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV163Y76eEQQ"
+  },
+  "version": 1
+}

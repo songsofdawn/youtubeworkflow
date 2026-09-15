@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "家庭种植",
+      "开花技巧",
+      "水培兰花",
+      "兰花繁殖",
+      "植物复活",
+      "园艺教程",
+      "兰花养护",
+      "根系修复"
+    ],
+    "video_id": "bseedMyhSTM"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=BfKT4EQvIes\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHello friends.\n Today I share the VIDEO:Orchids in Water? I Tried It for 30 Days — The Results Shocked Me\n And other featured videos:\n - Miraculous for making rotten orchids revive immediately: https://youtu.be/iI8CMt95PYw; - Just need Garlic and immediately the orchid will sprout on the branch and bloom forever: https://youtu.be/lVHh4xePI4A;\n - Sprinkle 1 teaspoon! Suddenly the orchid grew 1001 roots and bloomed super flowers: https://youtu.be/cmVyTX_lcBk;\n - Place under orchid! Suddenly 100 roots will appear and bloom all 4 seasons: https://youtu.be/mOh_a3k8nyQ;\n - Secret to Easily Propagating Orchids Right on the Branch and Blooming All Year Round!: https://youtu.be/CKaUYnFRHas; \n- 1 Spoon a Week! Suddenly Your Orchid Is Producing New Roots and Flowers All Year Round: https://youtu.be/ujmCwxzAbrw.\n - Very few people think this way Orchids grow flower branches immediately: https://youtu.be/JhX3Xex6tsI \n- How to propagate orchids from withered stems that revive quickly: https://youtu.be/i_EiQUKFwFk\n - No one thought it could protect and help orchids grow so strong: https://youtu.be/THxQ_MDYi-I If you find it interesting, \nremember to like, share and subscribe to soon reach 10 million subscriptions: https://www.youtube.com/channel/UCe17cNrFtLCNufimisJV3GA Wish you always good luck ! Thankyou! #Happinessgarden #orchid #plants",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 933,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T19:16:47+00:00",
+    "tags": [
+      "家庭种植",
+      "开花技巧",
+      "水培兰花",
+      "兰花繁殖",
+      "植物复活",
+      "中英双语",
+      "中文翻译",
+      "园艺教程",
+      "兰花养护",
+      "根系修复"
+    ],
+    "title": "【中英双语】水培兰花30天挑战：枯根重生与开花实录｜Orchids in Water? I Tried It for 30 Days — The Result…",
+    "video_id": "bseedMyhSTM",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1xx8o62E5K",
+    "published_at": "2026/8/27 03:16:47",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xx8o62E5K"
+  },
+  "version": 1
+}

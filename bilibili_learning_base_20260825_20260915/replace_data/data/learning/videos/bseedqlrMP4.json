@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "100_days",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft 100 days",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "lifesteal smp",
+      "多人服务器",
+      "生存挑战",
+      "硬核生存",
+      "acookiegod",
+      "a cookie god"
+    ],
+    "video_id": "bseedqlrMP4"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=EId92RHVL4g\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSurvived 100 Days on the DEADLIEST Minecraft Server\nNEW SUMMER MERCH: https://acookiegod.com/\n(big discount on everything right now!)\n\n-------------------------------------\n\nfollow my socials!\n• instagram: https://www.instagram.com/aCookieGod/\n• discord: https://discord.gg/cookiearmy\n• current subscribers: 8,069,996\n\nhi guys, thank you for watching my silly video and subscribing to my channel! you made a normal asian dude's dream come true :)\n\n\n#minecraft #hardcore #but",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1419,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T07:06:21+00:00",
+    "tags": [
+      "网络游戏",
+      "我的世界",
+      "游戏实况",
+      "Minecraft",
+      "Lifesteal SMP",
+      "多人服务器",
+      "生存挑战",
+      "硬核生存",
+      "acookiegod",
+      "a cookie god"
+    ],
+    "title": "【中英双语】我在Minecraft最致命服务器生存100天｜I Survived 100 Days on the LIFESTEAL SMP in Minec…",
+    "video_id": "bseedqlrMP4",
+    "views": 108
+  },
+  "seed_provenance": {
+    "bvid": "BV1Rxtu6WEew",
+    "published_at": "2026/9/1 15:06:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Rxtu6WEew"
+  },
+  "version": 1
+}

@@ -272,6 +272,12 @@
         </form>
 
         <form id="discoveryForm" class="tab-panel discovery-panel" data-panel="discovery">
+          <div class="discovery-controls discovery-primary-controls">
+            <label class="field"><span>发现模式</span><select id="discoveryRankingMode"><option value="potential" selected>内容潜力</option><option value="hot">热门</option></select></label>
+            <label class="field"><span>搜索强度</span><select id="discoverySearchStrength"><option value="quick">快速</option><option value="standard" selected>标准</option><option value="deep">深度</option></select></label>
+            <label class="field"><span>发现范围</span><select id="discoveryScope"><option value="auto" selected>自动发现</option><option value="manual">手动聚焦</option></select></label>
+          </div>
+          <div id="discoveryManualFocus" class="hidden">
           <div class="discovery-pack-heading">
             <div>
               <strong>选择 Discovery Next 领域</strong>
@@ -284,15 +290,9 @@
             </div>
           </div>
           <div class="discovery-pack-grid" id="discoveryPacks"><span class="muted">正在读取领域列表…</span></div>
+          </div>
           <div class="discovery-controls">
-            <label class="field">
-              <span>筛选模式</span>
-              <select id="discoveryRankingMode">
-                <option value="hot" selected>热门优先</option>
-                <option value="potential">内容潜力优先</option>
-              </select>
-            </label>
-            <label class="field">
+            <label class="field hidden">
               <span>最近时间范围</span>
               <select id="discoveryHours">
                 <option value="24">最近 24 小时</option>
@@ -321,7 +321,7 @@
             <strong id="discoveryJobStep">等待开始</strong>
             <progress id="discoveryJobProgressBar" max="100" value="0"></progress>
           </div>
-          <small id="discoveryModeHint">热门优先会先执行独立热门召回，再用真实播放速度排序；达到热门阈值的视频不会被 Qwen 一票否决。深度发现仍受 discovery_max_search_requests 限制。</small>
+          <small id="discoveryModeHint">自动发现会从长期画像、近期行为、查询绩效和探索覆盖自动规划本轮领域、意图与预算。</small>
         </form>
 
         <form id="directForm" class="tab-panel direct-panel" data-panel="direct">
@@ -625,6 +625,13 @@
           <div class="job-list" id="jobList">
             <p class="muted">暂无运行记录</p>
           </div>
+          <div class="publish-order" id="publishOrder" aria-live="polite">
+            <div class="publish-order-head">
+              <strong>投稿顺序</strong>
+              <span>完成后自动接续下一条</span>
+            </div>
+            <div class="publish-order-list"><p class="muted">暂无排队投稿</p></div>
+          </div>
         </section>
       </aside>
     </section>
@@ -709,7 +716,7 @@
       <div class="publish-body">
         <div class="publish-notice">
           <strong id="publishMediaState">正在检查成片…</strong>
-          <span>使用 biliup v1.2.2。本窗口不会读取或显示 Cookie 内容。</span>
+          <span>使用 biliup v1.2.2；当前仅 1 个上传槽，完成后会自动接续下一条投稿。</span>
         </div>
 
         <div class="ai-recommendation" id="publishRecommendation">

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "air fryer"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "懒人食谱",
+      "居家烹饪",
+      "免烤甜点",
+      "自制零食",
+      "easy recipe",
+      "空气炸锅料理",
+      "tiktok 热门美食",
+      "testing tiktok"
+    ],
+    "video_id": "bseed4jMJRB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=ptLRL--1Dzw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI tested the Laziest TikTok Snack recipes to see if they're actually lazy and actually worth making... Let's find out!\n\nLet me know what viral recipes I should try next 😃\n\nThe TikTok/Instagram recipes I reviewed are below:\nS'mores wrap by Chloeandleox\nLazy girl french toast by Foodfinduae\nPizza fries by Hediye_tepehan\nFrozen chocolate raspberries by Lacuisinedekam\nCheesy honey butter toast by Nourishing\nReese's cookie pie by Snackattackchef\nS'mores toast by Thefastfoodie.tv\n\nGive these amazing creators a follow and check out their videos on TikTok ❤️\n\nIf you're new here, I'm Eloise a 4 x best-selling cookbook author and recipe creator.\n\nFind me on Instagram: @eloisehead @fitwaffle @fitwafflekitchen\n\n╔═╦╗╔╦╗╔═╦═╦╦╦╦╗╔═╗\n║╚╣║║║╚╣╚╣╔╣╔╣║╚╣═╣\n╠╗║╚╝║║╠╗║╚╣║║║║║═╣\n╚═╩══╩═╩═╩═╩╝╚╩═╩═╝\n\n#tiktokrecipe #viralrecipe #viral #recipe",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1149,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T23:19:44+00:00",
+    "tags": [
+      "美食制作",
+      "懒人食谱",
+      "居家烹饪",
+      "免烤甜点",
+      "美食测评",
+      "自制零食",
+      "easy recipe",
+      "空气炸锅料理",
+      "TikTok 热门美食",
+      "testing tiktok"
+    ],
+    "title": "【中英双语】实测最懒人 TikTok 零食食谱：真的好吃又省事吗？｜I Tried the LAZIEST TikTok SNACK Recipes",
+    "video_id": "bseed4jMJRB",
+    "views": 7
+  },
+  "seed_provenance": {
+    "bvid": "BV1yGts6EEV2",
+    "published_at": "2026/8/31 07:19:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1yGts6EEV2"
+  },
+  "version": 1
+}

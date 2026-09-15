@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "搞笑解说",
+      "末影龙",
+      "我的世界",
+      "minecraft",
+      "dotodoya",
+      "硬核模式",
+      "三人组队",
+      "dragonballfighterz"
+    ],
+    "video_id": "bseedVSDzOR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDIAMONDS... DIAMONDS!! Today on the channel its me @rhymestyle and @SeeReax taking on the Hardcore minecraft challenge! Will we be able to defeat the ender dragon and survive the hardcore challenge?\n\nFollow me on twitter: https://twitter.com/DotoDoya\nFollow me on twitch: https://www.twitch.tv/dotodoya\n\nIf you enjoyed the video make sure to hit the like button and subscribe! Feel free to share the video with anybody else you feel would enjoy it!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1356,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T17:34:24+00:00",
+    "tags": [
+      "搞笑解说",
+      "末影龙",
+      "游戏实况",
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "Dotodoya",
+      "硬核模式",
+      "三人组队",
+      "DragonballfighterZ"
+    ],
+    "title": "三个憨憨挑战硬核模式我的世界，死了就真完了｜Can Three Idiots Beat HARDCORE Minecraft?",
+    "video_id": "bseedVSDzOR",
+    "views": 82
+  },
+  "seed_provenance": {
+    "bvid": "BV16FY36mEGm",
+    "published_at": "2026/9/11 01:34:24",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16FY36mEGm"
+  },
+  "version": 1
+}

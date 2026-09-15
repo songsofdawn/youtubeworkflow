@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "houseplants",
+      "园艺教程",
+      "室内植物",
+      "非洲紫罗兰",
+      "浇水技巧",
+      "底部浇水",
+      "indoor plants",
+      "顶部浇水",
+      "毛细管浇水",
+      "弦叶花"
+    ],
+    "video_id": "bseedvQCa0z"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=E8m2Aoh5ClQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI compare all 4 methods for watering houseplants to determine which one you should be using.\n\n👍Connect with me.\n\n_Garden Fundamentals_ on YouTube: http://www.youtube.com/Gardenfundamentals1\n\n_Garden Myths_ Blog: http://www.gardenmyths.com/\n\n_Garden Fundamentals_ on Facebook: https://www.facebook.com/groups/GardenFundamentals/\n\n_Reality Time_ on YouTube: https://www.youtube.com/@realitytime1\n\n_Reality Time_ on Substack:  https://realitytime.substack.com/\n\n_Reality Time_ on Spotify: https://open.spotify.com/show/2t2BajjSaqm57x9h9Y96xv\n\n👍 25% off all my New Society Published books. \nUse Discount Code: Pavlis25\nhttps://www.GardenMyths.com/Pavlis25\n\n👍 Get FREE eBook : Growing Great Tomatoes: https://www.gardenmyths.com/free-ebook-growing-great-tomatoes/\n\nBecome a better gardener, Subscribe: http://www.youtube.com/Gardenfundamentals1?sub_confirmation=1\n\nShare with a friend: https://youtu.be/E8m2Aoh5ClQ\n-----------------------\nFree Stuff:\n\nFree Garden eBook: 24 1/2 Garden Design Ideas:\nhttp://www.gardenfundamentals.com/24-1-2-garden-design-ideas/\n-----------------------\nMy Books:\n\nGarden Myths:\nhttp://www.gardenmyths.com/garden-myths-book-1/\n\nBuilding Natural Ponds:\nhttp://www.buildingnaturalponds.com/\n\nSoil Science for Gardeners\nhttps://www.gardenfundamentals.com/soil-science/\n\n------------------------\nFree Resources:\n\nGarden Fundamentals Blog - lots of gardening information:\nhttp://www.gardenfundamentals.com/\n\nGarden Fundamentals Facebook Group:\nhttps://www.facebook.com/groups/GardenFundamentals/…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1139,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T21:41:51+00:00",
+    "tags": [
+      "houseplants",
+      "园艺教程",
+      "室内植物",
+      "非洲紫罗兰",
+      "浇水技巧",
+      "底部浇水",
+      "indoor plants",
+      "顶部浇水",
+      "毛细管浇水",
+      "弦叶花"
+    ],
+    "title": "【中英双语】四种室内植物浇水法实测：哪种最适合你？｜Which Watering Method is Best? 4 Techniques Put To Th…",
+    "video_id": "bseedvQCa0z",
+    "views": 19
+  },
+  "seed_provenance": {
+    "bvid": "BV1zpts6rEeo",
+    "published_at": "2026/8/31 05:41:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zpts6rEeo"
+  },
+  "version": 1
+}

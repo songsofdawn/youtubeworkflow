@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "chemistry",
+      "metals"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chemistry experiment",
+      "metalworking science"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "趣味实验",
+      "化学实验",
+      "金属结晶",
+      "醋酸",
+      "动手实验",
+      "硬核科普"
+    ],
+    "video_id": "bseedyyIJ6R"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFrom bouncing an egg soaked in glacial acetic acid to growing dendritic tin metal crystals using raw electric current, here are 6 fascinating chemistry experiments broken down step-by-step with the science behind every reaction!\n\n⚠️ DISCLAIMER & SAFETY:\nThese experiments involve concentrated acids, strong bases (sodium hydroxide), and high-heat combustion. Always wear proper PPE (safety goggles, lab coat, and chemical-resistant gloves) and conduct high-fume or exothermic reactions in a well-ventilated area or chemical fume hood.\n\nWhich reaction was your favorite? Let me know in the comments below, hit like if you enjoyed the transformations, and subscribe for more deep-dive chemistry builds!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 464,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T17:06:35+00:00",
+    "tags": [
+      "趣味实验",
+      "化学实验",
+      "金属结晶",
+      "醋酸",
+      "科学科普",
+      "动手实验",
+      "硬核科普"
+    ],
+    "title": "6个像魔法一样的神奇化学实验，鸡蛋变弹力球！｜6 Mind-Blowing Chemistry Experiments That Look Like Magi…",
+    "video_id": "bseedyyIJ6R",
+    "views": 169
+  },
+  "seed_provenance": {
+    "bvid": "BV1crYo67Evx",
+    "published_at": "2026/9/13 01:06:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1crYo67Evx"
+  },
+  "version": 1
+}

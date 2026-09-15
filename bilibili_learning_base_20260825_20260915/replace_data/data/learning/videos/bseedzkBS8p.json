@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "robotics"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "breaking points",
+      "ai预言",
+      "时评",
+      "科技新闻",
+      "马斯克",
+      "人形机器人",
+      "krystal ball"
+    ],
+    "video_id": "bseedzkBS8p"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nRyan and Emily discuss Elon predicting an AI driven humanoid robot takeover. \n\nSign Up For 30 Day Free BP Trial: https://breakingpoints.supercast.com/\n\n\nSign up for a PREMIUM Breaking Points subscriptions for full early access to uncut shows and LIVE AMAs with the hosts every week: https://breakingpoints.supercast.com/\n\nMerch Store: https://shop.breakingpoints.com/\n\nTo listen to Breaking Points as a podcast, check them out on Apple and Spotify\n\nApple: https://podcasts.apple.com/us/podcast/breaking-points-with-krystal-and-saagar/id1570045623\n \nSpotify: https://open.spotify.com/show/033kFeszOZEgO3Wy6ziXKR\n \nInstagram: https://www.instagram.com/breakingpoints.yt\n\nFacebook: https://www.facebook.com/people/Breaking-Points/61575893472315/\n\n#news #politics #youtube",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 531,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T00:35:28+00:00",
+    "tags": [
+      "人工智能",
+      "Breaking Points",
+      "AI预言",
+      "时评",
+      "科技新闻",
+      "马斯克",
+      "人形机器人",
+      "科学科普",
+      "krystal ball"
+    ],
+    "title": "马斯克预言：十亿人形机器人即将接管世界？｜Elon Predicts ONE BILLION Humanoid Robot AI TAKEOVER",
+    "video_id": "bseedzkBS8p",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV1wcYL6eEDK",
+    "published_at": "2026/9/11 08:35:28",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1wcYL6eEDK"
+  },
+  "version": 1
+}

@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "baking",
+      "noodles"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "baking",
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "烘焙",
+      "慢生活",
+      "吐司面包",
+      "免揉面包",
+      "治愈系美食",
+      "日式牛奶面包",
+      "居家烘焙"
+    ],
+    "video_id": "bseedaAl9-W"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nAfter several days of rain, the sun finally came out.\n\nThe morning light felt a little brighter than usual, and it seemed like the perfect day to bake a simple loaf of sandwich bread.\n\nThis bread is made with a gentle fold-and-rest method instead of kneading. Watching the dough slowly rise and transform is one of my favorite parts of bread making.\n\nSoft, fluffy, and easy to enjoy every day, it's the kind of bread I find myself coming back to again and again.\n\nI hope this quiet baking video brings a peaceful moment to your day.\n\nThank you for sharing a few minutes of your day with me ❤️\nTake care and stay well.\n\n– Yoshi\n\nDough\n180 ml water (¾ cup)\n3 g instant yeast (1 tsp)\n30 g sugar (2½ tbsp)\n8 g skim milk powder (1 tbsp)\n15 g melted butter (1 tbsp)\n250 g bread flour (2 cups)\n4 g salt (¾ tsp)\n\nThe bread pan measures 9.7 × 19.8 × 9.6 cm (D × W × H).",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 306,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T23:23:55+00:00",
+    "tags": [
+      "美食制作",
+      "烘焙",
+      "无配音",
+      "慢生活",
+      "吐司面包",
+      "免揉面包",
+      "治愈系美食",
+      "日式牛奶面包",
+      "居家烘焙"
+    ],
+    "title": "雨后晴天烤一款治愈系免揉日式牛奶面包｜This No-Knead Japanese Milk Bread Made a Rainy Week Feel Bet…",
+    "video_id": "bseedaAl9-W",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1gBYh6WEwG",
+    "published_at": "2026/9/10 07:23:55",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1gBYh6WEwG"
+  },
+  "version": 1
+}

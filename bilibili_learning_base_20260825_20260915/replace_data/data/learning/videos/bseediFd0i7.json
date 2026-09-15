@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "chemistry",
+      "metals"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chemistry experiment",
+      "metalworking science"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "城市矿山",
+      "化学浸出",
+      "贵金属提炼",
+      "cpu提金",
+      "电子垃圾",
+      "废料回收",
+      "黄金回收",
+      "gold recovery",
+      "提金实验",
+      "gold extraction"
+    ],
+    "video_id": "bseediFd0i7"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, we process 12 kilograms of mixed CPUs to uncover their real hidden value. From dismantling and depinning to selective chemical leaching, every step is shown in detail as we separate base metals and recover the precious gold trapped inside these processors.\n\nYou’ll see the full journey: preparing the CPUs, dissolving metals, filtering, refining, and finally melting the recovered gold into a pure bead. At the end, we weigh the final result and calculate how much gold can truly be obtained from 13 kg of processors.\n\nIf you’ve ever wondered “How much gold is actually inside old CPUs?” — this video gives you the real answer with a complete start-to-finish process.\n\nDon’t forget to like, comment, and subscribe for more gold recovery experiments and precious-metal refining guides.\n\nTin Cleaner Solution \nhttps://youtu.be/DMm1_F89KyI\n\n$1,700 Gold from E-Waste: My Step-by-Step Recovery Process\nhttps://youtu.be/luAN9L7Q-7k\n\n\nGold Recovery from 40 KG of CPUs 🔥 | How Much Gold Is Inside?!”\nhttps://youtu.be/oDpsfkFJYg0\n\nGold Recovery Using Vinegar and Salt – Simple Method for Extracting Gold at Home\nhttps://youtu.be/MSJyk8RFNvs\n\nThanks For Subscribe! 🙏\n❱ instagram:https://www.instagram.com/imangoldrecovery/\n❱❱ Contact us for copyright, sponsorship, and job offers.\n\n\n #goldrecovery #imangoldrecovery #gold  #silver #silverrecovery",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1120,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T15:09:14+00:00",
+    "tags": [
+      "城市矿山",
+      "化学浸出",
+      "贵金属提炼",
+      "CPU提金",
+      "电子垃圾",
+      "废料回收",
+      "黄金回收",
+      "gold recovery",
+      "提金实验",
+      "gold extraction"
+    ],
+    "title": "从12公斤绿色纤维CPU中提取黄金全过程｜Gold Recovery from 12 kg of Green Fiber CPUS",
+    "video_id": "bseediFd0i7",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV11Pb46xEcT",
+    "published_at": "2026/9/6 23:09:14",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11Pb46xEcT"
+  },
+  "version": 1
+}

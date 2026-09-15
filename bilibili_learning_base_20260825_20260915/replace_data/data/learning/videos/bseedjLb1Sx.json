@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "minecraft live",
+      "边境之地",
+      "版本爆料",
+      "末地更新",
+      "minecraft update",
+      "荒野之旅更新"
+    ],
+    "video_id": "bseedjLb1Sx"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMinecraft 26.3 (or 26.50) has a name, the Wilderness Bound Update. Alongside the big reveal from Mojang we have gotten some strange new images tied to the drop and a little bit of reasoning when it comes to the farlands update in snapshots since last week. But why so many endermen?\n\n🛡️ PREORDER Dungeons 2 with my link buy.minecraft.net/D2wattles\n\n🖼️ art https://x.com/itiswattles/status/2096355840533946783?s=20\n\n⭐sub to my new channel @itiswattz  \n\n💖 members club https://www.youtube.com/channel/UCsuKgiVb2KJ2sZdrrwoAqsA/join\n📷 instagram https://www.instagram.com/stonegalerie/\n⭐ shop the minecraft store + support me! https://minecraft.sjv.io/dy90j3\n💗 patreon https://www.patreon.com/wattles\n📖 reddit https://www.reddit.com/r/wattles/\n👕 my shop https://shop-wattles.creator-spring.com/\n\n📖 chapters\n0:00 exploration update\n1:04 name and update mysteries\n8:43 farlands truth\n9:54 minecraft live date leaked\n\n☺ SOME PLAYLISTS ☺ \nMinecraft Guide https://www.youtube.com/playlist?list=PL0oJ2_Q2jPrdt6JFbZtTi8H_XwgYXVRfI\nMinecraft Tutorials https://www.youtube.com/playlist?list=PL0oJ2_Q2jPrc_60eVQMRGzu8xl1eH-NL9\nMinecraft 1.22 https://www.youtube.com/playlist?list=PL0oJ2_Q2jPrfrK_gGDvSKXEOJIpk6NYOo\n\nif you read this comment \"birds\"",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 667,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T18:23:20+00:00",
+    "tags": [
+      "单机游戏",
+      "游戏资讯",
+      "我的世界",
+      "Minecraft",
+      "Minecraft Live",
+      "边境之地",
+      "版本爆料",
+      "末地更新",
+      "minecraft update",
+      "荒野之旅更新"
+    ],
+    "title": "荒野之旅更新揭晓！末地更新线索与边境之地真相｜MINECRAFT JUST REVEALED THE REAL PLAN FOR THE FARLANDS +…",
+    "video_id": "bseedjLb1Sx",
+    "views": 220
+  },
+  "seed_provenance": {
+    "bvid": "BV1McYH6ZEuB",
+    "published_at": "2026/9/9 02:23:20",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1McYH6ZEuB"
+  },
+  "version": 1
+}

@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "PC hardware"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "低成本电脑",
+      "科技测评",
+      "迷你主机",
+      "性能优化",
+      "硬件修复",
+      "极客 diy",
+      "旧电脑复活",
+      "minecraft 游戏"
+    ],
+    "video_id": "bseedAgcSP6"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=KpKRB6-RUqs\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan A $0,1 Mini PC Run Minecraft?\n\nI recently found a $0,1 Mini PC, and at that price, I expected it to be completely useless. The hardware is extremely old, the condition is far from perfect, and there was no guarantee that it would even turn on. However, I wanted to give this $0,1 Mini PC one final chance by testing it with Minecraft.\n\nBefore launching the game, I inspected the $0,1 Mini PC, cleaned the internal components, and checked whether its processor, memory, and storage were still working. This tiny computer was never designed for modern gaming, but Minecraft is known for running on almost anything.\n\nTo give the $0,1 Mini PC the best possible chance, I installed a lightweight operating system, tested several older Minecraft versions, and reduced every graphics setting I could find. I also tried performance modifications to see whether the $0,1 Mini PC could reach a playable frame rate.\n\nThroughout the video, I monitor FPS, loading times, CPU usage, RAM consumption, temperatures, and overall stability. Can the $0,1 Mini PC successfully load a Minecraft world? Can the $0,1 Mini PC handle basic exploration without freezing? And can the $0,1 Mini PC provide an enjoyable gaming experience despite costing almost nothing?\n\nThe final results were much more interesting than I expected. This experiment proves that even extremely cheap and outdated computers can still have some hidden potential.\n\nWatch until the end to discover whether this $0,1 Mini PC can actually run Minecraft and whether it was th…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 611,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:07:26+00:00",
+    "tags": [
+      "低成本电脑",
+      "科技测评",
+      "中文翻译",
+      "迷你主机",
+      "中英双语",
+      "性能优化",
+      "硬件修复",
+      "极客 DIY",
+      "旧电脑复活",
+      "Minecraft 游戏"
+    ],
+    "title": "【中英双语】15 美分迷你 PC 能否运行 Minecraft？极限测试｜Can A $0,1 Mini PC Run Minecraft?",
+    "video_id": "bseedAgcSP6",
+    "views": 26
+  },
+  "seed_provenance": {
+    "bvid": "BV15P416HExV",
+    "published_at": "2026/8/29 16:07:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15P416HExV"
+  },
+  "version": 1
+}

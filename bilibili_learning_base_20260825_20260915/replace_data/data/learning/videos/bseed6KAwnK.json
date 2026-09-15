@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "mod_showcase",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "every x comparison",
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "minecraft",
+      "minecraft mods",
+      "mod",
+      "funny",
+      "gaming",
+      "survival",
+      "horror",
+      "creepy"
+    ],
+    "video_id": "bseed6KAwnK"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 3,
+    "description": "https://www.youtube.com/watch?v=C3Zg9i1g8lw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n📺 Check out my best videos: https://www.youtube.com/watch?v=m-3YXQ1Fysc&list=PLauAZrKLIXEE&index=8&pp=iAQBsAgC\n\n📺 Check out my best series: \n- From Another World Season 2\nhttps://youtube.com/playlist?list=PLuqZjGN1Qtjdc6mGx18Aq6aBHWA5gcO0j&si=Pn23qUY8Ap1KfRBP\n- From Another World Season 4\nhttps://www.youtube.com/playlist?list=PLefOSrIW4Htk\n- The Ravenous\nhttps://www.youtube.com/playlist?list=PLuqZjGN1QtjfjxyUWVfI5KJYVz-LfoZ2P\n- Scape and Run: Parasites Season 1\nhttps://www.youtube.com/playlist?list=PLuqZjGN1QtjdN25LMfpBe61Px0bVZjR3l\n- Dawn Of The Flood\nhttps://www.youtube.com/playlist?list=PLuqZjGN1QtjeXPq6UUKSNtZAs29-bnE-u\n- ADVENTUROUS\nhttps://www.youtube.com/playlist?list=PLuqZjGN1QtjdYSl8_xDcGaqkSP8P363l1\n- Alex's Caves\nhttps://www.youtube.com/playlist?list=PLuqZjGN1Qtjd0tCsnoglu8IgsWuEDVnDg\n- PHAYRIOSIS\nhttps://www.youtube.com/playlist?list=PLuqZjGN1QtjfdlkOBZ0NjbrJBVesz7RIQ\n\n💸 If you can and want to donate to support Delter and I financially:\nhttps://ko-fi.com/rotchgwylt\n\n👉Any other infos about my work: https://rotchgwylt.carrd.co/",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 505,
+    "likes": 158,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:54:51+00:00",
+    "tags": [
+      "minecraft",
+      "minecraft mods",
+      "中文翻译",
+      "中英双语",
+      "mod",
+      "funny",
+      "gaming",
+      "survival",
+      "horror",
+      "creepy"
+    ],
+    "title": "【中英双语】Minecraft 模组：受伤时她疯狂攻击我｜Minecraft but everytime I take damage she RAILS me",
+    "video_id": "bseed6KAwnK",
+    "views": 5563
+  },
+  "seed_provenance": {
+    "bvid": "BV1A14y6vEs3",
+    "published_at": "2026/8/29 16:54:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1A14y6vEs3"
+  },
+  "version": 1
+}

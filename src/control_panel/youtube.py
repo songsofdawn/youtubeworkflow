@@ -239,13 +239,15 @@ class TargetedYouTubeSearch:
         minimum_duration_seconds: int | None = None,
         maximum_duration_seconds: int | None = None,
         ranking_mode: str = "hot",
+        discovery_scope: str = "auto",
+        search_strength: str = "standard",
         client: YouTubeClient | None = None,
         now: datetime | None = None,
         progress: Any | None = None,
         cancelled: Any | None = None,
     ) -> dict[str, Any]:
         selected_ids = list(dict.fromkeys(str(value) for value in pack_ids))
-        if not selected_ids:
+        if discovery_scope == "manual" and not selected_ids:
             raise ValueError("请至少选择一个发现领域")
         discovery_packs = self.discovery_packs()
         discovery_pack_by_id = {pack["id"]: pack for pack in discovery_packs}
@@ -294,6 +296,8 @@ class TargetedYouTubeSearch:
             minimum_duration_seconds=minimum_duration_seconds,
             maximum_duration_seconds=requested_maximum_duration_seconds,
             ranking_mode=ranking_mode,
+            discovery_scope=discovery_scope,
+            search_strength=search_strength,
             now=now,
             progress=progress,
             cancelled=cancelled,

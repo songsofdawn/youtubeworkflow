@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "航空实验",
+      "地面滑跑",
+      "尾轮飞机",
+      "飞行教学",
+      "飞行安全",
+      "前轮定位",
+      "起落架调整",
+      "stol 飞机"
+    ],
+    "video_id": "bseede5uOwN"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=3UFCwUDt6BQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIs \"Toe-In\" or \"Toe-Out\" more stable on a tailwheel airplane? I got into a heated debate with my friends about this. They were headstrong that toe-in provides better directional stability, while I was convinced that toe-out is the secret to a well-behaved taildragger. Neither side would back down — So I tested it. \nI put both alignments to the test to see exactly how they handle ground loops, swerves, and tracking. \n\nWhich side are you on? Drop your theories in the comments \n\nOpenPPG results are found here for anyone that wants to read them. \nand the video here. https://youtu.be/4H52ve4J_8c\n\nIf you enjoyed the video, make sure to hit that LIKE button, SUBSCRIBE for more aviation experiments, and share this with your tailwheel flying buddies!\n\nMB01XIWFJU7PI6F",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 966,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:09:07+00:00",
+    "tags": [
+      "航空实验",
+      "地面滑跑",
+      "尾轮飞机",
+      "中文翻译",
+      "中英双语",
+      "飞行教学",
+      "飞行安全",
+      "前轮定位",
+      "起落架调整",
+      "STOL 飞机"
+    ],
+    "title": "【中英双语】尾轮飞机前轮外八字更稳？实测地面滑跑稳定性｜Toe IN or Toe OUT? Everyone Gets it Wrong. So... I…",
+    "video_id": "bseede5uOwN",
+    "views": 3
+  },
+  "seed_provenance": {
+    "bvid": "BV1PP4y6YEcM",
+    "published_at": "2026/8/29 17:09:07",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PP4y6YEcM"
+  },
+  "version": 1
+}

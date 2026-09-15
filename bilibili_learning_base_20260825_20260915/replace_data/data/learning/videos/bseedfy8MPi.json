@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "ChatGPT",
+      "GPT-6",
+      "Astra",
+      "LLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "chatgpt",
+      "gpt-6",
+      "astra",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai测评",
+      "chatgpt",
+      "大语言模型",
+      "gpt-6",
+      "openai",
+      "aigc"
+    ],
+    "video_id": "bseedfy8MPi"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGPT 6 Astra review #ai #ainews #aitools #agi #singularity #llm #openai Thanks to our sponsor Luma. Try it today: https://lumalabs.ai/aisearch-sep\n\nGPT 6 release page https://openai.com/index/gpt-6-astra\nFull song https://x.com/aisearchio/status/2096690310311207126\n\n00:00 GPT 6 Astra intro\n00:50 Physics and ray tracing\n04:30 Unreal video game\n09:40 Drawing things\n10:44 Sprite animation\n11:39 Composing and playing piano solo\n13:54 Luma\n15:27 Full song composition\n18:00 VR real estate\n19:50 Product commercial\n21:16 Math explainer video\n23:18 Finding the frog\n24:28 Identifying cancer\n25:13 Deep research\n26:04 Ideation\n27:10 Specs and benchmarks\n28:45 Leaderboards and achievements\n32:22 Availability\n\nNewsletter: https://aisearch.substack.com/\nFind AI tools & jobs: https://ai-search.io/\nSupport: https://ko-fi.com/aisearch\n\nHere's my equipment, in case you're wondering:\nLenovo Thinkbook: https://amzn.to/4jWeKwH\nDell Precision 5690: https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0 \nGPU: Nvidia RTX 5000 Ada https://nvda.ws/3zfqGqS\nMic: Shure SM7B https://amzn.to/3DErjt1\nAudio interface: Scarlett Solo https://amzn.to/3qELMeu",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2018,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T13:18:39+00:00",
+    "tags": [
+      "人工智能",
+      "AI测评",
+      "ChatGPT",
+      "大语言模型",
+      "GPT-6",
+      "计算机技术",
+      "OpenAI",
+      "AIGC"
+    ],
+    "title": "GPT-6 Astra 深度实测：强到离谱｜GPT 6 Astra is a freak",
+    "video_id": "bseedfy8MPi",
+    "views": 31
+  },
+  "seed_provenance": {
+    "bvid": "BV12sbN6aE5Z",
+    "published_at": "2026/9/7 21:18:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV12sbN6aE5Z"
+  },
+  "version": 1
+}

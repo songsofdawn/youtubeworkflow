@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "开箱",
+      "手机游戏",
+      "手办",
+      "genshin impact",
+      "原神周边",
+      "谷子",
+      "游戏周边",
+      "周边测评",
+      "原神",
+      "genshin impact 7.1"
+    ],
+    "video_id": "bseedXfTbX0"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nW Eneba for sponsoring us! Top up in Genshin🔥https://ene.ba/DukTV-Genshin\n\nALL ITEMS FROM THIS VIDEO: https://docs.google.com/spreadsheets/d/1ARt3zRbamvEdP3H6VLX0PkS-AvzRvkfpVLG95-AsGKg/edit?usp=sharing\n\nWATCH ME LIVE ► https://www.twitch.tv/DukTV\njoin my discord ► https://discord.gg/DukTV \nfollow me on twitter ► https://x.com/duktv_\nfollow me on instagram ► https://www.instagram.com/duktv_/\nfollow me on tiktok ► https://www.tiktok.com/@duktv_\n\nthumbnail artist: \nhttps://x.com/magdraws?s=21\n\n---------------------------------------------\n\n🔥 Top Up Honkai Star Rail Oneiric Shard Global: https://ene.ba/DukTV-Honkai\n🔥 Top Up Zenless Zone Zero Monochrome Global: https://ene.ba/DukTV-ZZZ\n \n‒‒‒‒‒‒‒‒‒‒‒‒\n\n#GenshinImpact #Genshin",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3740,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T08:17:07+00:00",
+    "tags": [
+      "开箱",
+      "手机游戏",
+      "手办",
+      "genshin impact",
+      "原神周边",
+      "谷子",
+      "游戏周边",
+      "周边测评",
+      "原神",
+      "genshin impact 7.1"
+    ],
+    "title": "豪掷2000美元买遍全网原神周边开箱｜I Bought $2,000 Worth Of Genshin Impact Merch",
+    "video_id": "bseedXfTbX0",
+    "views": 40
+  },
+  "seed_provenance": {
+    "bvid": "BV1syY96mEdb",
+    "published_at": "2026/9/12 16:17:07",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1syY96mEdb"
+  },
+  "version": 1
+}

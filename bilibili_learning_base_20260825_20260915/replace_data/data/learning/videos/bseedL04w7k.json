@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "autonomous driving"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "特斯拉",
+      "fsd",
+      "行车记录",
+      "自动驾驶",
+      "智能驾驶",
+      "tesla",
+      "软件更新",
+      "ai语音助手"
+    ],
+    "video_id": "bseedL04w7k"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=NC5nORtIJww\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMy first impressions drive with FSDV 14.3.8 and showcasing the summer update.\n\nI am doing another drive today so please let me know what else you would like to see tested\n\nSW 2026.26.6.5\nFSD V14.3.8\nCar 2024 Tesla Model 3 RWD\n\nJoin this channel to get access to perks:\nhttps://www.youtube.com/channel/UC6pLNEuIgvd2QfSkUctvR0g/join\n\n\nChapters\n00:00 New Grok\n1:15 Drive Starts\n1:50 New FSD Zoom Visualization\n3:12 FSD Release Notes\n3:25 Testing New Grok (again)\n4:40 Welcome Animation\n5:25 Automatic Navigation\n6:55 Set Arrival Energy In App\n7:20 Free meaningful Updates\n8:05 Awkward Red Light\n8:50 Really bad park job\n9:52 Testing Drive Thru\n10:05 Trunk is broken (again)\n11:30 Can Grok Move Seats?\n12:20 My thoughts on V14.3.x\n13:00 Parking is a HARD problem to solve\n15:25 Misreading Speed Limits\n16:38 Changing Lanes With Grok?\n18:00 Final Thoughts",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1141,
+    "likes": 12,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:44:38+00:00",
+    "tags": [
+      "特斯拉",
+      "FSD",
+      "行车记录",
+      "中文翻译",
+      "自动驾驶",
+      "中英双语",
+      "智能驾驶",
+      "Tesla",
+      "软件更新",
+      "AI语音助手"
+    ],
+    "title": "【中英双语】特斯拉FSD V14.3.8夏季更新实测：Grok语音控制与自动导航体验｜My favorite new features in the summ…",
+    "video_id": "bseedL04w7k",
+    "views": 385
+  },
+  "seed_provenance": {
+    "bvid": "BV1h44y62EeP",
+    "published_at": "2026/8/29 16:44:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1h44y62EeP"
+  },
+  "version": 1
+}

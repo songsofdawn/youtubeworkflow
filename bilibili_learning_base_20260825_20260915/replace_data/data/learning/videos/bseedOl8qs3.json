@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "cats"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [
+      "cat story"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "喵星人",
+      "铲屎官",
+      "猫咪",
+      "搞笑宠物",
+      "猫咪日常",
+      "辛巴",
+      "萌宠日常",
+      "沙雕猫"
+    ],
+    "video_id": "bseedOl8qs3"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nMeet Simba, my suspicious little roommate who apparently prefers men over women\n\nSorry if my voice sounds rough! I have a cold rn 😭\n\n✦ Edited with Vrew ✦\n\nEnjoy the Simba allegations~~~~\n\n#cats #storytime #animation",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 225,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T13:51:57+00:00",
+    "tags": [
+      "喵星人",
+      "铲屎官",
+      "猫咪",
+      "搞笑宠物",
+      "猫咪日常",
+      "辛巴",
+      "无配音",
+      "萌宠日常",
+      "沙雕猫"
+    ],
+    "title": "（手绘）我家猫只亲男生？介绍我的 Gay 猫辛巴｜Lemme Introduce My Gay Cat",
+    "video_id": "bseedOl8qs3",
+    "views": 10
+  },
+  "seed_provenance": {
+    "bvid": "BV1NoY264EEw",
+    "published_at": "2026/9/11 21:51:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1NoY264EEw"
+  },
+  "version": 1
+}

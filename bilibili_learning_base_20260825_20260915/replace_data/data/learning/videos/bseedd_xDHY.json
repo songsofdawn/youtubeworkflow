@@ -1,0 +1,87 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "redstone"
+    ],
+    "formats": [
+      "build",
+      "extreme_survival",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i built",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft redstone",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "生存实况",
+      "我的世界",
+      "minecraft",
+      "thebestcubehd",
+      "盔甲纹饰",
+      "硬核生存",
+      "红石工厂"
+    ],
+    "video_id": "bseedd_xDHY"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI built an armor trim factory in Minecraft Hardcore\n\nDownload Schematic: https://www.patreon.com/cw/tbchd\n\nLast Episode: https://www.youtube.com/watch?v=WZjLaRUGU4Q\n\n\n__________________________________________________\n\nfollow me and join the potato army!\n\n★ YouTube: https://www.youtube.com/channel/UCTiCPFd6qqBIWTN4xTVPsyw/join\n★ Discord: https://discord.gg/gUWA76DR6c\n★ Instagram: https://www.instagram.com/tbchdyt/\n\n__________________________________________________\n\nWatch my full Hardcore series:\nS4: https://www.youtube.com/playlist?list=PLZoz3PLKQX9DsrFYfBmTBDCIoyaogPy-u\nS3: https://www.youtube.com/watch?v=LeMWb1yyIAM&list=PLZoz3PLKQX9Chx8Ahqjd5Gg-JgbJtgGp5 \nS2: https://www.youtube.com/watch?v=g4rOBdm17Xw&list=PLZoz3PLKQX9A1nmLVHOLeFdGJafxh1a2P\nS1: https://www.youtube.com/watch?v=DB-a3ngheFY&list=PLZoz3PLKQX9CC3DtWCaBXCWo6bZIAWni8\n__________________________________________________\n\n》Mods: EMF, ETF, Architectury API, Armor Stand Arms, Chunky, Cloth Config, Cotinuity, Easy Shulker Boxes, Entity Culling, Fabric API, Fabric Language Kotlin, Flashback, Gamma Utils, Iris, Lighty, Litematica, Lithium, MaLiLib, ModMenu, OptiGUI, Particle Effects, Particle Rain, Particular Reforged, Sodium, Sodium Extra, Subtle Effects, Voxy, YetAntherConfigLib, Zoomify\n\n★ Credits ★\n》Music from Epidemic Sounds\n》QUMU: https://www.youtube.com/c/qumumusic",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1812,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T19:09:42+00:00",
+    "tags": [
+      "生存实况",
+      "我的世界",
+      "单机游戏",
+      "游戏实况",
+      "Minecraft",
+      "TheBestCubeHD",
+      "盔甲纹饰",
+      "硬核生存",
+      "红石工厂"
+    ],
+    "title": "Minecraft硬核生存：打造盔甲纹饰自动化工厂｜I Built an ARMOR TRIM Factory in Minecraft Hardcore",
+    "video_id": "bseedd_xDHY",
+    "views": 64
+  },
+  "seed_provenance": {
+    "bvid": "BV19Ptk6mEWM",
+    "published_at": "2026/9/5 03:09:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV19Ptk6mEWM"
+  },
+  "version": 1
+}

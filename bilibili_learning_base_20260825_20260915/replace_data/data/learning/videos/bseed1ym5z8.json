@@ -1,0 +1,73 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "锻造",
+      "希腊神话",
+      "铁匠",
+      "三叉戟",
+      "金属工艺"
+    ],
+    "video_id": "bseed1ym5z8"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nFrom rusty, useless hooks to a beautiful GREEK WEAPON \"Trident\" the legendary symbol from Greek mythology.\n\nThis project was much harder than I expected. The shape was very complicated, and many times during forging I got confused and started thinking I wouldn’t be able to finish it. I made mistakes, lost confidence for a moment, and even thought about giving up.\nBut every time I looked at the steel, I reminded myself why I started. I didn’t want to stop in the middle. So I kept heating, hammering, correcting mistakes, and moving forward step by step.\nIn the end, this project taught me that not every build has to be perfect, sometimes the struggle becomes part of the story. And today, that rusty metal became something I’m proud of.\n\nWatch the full video and experience the whole journey with me. If you enjoy it, please share it with friends who love forging and craftsmanship. And don’t forget to tell me your thoughts in the comments your support means a lot and keeps me creating more.\n\nSUBSCRIBE  @OLDSMITH  to show your Love \nTHANK YOU\nBEST WISHES\nOLD SMITH",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2041,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T07:12:32+00:00",
+    "tags": [
+      "锻造",
+      "DIY",
+      "希腊神话",
+      "手工",
+      "铁匠",
+      "无配音",
+      "三叉戟",
+      "金属工艺"
+    ],
+    "title": "把废铁钩子锻造成海王三叉戟！｜Forging a POSEIDON's TRIDENT",
+    "video_id": "bseed1ym5z8",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV1xfbA6hEyL",
+    "published_at": "2026/9/7 15:12:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xfbA6hEyL"
+  },
+  "version": 1
+}

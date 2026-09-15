@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "knife making",
+      "restoration",
+      "antiques"
+    ],
+    "formats": [
+      "restoration",
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "knife making",
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "金属打磨",
+      "鹿角刀柄",
+      "皮鞘制作",
+      "翻新",
+      "修复",
+      "古董刀",
+      "鲍伊刀",
+      "restoration",
+      "screws and tools"
+    ],
+    "video_id": "bseedprmIzx"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nRestoration of Antique Bowie Knife — It Took 335 Hours! Hi! Today, restoration of a rare antique 19th-century Bowie knife. This is a unique piece. Of course, the knife is in poor condition. The original handle is missing, and the one currently on it was most likely installed sometime in the 20th century. There is a lot of rust, and the sheath is missing. But now I’m going to fix all of that. I bought this piece at a flea market.\n\n00:00 Start\n01:14 Blade Cleaning\n04:05 Knife Sanding\n06:52 Making Blade Collar\n12:55 Making Knife Guard\n15:37 Knife Handle\n23:06 Handle Sanding\n25:08 Making Pommel\n26:47 Engraving the Pommel\n32:16 Leather Knife Sheath\n42:42 Before and After\n43:37 Test\n\nFirst, I removed the old handle and discovered that the tang was broken. On top of that, it was very short for a knife of this size. I removed the surface rust, filled the knife with kerosene, and left it for two days. After two days, I took it out of the kerosene, wiped it down, applied WD-40, and then used heated machine oil. I thoroughly coated the entire knife, wrapped it in a cloth and a plastic bag, and left it for another three days. \n\nAfter three days, all of the remaining rust came off very easily. Then I did some light hand sanding. I also used polishing paste, but all of the history remained on the blade. I deliberately left the nicks on the blade because they are minor, and removing them would have meant changing the geometry of the blade and, therefore, changing its history. I don’t like doing that. So the b…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2773,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T14:09:32+00:00",
+    "tags": [
+      "手工",
+      "金属打磨",
+      "鹿角刀柄",
+      "皮鞘制作",
+      "翻新",
+      "修复",
+      "古董刀",
+      "鲍伊刀",
+      "restoration",
+      "screws and tools"
+    ],
+    "title": "19世纪古董鲍伊刀修复：335小时还原鹿角柄与皮革鞘｜Antique BOWIE Knife Restoration — Approved by JAMES!",
+    "video_id": "bseedprmIzx",
+    "views": 40
+  },
+  "seed_provenance": {
+    "bvid": "BV1ffYM66EsG",
+    "published_at": "2026/9/10 22:09:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ffYM66EsG"
+  },
+  "version": 1
+}

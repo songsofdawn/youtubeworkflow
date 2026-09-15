@@ -1,0 +1,117 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "CPU",
+      "RAM"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "cpu engineering",
+      "pc memory",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程",
+      "汇编语言",
+      "模拟器",
+      "开源项目",
+      "coding",
+      "programming",
+      "cpu设计",
+      "自制计算机"
+    ],
+    "video_id": "bseedaJU90T"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, I decided to design my own CPU, an emulator for it, its own assembly language, and a compiled language.\n\nSource and Binaries:\nhttps://github.com/sam-astro/Astro8-Computer\n\nSupport: \n●  Patreon: https://patreon.com/AstroSam\n●  Ko-fi: https://ko-fi.com/astrosam\n●  Monero: 4AAjyAHKnYwCsgJp16v1YeeDPA1Z51QKUfCMWsiCDxkNBFCtbUfDHD7K5sZDrFH2pnGsDAH989XwXdudcoC4iqtVC9QLk8r\n\n--------------------------------------------------\n\nRelated Links:\n●  Streaming Channel: https://www.youtube.com/channel/UCQSOig4wEV_pAFPRg0qtSmQ\n●  Itch.io: https://astrosam.itch.io/\n●  Github: https://github.com/sam-astro\n●  Discord Server: https://discord.gg/9p82dTEdkN\n\n--------------------------------------------------\n\nMusic:\nBuy Mode 1 - The Sims\nDeference for Darkness - Halo 3 ODST\nThe Rocket - Wintergatan\nBuy Mode 2 - The Sims\nReturn Journey - Chris Doerksen\n\n--------------------------------------------------\n\nChapters:\n0:00 Intro\n0:40 Breaking it down\n1:26 Start designing\n1:46 Instruction set\n6:03 Memory layout\n7:03 Video circuitry\n8:15 Writing programs\n9:03 A compiled language\n11:01 The emulator\n11:55 Compiled programs\n12:15 Making pong\n15:10 Outro\n\n--------------------------------------------------\n\nThis video is not sponsored.\n\n#programming\n#coding \n#cpu \n#cpp",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 946,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T04:04:06+00:00",
+    "tags": [
+      "编程",
+      "汇编语言",
+      "模拟器",
+      "计算机技术",
+      "开源项目",
+      "coding",
+      "programming",
+      "CPU设计",
+      "自制计算机"
+    ],
+    "title": "我设计了自己的16位CPU和配套编程语言｜I Designed My Own 16-bit CPU",
+    "video_id": "bseedaJU90T",
+    "views": 39
+  },
+  "seed_provenance": {
+    "bvid": "BV1eGbn6dErB",
+    "published_at": "2026/9/6 12:04:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eGbn6dErB"
+  },
+  "version": 1
+}

@@ -1,0 +1,88 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "AI video generation",
+      "AI image generation"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "ai video generation",
+      "ai image generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "capcut剪辑",
+      "chatgpt",
+      "google flow",
+      "ai绘画动画",
+      "ai视频教程",
+      "短视频制作",
+      "治愈系动画",
+      "吉卜力风",
+      "new ai niche",
+      "viral ai niche"
+    ],
+    "video_id": "bseedGg_b6B"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHealing aesthetic anime videos and Studio Ghibli-inspired slice-of-life loops are pulling tens of millions of views across TikTok, Instagram Reels, and YouTube Shorts. The serene hand-painted watercolor skies, soft wind physics, and peaceful multi-cut transitions create unmatched retention.\n\nIn this step-by-step tutorial, we break down how to generate authentic 2D hand-drawn Ghibli sequences using ChatGPT paired with Google Flow's Agent and OmniFlash engine.\n\n📦 GET THE PROMPT FILE:\nComment Word \"Healing\" Below and I'll Send Link In reply.\n\n🛠️ PRODUCTION UTILITIES:\n• Prompt Engine: ChatGPT Standard (Healing Aesthetic 2D Director Node)\n• Video Rendering Suite: Google Flow (Agent Mode + OmniFlash Model Profile)\n• Aspect Ratio: 9:16 Vertical (Shorts & Reels)\n• Timeline Assembly: CapCut Desktop / Mobile\n\nIf you want to track the newest viral AI creation frameworks before the feeds hit saturation, drop a LIKE and hit SUBSCRIBE! 🚀\n\n#GhibliVibes #GoogleFlow #HealingAesthetic #viralniche",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 163,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:41:45+00:00",
+    "tags": [
+      "CapCut剪辑",
+      "ChatGPT",
+      "Google Flow",
+      "AI绘画动画",
+      "AI视频教程",
+      "短视频制作",
+      "治愈系动画",
+      "吉卜力风",
+      "New ai niche",
+      "viral ai niche"
+    ],
+    "title": "用ChatGPT+Google Flow制作吉卜力风治愈系AI动画｜The Free AI Healing Anime Niche Getting Milli…",
+    "video_id": "bseedGg_b6B",
+    "views": 23
+  },
+  "seed_provenance": {
+    "bvid": "BV1QTtk61Em5",
+    "published_at": "2026/9/5 02:41:45",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QTtk61Em5"
+  },
+  "version": 1
+}

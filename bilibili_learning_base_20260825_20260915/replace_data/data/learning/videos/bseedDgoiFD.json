@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "extreme_survival",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "survival"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "extreme survival"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "沙盒游戏",
+      "minecraft",
+      "生存挑战",
+      "趣味挑战",
+      "minecraft survival",
+      "末影龙战斗",
+      "minecraft challenge"
+    ],
+    "video_id": "bseedDgoiFD"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=LHl9yBTpf4Q\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan I survive against the Ender Dragon in Minecraft for just 5 minutes? 😱🔥 Watch till the end to see what happens!\nIf you enjoy Minecraft challenges, Minecraft survival, Ender Dragon fights, and crazy Minecraft moments, make sure to LIKE 👍, SUBSCRIBE ❤️, and COMMENT your next challenge!\n#Minecraft #MinecraftChallenge #EnderDragon #MinecraftShorts #MinecraftSurvival\n🏷️ Tags#MinecraftSurvivalMinecraftminecraft challenge shortsminecraftminecraft survival challengeender dragon fightminecraft survivalminecraft challenge\n\n\n\n\n\nminecraft, minecraft challenge, minecraft survival, ender dragon, ender dragon fight, minecraft but, minecraft challenge video, minecraft gameplay, minecraft survival challenge, minecraft shorts, minecraft video, minecraft hindi, minecraft india, minecraft 5 minutes, survive 5 minutes minecraft, minecraft challenge shorts",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 326,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T12:46:53+00:00",
+    "tags": [
+      "沙盒游戏",
+      "游戏实况",
+      "Minecraft",
+      "生存挑战",
+      "中英双语",
+      "中文翻译",
+      "趣味挑战",
+      "minecraft survival",
+      "末影龙战斗",
+      "minecraft challenge"
+    ],
+    "title": "【中英双语】Minecraft：仅存活 5 分钟对抗末影龙挑战｜Minecraft But I Survived 5 Minutes Against the…",
+    "video_id": "bseedDgoiFD",
+    "views": 4
+  },
+  "seed_provenance": {
+    "bvid": "BV1WP896NEBE",
+    "published_at": "2026/8/26 20:46:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1WP896NEBE"
+  },
+  "version": 1
+}

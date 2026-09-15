@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "build",
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai 视频生成",
+      "工作流优化",
+      "aigc 工具",
+      "wan3.0",
+      "产品广告制作",
+      "电商营销素材",
+      "alibaba ai 模型",
+      "视觉一致性测试"
+    ],
+    "video_id": "bseedSt7ujh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=57vmkMvm5Iw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔗 Try WAN3.0 here:\n👉 https://wan.video/?cref=im2&cinfo=wan08\n\n📩 Business collaborations: contact@aizentool.com\n\nAI video is moving into a new stage.\n\nAt first, the question was simple: can AI generate a moving clip? But now, that is not enough anymore. Creators need longer scenes, better control, stronger realism, consistent details, readable information, clear motion, and outputs that can actually fit into real content workflows.\n\nIn this video, I test WAN3.0, a visual generation model built for creators who want to turn simple inputs into more professional video outputs.\n\nFor this demo, I create a short cinematic product story for a premium smart backpack. The goal is to see whether WAN3.0 can keep the product style consistent while creating a more cinematic and usable video sequence.\n\nWhat is WAN3.0?\n\nWAN3.0 is an AI visual generation model designed to help creators produce more controlled and professional-looking video outputs from simple inputs.\n\nInstead of only generating short random clips, WAN3.0 focuses on longer narrative generation, reference control, realism, structured rendering, and more practical creative workflows.\n\nWhat you will see in this video:\n\n✅ How WAN3.0 helps create longer AI video scenes\n✅ How to use product references for better consistency\n✅ How to generate a cinematic product ad concept\n✅ How WAN3.0 handles product style, color, and visual continuity\n✅ How realism improves through lighting, texture, and camera movement\n✅ How reference control helps wi…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 477,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:04:02+00:00",
+    "tags": [
+      "AI 视频生成",
+      "工作流优化",
+      "AIGC 工具",
+      "WAN3.0",
+      "中英双语",
+      "中文翻译",
+      "产品广告制作",
+      "电商营销素材",
+      "Alibaba AI 模型",
+      "视觉一致性测试"
+    ],
+    "title": "【中英双语】WAN3.0 评测：从产品图生成高一致性商业广告视频｜WAN3.0 AI Video Generator: From Product Image…",
+    "video_id": "bseedSt7ujh",
+    "views": 36
+  },
+  "seed_provenance": {
+    "bvid": "BV18b4y6LEVu",
+    "published_at": "2026/8/29 16:04:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18b4y6LEVu"
+  },
+  "version": 1
+}

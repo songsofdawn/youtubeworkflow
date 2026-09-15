@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "LLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "科技前沿",
+      "大语言模型",
+      "未来趋势",
+      "模型对比",
+      "深度思考",
+      "技术评测",
+      "epoch指数"
+    ],
+    "video_id": "bseedq-iO_i"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=u9z0RZ48S7Q\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, I rank the world’s most capable AI models from 2020 to 2026 using the Epoch Capabilities Index (ECI).\n\nFor older models not included in Epoch’s current leaderboard, scores were reconstructed using Epoch’s historical benchmark data and official public ECI calculation method. For newer models, scores were taken directly from Epoch’s official ECI dataset. Duplicate evaluations and closely related variants were consolidated using Epoch’s model-group system.\n\nThe ECI is designed to measure the general capabilities of frontier AI models across a range of tasks and benchmarks, it obviously has it flaws.\n\nEach model keeps the score associated with its release, allowing the ranking to show how the AI frontier evolved over time.\n\n\n🏆 Leading AI models in 2026:\n\n1) GPT-5.5 Pro\n2) Claude Fable 5\n3) GPT-5.5\n4) Grok 4\n5) o4-mini\n\nSources: Epoch AI / Epoch Capabilities Index, official model announcements, OpenAI, Anthropic, Google DeepMind, xAI, DeepSeek, Meta, Alibaba, Mistral AI.\n\n📩 Connect With Us:\n\nContact: contact@favoree.io  \nYouTube: @favoree-io  \nTwitter: https://twitter.com/Favoree_  \nLinkedIn: https://www.linkedin.com/company/93335406\n\nDISCLAIMER: This comparison is based primarily on Epoch AI’s Epoch Capabilities Index and publicly available information about model release dates. AI capability rankings depend on the methodology and benchmarks used, and should not be interpreted as a definitive measure of performance for every task.\n\n#ai #artificialintelligence #chatgpt #op…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1092,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T11:54:16+00:00",
+    "tags": [
+      "人工智能",
+      "科技前沿",
+      "大语言模型",
+      "中英双语",
+      "中文翻译",
+      "未来趋势",
+      "模型对比",
+      "深度思考",
+      "技术评测",
+      "Epoch指数"
+    ],
+    "title": "【中英双语】2020-2026最强AI模型排名：GPT-5.5与Claude Fab｜The Best AI Models of All Time (2020…",
+    "video_id": "bseedq-iO_i",
+    "views": 185
+  },
+  "seed_provenance": {
+    "bvid": "BV1eYtw6iEmD",
+    "published_at": "2026/8/28 19:54:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eYtw6iEmD"
+  },
+  "version": 1
+}

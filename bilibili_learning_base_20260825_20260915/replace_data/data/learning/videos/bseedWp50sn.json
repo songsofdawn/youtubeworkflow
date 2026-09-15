@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "咖喱",
+      "烹饪教程",
+      "慢炖牛肉",
+      "recipe",
+      "乡村料理",
+      "农村生活",
+      "地道风味",
+      "尼泊尔美食",
+      "wilderness",
+      "传统香料"
+    ],
+    "video_id": "bseedWp50sn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=7E0TG9uJHZ8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nLocal Padako Masu Bhutuwa with Nepali Style || Rangako Masu Pakaune tarika || Kanchhikitchen\nNamaste! \nWelcome to @KanchhiKitchen \nIn today's video, we are sharing an authentic and traditional village-style recipe for Local Padako Masu Bhutuwa (राँगा/पाडाको मासु भुटुवा). Cooked with freshly ground traditional spices on a slow fire, this recipe gives you tender, juicy meat coated in rich, mouth-watering Nepali flavors.\n\nWhether you enjoy it as a spicy side dish with beaten rice (baji/chiura) or as a main curry with steaming hot rice, this classic recipe will bring the true taste of Nepali village cooking right to your kitchen!\n\n🕒 What’s in this Video:\nStep-by-step slow-cooking process for deep flavor & perfect texture\nVillage-style serving ideas\n\n🛒 Ingredients (सामग्रीहरू):\nLocal Pada/Ranga Meat (पाडा/राँगाको मासु): Cleaned & cut into bite-sized pieces\n\nMustard Oil (तोरीको तेल): For authentic rustic aroma\n\nWhole Spices (खडा मसला): Bay leaves (तेजपात), Cinnamon (दालचिनी), Cardamom (सुकमेल/अलैंची), Cloves (ल्वाङ), Cumin seeds (जिरा)\n\nAromatics: Chopped Onions (प्याज), Fresh Ginger-Garlic paste (अदुवा-लसुनको पेस्ट), Green Chillies (हरियो खुर्सानी)\n\nGround Spices: Turmeric powder (बेसार), Red Chilli powder (खुर्सानी…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 878,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T22:26:17+00:00",
+    "tags": [
+      "咖喱",
+      "烹饪教程",
+      "慢炖牛肉",
+      "recipe",
+      "乡村料理",
+      "农村生活",
+      "地道风味",
+      "尼泊尔美食",
+      "wilderness",
+      "传统香料"
+    ],
+    "title": "尼泊尔乡村风本地帕达科牛肉慢炖做法｜Local Padako Masu Bhutuwa with Nepali Style || Rangako Masu P…",
+    "video_id": "bseedWp50sn",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV14vtj6hEUX",
+    "published_at": "2026/9/2 06:26:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV14vtj6hEUX"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Fable 5.1"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "fable 5.1",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "效率分析",
+      "大模型评测",
+      "品牌设计",
+      "ai",
+      "motion graphics",
+      "3d 建模",
+      "fable 5.1"
+    ],
+    "video_id": "bseedShnm2h"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=SgqdiS3H1Vg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSubscribe to the newsletter: https://www.aiformortals.co/\n\nFable 5.1 has officially dropped. I ran it through five real builds against Fable 5 and Opus 5 to see how much of a jump it actually is…and whether it's worth it in your day to day.\n\nAll prompts and live links:\nhttps://www.aiformortals.co/blog/fable-5-1-vs-fable-5-vs-opus-5\n\nGitHub repo for agent fan out\ngithub.com/per-simmons/simmonsbench-agent-fanout",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1799,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T05:57:25+00:00",
+    "tags": [
+      "游戏开发",
+      "人工智能",
+      "效率分析",
+      "大模型评测",
+      "软件应用",
+      "品牌设计",
+      "ai",
+      "Motion Graphics",
+      "3D 建模",
+      "fable 5.1"
+    ],
+    "title": "Fable 5.1 实测：对比 Fable 5 与 Opus 5，性能提升？",
+    "video_id": "bseedShnm2h",
+    "views": 166
+  },
+  "seed_provenance": {
+    "bvid": "BV1Zvt76JEuR",
+    "published_at": "2026/9/2 13:57:25",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Zvt76JEuR"
+  },
+  "version": 1
+}

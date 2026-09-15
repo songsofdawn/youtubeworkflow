@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "documentary",
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "美食侦探",
+      "猜真假",
+      "历史美食",
+      "厨师",
+      "美食挑战",
+      "趣味挑战",
+      "mythical",
+      "tastinghistory",
+      "mythical kitchen"
+    ],
+    "video_id": "bseedltViqw"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 4,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWe try to trick Max Miller with fake historical dishes. Thank you Kroger for sponsoring this episode. Make sure to check out a Kroger family store near you! #krogerpartner #adventure \n\nCheck out Max Miller on @TastingHistory \n\nWant more Mythical Kitchen? Check out these playlists:\nLast Meals - https://www.youtube.com/playlist?list=PLW8XZTagL0oLPu4rowq_WOqg6nJ_oToRN\nSpecial Guests - https://www.youtube.com/playlist?list=PLW8XZTagL0oKAy7JpQqIOuGIp5A0y99B9\nIn The Kitchen - https://www.youtube.com/playlist?list=PLW8XZTagL0oIdUBwue3_no1zggtPlM64g\n\nCheck out our podcast, A Hot Dog Is A Sandwich!\nApple Podcasts: https://mythic.al/ahdias\nSpotify: https://mythic.al/hotdog\n\nPick up official Mythical Kitchen merch at https://mythic.al/shop-kitchen\n\nJoin the Mythical Society: https://mythic.al/yt-msoc\n\nFollow Mythical Kitchen:\nInstagram: https://instagram.com/mythicalkitchen\nFacebook: https://facebook.com/mythicalkitchen\nMythical Chef Josh's Instagram: https://instagram.com/mythicalchefjosh\n\nCheck Out Our Other Mythical Channels:\nA Hot Dog Is A Sandwich: https://www.youtube.com/@ahotdogisasandwich\nGood Mythical Morning: https://youtube.com/goodmythicalmorning\nGood Mythical MORE: https://youtube.com/goodmythicalmore\n\nIn the spirit of minimizing food waste associated with the filming of this series, Mythical is donating to the Hollywood Food Coalition who provide daily, nourishing meals to underserved communities in the Los Angeles area.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2473,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T11:10:07+00:00",
+    "tags": [
+      "美食侦探",
+      "猜真假",
+      "历史美食",
+      "厨师",
+      "美食挑战",
+      "美食测评",
+      "趣味挑战",
+      "mythical",
+      "TastingHistory",
+      "mythical kitchen"
+    ],
+    "title": "历史美食专家能识破我做的假古菜吗？｜Who Can Spot The Fake Historical Dish? (ft. Tasting History)",
+    "video_id": "bseedltViqw",
+    "views": 315
+  },
+  "seed_provenance": {
+    "bvid": "BV1PMYg6WEgc",
+    "published_at": "2026/9/10 19:10:07",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PMYg6WEgc"
+  },
+  "version": 1
+}

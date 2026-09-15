@@ -1,0 +1,99 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ancient technology",
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Personal Development",
+        "name": "personal_development_psychology",
+        "suggested_entities": [
+          "psychology",
+          "habits",
+          "identity",
+          "personal growth"
+        ],
+        "suggested_formats": [
+          "experiment",
+          "documentary"
+        ]
+      }
+    ],
+    "topics": [
+      "人文历史",
+      "第一印象",
+      "犯罪心理学",
+      "面相",
+      "曾国藩",
+      "识人术",
+      "心理学科普",
+      "相由心生",
+      "chinese physiognomy",
+      "chinese face reading"
+    ],
+    "video_id": "bseed6RCZSO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan you really read a person from their face? For thousands of years, people in both the East and West believed the answer was yes. In this episode, we explore ancient Chinese physiognomy, Zeng Guofan’s famous methods for judging character, early Western theories about the “criminal face,” and what modern science says about facial width, dominance, aggression, first impressions, and personality. We also look at sanpaku eyes, plastic surgery, beauty standards, and the traditional Chinese idea of 相由心生—that appearance arises from the heart. So how much can a face really reveal about character, behavior, and even the life a person has lived?\n\nLei's Soaring Notes: https://www.youtube.com/@LeisSoaringNotes/featured\nLei's Real Talk: https://www.youtube.com/@LeisRealTalk\nDonation: https://donorbox.org/support-lei-s-real-talk-support-lei\nSupport Lei’s work via her online shop: https://shop.leisrealtalk.com/\nSign up for my emails: https://leisrealtalk.com/\nIdeas/Suggestions:  contact@leisrealtalk.com\n#leislookingglass #facereading",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1206,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T06:37:23+00:00",
+    "tags": [
+      "人文历史",
+      "第一印象",
+      "犯罪心理学",
+      "面相",
+      "曾国藩",
+      "识人术",
+      "心理学科普",
+      "相由心生",
+      "Chinese physiognomy",
+      "Chinese face reading"
+    ],
+    "title": "面相能看出命运吗？古老识人术与科学的碰撞｜The Ancient Art of Face Reading—and What Science Says Today",
+    "video_id": "bseed6RCZSO",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV1iaYW65Ey8",
+    "published_at": "2026/9/9 14:37:23",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1iaYW65Ey8"
+  },
+  "version": 1
+}

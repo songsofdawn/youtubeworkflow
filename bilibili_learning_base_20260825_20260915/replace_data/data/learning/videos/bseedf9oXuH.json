@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑",
+      "minecraft",
+      "mc",
+      "minecraftmod"
+    ],
+    "video_id": "bseedf9oXuH"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=FAvW-COeAnY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nToday I'll show you how to build a Pyramid Starter Survival Base\nThis is very useful for minecraft survival!\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n▶ Instagram: @mandoom1n (https://www.instagram.com/mandoom1n/)\n▶ TikTok: @mandoom1n (https://www.tiktok.com/@mandoom1n)\n▶ E-mail: mdm1021s@gmail.com or mandoom1n@naver.com\n▶ My Sub Channel: https://www.youtube.com/@ClayerManDooMiN\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n⛏️ Minecraft Versions\nJava Editions 26.2\nBedrock Editions 26.33\n\n⛏️ Shaderpacks\nBSL Shader v10.1  -  ( https://modrinth.com/shader/bsl-shaders/versions )\n\n⛏️ Resource Pack\nPrime's HD Textures - ( https://www.curseforge.com/minecraft/texture-packs/primes-hd-textures/files )\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n\n🎵 Background Music List\n\nIntro)\nAnimal Crossing: New Horizons Main Theme (Remix)\nCredit: https://youtu.be/Nh4S06pPWMg?list=RDMMNh4S06pPWMg\nhttps://soundcloud.com/videogameremixes/animal-crossing-new-horizons-main-theme-remix",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 637,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-25T11:31:56+00:00",
+    "tags": [
+      "建筑",
+      "minecraft",
+      "中文翻译",
+      "中英双语",
+      "mc",
+      "minecraftmod"
+    ],
+    "title": "【中英双语】⛏️《我的世界》：如何建造一个金字塔新手生存基地 🏡",
+    "video_id": "bseedf9oXuH",
+    "views": 15
+  },
+  "seed_provenance": {
+    "bvid": "BV1HFhG6SEKf",
+    "published_at": "2026/8/25 19:31:56",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1HFhG6SEKf"
+  },
+  "version": 1
+}

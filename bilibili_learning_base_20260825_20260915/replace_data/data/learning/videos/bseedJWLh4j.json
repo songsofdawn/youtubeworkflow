@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "archaeology",
+      "history"
+    ],
+    "formats": [
+      "documentary",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "考古",
+      "人文历史",
+      "史前文明",
+      "科学探索",
+      "人类起源",
+      "古dna",
+      "佩斯利洞穴",
+      "美洲史前"
+    ],
+    "video_id": "bseedJWLh4j"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nArchaeologists Unearthed Human DNA in Oregon That Changes Human Origins Forever\n\nA dry cave in Oregon held something that quietly upended the accepted story of when humans first reached the Americas, and in this deep dive you'll follow the real evidence for yourself. We start with ancient human DNA pulled from the Paisley Caves, then climb through a stack of discoveries that each push the timeline further back: stone tools sealed beneath datable volcanic ash, human footprints frozen at the peak of the last ice age, and a 130,000-year-old site in California that scientists still argue over today. You'll learn how these dates were actually tested, why they held up against fierce pushback, and the surprising idea that the first Americans may have arrived by boat instead of on foot. Come find out what the textbooks left out.\n\n#Archaeology #AncientHistory #FirstAmericans #HumanOrigins #PaisleyCaves #Prehistory",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1499,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T09:44:31+00:00",
+    "tags": [
+      "考古",
+      "人文历史",
+      "史前文明",
+      "科学探索",
+      "人类起源",
+      "古DNA",
+      "佩斯利洞穴",
+      "美洲史前"
+    ],
+    "title": "俄勒冈洞穴出土古DNA，改写美洲人类起源史｜Archaeologists Unearthed Human DNA in Oregon That Changes…",
+    "video_id": "bseedJWLh4j",
+    "views": 76
+  },
+  "seed_provenance": {
+    "bvid": "BV1ypYT6jEVi",
+    "published_at": "2026/9/10 17:44:31",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ypYT6jEVi"
+  },
+  "version": 1
+}

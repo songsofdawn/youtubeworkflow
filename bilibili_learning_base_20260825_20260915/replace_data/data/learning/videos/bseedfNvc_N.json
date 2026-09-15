@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "黑暗料理",
+      "joshuaweissman",
+      "穷鬼餐",
+      "美食挑战",
+      "joshua weissman",
+      "sat bawl pro",
+      "廉价料理",
+      "网络爆款美食"
+    ],
+    "video_id": "bseedfNvc_N"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 3,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nStruggle meals or genius? \n\n\nBen & Lynn's: https://www.instagram.com/benandlynns/\n\nCheck out our buddy Dylan: https://www.youtube.com/@Dylan",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1511,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T11:29:08+00:00",
+    "tags": [
+      "黑暗料理",
+      "JoshuaWeissman",
+      "穷鬼餐",
+      "美食挑战",
+      "美食测评",
+      "joshua weissman",
+      "sat bawl pro",
+      "廉价料理",
+      "网络爆款美食"
+    ],
+    "title": "挑战全网爆红穷鬼餐，哪个是天才哪个是黑暗料理？｜I Tried EVERY Viral Struggle Meal",
+    "video_id": "bseedfNvc_N",
+    "views": 54
+  },
+  "seed_provenance": {
+    "bvid": "BV1WubK6aEA9",
+    "published_at": "2026/9/7 19:29:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1WubK6aEA9"
+  },
+  "version": 1
+}

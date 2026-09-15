@@ -43,6 +43,8 @@ class LearningStore:
             db.execute("CREATE TABLE IF NOT EXISTS query_runs (run_id TEXT PRIMARY KEY, payload TEXT NOT NULL)")
             db.execute("CREATE TABLE IF NOT EXISTS query_hits (run_id TEXT NOT NULL, video_id TEXT NOT NULL, shown INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(run_id,video_id))")
             db.execute("CREATE TABLE IF NOT EXISTS attributions (event_id TEXT PRIMARY KEY, run_id TEXT NOT NULL, kind TEXT NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS schema_meta (name TEXT PRIMARY KEY, version INTEGER NOT NULL)")
+            db.execute("INSERT INTO schema_meta(name,version) VALUES ('learning',2) ON CONFLICT(name) DO UPDATE SET version=max(version,excluded.version)")
 
     @contextmanager
     def connect(self):

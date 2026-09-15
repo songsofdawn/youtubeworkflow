@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "investigation",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "模组",
+      "minecraft",
+      "世界生成",
+      "游戏技术分析",
+      "游戏优化",
+      "数据包",
+      "java版",
+      "minecraft world gene",
+      "modern minecraft wor"
+    ],
+    "video_id": "bseedsUuMLr"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHave you ever asked yourself why is Minecraft getting slower over the years, why is it getting harder to run while not changing that much? In this video I will go in depth on why i think modern world generation being data driven and overengineered is not a good thing, and what the actual cost of having this configurable from the outside is.\n\nChapters:\n0:00 Intro\n0:31 Modern World Generation Design Goals\n1:03 Data Driven Design Issues\n4:47 The Modern Game's Fundamentals are Still like 2012\n6:18 Datapacks Have a Cost\n7:50 World Generation is Still Similar to 2010\n10:45 Abstractions Have a Cost\n11:23 Old Minecraft is Not Perfect Either\n12:09 JSON Modding Alternatives\n13:27 The Modern Game is Still Entangled\n14:32 Conclusion",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 920,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T06:15:33+00:00",
+    "tags": [
+      "我的世界",
+      "模组",
+      "Minecraft",
+      "世界生成",
+      "游戏技术分析",
+      "游戏优化",
+      "数据包",
+      "Java版",
+      "Minecraft world gene",
+      "modern Minecraft wor"
+    ],
+    "title": "深度解析：我的世界新版世界生成为何如此臃肿｜Why Is Minecraft's World Generation So Overengineered?",
+    "video_id": "bseedsUuMLr",
+    "views": 351
+  },
+  "seed_provenance": {
+    "bvid": "BV1Wrbp6yEap",
+    "published_at": "2026/9/6 14:15:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Wrbp6yEap"
+  },
+  "version": 1
+}

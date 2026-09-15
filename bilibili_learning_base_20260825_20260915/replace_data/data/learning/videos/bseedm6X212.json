@@ -1,0 +1,110 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1",
+      "AI coding"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "claude",
+      "fable 5.1",
+      "ai coding",
+      "claude code",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "网站审计",
+      "claude code",
+      "ai设计",
+      "模型对比",
+      "claude",
+      "ai工具",
+      "ai编程",
+      "落地页设计",
+      "claude fable 5.1",
+      "fable 5.1"
+    ],
+    "video_id": "bseedm6X212"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=KmILNQqlw9o\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nClaude Fable 5.1 is cheaper than Fable 5 and, in this one-shot test, it actually designs better. Same prompt, high effort, two Claude Code sessions.\n\nJoin CreatorNTWRK 👇\nhttps://discord.com/invite/vZxn6wZrDD\nhttps://www.skool.com/builderzgym\n\nI ran Fable 5.1 and Fable 5 on the same brief: a minimalist landing page for the Morikami Museum and Japanese Gardens, real photos, creative copy. 5.1 gives you a sticky hero, an editorial timeline, and layouts that make sense. Fable 5 looks more robotic, blows out the hero image, and goes so cute with the copy you lose the gardens. Then I run the same site-audit skill on both. 5.1’s writeup is easier to scan, and applying the fixes is faster.\n\nWhat you will learn:\n- What’s actually new in Fable 5.1 vs Fable 5 (price, accuracy, fewer shortcuts)\n- The X builds people are already shipping (Blender walkthrough, two-prompt Titanic game)\n- The exact one-shot museum prompt I used\n- Side-by-side landing pages at high effort\n- Why 5.1 still falls into the italic dual-color hero slop\n- Auditing a live site with a skill on both models\n\nChapters:\n0:00 What’s new in Fable 5.1\n0:28 Benchmarks vs Fable 5\n0:53 What people are building\n1:39 Same prompt, two models\n2:39 Fable 5.1 landing page\n3:37 Fable 5 landing page\n4:33 Audit skill, both models\n\nSocials:\nX https://x.com/lukas_margerie\nLinkedIn https://www.linkedin.com/in/lukas-margerie-99196118a\n\n#Fable51 #ClaudeCode #Fable5 #ClaudeFable #AIDesign #DesignEngineer #LandingPage",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 351,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T12:36:09+00:00",
+    "tags": [
+      "网站审计",
+      "Claude Code",
+      "AI设计",
+      "模型对比",
+      "Claude",
+      "AI工具",
+      "AI编程",
+      "落地页设计",
+      "claude fable 5.1",
+      "fable 5.1"
+    ],
+    "title": "同一提示词实测 Claude Fable 5.1 对比 Fable 5｜I Tested Claude Fable 5.1 Against Fable 5 W…",
+    "video_id": "bseedm6X212",
+    "views": 103
+  },
+  "seed_provenance": {
+    "bvid": "BV1svtU6QEJa",
+    "published_at": "2026/9/2 20:36:09",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1svtU6QEJa"
+  },
+  "version": 1
+}

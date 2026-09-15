@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "steak"
+    ],
+    "formats": [
+      "full_process",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "steak recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "户外实验",
+      "牛肉料理",
+      "烹饪技巧",
+      "食物科学",
+      "发酵食品",
+      "牛排风干实验"
+    ],
+    "video_id": "bseedhO8ttO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=kpdk6yOi02U\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI built four extreme dry-aging environments around untouched steaks using Binchotan charcoal, Wagyu fat, salami mold, Greek yogurt, koji, honey, and blue cheese. Can changing only the air create premium dry-aged beef flavor? A wild steak experiment with food science, cooking, and grilling.\n\nGet products now available at every Walmart https://linktr.ee/shop.guga\nBuy my cook book: https://linktr.ee/shop.guga\n\n* Become a MEMBER of GUGAFOODS *\nhttps://www.youtube.com/channel/UCfE5Cz44GlZVyoaYTHJbuZw/join\n-----------------------------------------------\nSUBSCRIBE to this Channel\nhttps://www.youtube.com/gugafoods?sub_confirmation=1\n----------------------------------------------- \nSubscribe to my Sous Vide Cooking Channel\nhttps://www.youtube.com/SousVideEverything?sub_confirmation=1\n-----------------------------------------------\nSubscribe to my NEW Channel\nhttps://www.youtube.com/channel/UCnB5HTIi44wDBD56KeT2hNA?sub_confirmation=1\n-----------------------------------------------\n* Guga MERCH *\nShirts and More: https://gugamerch.com/\n-----------------------------------------------\nMy SOCIAL MEDIA, Let's connect!\nTikTok: https://www.tiktok.com/@gugafoods\nInstagram: https://www.instagram.com/gugafoods/\nFacebook: https://www.facebook.com/gugafoods/\n-----------------------------------------------\n* MAIL TIME Want to send something?\n13876 SW 56th Street (№128)\nMiami FL 33175\n\n* Premium Beef from Riverbend Ranch *\nVisit: https://www.riverbendranch.com/guga\nUse Code “GUGA” for $10 off your first order! Shippin…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 893,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:12:32+00:00",
+    "tags": [
+      "美食制作",
+      "户外实验",
+      "中文翻译",
+      "中英双语",
+      "美食测评",
+      "牛肉料理",
+      "烹饪技巧",
+      "食物科学",
+      "发酵食品",
+      "牛排风干实验"
+    ],
+    "title": "【中英双语】用四种极端环境风干牛排：空气真的能改变风味吗？｜I Dry-Aged Steaks in 4 INSANE Environments!",
+    "video_id": "bseedhO8ttO",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1ST4R6gEJM",
+    "published_at": "2026/8/27 20:12:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ST4R6gEJM"
+  },
+  "version": 1
+}

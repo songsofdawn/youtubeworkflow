@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手工制作",
+      "科学实验",
+      "科普教育",
+      "物理模型",
+      "工程机械",
+      "创意手工",
+      "diy 教程",
+      "极客diy"
+    ],
+    "video_id": "bseedW-jdpC"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=s5KZ38dfix8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHow to Make a Ropeway Model | Best Science Project for Students.\nI hope you like it!\n\nMaterials:\n- Cardboard\n- Gearmotor\n- Plastic bottles\n- DVD discs\n- Thread\n- Styrofoam balls\n- Wires\n- Switch\n- 1.5V battery\n- Hot glue\n\nSincerely appreciate that you have watched my video and I hope you liked it.  Don't forget to subscribe, comment, like and share.\n\n#ropeway #model #electric #easy #diy #project #experiment #electric #scienceproject #inventorchannel\n\nThank you very much for your attention!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 481,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:40:46+00:00",
+    "tags": [
+      "手工制作",
+      "科学实验",
+      "科普教育",
+      "物理模型",
+      "工程机械",
+      "创意手工",
+      "DIY 教程",
+      "极客DIY"
+    ],
+    "title": "学生科学项目：制作缆车模型教程｜How to Make a Ropeway Model | Best Science Project for Students",
+    "video_id": "bseedW-jdpC",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV1jQtj6SERM",
+    "published_at": "2026/9/2 05:40:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1jQtj6SERM"
+  },
+  "version": 1
+}

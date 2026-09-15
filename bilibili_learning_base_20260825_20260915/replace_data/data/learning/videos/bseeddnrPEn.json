@@ -1,0 +1,120 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Gemini",
+      "AI coding"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gemini",
+      "ai coding",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "minecraft",
+      "体素游戏",
+      "ai生成游戏",
+      "提示词工程",
+      "google gemini",
+      "gemini 3.8 flash",
+      "gemini",
+      "googleai",
+      "ai编程"
+    ],
+    "video_id": "bseeddnrPEn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI gave Gemini 3.8 Flash one ridiculous challenge..\n\nBUILD MINECRAFT. (In less than 10 prompts..)\n\nAnd somehow… it actually made a better playable Minecraft-style game.\n\nWant to play this game? Go here 👉 https://dub.sh/DvYQh74\n\nThis isn’t just a static Three.js demo. Gemini 3.8 Flash generated an explorable voxel world with different terrain, tools, inventory, health, hunger, animals, NPCs, villages, a minimap, resources and actual gameplay systems.\n\nIn this video, I’m showing you exactly what Gemini 3.8 Flash built, what worked, what broke, and just how far AI-generated games have come.\n\nAnd yes — I actually played it.\n\n🔥 Gemini 3.8 Flash just launched, and after seeing all the coding demos people were posting, I wanted to push it into something much bigger.\n\nCould Gemini actually recreate the feeling of Minecraft from a prompt?\n\nThe result surprised me.\n\n🔔 Subscribe to ByteForward:\nhttps://dub.sh/bytefwd\n\n👀 or my other channel \nhttps://www.youtube.com/@UCebDC-sIv9nMKSP-8FN7zGw \n\nOFFICIAL GEMINI 3.8 FLASH LINKS\n\nGoogle Gemini 3.8 Flash announcement:\nhttps://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/\n\nGemini API / developer documentation:\nhttps://ai.google.dev/gemini-api/docs/latest-model\n\nGoogle Gemini:\nhttps://gemini.google.com/\n\nWHAT GEMINI BUILT\n\n• Playable voxel world\n• Procedural terrain\n• Multiple biomes\n• Minecraft-style tools\n• Inventory / hotbar\n• Health system\n• Hunger system\n• Animals\n• NPC villagers…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 631,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:41:23+00:00",
+    "tags": [
+      "Minecraft",
+      "体素游戏",
+      "AI生成游戏",
+      "提示词工程",
+      "google gemini",
+      "gemini 3.8 flash",
+      "计算机技术",
+      "Gemini",
+      "GoogleAI",
+      "AI编程"
+    ],
+    "title": "用Gemini 3.8 Flash不到10条提示词做出类Minecraft游戏｜Gemini 3.8 Flash Built an INSANE Minecr…",
+    "video_id": "bseeddnrPEn",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1eTtk61E7t",
+    "published_at": "2026/9/5 02:41:23",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eTtk61E7t"
+  },
+  "version": 1
+}

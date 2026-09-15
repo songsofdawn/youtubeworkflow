@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "收纳设计",
+      "生存建筑",
+      "新手指南",
+      "游戏技巧",
+      "建造教程",
+      "charlesmc",
+      "卧室搭建"
+    ],
+    "video_id": "bseedtJahgt"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=lEVvGqtimA8\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nLearn how to build a beautiful and practical Survival House in Minecraft!  This Minecraft survival house is easy to build, beginner-friendly, and perfect for starting your survival world. In this tutorial, I’ll show you step-by-step how to build a survival house with a stylish exterior, cozy interior, storage area, bedroom, and everything you need for your Minecraft survival gameplay.\n\n----------GAME INFORMATION-------------\nShaders:\n        Complementary Shaders:-https://www.complementary.dev/shaders\nTexture pack:\n        Default\nMODS\n        Replay Mod for Recording - https://www.replaymod.com\n\n Thanks for watching CharlesMC! \nDon’t forget to like, comment, and subscribe for more Minecraft Shorts uploaded daily!\n\n#minecraft #minecraftbuilds #minecrafttutorial #minecraftbuilding",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1030,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T20:39:40+00:00",
+    "tags": [
+      "我的世界",
+      "minecraft",
+      "收纳设计",
+      "无配音",
+      "生存建筑",
+      "新手指南",
+      "游戏技巧",
+      "建造教程",
+      "CharlesMC",
+      "卧室搭建"
+    ],
+    "title": "【无配音】Minecraft生存房屋建造教程：新手友好实用设计｜Minecraft: How to Build A Survival House",
+    "video_id": "bseedtJahgt",
+    "views": 48
+  },
+  "seed_provenance": {
+    "bvid": "BV1tyts64EoH",
+    "published_at": "2026/8/31 04:39:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tyts64EoH"
+  },
+  "version": 1
+}

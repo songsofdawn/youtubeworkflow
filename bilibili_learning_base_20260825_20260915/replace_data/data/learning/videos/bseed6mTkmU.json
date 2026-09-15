@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "心血管健康",
+      "心脏病",
+      "医学科普",
+      "营养学",
+      "胆固醇",
+      "ldl",
+      "家族性高胆固醇血症"
+    ],
+    "video_id": "bseed6mTkmU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n*JOIN THE PHYSIONIC INSIDERS [PREMIUM CONTENT]*\nJoin the Physionic Insiders: https://bit.ly/PhysionicInsiders2 \n\n*HEALTH AUTONOMY [COURSE]*\nLearn to Analyze & Apply Studies for Yourself: https://bit.ly/healthautonomy\n\n*JOIN THE COMMUNITY*\nJoin my Community [It’s Free!]: https://bit.ly/PhysionicCommunity2\n\n*EMAIL LIST*\n1-2 Weekly Email of Value [It’s Free!]: http://bit.ly/2AXIzK6\n\n*HIRE ME FOR CONSULTING:* \nConsulting: https://bit.ly/3dmUl2H \n\nOriginal Podcast: https://youtu.be/q57CNySsYxs?si=PIwVEVGj_-cYkDCU\n\n0:00 - Introduction\n1:54 - Genetics that cause High Cholesterol\n5:29 - The American Heart Association is lying to you\n8:05 - Extremely High Cholesterol doesn't Kill\n17:48 - High Cholesterol at 60? Protection from Death\n25:20 - Other ways of testing this?\n27:12 - Main Points\n\nReferences\n[1] Mundal L, Sarancic M, Ose L, et al. Mortality among patients with familial hypercholesterolemia: a registry-based study in Norway, 1992–2010. *J Am Heart Assoc*. 2014;3(6):e001236. doi:10.1161/JAHA.114.001236\n\n[2] Brown MS, Goldstein JL. Familial hypercholesterolemia: defective binding of lipoproteins to cultured fibroblasts associated with impaired regulation of 3-hydroxy-3-methylglutaryl coenzyme A reductase activity. *Proc Natl Acad Sci U S A*. 1974;71(3):788-792. doi:10.1073/pnas.71.3.788\n\n[3] Shishikura D, Harada-Shiba M, Michikura M, et al. Comparison of clinical characterization and therapeutic strategies between homozygous familial hypercholesterolemia and heterozygous familial hypercholesterolem…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1726,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T13:01:10+00:00",
+    "tags": [
+      "心血管健康",
+      "心脏病",
+      "医学科普",
+      "科学科普",
+      "营养学",
+      "胆固醇",
+      "LDL",
+      "家族性高胆固醇血症"
+    ],
+    "title": "高LDL被夸大了吗？解读胆固醇与心脏病研究｜‘They Lied about High LDL!’ - The Corrupt Science behind…",
+    "video_id": "bseed6mTkmU",
+    "views": 36
+  },
+  "seed_provenance": {
+    "bvid": "BV1dBbW6vEzG",
+    "published_at": "2026/9/6 21:01:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1dBbW6vEzG"
+  },
+  "version": 1
+}

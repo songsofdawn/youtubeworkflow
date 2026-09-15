@@ -1,0 +1,127 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPT-6",
+      "Astra",
+      "Claude",
+      "Fable 5.1",
+      "AI coding"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gpt-6",
+      "astra",
+      "claude",
+      "fable 5.1",
+      "ai coding",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "代码对比",
+      "gpt-6",
+      "ai设计",
+      "blender",
+      "claude",
+      "three.js",
+      "ai编程",
+      "提示词",
+      "gpt-6 astra"
+    ],
+    "video_id": "bseed7j60qn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGPT-6 Astra is here. I put it next to Claude Fable 5.1 on the same prompts: a one-shot museum landing page, a Zillow-to-Blender property tour, a GameCube-style drone race from a Google Earth screenshot, a Three.js jelly, Pinterest UI motion, and a Diffusion Studio video recreate.\n\nJoin CreatorNTWRK 👇\nhttps://discord.com/invite/vZxn6wZrDD\nhttps://www.skool.com/builderzgym\n\nWhat we cover:\n- What’s showing up on X with Astra (games, Blender office, real-world tasks)\n- Same landing page prompt in Claude Code (Fable 5.1) vs Codex (GPT-6)\n- Side-by-side design critique (logo, typography habits, sticky scroll, buttons)\n- Zillow listing → Blender model → camera tour (GPT-6 vs Fable recreation)\n- Google Earth + red-line track → GameCube Sonic-style drone race\n- Delicious bouncy jelly in Three.js + WebGPU (both models)\n- Recreate a Pinterest card scroll motion one-shot\n- Diffusion Studio: recreate the reference video with Fable 5.1 vs GPT-6\n\nTimestamps:\n0:00 - GPT-6 Astra is here\n0:59 - Same prompt: museum landing page\n1:48 - Side-by-side design critique\n3:37 - Zillow → Blender property tour\n5:34 - GameCube drone race from Google Earth\n6:01 - Three.js + WebGPU\n7:20 - Recreate Pinterest UI motion\n8:49 - Diffusion Studio video recreate\n9:51 - Outro\n\nTools:\nClaude Code / Fable 5.1\nCodex / GPT-6 Astra\nDiffusion Studio\nGoogle Earth\nBlender\n\nSocials:\nX https://x.com/lukas_margerie\nLinkedIn https://www.linkedin.com/in/lukas-margerie-99196118a\n\n#GPT6 #Astra #ClaudeFable #Fable51 #ClaudeCode #Codex #AIDesi…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 622,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T10:53:51+00:00",
+    "tags": [
+      "代码对比",
+      "GPT-6",
+      "AI设计",
+      "计算机技术",
+      "Blender",
+      "Claude",
+      "Three.js",
+      "AI编程",
+      "提示词",
+      "gpt-6 astra"
+    ],
+    "title": "GPT-6 Astra 对比 Claude Fable 5.1：同一提示词实测｜GPT-6 Astra vs Claude Fable 5.1: Same P…",
+    "video_id": "bseed7j60qn",
+    "views": 80
+  },
+  "seed_provenance": {
+    "bvid": "BV1iEbs6MEAo",
+    "published_at": "2026/9/6 18:53:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1iEbs6MEAo"
+  },
+  "version": 1
+}

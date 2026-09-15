@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "短片",
+      "百合",
+      "剧情短片",
+      "sapphic",
+      "ai短剧",
+      "女同性恋",
+      "hoh",
+      "情感短剧",
+      "house of her"
+    ],
+    "video_id": "bseedR0YF5W"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n📌 Subscribe: https://www.youtube.com/@HouseofHer9986\n♡ Welcome to House of Her — home of original cinematic sapphic stories.\n♡ New films released every week.\n♡ Join our Patreon to unlock:\n\n* Early access to upcoming episodes\n* Full Episode Uncut Version( Intimate scenes kept intact)\n* Exclusive members-only content\n\nSupport us on Patreon: https://www.patreon.com/houseofher9986\n\nHelp create the next chapter of House of Her.\nEvery contribution helps us bring more original GL stories to life—one scene at a time.\n🅿️PAYPAL: houseofher9986@gmail.com\n--------------------\n© Email: houseofher9986@gmail\n© All Rights Reserved.\n© DO NOT RE-UPLOAD",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 582,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T14:24:02+00:00",
+    "tags": [
+      "短片",
+      "百合",
+      "剧情短片",
+      "sapphic",
+      "AI短剧",
+      "女同性恋",
+      "HOH",
+      "情感短剧",
+      "House of Her"
+    ],
+    "title": "未完之夜 第三集A：重逢后的暗流（AI剧集）｜THE NIGHT WE NEVER FINISHED - Episode 3A | AI GL Series…",
+    "video_id": "bseedR0YF5W",
+    "views": 2
+  },
+  "seed_provenance": {
+    "bvid": "BV1nht66HE1k",
+    "published_at": "2026/9/4 22:24:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1nht66HE1k"
+  },
+  "version": 1
+}

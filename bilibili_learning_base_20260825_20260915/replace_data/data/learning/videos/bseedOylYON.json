@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "experiment",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "豆子发芽",
+      "辐射育种",
+      "科学实验",
+      "粒子加速器",
+      "硬核科普",
+      "植物变异"
+    ],
+    "video_id": "bseedOylYON"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBeans see more radiation than any other bean in history \n\nNEW DISCORD SERVER: https:// discord.gg/JMwZkcEqH\n\nHuge thanks to our patreon supporters for making projects like these possible. Without them we definitely would not have the capacity to use linac time like this. Join at the link below to receive behind the scenes footage as well as occasional free souvenirs from our videos:\n\nhttps://www.patreon.com/ElectronImpressions?utm_campaign=creatorshare_creator",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 269,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T20:44:01+00:00",
+    "tags": [
+      "豆子发芽",
+      "辐射育种",
+      "科学实验",
+      "科学科普",
+      "粒子加速器",
+      "硬核科普",
+      "植物变异"
+    ],
+    "title": "我把豆子扔进粒子加速器 irradiation 后竟然长成这样｜I Put Beans Inside a Particle Accelerator and G…",
+    "video_id": "bseedOylYON",
+    "views": 36
+  },
+  "seed_provenance": {
+    "bvid": "BV1xmYd6WESK",
+    "published_at": "2026/9/13 04:44:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xmYd6WESK"
+  },
+  "version": 1
+}

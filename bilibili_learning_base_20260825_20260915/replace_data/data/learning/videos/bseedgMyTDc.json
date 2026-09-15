@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI"
+    ],
+    "formats": [
+      "build",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "explained",
+      "openai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "纳维斯托克斯",
+      "satisfying build",
+      "流体力学",
+      "openai",
+      "construction",
+      "千禧年难题",
+      "数学证明"
+    ],
+    "video_id": "bseedgMyTDc"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOpenAI says its AI has solved the Navier–Stokes Millennium Prize Problem. It released a mathematical proof and computer-checkable files on September 8, 2026.\n\nThe claim concerns whether equations used to describe water and air can develop a mathematical breakdown. The result uses a smooth outside force—allowed under the official problem—but does not settle the same question without that force.\n\nAlongside the announcement came a dispute over research credit and private data. Mathematician Tristan Buckmaster described pressure over authorship. Sébastien Bubeck rejected the allegations. OpenAI denied accessing the researchers’ unpublished work, while leaving a possible training-data connection unresolved.\nWhat the proof claims, how the research unfolded, and what remains disputed—in plain language.\n\nAccount as of September 8, 2026. Publication does not mean the prize has been awarded.\n\n#OpenAI #NavierStokes #Mathematics",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 366,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T00:09:48+00:00",
+    "tags": [
+      "人工智能",
+      "纳维斯托克斯",
+      "satisfying build",
+      "流体力学",
+      "科学科普",
+      "OpenAI",
+      "construction",
+      "千禧年难题",
+      "数学证明"
+    ],
+    "title": "OpenAI宣称AI破解纳维-斯托克斯百万美元难题｜OpenAI and Navier-Stokes Explained! A Million Dollar…",
+    "video_id": "bseedgMyTDc",
+    "views": 202
+  },
+  "seed_provenance": {
+    "bvid": "BV1hJYp6eELS",
+    "published_at": "2026/9/9 08:09:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hJYp6eELS"
+  },
+  "version": 1
+}

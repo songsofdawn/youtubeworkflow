@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "缝纫技巧",
+      "废物利用",
+      "生活小妙招",
+      "创意改造",
+      "居家装饰",
+      "布艺手工",
+      "diy 教程"
+    ],
+    "video_id": "bseed5AvjSC"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=nM6Ebaw_ISI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDiscover amazing fabric and sewing craft ideas that turn simple fabrics, scraps, and leftover materials into beautiful handmade creations! 🦋🎄 From creative fabric decorations and sewing projects to unique home decor and DIY gift ideas, these crafts are perfect for beginners and craft lovers. Explore easy fabric crafts, creative sewing techniques, fabric recycling ideas, handmade decorations, and beautiful DIY projects that you can make at home. Get inspired to reuse old fabrics and create something unique, useful, and beautiful with your own hands!\n💡\n#FabricCrafts #SewingCrafts #FabricDIY #SewingProjects #DIYCrafts #CraftIdeas #FabricArt #HandmadeCrafts #ScrapFabric #FabricProjects #EasyCrafts #CreativeDIY #HomeDecor #DIYHomeDecor #Upcycling #SewingIdeas #HandmadeDecor #TextileCrafts #DIYProjects #CraftInspiration\n\nfabric crafts, sewing crafts, fabric craft ideas, sewing project ideas, fabric DIY, DIY sewing crafts, scrap fabric crafts, fabric art, handmade fabric crafts, easy sewing projects, fabric home decor, fabric decoration ideas, creative fabric projects, textile crafts, fabric recycling ideas, old clothes crafts, DIY home decor, handmade decoration, beginner sewing crafts, creative DIY crafts, sewing ideas, fabric flowers, unique fabric crafts, easy fabric projects",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 631,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T13:05:11+00:00",
+    "tags": [
+      "手工",
+      "缝纫技巧",
+      "废物利用",
+      "生活小妙招",
+      "创意改造",
+      "居家装饰",
+      "布艺手工",
+      "DIY 教程"
+    ],
+    "title": "【中英双语】旧布料改造家居装饰：简单缝纫手工创意 DIY 教程｜Amazing Fabric & Sewing Craft Ideas | Creative…",
+    "video_id": "bseed5AvjSC",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV13LtH6SEna",
+    "published_at": "2026/8/30 21:05:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13LtH6SEna"
+  },
+  "version": 1
+}

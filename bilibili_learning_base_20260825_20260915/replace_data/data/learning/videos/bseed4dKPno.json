@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "woodworking",
+      "DIY"
+    ],
+    "formats": [
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "木工",
+      "解压修复",
+      "刀具",
+      "翻新",
+      "金属抛光",
+      "旧物修复",
+      "tysy tube"
+    ],
+    "video_id": "bseed4dKPno"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n🛠 Tools Used in This Restoration\n\n📌 Some links below are affiliate links. As an Amazon Associate, I earn from qualifying purchases (no extra cost to you).\n\nElectric Screwdriver - https://amzn.to/4aEiBv1\nRotating Turntable - https://amzn.to/4tHZPvo\nCamera Canon R5 - https://amzn.to/4r010Uw\nCamera Lens 1 - https://amzn.to/3OIMUJm\nCamera Lens 2 - https://amzn.to/4sburnB\nUltrasonic Cutter - https://amzn.to/4rQivaw\nMagnetic Stirrer - https://amzn.to/40eNfGc\nPolishing Cutting Compounds  - https://amzn.to/4aw01Vz\nMini Buffer Polisher - https://amzn.to/4kFfirZ\nResin Mixer - https://amzn.to/4rU6QHR\nPolishing Compound - https://amzn.to/4qCOAS7\nSharpening Stone - https://amzn.to/4rhvoKK\nRotary Tool Bosch - https://amzn.to/4kx00oY\nSkil Drill - https://amzn.to/3ZxMIPD\nEpoxy Resin - https://amzn.to/4reXypJ\nBosch cordless angle grinder - https://amzn.to/4cvhoIJ\nSKIL Screwdriver - https://amzn.to/3ZClYNO\nDiamond Claw - https://amzn.to/4tD1JNF\nFinger Feet - https://amzn.to/46FIlWt\nRobo Fish - https://amzn.to/4bWkANy\nUV Light - https://amzn.to/4aQZeju\nElectric Polisher - https://amzn.to/4rgqNIG\nTravel Adapter - https://amzn.to/4tR63t0\nRotary Cutter - https://amzn.to/3OtHl1r\nSoldering Iron - https://amzn.to/4qB8pZV\nIce Cube Grabber - https://amzn.to/3ZBMdEa\nProfessional Magic Ball Fog Machine - https://amzn.to/3MBfXy6\n\nIf You want to send something to restore you have my email address down below 👇 .\ntysytubebusiness@yahoo.com\nThis restoration took me a lot of time, i hope you like it!\nIf you like it please Subscribe!\n\nFollow me on Instagram https://www.instagram.com/tysytube/?hl=en\n\nFor videos in advance Become my Patreon on https://www.patreon.com/tysytuberestoration",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1355,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T19:22:24+00:00",
+    "tags": [
+      "木工",
+      "手工",
+      "DIY",
+      "解压修复",
+      "无配音",
+      "刀具",
+      "翻新",
+      "金属抛光",
+      "旧物修复",
+      "tysy tube"
+    ],
+    "title": "老刀翻新抛光，这把锈刀被我抛过头了｜I Might've Polished This Knife Too Far...",
+    "video_id": "bseed4dKPno",
+    "views": 29
+  },
+  "seed_provenance": {
+    "bvid": "BV1GsYb6sEHY",
+    "published_at": "2026/9/10 03:22:24",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1GsYb6sEHY"
+  },
+  "version": 1
+}

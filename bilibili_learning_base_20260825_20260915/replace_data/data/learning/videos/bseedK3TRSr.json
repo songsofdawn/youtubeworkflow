@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Blender",
+      "3D art",
+      "animation"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "blender 3d",
+      "3d art",
+      "animation"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "动画",
+      "3d模型",
+      "原创动画",
+      "mmd·3d",
+      "cg制作",
+      "3dcg",
+      "maya",
+      "blender",
+      "角色建模"
+    ],
+    "video_id": "bseedK3TRSr"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n\"Perhaps this is the era we’ve entered\"\n...\n...or something🙃\n\n\n↓Original post\nMy X(Twitter): @kensyouen_Y",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 87,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T09:23:18+00:00",
+    "tags": [
+      "动画",
+      "3D模型",
+      "原创动画",
+      "MMD·3D",
+      "无配音",
+      "CG制作",
+      "3DCG",
+      "maya",
+      "Blender",
+      "角色建模"
+    ],
+    "title": "3D模型开始给自己建模衣服了｜My 3D Model Began Modeling Its Own Clothes",
+    "video_id": "bseedK3TRSr",
+    "views": 55
+  },
+  "seed_provenance": {
+    "bvid": "BV11utm6SEmr",
+    "published_at": "2026/9/5 17:23:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11utm6SEmr"
+  },
+  "version": 1
+}

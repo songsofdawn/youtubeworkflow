@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.52,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Gemini"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gemini",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai 工具",
+      "科技新闻",
+      "sundar pichai",
+      "deepmind",
+      "google ai",
+      "ai 模型",
+      "gemini 4",
+      "gemini 4 leaked"
+    ],
+    "video_id": "bseedmSkUon"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=C3CgUAQIz0E\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#sponsored 👉 Grab your free seat to the 2-Day AI Mastermind:  https://links.outskill.com/AIMAAUG5\n🔐 100% Discount for the first 1000 people\n💥 Dive deep into AI and Learn Automations, Build AI Agents, Make videos & images – all for free!\n🎁 Bonuses worth $5,100+ if you join and attend\n\n🧠 Never miss Gemini updates! Join 13,000+ AI enthusiasts → https://aimaster.me/yt/gemini4\n🤝 Exclusive brand partnership - https://aimaster.me/collab\n\nGemini 4 is \"leaked\" everywhere right now — Sundar Pichai confirmed on Alphabet's Q2 earnings call that Google started its most ambitious pre-training run yet for Gemini 4. I show you exactly where each rumor falls apart, what Google actually shipped, and why the DeepMind leadership reshuffle in August tells you more about the release timeline than any leak thread does.\n\nChapters:\n00:00 Gemini 4 is Coming\n00:22 What Google Actually Confirmed\n04:29 What Google Shipped While Gemini 4 Was Cooking\n07:16 So What's Everyone Actually Claiming?\n14:30 The Part Nobody Puts in the Thumbnail\n15:48 What to Actually Do Until It Ships\n16:48 Final Thoughts\n\nEverything I researched and cross-checked in this video ran through AI Master, the AI-powered workspace I built and use daily for my own content pipeline — multi-model chat (Claude, ChatGPT, Grok, Gemini), image/video generation, consistent characters, and Virable, our full-cycle AI video production engine. Try it at aimaster.me.\n\n#Gemini4 #GoogleAI #DeepMind",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1034,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T11:55:53+00:00",
+    "tags": [
+      "AI 工具",
+      "科技新闻",
+      "中英双语",
+      "中文翻译",
+      "Sundar Pichai",
+      "DeepMind",
+      "Google AI",
+      "AI 模型",
+      "Gemini 4",
+      "gemini 4 leaked"
+    ],
+    "title": "【中英双语】谷歌确认启动 Gemini 4 训练，澄清网络谣言与参数真相｜Gemini 4: Google’s Next Massive AI Model S…",
+    "video_id": "bseedmSkUon",
+    "views": 487
+  },
+  "seed_provenance": {
+    "bvid": "BV1GBtw6AEup",
+    "published_at": "2026/8/28 19:55:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1GBtw6AEup"
+  },
+  "version": 1
+}

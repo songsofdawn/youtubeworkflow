@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "highkeyhateme",
+      "游戏模组",
+      "村民新闻",
+      "minecraft插件"
+    ],
+    "video_id": "bseedZvsOHS"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 12,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOreville Studios, the people that made the Actions & Stuff Add-On on the Minecraft Marketplace teamed up with @elementanimation to turn their iconic series, Villager News into a Minecraft Add-on with over 2000 unique voice lines!\nGet the Add-On here with my affilaite link! https://buy.minecraft.net/villagernews\n\nMy other Minecraft Affiliate links-\nMinecraft main game: https://mc.highkeyoli.com\nMinecraft Dungeons: https://dungeons.highkeyoli.com\nMinecraft Dungeons 2: https://dungeons2.highkeyoli.com\n\nTwitter: https://www.twitter.com/highkeyoli\nDiscord: https://discord.gg/f7Wywwq\nTwitch: https://www.twitch.tv/highkeyoli\n\n#highkeyoli",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 803,
+    "likes": 112,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T15:00:27+00:00",
+    "tags": [
+      "单机游戏",
+      "我的世界",
+      "游戏实况",
+      "Minecraft",
+      "highkeyhateme",
+      "游戏模组",
+      "村民新闻",
+      "Minecraft插件"
+    ],
+    "title": "村民居然会说话了？体验2000条语音的MC村民新闻插件｜This Minecraft Add-On makes Villagers TALK???",
+    "video_id": "bseedZvsOHS",
+    "views": 3826
+  },
+  "seed_provenance": {
+    "bvid": "BV18EYR6sETE",
+    "published_at": "2026/9/12 23:00:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18EYR6sETE"
+  },
+  "version": 1
+}

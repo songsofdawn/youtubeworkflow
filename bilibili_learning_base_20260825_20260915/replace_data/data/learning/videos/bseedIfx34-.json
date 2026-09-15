@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "challenge",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "模组生存",
+      "我的世界",
+      "生存实况",
+      "星露谷物语",
+      "sunlit valley",
+      "治愈系游戏",
+      "minecraft模组",
+      "农场经营",
+      "minecraft minecraft",
+      "da lil red"
+    ],
+    "video_id": "bseedIfx34-"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🍓In today's video, continue exploring the Sunlit Valley modpack, a cozy farming-focused modpack inspired by Stardew Valley.  We'll be expanding our NPC village, exploring structures for loot and upgrading our armor to prepare for more dangerous adventures in the future. We also make it through our FIRST winter and our FULL YEAR in sunlit valley modpack!\n\n\n🍓World Info\nSeed: -4279589659422718085\nBase Cords -1784, 70,-2432  \n\n🍓The modpack:\nhttps://www.curseforge.com/minecraft/modpacks/society-sunlit-valley\n\n🍓 SUPPORT THE CHANNEL 🍓\nBecome a Channel Member to get access to perks & support my content creation journey so I can keep making content full time:\nhttps://www.youtube.com/channel/UCbXU4bo6MlIDhb3ciAx4LUg/join\nOr\nSupport me on Kofi: \nhttps://ko-fi.com/dalilred\n\n🔗 My Social Media\n📷 Instagram: https://www.instagram.com/dalilred1/\n🐦 Twitter: https://twitter.com/DaLilRedYT\nRed's Community Discord: https://discord.gg/CZYh2XAAqG\n\n🎵 My Music\nProvided by Epidemic Sound\n\nRecorded with OBS and Replaymod (https://replaymod.com)\n\n🏷️ My Tags\n#minecraft #dalilred #sunlitvalley #stardewvalleyminecraft",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2944,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T19:40:59+00:00",
+    "tags": [
+      "模组生存",
+      "我的世界",
+      "生存实况",
+      "星露谷物语",
+      "Sunlit Valley",
+      "治愈系游戏",
+      "Minecraft模组",
+      "农场经营",
+      "minecraft minecraft",
+      "da lil red"
+    ],
+    "title": "星露谷物语Sunlit Valley模组生存：扩建村庄EP3",
+    "video_id": "bseedIfx34-",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV1aGtk6GE7b",
+    "published_at": "2026/9/5 03:40:59",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1aGtk6GE7b"
+  },
+  "version": 1
+}

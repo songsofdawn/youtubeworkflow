@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "build",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "ai architecture",
+      "ai建造",
+      "游戏模组",
+      "ai设计",
+      "村庄改造",
+      "ai生成",
+      "ai building"
+    ],
+    "video_id": "bseedRt9L9X"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYo twins whats Good, we are finally back with another Minecraft modded Video! In this video im doing something I always wanted to do, completely revamp Villages in Minecraft with AI \n\nAlso im super glad to say I have partnered up with Abacus AI to check out ChatLLM a multi Model Platform where you guys can even use Fable 5.1 but also a bunch of other models for just 10$ a month\n\nCheck ChatLLM out with this Link: https://chatllm.abacus.ai/zod\n\nChapters\n00:00 Intro\n00:46 ChatLLM Showcase\n02:41 GPT 6 Astra\n06:14 Claude Fable 5.1\n10:40 Abacus AI Agent\n\nCheck Out Agora the Platform that lets you post all of your AI creations:\nhttps://app.myagora.live/ \n\nAlso join the Discord: \nhttps://discord.gg/vfq7e7dnX",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 972,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T14:37:57+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "AI Architecture",
+      "AI建造",
+      "游戏模组",
+      "AI设计",
+      "村庄改造",
+      "AI生成",
+      "AI Building"
+    ],
+    "title": "让AI彻底改造我的世界村庄！｜I let AI completely Revamp Minecraft Villages",
+    "video_id": "bseedRt9L9X",
+    "views": 134
+  },
+  "seed_provenance": {
+    "bvid": "BV1deY263Exa",
+    "published_at": "2026/9/11 22:37:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1deY263Exa"
+  },
+  "version": 1
+}

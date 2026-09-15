@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "街头小吃",
+      "美食vlog",
+      "美食节",
+      "纽约美食",
+      "网红美食"
+    ],
+    "video_id": "bseed6TSvY2"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEverything I ate at the first ever Yes Chef food festival in New York City! Featuring special guests, Jack's Dining Room, and How Kev Eats! \n\nJack's Dining Room instagram: https://www.instagram.com/jacksdiningroom/?hl=en\nHow Kev Eats instagram: https://www.instagram.com/how.kev.eats/?hl=en\n\nMy socials:\ninstagram ‣ https://www.instagram.com/karissadumbacher\ntiktok ‣ https://www.tiktok.com/@karissaeats\nlinktree ‣ https://linktr.ee/karissaeats",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 654,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T13:43:51+00:00",
+    "tags": [
+      "街头小吃",
+      "美食vlog",
+      "美食节",
+      "美食测评",
+      "美食探店",
+      "纽约美食",
+      "网红美食"
+    ],
+    "title": "一天吃遍纽约爆红美食节！网红料理值得排队吗？｜Eating the Most Viral Foods in NYC in One Day! (Worth th…",
+    "video_id": "bseed6TSvY2",
+    "views": 56
+  },
+  "seed_provenance": {
+    "bvid": "BV15sYJ6eE7A",
+    "published_at": "2026/9/8 21:43:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15sYJ6eE7A"
+  },
+  "version": 1
+}

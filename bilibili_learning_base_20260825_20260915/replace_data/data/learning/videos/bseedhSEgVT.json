@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "factory"
+    ],
+    "formats": [
+      "full_process",
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "factory process",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "生成式ai",
+      "ai工作流",
+      "提示词工程",
+      "google flow",
+      "ai视频教程",
+      "工业动画",
+      "无脸频道",
+      "viral ai niche",
+      "new ai niche"
+    ],
+    "video_id": "bseedhSEgVT"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCreate your own AI factory process videos with this step-by-step workflow. Learn how to animate raw materials becoming finished goods.\n\nThis tutorial breaks down the technical setup required to produce satisfying industrial animation loops. If you want to build high-quality content featuring automated manufacturing animation, this guide covers the tools and processes used to turn simple prompts into complex visual sequences. We focus on the linear progression of material transformation, specifically showing how to handle inputs like chocolate or raw ingredients and map them into realistic machinery outputs.\n\nFollowing this generative video workflow allows you to maintain visual consistency across your clips. You will see how to structure your prompts to keep the machinery logic intact while scaling production for longer sequences. Whether you are aiming for commercial aesthetics or abstract visual art, mastering an AI factory process is the most efficient way to generate these smooth, repetitive animations.\n\n📦 GET THE PROMPT FILE:\nComment \"Factory\" and i will replay with link.\n\n🛠️ PRODUCTION UTILITIES:\n• Script Engine: ChatGPT Standard (Industrial Pipeline Node)\n• Image & Video Suite: Google Flow (Scenes Anchor + OmniFlash Engine)\n• Aspect Configuration: 16:9 Landscape (YouTube Long-Form)\n• Video Assembly: Clipchamp / CapCut\n\n\nSubscribe for weekly AI video tutorials and comment below with the type of manufacturing process you want to see animated next.\n\n#AIWorkflow #GoogleFlow #Factor…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 325,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:47:37+00:00",
+    "tags": [
+      "生成式AI",
+      "AI工作流",
+      "提示词工程",
+      "Google Flow",
+      "计算机技术",
+      "AI视频教程",
+      "工业动画",
+      "无脸频道",
+      "viral ai niche",
+      "New ai niche"
+    ],
+    "title": "AI工厂流程动画制作教程：从提示词到成片｜The Free AI Industrial Niche Making $10K+/Month Right Now",
+    "video_id": "bseedhSEgVT",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1RKtk6jEqb",
+    "published_at": "2026/9/5 02:47:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1RKtk6jEqb"
+  },
+  "version": 1
+}

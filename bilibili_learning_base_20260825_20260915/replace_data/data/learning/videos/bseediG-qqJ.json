@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY",
+      "challenges"
+    ],
+    "formats": [
+      "build",
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "游戏电脑",
+      "预算装机",
+      "科技实验",
+      "硬件评测",
+      "pc组装",
+      "diy装机",
+      "亚马逊购物",
+      "极客diy"
+    ],
+    "video_id": "bseediG-qqJ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=K5vHfXHkfV0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI challenged myself to build a computer by searching for the fastest gaming PC components on Amazon. Every single part, from the processor to the GPU, was determined by the first organic search result that appeared. There is no swapping parts and no cheating, meaning I have to use whatever Amazon suggests, regardless of the cost or compatibility.\n\nThis experiment shows exactly what happens when you let an algorithm decide your hardware specs. You will see if this method results in a functional working machine or a total disaster... \n\nWill this be the best custom build that we have had on this channel?\n\nIf you enjoyed seeing this Amazon PC build challenge, make sure to subscribe!\n\nMake sure to add the Maono Mic to cart here: (Starting June 23rd)\nOfficial Website Link: https://www.maono.com/samsongg08\nAmazon Link: https://amzn.to/49fzAUe\nDiscount Code: SAMSONGG15 (15% off)\n\nFollow me here!:\nhttps://beacons.ai/samsonjc22\n\nCONTACT ▼\nBusiness enquiries: Samsonjcgaming@gmail.com\n\n#maonopd200w #hybridmicrophone #pd200whybrid",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 888,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T05:46:02+00:00",
+    "tags": [
+      "游戏电脑",
+      "预算装机",
+      "中英双语",
+      "中文翻译",
+      "科技实验",
+      "硬件评测",
+      "PC组装",
+      "DIY装机",
+      "亚马逊购物",
+      "极客DIY"
+    ],
+    "title": "【中英双语】挑战只用亚马逊搜索结果组装最强游戏电脑｜Building a PC... Using ONLY the Top Results on Amazon",
+    "video_id": "bseediG-qqJ",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1kc4k6dEXD",
+    "published_at": "2026/8/29 13:46:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1kc4k6dEXD"
+  },
+  "version": 1
+}

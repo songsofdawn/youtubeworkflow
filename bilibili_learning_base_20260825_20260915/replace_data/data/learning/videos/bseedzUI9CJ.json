@@ -1,0 +1,89 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "redstone",
+      "building"
+    ],
+    "formats": [
+      "extreme_survival",
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft redstone",
+      "minecraft build",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "极限生存",
+      "红石",
+      "minecraft",
+      "大型工程",
+      "建筑工程",
+      "超级熔炉",
+      "硬核生存"
+    ],
+    "video_id": "bseedzUI9CJ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI spent 4 MONTHS building the ULTIMATE Super Smelter in Minecraft… and it turned into something WAY bigger than I ever planned.\n\nWhat started as a simple super smelter quickly turned into a massive underground project. I mined out an insane amount of blocks, built a huge underground facility, and created a smelting system capable of processing 70,000+ items per hour.\n\nThis project took months of planning, mining, building, and way too many hours in Minecraft — but the final result was worth it.\n\n🔥 70,000+ items/hour\n⛏️ Thousands of blocks mined\n🏗️ Massive underground facility\n📦 The ULTIMATE Minecraft Super Smelter\n\nThanks for watching! If you enjoyed the video, consider subscribing for more Hardcore Minecraft projects.\n\nThe Music I use:\n\nMusic from Uppbeat:\nhttps://uppbeat.io/t/yawnathan/tokyo-spring-wooll-remix\nLicense code: 1SVOGQTBNITRRUCX\n\nMusic from Uppbeat:\nhttps://uppbeat.io/t/sky-cassette/bad-boyz\nLicense code: VC6UN49MWEYPYLOA\n\nMusic from Uppbeat:\nhttps://uppbeat.io/t/qube/breezy\nLicense code: 6AX1HJ6MPQOQHIHF\n\nMusic from Uppbeat:\nhttps://uppbeat.io/t/pryces/all-of-my\nLicense code: KECLHJCYHIIDXXCZ\n\nMusic from Uppbeat:\nhttps://uppbeat.io/t/ian-aisling/a-legend\nLicense code: WU7HPL1WKYFGNXGR\n\nMusic by CreatorMix.com\n\nAurora By Mellow Three \nhttps://creatormix.com/album/mellow-three-84.html",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1569,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T16:23:56+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "极限生存",
+      "红石",
+      "Minecraft",
+      "大型工程",
+      "建筑工程",
+      "超级熔炉",
+      "硬核生存"
+    ],
+    "title": "耗时4个月！我在Minecraft造出每小时7万件的终极熔炉｜I Build the ULTIMATE SUPER SMELTER in Minecraft…",
+    "video_id": "bseedzUI9CJ",
+    "views": 695
+  },
+  "seed_provenance": {
+    "bvid": "BV1DjbT61Etz",
+    "published_at": "2026/9/8 00:23:56",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1DjbT61Etz"
+  },
+  "version": 1
+}

@@ -1,0 +1,97 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "challenges"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Entertainment & Pop Culture",
+        "name": "entertainment_pop_culture",
+        "suggested_entities": [
+          "comics",
+          "comedy",
+          "fandom",
+          "creator stories"
+        ],
+        "suggested_formats": [
+          "documentary",
+          "comparison",
+          "challenge"
+        ]
+      }
+    ],
+    "topics": [
+      "爆笑合集",
+      "每日一笑",
+      "沙雕",
+      "解压",
+      "名场面",
+      "忍笑挑战",
+      "try not to laugh",
+      "funny videos",
+      "整活"
+    ],
+    "video_id": "bseedITKrAC"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🤣 Welcome to the ultimate Try Not To Laugh Challenge 2025!\nGet ready for non-stop laughter with this funny video compilation packed with:\n\n- Epic fails & hilarious pranks\n\n- Crazy memes & viral short clips\n\n- Silly cats, funny dogs, and adorable babies\n\n- Everyday comedy moments that will make you laugh out loud 😂\n\nThis try not to laugh challenge is perfect for stress relief, family entertainment, or just having a good time with friends. Can you watch without laughing? It’s harder than you think!\n\n👉 Watch the full Try Not To Laugh Playlist here: https://www.youtube.com/playlist?list=PLiMkFzK6k_XmPK8PMMG_P_JYRu1actHxs\n\n🔥 Don’t forget to:\n✔️ LIKE the video if you laughed\n✔️ COMMENT your favorite moment\n✔️ SUBSCRIBE to Yabai Funny for new funny videos every week\n\nStay tuned for more hilarious fails, pranks, memes, and laugh challenges you won’t want to miss!\n\n⚠️ DISCLAIMER:\n- All scenes in this video were carefully planned and performed by informed participants under supervision.\n- No one was injured or harmed during the making of this video.\n- This content is intended solely for entertainment purposes.\n- Please do not attempt to recreate or imitate any scenes or stunts shown in this video.\n- Viewer discretion is strongly advised.\n\n#funny #trynottolaugh #fails #pranks #memes #funnychallenge #funnyvideos #viral #compilation #animals #babies #funniestmoments",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 999,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T02:10:00+00:00",
+    "tags": [
+      "搞笑",
+      "爆笑合集",
+      "每日一笑",
+      "沙雕",
+      "解压",
+      "名场面",
+      "忍笑挑战",
+      "try not to laugh",
+      "funny videos",
+      "整活"
+    ],
+    "title": "忍笑挑战！100个爆笑瞬间合集，你能撑到最后吗？｜Try Not To Laugh 🤣 Top 100 Funniest Videos Ever 🎬🔥…",
+    "video_id": "bseedITKrAC",
+    "views": 101
+  },
+  "seed_provenance": {
+    "bvid": "BV1cPYS68EoC",
+    "published_at": "2026/9/12 10:10:00",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1cPYS68EoC"
+  },
+  "version": 1
+}

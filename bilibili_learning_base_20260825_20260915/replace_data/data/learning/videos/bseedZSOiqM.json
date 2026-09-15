@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Claude",
+      "Gemini"
+    ],
+    "formats": [
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "claude",
+      "gemini",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "ai",
+      "minecraft",
+      "chatgpt",
+      "建筑比赛",
+      "claude",
+      "gemini"
+    ],
+    "video_id": "bseedZSOiqM"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#minecraft #aigaming #minecraftaddon #minecraftbuilding \n\nWhich AI can rebuild a Minecraft village better, Chat GPT, Claude, or Google Gemini? That's what I'm figuring out today because I put all three in a competition to see who can make the best Minecraft Village build on Minecraft Bedrock edition. This was a super fun video to make and I was impressed by how well every AI did!... except one of them.\n\nMake sure to check out *Wynncraft!* https://wynncraft.com/thecommandsman\n*IP:* thecommandsman.wynncraft.com\n\nAnd use code \"THECOMMANDSMAN\" on the Wynncraft shop for 5% off.\n\n*See More of my Content 🎥*\n*YT:* ‪@TheCommandsMan‬ \n*TikTok:* tiktok.com/@thecommandsman\n*Discord:* https://discord.gg/xbJhAuUMGJ",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 870,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:33:18+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "AI",
+      "Minecraft",
+      "ChatGPT",
+      "建筑比赛",
+      "Claude",
+      "Gemini"
+    ],
+    "title": "让ChatGPT、Claude和Gemini比赛重建我的世界村庄｜Which AI Can Build the BEST Minecraft Village?",
+    "video_id": "bseedZSOiqM",
+    "views": 50
+  },
+  "seed_provenance": {
+    "bvid": "BV1Jitk6dE7h",
+    "published_at": "2026/9/5 02:33:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Jitk6dE7h"
+  },
+  "version": 1
+}

@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Bitcoin",
+      "investing",
+      "mining industry"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "bitcoin industry"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "德鲁肯米勒",
+      "机构资金",
+      "比特币矿业",
+      "bitcoin news",
+      "比特币",
+      "加密货币",
+      "bitcoin",
+      "比特币etf",
+      "财经分析",
+      "ai数据中心"
+    ],
+    "video_id": "bseedb2ecbT"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n👉 MY 5-YEAR BITCOIN RETIREMENT CHEAT SHEET AND CALCULATOR: https://cortana.marketdisruptors.io/mUzXpfh\n_______________\n\nThe AI to Bitcoin rotation may have already started. Stanley Druckenmiller just disclosed roughly $125 million in Bitcoin mining stocks, while Bitcoin whales accumulated billions in BTC. I break down why smart money is rotating, how Bitcoin miners connect the AI boom to Bitcoin, why AI data centers are driving demand for power, and the key signals that could confirm a Bitcoin bull market. I also cover Bitcoin ETFs, institutional Bitcoin adoption, Jane Street, Paul Tudor Jones, Bitcoin mining, HPC, AI infrastructure, Bitcoin's 200-week moving average, seller exhaustion, and what this could mean for Bitcoin investors.\n_______________\n\n0:00 - The AI to Bitcoin Rotation Has Already Started\n1:33 - The GOAT's Hidden Trade\n4:04 - The Rotation Under the Surface\n7:28 - The Hidden Bridge Between AI and BTC\n11:54 - When the Sellers Run Out\n14:21 - The Confirmation Price\n16:22 - My 5-Year Bitcoin Retirement Calculator\n_______________\n\nIG - https://www.instagram.com/markmoss/\nX - https://twitter.com/1MarkMoss\nFB - https://www.facebook.com/1MarkMoss/\nLI -  https://www.linkedin.com/in/markmoss/\n_______________\n\n🔴 BEWARE OF SCAMMERS 🔴\n\nSome people try to impersonating me in the comments. My comments have a \"checkmark\" so look for that. I will never message you asking you to give me money or to talk to me on WhatsApp. \n\nDisclaimer: I am NOT a financial advisor, and nothing I say is meant to…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1010,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T14:06:21+00:00",
+    "tags": [
+      "德鲁肯米勒",
+      "机构资金",
+      "比特币矿业",
+      "bitcoin news",
+      "比特币",
+      "加密货币",
+      "bitcoin",
+      "比特币ETF",
+      "财经分析",
+      "AI数据中心"
+    ],
+    "title": "德鲁肯米勒重仓1.25亿美元比特币矿业股：AI资金转向比特币？｜This Investing Legend Just Moved $125 Million F…",
+    "video_id": "bseedb2ecbT",
+    "views": 51
+  },
+  "seed_provenance": {
+    "bvid": "BV11wtr6cEXe",
+    "published_at": "2026/9/4 22:06:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11wtr6cEXe"
+  },
+  "version": 1
+}

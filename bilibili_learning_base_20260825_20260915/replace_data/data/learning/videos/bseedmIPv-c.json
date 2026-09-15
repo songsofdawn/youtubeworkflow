@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "extreme_survival",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "survival",
+      "tribal survival"
+    ],
+    "formats": [
+      "challenge",
+      "documentary",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "extreme survival"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "人类学纪录片",
+      "非洲部落",
+      "野外生存",
+      "原始狩猎",
+      "hadzabe tribe huntin",
+      "毒箭捕猎",
+      "坦桑尼亚文化",
+      "最后采集者"
+    ],
+    "video_id": "bseedmIPv-c"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=bGQAaI37dY0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThe Hadzabe Tribe Faces The Harshest African Challenge: Survival On Poisoned Meals\n\nReal Hadzabe Tribe documents the authentic culture, traditional hunting practices, and daily life of the Hadzabe people for educational and documentary purposes.\n\nWe bring viewers closer to how the Hadzabe hunt, gather food, collect wild honey, and survive in the natural landscapes of Tanzania. From tracking animals and preparing fire-cooked meals to sharing daily survival experiences, every video offers a real and authentic look at life in one of the world's last hunter-gatherer communities.\n\nOur content focuses on traditional hunting techniques, food gathering, daily survival, hunter-gatherer culture, and life in the African wilderness — presented in a respectful, authentic, and unstaged documentary format.\n\nSubscribe to explore real stories of hunting, survival, traditional skills, and the daily life of the Hadzabe people.\n\n#africatribe\n#hadzabetribehunting\n#realhadzabetribe",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 972,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T11:48:11+00:00",
+    "tags": [
+      "人类学纪录片",
+      "中英双语",
+      "非洲部落",
+      "野外生存",
+      "中文翻译",
+      "原始狩猎",
+      "hadzabe tribe huntin",
+      "毒箭捕猎",
+      "坦桑尼亚文化",
+      "最后采集者"
+    ],
+    "title": "【中英双语】坦桑尼亚哈扎族：食用毒箭猎物千年生存智慧揭秘｜The Hadzabe Tribe Faces The Harshest African Chall…",
+    "video_id": "bseedmIPv-c",
+    "views": 37
+  },
+  "seed_provenance": {
+    "bvid": "BV1zY4R6WEHL",
+    "published_at": "2026/8/27 19:48:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zY4R6WEHL"
+  },
+  "version": 1
+}

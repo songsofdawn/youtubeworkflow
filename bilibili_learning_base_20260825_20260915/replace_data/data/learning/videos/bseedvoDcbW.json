@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "fable 5.1",
+      "claude code",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "ui/ux 设计",
+      "ai 设计工具",
+      "claude code",
+      "前端开发",
+      "fable 5.1",
+      "移动端应用设计",
+      "ai web design",
+      "saas 界面克隆",
+      "opus 5 对比",
+      "fable 5.1 vs opus 5"
+    ],
+    "video_id": "bseedvoDcbW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n👉 Full courses + unlimited support:\nhttps://www.skool.com/brendans-ai-launchpad?utm_source=youtube&utm_medium=video&utm_campaign=description&utm_content=490Wb0qNaUE\n📚 Free AI Resource Hub & Skool Community:\nhttps://www.skool.com/@brendan?utm_source=youtube&utm_medium=video&utm_campaign=description&utm_content=490Wb0qNaUE\n🤝 Work with me:\nhttps://www.inflate.agency/?utm_source=youtube&utm_medium=video&utm_campaign=description&utm_content=490Wb0qNaUE\n\n⚠️ 90% OF PEOPLE WATCHING ARE NOT SUBSCRIBED, PLEASE SUBSCRIBE NOW 👇\nhttps://www.youtube.com/channel/UCzIsviqoJc-VcWqF5Pp8iLw?sub_confirmation=1\n\nSponsorship Inquiries:\n📧 brendan@inflate.agency\n\nClaude's NEW Fable 5.1 vs Opus 5 for UI design, tested side by side across mobile apps and SaaS dashboards. \n\nThis video compares both models inside the new Claude Code design canvas, cloning screens from Uber Eats, Airbnb, Revolut & more!\n\nMy Links 🔗\n👉 SUBSCRIBE: https://www.youtube.com/channel/UCzIsviqoJc-VcWqF5Pp8iLw?sub_confirmation=1\n👉 LinkedIn: https://www.linkedin.com/in/brendanjowett/\n👉 Twitter: https://twitter.com/jowettbrendan\n👉 Instagram: https://www.instagram.com/brendan.jowett\n\nTIMESTAMPS\n00:00 - What's new?\n01:02 - Uber Eats clone\n03:33 - Airbnb clone\n05:03 - Revolut clone\n06:30 - Spotify clone\n07:35 - Strava clone\n08:37 - Habit tracker app\n09:12 - Influencer marketing SaaS dashboard\n10:39 - YouTube dashboard clone\n11:28 - Slack clone\n12:40 - Todoist clone\n13:10 - Final thoughts",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 838,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T09:36:03+00:00",
+    "tags": [
+      "UI/UX 设计",
+      "AI 设计工具",
+      "Claude Code",
+      "前端开发",
+      "Fable 5.1",
+      "移动端应用设计",
+      "AI web design",
+      "SaaS 界面克隆",
+      "Opus 5 对比",
+      "Fable 5.1 vs Opus 5"
+    ],
+    "title": "Claude Fable 5.1 与 Opus 5 UI 设计实测对比｜Claude's NEW Fable 5.1 Is INSANE For UI Des…",
+    "video_id": "bseedvoDcbW",
+    "views": 560
+  },
+  "seed_provenance": {
+    "bvid": "BV13YtR67E6P",
+    "published_at": "2026/9/3 17:36:03",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13YtR67E6P"
+  },
+  "version": 1
+}

@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.66,
+      "story_strength": 0.7,
+      "visual_payoff": 0.7
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "bbq",
+      "美食vlog",
+      "美食挑战",
+      "大胃王挑战",
+      "巨型汉堡",
+      "competitive eating",
+      "密歇根美食",
+      "boss logg challenge",
+      "bbq challenge"
+    ],
+    "video_id": "bseed4PaKCW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFor the final episode of the series, we’re in Michigan’s capital city, Lansing, heading to Meat Southern BBQ to take on their massive “Boss Logg” Challenge!\n\nMeat Southern BBQ & Carnivore Cuisine has been cooking up Southern-style barbecue since 2012. The restaurant was started by pitmaster Sean Johnson, who turned his passion for smoking meats for friends and family into one of Lansing’s best-known BBQ spots! Meat is known for making its food from scratch daily and for its laid-back, quirky atmosphere filled with rock ’n’ roll and sci-fi memorabilia. Over the years, the restaurant has earned numerous local awards and even received wide attention after being featured on Food Network’s Diners, Drive-Ins and Dives.\n\nThe “Boss Logg” Challenge features a giant 18-layer sandwich loaded with smoked turkey, pulled chicken, pulled pork, beef brisket, bacon, multiple layers of fries, cheddar, American and pepper jack cheese, gravy, hot garlic sauce, jalapeños, and a fried egg. You'll also have to finish a side of your choice along with a massive order of their made-to-order mac and cheese loaded with two additional ingredients. If you have can finish all the food within 45 minutes, you'll get the $64 meal free, you’ll receive a T-shirt, a drink, and your photo on their Wall of Fame!\n\nMeat Southern BBQ & Carnivore Cuisine\n1224 Turner Rd, Lansing, MI 48906\nhttps://meatbbq.com/\nhttps://www.facebook.com/MeatBBQ\nhttps://www.instagram.com/meat.southernbbq/\n\nMy Social Media:\nhttps://www.instag…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 611,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T15:38:21+00:00",
+    "tags": [
+      "BBQ",
+      "美食vlog",
+      "美食记录",
+      "美食挑战",
+      "大胃王挑战",
+      "巨型汉堡",
+      "competitive eating",
+      "密歇根美食",
+      "boss logg challenge",
+      "bbq challenge"
+    ],
+    "title": "挑战密歇根18层巨型BBQ三明治“Boss Logg”｜Over 1,000 People Have FAILED This 18-Layer GIANT B…",
+    "video_id": "bseed4PaKCW",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1votz6yEpj",
+    "published_at": "2026/9/4 23:38:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1votz6yEpj"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "traditional food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "traditional food",
+      "countryside food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "果糕",
+      "沙棘",
+      "田园生活",
+      "乌克兰",
+      "传统美食",
+      "乡村美食",
+      "cooking",
+      "how to cook"
+    ],
+    "video_id": "bseedq8J556"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nToday I'm harvesting sea buckthorn and making homemade pastila — a delicious fruit leather made from fresh berries. Join me as I gather the harvest, prepare this simple sweet treat, and enjoy the peaceful beauty of village life. I hope this little glimpse into my day brings you a moment of calm. Enjoy watching! 🥰\n\nMore content:\nhttps://www.patreon.com/lovefromukraine\nhttps://buymeacoffee.com/cookingwithlove\nhttps://ko-fi.com/lubafromukraine\n\nFollow me:\nhttps://www.instagram.com/lubafromukraine/\n\nNEW VIDEO:\nhttps://youtu.be/ee6nNZIrWtw\nhttps://youtu.be/Vt-H5gnB408\nhttps://youtu.be/50-oBhzaLns\nhttps://youtu.be/mm8jeP6upQM?si=K7PBD8AgkQQG4DNU\nhttps://youtu.be/vf4ATYmP45Y?si=bsgWNsLNM_uIVBkX\nhttps://youtu.be/8lFiBk8CehM?si=tKQl4EQdZUOQIwA5\nhttps://youtu.be/Fn_-Rn8_IwQ?si=av6ts71ZJzG_jIlP\nhttps://youtu.be/Ga58Me1FIEQ\n\nMy VLOG Channel:\nhttps://youtu.be/lgTZd3ZJ6gY?si=yAoJ8JeetinntqGp\n\n#Cooking #Recipe #lubafromukraine #outdoorcooking #cookingchannel #seabuckthorn",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 662,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T21:12:38+00:00",
+    "tags": [
+      "美食制作",
+      "果糕",
+      "沙棘",
+      "无配音",
+      "田园生活",
+      "乌克兰",
+      "传统美食",
+      "乡村美食",
+      "cooking",
+      "how to cook"
+    ],
+    "title": "乌克兰乡村生活：采摘沙棘做天然果糕｜Harvesting Sea Buckthorn & Making Natural Sweets | Simple Lif…",
+    "video_id": "bseedq8J556",
+    "views": 305
+  },
+  "seed_provenance": {
+    "bvid": "BV1SvY66jEgP",
+    "published_at": "2026/9/14 05:12:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1SvY66jEgP"
+  },
+  "version": 1
+}

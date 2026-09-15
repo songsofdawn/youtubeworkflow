@@ -1,0 +1,106 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "CPU",
+      "PC building",
+      "PC hardware"
+    ],
+    "formats": [
+      "build",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "cpu engineering",
+      "pc build",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "核显游戏",
+      "mini pc gaming",
+      "电脑装机",
+      "迷你主机",
+      "性能测试",
+      "mini pc",
+      "ryzen",
+      "beelink",
+      "迷你主机游戏",
+      "cpu散热器改装"
+    ],
+    "video_id": "bseedoLiHV4"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis mini PC can already game surprisingly well, but I wanted to know how much more performance was hiding in it, and whether a full-size desktop CPU cooler could actually unlock more FPS.\n\nSo I took the Beelink SER9 Max, tested it stock, pushed the power limits and iGPU clocks, then strapped a massive desktop tower cooler to it and ran the same gaming benchmarks again.\n\nI tested Shadow of the Tomb Raider, Cyberpunk, Hitman 3 and Cinebench R23 to compare stock performance, tuned performance, temperatures, power draw and the final tower-cooler setup.\n\nThe gaming gains were small, but the cooling difference was ridiculous. The tower setup massively reduced temperatures and gave the CPU much more thermal headroom, especially in Cinebench.\n\nAnd because apparently that still wasn’t enough, I also tried running an external GPU over USB4.\n\nThat part went well.\n\nThanks to Beelink for sending the SER9 Max over for me to test. They did not pay for this video, had no involvement in the testing or results, and did not have any input into the video before upload.\n\nHardware:\nBeelink SER9 Max\nAMD Ryzen AI 7 H 350\nRadeon 860M integrated graphics\n32GB DDR5\n1TB SSD\n\nBenchmarks:\nShadow of the Tomb Raider\nCyberpunk\nHitman 3\nCinebench R23\n\nIf you like mini PC gaming, PC hardware mods, ridiculous cooling experiments, overclocking, iGPU tuning and generally making computers do things they were never designed to do, you’re in the right place.\n\nNot a review.\nNot sensible.\nJust seeing how far it can go.\n\nMusic\n@glitchking…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 440,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T09:13:53+00:00",
+    "tags": [
+      "核显游戏",
+      "mini pc gaming",
+      "电脑装机",
+      "迷你主机",
+      "性能测试",
+      "mini pc",
+      "Ryzen",
+      "Beelink",
+      "迷你主机游戏",
+      "CPU散热器改装"
+    ],
+    "title": "给迷你主机装上塔式散热器，FPS能提升多少？｜Can a Desktop Cooler Give a Mini PC More FPS?",
+    "video_id": "bseedoLiHV4",
+    "views": 27
+  },
+  "seed_provenance": {
+    "bvid": "BV1U6Yk6DEkw",
+    "published_at": "2026/9/14 17:13:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1U6Yk6DEkw"
+  },
+  "version": 1
+}

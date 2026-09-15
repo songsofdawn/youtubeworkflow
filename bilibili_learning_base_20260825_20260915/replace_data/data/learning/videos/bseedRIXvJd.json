@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "comparison",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "秋天",
+      "模组推荐",
+      "材质包",
+      "游戏 mod"
+    ],
+    "video_id": "bseedRIXvJd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI've got some of my favorite mods and resource packs for the perfect autumn in your minecraft world!\n\nThe best part is how easily you can integrate and remove them without affecting your world\n\nLINKS ✦\n\nautumn pack https://modrinth.com/resourcepack/autumnpack\n\nhaunted harvest https://modrinth.com/mod/haunted-harvest/\nhttps://www.curseforge.com/minecraft/mc-mods/haunted-harvest\n\nautumnity https://modrinth.com/mod/autumnity\nhttps://www.curseforge.com/minecraft/mc-mods/autumnity\n\nghosts https://modrinth.com/mod/ghost\nhttps://www.curseforge.com/minecraft/mc-mods/ghost\n\nscary beeshttps://www.curseforge.com/minecraft/mc-mods/scarybees\n\n✦ . 　⁺ 　 . ✦ . 　⁺ 　 . ✦\n \nWelcome to the nook and thanks for watching! ♡\n\n✿ join the nook, our cozy community server https://discord.gg/vFT5U4Bhw\n\n✦ . 　⁺ 　 . ✦ . 　⁺ 　 . ✦\n\n💌 business inquiries: emilesnook@proton.me \n\n\ninfo ⋆˚✿˖°\n✿ modpack: minecraft 1.20.1 forge\n✿ my shaders: BSL shaders (motherose’s BSL settings)\n✿ music: Fall (The Smell of Mushroom) Stardew Valley OST by concerned ape https://youtu.be/omVFjGHx0FQ?si=iTJAnFaGvKq2267-",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1411,
+    "likes": 16,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T16:28:16+00:00",
+    "tags": [
+      "单机游戏",
+      "我的世界",
+      "治愈",
+      "Minecraft",
+      "秋天",
+      "模组推荐",
+      "材质包",
+      "游戏 Mod"
+    ],
+    "title": "把我的世界装点成秋天：治愈系模组与材质包合集｜everything you need for a cozy autumn in minecraft 🍂 1.…",
+    "video_id": "bseedRIXvJd",
+    "views": 500
+  },
+  "seed_provenance": {
+    "bvid": "BV16vY86iEbK",
+    "published_at": "2026/9/10 00:28:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16vY86iEbK"
+  },
+  "version": 1
+}

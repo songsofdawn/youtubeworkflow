@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "balcony gardening",
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening",
+      "harvest and preserve"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "新手教程",
+      "蔬菜栽培",
+      "家庭园艺",
+      "阳台种菜",
+      "有机农业",
+      "白萝卜种植",
+      "tn gardening",
+      "收获指南"
+    ],
+    "video_id": "bseedelECaL"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=DzbbpUTtnxU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n3 Growing Methods for a Bigger White Radish Harvest from Seed\n===============================================\n#tngardening #garden #diygardenideas\n✪ Music used in videos: \nhttps://www.youtube.com/audiolibrary/...\n✪ Copyright © TN Gardening - (Do not reup)\n✉ Contact: tranthanh.mediagarden@gmail.com",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1579,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T12:29:32+00:00",
+    "tags": [
+      "新手教程",
+      "蔬菜栽培",
+      "中英双语",
+      "中文翻译",
+      "家庭园艺",
+      "阳台种菜",
+      "有机农业",
+      "白萝卜种植",
+      "TN Gardening",
+      "收获指南"
+    ],
+    "title": "【中英双语】白萝卜三种播种法：从种子到丰收的种植技巧｜3 Growing Methods for a Bigger White Radish Harvest…",
+    "video_id": "bseedelECaL",
+    "views": 67
+  },
+  "seed_provenance": {
+    "bvid": "BV1u1tw6tEs9",
+    "published_at": "2026/8/28 20:29:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1u1tw6tEs9"
+  },
+  "version": 1
+}

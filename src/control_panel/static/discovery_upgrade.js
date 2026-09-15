@@ -51,6 +51,8 @@
       try {
         const body = JSON.parse(init.body);
         body.ranking_mode = currentRankingMode();
+        body.discovery_scope = qs("#discoveryScope")?.value || "auto";
+        body.search_strength = qs("#discoverySearchStrength")?.value || "standard";
         init = { ...init, body: JSON.stringify(body) };
       } catch {}
     }
@@ -63,8 +65,8 @@
     if (hint) {
       hint.textContent =
         mode === "hot"
-          ? "热门优先：动态组合与频道探索，按热度排序。达到播放量或 VPH 阈值的视频保留热门保护。"
-          : "内容潜力优先：仍以 Qwen 内容质量/本地化潜力为主排序，但真正达到热门阈值的视频仍会进入保护通道。";
+          ? "热门：速度、播放量、新鲜度和互动率主导，Qwen 提供质量底线。"
+          : "内容潜力：Qwen 内容价值、用户匹配、新颖性和本地化价值主导；热度只作辅助信号。";
     }
     try {
       localStorage.setItem("youtubeWorkflow.discoveryRankingMode", mode);
@@ -343,6 +345,9 @@
     }
   });
   setupMode();
+  const scope = qs("#discoveryScope");
+  const syncScope = () => qs("#discoveryManualFocus")?.classList.toggle("hidden", scope?.value !== "manual");
+  scope?.addEventListener("change", syncScope); syncScope();
   setupEditor();
   setupDurationDefaults();
   setupDiscoveryQuotaEstimate();

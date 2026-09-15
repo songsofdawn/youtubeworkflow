@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPT-6",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gpt-6",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai剪辑",
+      "gpt-6",
+      "ai教程",
+      "效率工具",
+      "codex",
+      "ai工具",
+      "字幕生成",
+      "视频自动化"
+    ],
+    "video_id": "bseedbsZrQE"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMy playbook for growing a $1M AI agency: https://app.aiautomationsociety.ai/opaa-ads-optin\nMy FREE resources: https://www.skool.com/ai-automation-society/about?el=astra-6-video-edit&hcategory=youtube-videos&utm_campaign=free-group\n\nMy Tools💻\nFREE MONTH voice to text: https://get.glaido.com/nate\nCode NATEHERK for 10% off VPS (annual plan): https://www.hostinger.com/vps/claude-code-hosting\n\nHyperframes: https://github.com/nateherkai/hyperframes-student-kit\n\nLearn how to edit videos with Codex and Hyperframes using plain English. I walk through the setup, connect ElevenLabs for transcription, and build an intro with motion graphics, synced subtitles, and 3D animations. \n\nYou'll also see examples of YouTube edits, reels, and ads, plus how to refine the results and turn an editing style into a reusable skill.\n\nSponsorship Inquiries:\n📧 nate@smoothmedia.co\n\nConnect with me:\nhttps://www.linkedin.com/in/nateherkelman/\nhttps://x.com/nateherk\nhttps://www.instagram.com/nateherk/\n\nTIMESTAMPS \n0:00 What You Can Create\n1:26 Editing YouTube Videos\n3:05 Reels, Ads, and B-Roll\n9:32 Setting Up Codex and Hyperframes\n10:58 The AI Editing Workflow\n13:41 Setting Up ElevenLabs\n16:47 Directing the Intro Edit\n22:58 Turning Edits Into Skills\n23:42 Reviewing and Refining the Edit\n26:33 Hyperframes Studio and Final Versions\n29:14 Final Thoughts and Free Skills",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1798,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T23:03:02+00:00",
+    "tags": [
+      "AI剪辑",
+      "GPT-6",
+      "AI教程",
+      "软件应用",
+      "效率工具",
+      "Codex",
+      "AI工具",
+      "字幕生成",
+      "视频自动化"
+    ],
+    "title": "用AI一句话搞定视频剪辑：GPT-6 Astra全流程实战教程｜GPT-6 Astra Finally Solves AI Video Editing (fu…",
+    "video_id": "bseedbsZrQE",
+    "views": 28
+  },
+  "seed_provenance": {
+    "bvid": "BV1gFYG6qEgE",
+    "published_at": "2026/9/11 07:03:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1gFYG6qEgE"
+  },
+  "version": 1
+}

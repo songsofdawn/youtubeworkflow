@@ -1,0 +1,118 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Qwen"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "qwen",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "本地部署",
+      "大模型评测",
+      "ai 基准测试",
+      "qwen3.8",
+      "前端开发",
+      "3d 建模",
+      "代码生成",
+      "kimi k3"
+    ],
+    "video_id": "bseedb77OZ1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=SoTZK7bJzB8\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nCan local AI really compete with Kimi K3 in a full real-world benchmark?\n\nQwen3.8-27B vs Kimi K3 in a practical Qosmic AI Arena benchmark battle.\n\nBoth models receive the same task setup, the same prompt rules and the same scoring logic.\nThe result is evaluated with the Qosmic AI Score.\n\nBenchmark:\nComplete AI Model Benchmark\n\nScope:\n15 practical tasks across 5 real-world benchmark categories.\n\nTimestamps:\n0:00 Intro - Qwen 3.8 27B vs Kimi K3\n0:05 Complete Benchmark Overview\n0:14 HTML Frontend - 1. Bench - Online Course Page and Summary\n1:53 HTML Frontend - 2. Bench - Job Board Landing and Summary\n3:36 HTML Frontend - 3. Bench - AI Recruiting Platform and Summary\n5:21 3D Scene - 1. Bench - Wooden Sled on Snow and Summary\n6:45 3D Scene - 2. Bench - River Delta Stilt Village and Summary\n8:24 3D Scene - 3. Bench - Industrial Port Complex and Summary\n10:04 SVG Core - 1. Bench - Crown Icon and Summary\n10:54 SVG Core - 2. Bench - Farm Landscape and Summary\n11:54 SVG Core - 3. Bench - Education Progress Dashboard and Summary\n12:57 Code Bugfixed Benchmark - 1. Bench - Archive Path Traversal and Summary\n13:32 Code Bugfixed Benchmark - 2. Bench - Three-Way Merge Conflict and Summary\n14:20 Code Bugfixed Benchmark - 3. Bench - Signed Cursor Pagination and Summary\n15:06 Agentic Code - 1. Bench - Inventory Pricing Easy 08 and Summary\n15:34 Agentic Code - 2. Bench - Inventory Pricing Medium 08 and Summary\n16:03 Agentic Code - 3. Bench - Log Analysis High 24 and Summary\n16:33 All-in-One Scoreboard\n16:45 Endscreen - Grand Total and Overall Winner\n\nQosmic AI Arena compares AI models through visible outputs, practical benchmarks and structured scoring.\n\n© 2026 Qosmic AI Arena. All rights reserved.\n\n#AI…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1027,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:13:33+00:00",
+    "tags": [
+      "本地部署",
+      "大模型评测",
+      "AI 基准测试",
+      "Qwen3.8",
+      "无配音",
+      "计算机技术",
+      "前端开发",
+      "3D 建模",
+      "代码生成",
+      "Kimi K3"
+    ],
+    "title": "【无配音】Qwen3.8-27B 与 Kimi K3 本地 AI 实战评测对比｜Qwen3.8-27B vs Kimi K3 – Can Local AI C…",
+    "video_id": "bseedb77OZ1",
+    "views": 147
+  },
+  "seed_provenance": {
+    "bvid": "BV1ta4y6VERp",
+    "published_at": "2026/8/29 16:13:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ta4y6VERp"
+  },
+  "version": 1
+}

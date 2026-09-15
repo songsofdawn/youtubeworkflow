@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Seedance",
+      "AI video generation"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "seedance",
+      "ai video generation",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "视频实测",
+      "seedance",
+      "tiktok",
+      "ai视频",
+      "ai生成",
+      "dan dingle",
+      "dan dingles"
+    ],
+    "video_id": "bseedjlBTM7"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nfinally. 3 minute slop.\n\ntoday I'm trying Seedance 2.5, an AI video generator made by the same company as TikTok.\n\nMerch that ISN'T AI SLOP► https://dandingle.store/\nDan Dingle Subreddit ► https://www.reddit.com/r/DanDingle/\nThe AI free zone ►  https://www.youtube.com/@dandingled\nbecome a member maybe ► https://www.youtube.com/channel/UCY-PrcA-mjq3OhgsAH9C52A/join\nfollow me on twitter where I don't tweet ► https://x.com/DanDingleYT\n\nThank you to all of my 310,773 subscribers! 😎\n\nedited by: me",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 848,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T11:45:44+00:00",
+    "tags": [
+      "视频实测",
+      "Seedance",
+      "软件应用",
+      "TikTok",
+      "AI视频",
+      "AI生成",
+      "Dan Dingle",
+      "dan dingles"
+    ],
+    "title": "实测TikTok新AI视频生成器Seedance，能用最离谱提示词玩坏它吗｜ABUSING TikTok’s New AI Video Generator",
+    "video_id": "bseedjlBTM7",
+    "views": 258
+  },
+  "seed_provenance": {
+    "bvid": "BV11Fbs6nEYc",
+    "published_at": "2026/9/6 19:45:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11Fbs6nEYc"
+  },
+  "version": 1
+}

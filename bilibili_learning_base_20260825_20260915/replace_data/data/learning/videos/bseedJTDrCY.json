@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "三明治",
+      "街头小吃",
+      "伦敦美食",
+      "london",
+      "旅行vlog",
+      "英国vlog",
+      "things to do in lond"
+    ],
+    "video_id": "bseedJTDrCY"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYou asked for it.. I am on a mission to find London's BEST sandwich, this this was quite the journey..\n\nGet an exclusive 15% discount on Saily eSIM data plans! Download Saily app and use code HANNAHRICKETTS at checkout https://saily.com/hannahricketts\n\nDiscount codes you may like:\n- Nord VPN, use code HANNAHRICKETTS : https://nordvpn.com/hannahricketts\n\n- Saily eSim, 15% off first order code HANNHRICKETTS: https://saily.com/hannahricketts\n\n- AG1, get a discount & extra freebies: http://drinkag1.com/hannahricketts\n\n- Ekster travel packs & card holders, use code HANNAH20 : https://partner.ekster.com/hr\n\n- SURI toothbrushes, get 15% off: https://stry.cl/RICKETTS\n\n- Better Help, 10% off code : https://www.betterhelp.com/hannahricketts\n\n📷 INSTAGRAM \nhttps://www.instagram.com/hannahlricketts/\n\n🎥 DJI Osmo pocket 3 with the built in DJI microphone: https://store.dji.com/uk/product/osmo-pocket-3-vlog-combo?vid=163851\n\nBusiness enquires only: hannahlricketts@outlook.com\n\n#travelvlog #foodreview #london",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1269,
+    "likes": 5,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T13:16:37+00:00",
+    "tags": [
+      "三明治",
+      "街头小吃",
+      "美食测评",
+      "美食探店",
+      "伦敦美食",
+      "london",
+      "旅行vlog",
+      "英国vlog",
+      "things to do in lond"
+    ],
+    "title": "我在伦敦吃了十家三明治，只为找出最好吃的那家｜I Tried To Find THE BEST Sandwich In The UK!",
+    "video_id": "bseedJTDrCY",
+    "views": 306
+  },
+  "seed_provenance": {
+    "bvid": "BV1hmYt6SE5H",
+    "published_at": "2026/9/9 21:16:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hmYt6SE5H"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "化学实验",
+      "硝酸",
+      "动漫科普",
+      "实地测试",
+      "科学验证",
+      "石纪元",
+      "复活液"
+    ],
+    "video_id": "bseedeYWZ5C"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan Senku’s miracle chemical actually break solid rock, or is it just anime logic? \n‎\n‎In Part 2 of our Dr. Stone science series, we take on one of the most iconic recipes from the anime: the Revival Fluid (Nital solution). I’ll be synthesizing three different concentrations (5%, 15%, and full-strength 30%) step-by-step using concentrated nitric acid and pure ethanol, navigating the violent exothermic risks along the way.\n‎\n‎Once the fluid is ready, we put it to the ultimate test against real rocks and calcite minerals to see if real-world chemistry matches the de-petrification science from the show!\n‎\n‎⚠️ DISCLAIMER: Nitric acid and ethanol mixtures (Nital) are highly corrosive, toxic, and volatile. This experiment was performed with proper chemical safety protocols and protective gear. Do not attempt to replicate this at home.\n‎\n‎🔔 Subscribe for more real-life anime science experiments!\n‎\n‎What Dr. Stone invention or chemical reaction should we test next? Let me know in the comments below!\n‎",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 505,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T14:09:18+00:00",
+    "tags": [
+      "化学实验",
+      "硝酸",
+      "动漫科普",
+      "科学科普",
+      "实地测试",
+      "科学验证",
+      "石纪元",
+      "复活液"
+    ],
+    "title": "现实中制作《石纪元》复活液，真能溶解岩石吗？｜I Tested Dr. Stone’s Revival Fluid in REAL LIFE! Does It…",
+    "video_id": "bseedeYWZ5C",
+    "views": 34
+  },
+  "seed_provenance": {
+    "bvid": "BV12VbW6XE9V",
+    "published_at": "2026/9/6 22:09:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV12VbW6XE9V"
+  },
+  "version": 1
+}

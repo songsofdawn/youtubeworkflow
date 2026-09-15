@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "LLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai",
+      "大模型",
+      "token",
+      "llm"
+    ],
+    "video_id": "bseed0-6dYj"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=MggRcCnFYRo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan FreeToken make huge local AI models fast when they do not fit inside your GPU?\n\nFreeToken is a new open-source local inference engine designed for one difficult problem: running large Mixture-of-Experts models across GPU VRAM and system RAM without wasting the GPU on constant weight transfers.\n\nIn the FreeToken paper, an RTX 4060 laptop with only 8GB of VRAM ran Qwen 3.6 35B-A3B at 39.3 tokens per second. On an RTX 5090, DeepSeek V4 Flash reached more than 20 tokens per second — despite being far too large to fit entirely in GPU memory.\n\nThis video compares FreeToken vs llama.cpp and explains what those results actually mean for local AI, coding agents, large-context workflows and MoE inference.\n\nFreeToken is not a new model. It is the runtime that decides which model experts stay in VRAM, which remain in system RAM, when to transfer them across PCIe, and when the CPU may be faster than waiting for the GPU.\n\nChapters:\n00:00 FreeToken vs llama.cpp\n00:27 The Local AI Speed Promise\n00:53 What Is FreeToken?\n01:32 Open Source, APIs and Coding Agents\n02:10 Why MoE Models Are Hard to Run Locally\n02:32 Why the GPU Has to Wait\n03:16 FreeToken’s Smart Expert Cache\n03:48 Hiding PCIe Transfer Time\n04:01 Hardware-Aware CPU and GPU Scheduling\n04:45 Why Coding Agents Change the Test\n05:31 FreeToken Benchmark Results\n06:28 35B Model on an 8GB Laptop\n07:21 RTX 5080 Community Test\n07:57 When FreeToken Does Not Help\n08:26 Can You Run FreeToken Today?\n09:12 The System RAM Reality\n09:54 Where llama.cpp Still Wins…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 709,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-25T11:05:33+00:00",
+    "tags": [
+      "中文翻译",
+      "中英双语",
+      "ai",
+      "大模型",
+      "token",
+      "llm"
+    ],
+    "title": "【中英双语】8GB 笔记本也能跑 35B 模型？这个新引擎做到了 40 TPS",
+    "video_id": "bseed0-6dYj",
+    "views": 29
+  },
+  "seed_provenance": {
+    "bvid": "BV1xDh36dEGK",
+    "published_at": "2026/8/25 19:05:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xDh36dEGK"
+  },
+  "version": 1
+}

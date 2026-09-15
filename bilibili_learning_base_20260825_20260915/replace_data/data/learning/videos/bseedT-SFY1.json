@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "challenge",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "油封蒜",
+      "蒜香料理",
+      "美食挑战",
+      "大蒜",
+      "趣味美食",
+      "厨师日常"
+    ],
+    "video_id": "bseedT-SFY1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 8,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nJoin EL COOKS 👇🏼\nhttps://substack.com/@josexiloj\nhttps://youtube.com/@Jose.elCook?si=nXhfNBaC2X8YOCoK\nhttps://tiktok.com/@jose.elcook\nhttps://instagram.com/Jose.elcook",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 632,
+    "likes": 20,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T02:52:57+00:00",
+    "tags": [
+      "美食制作",
+      "油封蒜",
+      "蒜香料理",
+      "美食挑战",
+      "大蒜",
+      "趣味美食",
+      "厨师日常"
+    ],
+    "title": "买了5斤大蒜全部吃完是什么体验｜I Bought a Giant Bag of Garlic and Ate It All!",
+    "video_id": "bseedT-SFY1",
+    "views": 2988
+  },
+  "seed_provenance": {
+    "bvid": "BV1B3YS69Ect",
+    "published_at": "2026/9/12 10:52:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1B3YS69Ect"
+  },
+  "version": 1
+}

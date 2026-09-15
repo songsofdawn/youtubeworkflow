@@ -1,0 +1,106 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Astra",
+      "Claude",
+      "Fable 5.1",
+      "LLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "astra",
+      "claude",
+      "fable 5.1",
+      "llm",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai",
+      "chatgpt",
+      "大语言模型",
+      "提示词测试",
+      "ai对比测试",
+      "claude"
+    ],
+    "video_id": "bseedXaMyCn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHi everyone! In this video, I put Claude Fable 5.1 and ChatGPT Astra head to head on 11 of the same prompts!\n\nEvery test runs twice - Fable's attempt first, then Astra's, back to back - so you can see both takes on the same idea before we move on to the next one.\n\nThanks for watching! I love you :)\n\nChapters :\n0:00 Intro\n0:22 Claude Fable 5.1 Makes a Falling Sand Game\n2:44 ChatGPT Astra Makes a Falling Sand Game\n3:53 Claude Fable 5.1 Makes a Fictional Operating System\n6:52 ChatGPT Astra Makes a Fictional Operating System\n9:12 Claude Fable 5.1 Makes a Creature Evolution Lab\n11:31 ChatGPT Astra Makes a Creature Evolution Lab\n12:24 Claude Fable 5.1 Makes a 4D Game\n14:10 ChatGPT Astra Makes a 4D Game\n15:04 Claude Fable 5.1 Makes a Creature Merging Game\n16:23 ChatGPT Astra Makes a Creature Merging Game\n16:59 Claude Fable 5.1 Makes a Rube Goldberg Machine\n19:11 ChatGPT Astra Makes a Rube Goldberg Machine\n20:16 Claude Fable 5.1 Makes a City Through History\n22:21 ChatGPT Astra Makes a City Through History\n23:42 Claude Fable 5.1 Makes an Exploded View of My PC\n25:05 ChatGPT Astra Makes an Exploded View of My PC\n26:01 Claude Fable 5.1 Makes a God Game\n30:29 ChatGPT Astra Makes a God Game\n32:47 Claude Fable 5.1 Makes an Incremental Game\n33:51 ChatGPT Astra Makes an Incremental Game\n35:12 Claude Fable 5.1 Makes a Low Poly Island in Blender\n36:07 ChatGPT Astra Makes a Low Poly Island in Blender\n36:35 Ending",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2207,
+    "likes": 8,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T16:22:43+00:00",
+    "tags": [
+      "AI",
+      "人工智能",
+      "ChatGPT",
+      "大语言模型",
+      "提示词测试",
+      "AI对比测试",
+      "计算机技术",
+      "Claude"
+    ],
+    "title": "Claude Fable 5.1 对决 ChatGPT Astra：11项AI提｜Fable 5.1 Vs ChatGPT Astra Is insane.",
+    "video_id": "bseedXaMyCn",
+    "views": 823
+  },
+  "seed_provenance": {
+    "bvid": "BV17Bbx65E5f",
+    "published_at": "2026/9/7 00:22:43",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV17Bbx65E5f"
+  },
+  "version": 1
+}

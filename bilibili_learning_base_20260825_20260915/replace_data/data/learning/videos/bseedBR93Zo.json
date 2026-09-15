@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "健康饮食",
+      "慢生活",
+      "cooking",
+      "斯里兰卡美食",
+      "乡村烹饪",
+      "传统食谱",
+      "木灶烹饪",
+      "food cooking",
+      "多萨饼",
+      "湖鱼咖喱"
+    ],
+    "video_id": "bseedBR93Zo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=vE5B5CBvFko\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nhello friends ❣❣❣❣❣❣  \nI am Anoma Siriwardena .I'm from Sri Lanka. I welcome you to my Village Kitchen channel\n\n\nhello friends \nvillage kitchen special recipe village food channel sri lanka , \n\nthis video includes-❣❣❣❣❣❣  \nIn this video I will introduce you to 3 best recipes for a healthy diet.\n1 lake fish curry\n2 Dosa\n3 sri lankan rasam \n\n乡村烹饪 cuisine de village गाँव का खाना बनाना cucina del villaggio طبخ القرية Dorfkochen 村の料理 dorp koken 마을 요리 pagluluto ng nayon деревенская кухня cozinha da vila ഗ്രാമീണ പാചകം cocina del pueblo গ্রাম রান্না vesnické vaření landsby madlavning ចម្អិនអាហារតាមភូមិ kylän ruoanlaitto गाउँ खाना पकाउने masakan desa கிராம சமையல் masakan kampung หมู่บ้านทำอาหาร gotowanie na wsi köy pişirme làng nấu ăn ရွာချက်ပြုတ် μαγειρική στο χωριό villa coctione\n\n\nmy social media plat forms-❣❣❣❣❣❣ \nfacebook page\nVillage Kitchen  facebook page 👉👉  / villagekitchensl  \nAnoma Siriwardana facebook 👉👉 https://www.facebook.com/\n\nmy other videos-❣❣❣❣❣❣\n* June plum recipes (Ambarella) Some more amazing recipes with delicious chutney..https://www.youtube.com/watch?v=YVCslrwfzMg\n*  fish biryani / Here's an easy way to make fish biryani.Village style, vil…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 871,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T14:23:33+00:00",
+    "tags": [
+      "健康饮食",
+      "慢生活",
+      "cooking",
+      "斯里兰卡美食",
+      "乡村烹饪",
+      "传统食谱",
+      "木灶烹饪",
+      "food cooking",
+      "多萨饼",
+      "湖鱼咖喱"
+    ],
+    "title": "【中英双语】斯里兰卡乡村厨房：湖鱼咖喱配多萨饼与拉沙姆汤｜lake fish curry / Dosa with lake fish curry /This…",
+    "video_id": "bseedBR93Zo",
+    "views": 55
+  },
+  "seed_provenance": {
+    "bvid": "BV16Rtn6PER5",
+    "published_at": "2026/8/30 22:23:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16Rtn6PER5"
+  },
+  "version": 1
+}

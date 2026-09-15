@@ -1,0 +1,119 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1",
+      "Ollama",
+      "local LLM"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "fable 5.1",
+      "claude code",
+      "local llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "开源工具",
+      "本地大模型",
+      "ollama",
+      "lm studio",
+      "ai 编程代理",
+      "claude fable 5.1",
+      "smol coder"
+    ],
+    "video_id": "bseedZyXg4q"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=WjOcStPCbgk\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOllama and LM Studio models finally get their own coding agent: Smol Coder, built by Claude Fable 5.1.\n\n🚀 Agentic Labs — exclusive AI coding courses, live Q&As, workshops & the full QR Studio SaaS build (auth, database, file storage, production): https://skool.com/agentic-labs\n🎁 Free RAMP course + all the resources from my videos: https://skool.com/leonvanzyl\n\nClaude Code burns 37,000 tokens before you type a prompt. On a local model you can only run at 64K, that's more than half your context gone. So I gave Claude Fable 5.1 a brain dump and asked it to build Smol Coder, a coding harness made for Ollama and LM Studio models. It ships with a tiny system prompt, a small tool set, a to-do list that survives compaction, and auto-detection of every local model you have installed.\n\nI walk through every session, from the requirements brain dump to publishing Smol Coder on npm, then run it on my own local models. Along the way Fable 5.1 pushed back on my tool design, and it was right.\n\nResources Mentioned\nSmol Coder: smolcoder.dev\n\n▶️ Watch next: Claude Code + Ollama = Free Forever https://youtu.be/3x2q6-5XbQ8\n\n⏱️ Chapters\n0:00 Fable 5.1 built an agentic harness for Ollama and LM Studio\n1:31 Claude Code burns 37,000 tokens before your first prompt\n3:17 Session 1: the requirements, and where Fable 5.1 pushed back\n4:37 The to-do list that survives compaction\n5:26 Adding the web version\n6:18 Agentic Labs (sponsor)\n6:54 Audit session, bug fixes and the GitHub repo\n8:08 Publishing to npm and insta…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 676,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T09:27:53+00:00",
+    "tags": [
+      "开源工具",
+      "本地大模型",
+      "Ollama",
+      "LM Studio",
+      "计算机技术",
+      "AI 编程代理",
+      "Claude Fable 5.1",
+      "Smol Coder"
+    ],
+    "title": "Fable 5.1 为本地模型打造 Smol Coder 编程助手｜Fable 5.1 Just Built a Better Claude Code for…",
+    "video_id": "bseedZyXg4q",
+    "views": 21
+  },
+  "seed_provenance": {
+    "bvid": "BV1Y8tR6EEbr",
+    "published_at": "2026/9/3 17:27:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Y8tR6EEbr"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "fast food"
+    ],
+    "formats": [
+      "comparison",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "joshuaweissman",
+      "海外博主看中国",
+      "肯德基",
+      "重庆美食",
+      "中国快餐",
+      "快餐连锁",
+      "joshua weissman",
+      "sat bawl pro"
+    ],
+    "video_id": "bseedW179wO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhat is fast food like in China, and is it better than our fast food?\n\nGet My Cookbook: https://bit.ly/TextureOverTaste\n\nAdditional Cookbook Options (other stores, international, etc.): https://bit.ly/WeissmanCookbook\n\nFOLLOW ME:\nInstagram: https://www.instagram.com/joshuaweissman\nTik Tok: https://www.tiktok.com/@flakeysalt\nTwitter: https://twitter.com/therealweissman\nFacebook: https://www.facebook.com/thejoshuaweissman",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1459,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T15:29:12+00:00",
+    "tags": [
+      "JoshuaWeissman",
+      "海外博主看中国",
+      "肯德基",
+      "重庆美食",
+      "美食测评",
+      "中国快餐",
+      "快餐连锁",
+      "joshua weissman",
+      "sat bawl pro"
+    ],
+    "title": "美国大叔挑战中国全部快餐，肯德基居然最贵｜I Tried Every Fast Food in China",
+    "video_id": "bseedW179wO",
+    "views": 76
+  },
+  "seed_provenance": {
+    "bvid": "BV19wYt6nE6U",
+    "published_at": "2026/9/9 23:29:12",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV19wYt6nE6U"
+  },
+  "version": 1
+}

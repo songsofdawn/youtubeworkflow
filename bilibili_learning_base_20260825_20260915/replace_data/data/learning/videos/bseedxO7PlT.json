@@ -1,0 +1,126 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Qwen",
+      "Ollama",
+      "AI coding",
+      "local AI"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "qwen",
+      "ai coding",
+      "claude code",
+      "local ai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "ai",
+      "开源ai",
+      "qwen",
+      "ollama",
+      "本地ai",
+      "claude code",
+      "macbook",
+      "ai编程",
+      "24gb macbook ai"
+    ],
+    "video_id": "bseedxO7PlT"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=2sCjZT_EhCY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA completely free local model — Qwen3.8-27B — just passed 14 of the 15 real coding tasks my $200/month Claude Code plan passed, on an ordinary 24GB MacBook. No cloud, no API key, no internet. Every AI channel says it's 'basically Opus on your laptop' — I made it do a paid plan's actual job, with pass/fail verification scripts locked BEFORE either model ran. The story is half right, and this video shows you exactly which half: what a free model takes over tonight, what it absolutely can't, the one task that broke my Mac (three runs in a row), and the real measured number behind the viral '3× faster' setting.\n\nWant the full setup with both fixes (the 32K rebuild + the 65-line shim verbatim), all 15 tasks with results, and the send-local / keep-paid split sheet? Comment the word SHIFT and my bot sends you the free Night-Shift Kit.\n\n▶️ Tip: watch at 1.25× or 1.5× speed for the best experience.\n\nCHAPTERS\n0:00 14/15 — the scoreboard (hook)\n0:36 What you'll get\n0:51 The test nobody ran (my comments demanded it)\n1:56 The 24GB math: 56 vs 17 vs 13.1GB\n2:52 The setup + the 2 gotchas no tutorial mentions\n3:53 The battery: rules locked before the game\n4:40 Round 1: tasks 1–2 (re-run on camera)\n5:06 The git bisect that stopped me + letter-perfect citations\n5:50 Quick ask\n6:00 Round 2 rapid fire + the merge conflict\n6:42 Strict TS, a 1000× perf fix, security, 3/3 review bugs\n7:21 The one that broke my Mac (the real fail receipts)\n7:51 The 24GB law: it doesn't degrade — it cliffs\n8:34 The full r…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 736,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T07:30:28+00:00",
+    "tags": [
+      "AI",
+      "开源AI",
+      "Qwen",
+      "Ollama",
+      "本地AI",
+      "Claude Code",
+      "计算机技术",
+      "MacBook",
+      "AI编程",
+      "24gb macbook ai"
+    ],
+    "title": "【中英双语】免费本地模型实测：24GB MacBook上14/15任务通过｜My $200 Claude Code vs a FREE Local Model…",
+    "video_id": "bseedxO7PlT",
+    "views": 21
+  },
+  "seed_provenance": {
+    "bvid": "BV1zEtu6FEPr",
+    "published_at": "2026/9/1 15:30:28",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zEtu6FEPr"
+  },
+  "version": 1
+}

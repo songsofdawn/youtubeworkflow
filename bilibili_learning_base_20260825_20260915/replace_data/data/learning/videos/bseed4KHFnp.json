@@ -1,0 +1,106 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "GPT-6",
+      "Astra",
+      "LLM",
+      "AI safety"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "gpt-6",
+      "astra",
+      "llm",
+      "ai safety",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai安全",
+      "ai评测",
+      "大语言模型",
+      "gpt-6",
+      "基准测试",
+      "openai"
+    ],
+    "video_id": "bseed4KHFnp"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhere to start? A new era of cost-efficient AI on a day benchmark-makers got humbled, traders got excited, and AI safety researchers got unnerved. From monitorability losing hold of GPT-6 Astra’s chains of thought to breakthrough discoveries, Fable-mogging and much more…\n\nExclusive Vids ($9!): https://www.patreon.com/AIExplained\n\nChapters:\n00:00 - Introduction\n00:53 - vs Fable\n05:27 - most impressive results\n13:06 - bonus comparisons (plus trading)\n18:40 - concerning trend\n21:24 - Cot Control\n\nGPT-6: https://openai.com/index/gpt-6-astra/\nPaper: https://deploymentsafety.openai.com/gpt-6-astra/gpt-6-astra.pdf\n\nLooped Transformers and AGI Milestone: https://www.patreon.com/AIExplained/posts/breakthrough-and-168513408\n\nMessy Rollout: https://x.com/sama/status/2095678759651438887\nMuch More Capable Models Coming: https://x.com/MTSlive/status/2095573400899170592\n‘AGI Era’ https://www.theverge.com/ai-artificial-intelligence/989601/openai-gpt-6-astra-release\n\nARC-AGI 3: https://x.com/fchollet/status/2095598451115614371\nhttps://x.com/fchollet/status/2095607046129463577\nhttps://arcprize.org/blog/astra\n\nFrontierMath: https://epoch.ai/frontiermath/tiers-1-4/about\nDiscovery: https://x.com/jdlichtman/status/2095660916310483087\n\nFable 5.1: https://www.anthropic.com/claude-fable-and-mythos-5-1\nhttps://science-task-lens.aiex.chatgpt.site/securebio\nAgents Last Exam: https://agents-last-exam.org/\nTerminal Bench Science: https://github.com/harbor-framework/terminal-bench-science#task-coverage\nSRE Bench: https://x…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1745,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T17:04:18+00:00",
+    "tags": [
+      "人工智能",
+      "AI安全",
+      "AI评测",
+      "大语言模型",
+      "GPT-6",
+      "基准测试",
+      "科技资讯",
+      "计算机技术",
+      "OpenAI"
+    ],
+    "title": "GPT-6 Astra深度解析：惊人能力与安全隐忧｜GPT 6 Astra, so good even OpenAI are worried",
+    "video_id": "bseed4KHFnp",
+    "views": 95
+  },
+  "seed_provenance": {
+    "bvid": "BV1zDtz6UEyG",
+    "published_at": "2026/9/5 01:04:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zDtz6UEyG"
+  },
+  "version": 1
+}

@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "outdoor_travel",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "travel"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "travel exploration"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "doordash",
+      "街头创业",
+      "挑战赚钱",
+      "food delivery",
+      "高压清洗",
+      "24小时挑战",
+      "生活挑战",
+      "打工日记",
+      "美国最穷小镇"
+    ],
+    "video_id": "bseedKYZ8_2"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\ni went to one of the poorest towns in america and tried to see how much money i could make in 24 hours.\n\n\n\nMASSIVE shoutout to @SBPressureWashing, everyone please go subscribe to this man!\n\n\n\nMusic:\n🎵 Copyrighted music licensed from Lickd. https://lickd.co\n\nHome Sweet Home by Mötley Crüe, https://t.lickd.co/l/lmGMYLx0GK0\n\n\nThank you for watching!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1063,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T00:29:02+00:00",
+    "tags": [
+      "日常",
+      "doordash",
+      "街头创业",
+      "挑战赚钱",
+      "food delivery",
+      "高压清洗",
+      "24小时挑战",
+      "生活挑战",
+      "打工日记",
+      "美国最穷小镇"
+    ],
+    "title": "身无分文闯美国最穷小镇，24小时能赚多少钱？｜How Much Can I Make in America's Poorest Town?",
+    "video_id": "bseedKYZ8_2",
+    "views": 123
+  },
+  "seed_provenance": {
+    "bvid": "BV1TXbg6UETK",
+    "published_at": "2026/9/8 08:29:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1TXbg6UETK"
+  },
+  "version": 1
+}

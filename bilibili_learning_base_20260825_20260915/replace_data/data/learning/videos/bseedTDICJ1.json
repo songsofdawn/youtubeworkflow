@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Astra"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Entertainment & Pop Culture",
+        "name": "entertainment_pop_culture",
+        "suggested_entities": [
+          "comics",
+          "comedy",
+          "fandom",
+          "creator stories"
+        ],
+        "suggested_formats": [
+          "documentary",
+          "comparison",
+          "challenge"
+        ]
+      }
+    ],
+    "topics": [
+      "二次元",
+      "ai",
+      "ai整活",
+      "chatgpt",
+      "gpt-sovits",
+      "虚拟主播",
+      "artificial intellige",
+      "ai女友",
+      "ai老婆"
+    ],
+    "video_id": "bseedTDICJ1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFish Audio!\nhttps://fish.audio/?fpr=rayen10\n\nPlaylist! Wanna follow along from the very start?\nhttps://www.youtube.com/watch?v=t9Lpd4Jm2FE&list=PLP12rhP6IDovry9o35uMJkYNCbXBeI2mj\n\nWe one step closer. \n\nWant to join the discord? \nhttps://discord.com/invite/3vpgUZncsH\n\nGithub for the project:\nhttps://github.com/rayenfeng/riko_project\n\nFor tutorials, check out the Patreon!\nhttps://www.patreon.com/c/RayenAI\n\nDonations! Thanks~\nhttps://streamlabs.com/sl_id_93ff3c83-48ee-3cf3-bc2b-1ab9ca69d4e2/tip\n\nMusic Credits 🎵\nThe following tracks by Kevin MacLeod are used under a Creative Commons Attribution license (https://creativecommons.org/licenses/by/4.0/):\nThank you, Kevin MacLeod, for your incredible royalty-free music!\n\"Fluffing a Duck\"\n\"Monkey Spinning Monkeys\"\n\"Elevator Music\"\n\"Investigations\"\n\"Sneaky Snitch\"\n\"Sneaky Adventure\"\n\"Marty's Got a Plan\"\n\"Hidden Agenda\"\nAll tracks are available at Incompetech.\n\n\nCode Credits. \nAlso big shoutout to the people who's code I use, you're the real ones.\n\nFaster Whisper: https://github.com/SYSTRAN/faster-whisper\nGPT-SoVITS: https://github.com/RVC-Boss/GPT-SoVITS\nThree-VRM: https://github.com/pixiv/three-vrm\n\nif I use your code and don't list it here, I'm sorry I forgor.\n\n#FishAudio #FishAudioCreator",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1383,
+    "likes": 9,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T21:05:33+00:00",
+    "tags": [
+      "二次元",
+      "人工智能",
+      "AI",
+      "AI整活",
+      "ChatGPT",
+      "GPT-SoVITS",
+      "虚拟主播",
+      "Artificial Intellige",
+      "AI女友",
+      "AI老婆"
+    ],
+    "title": "用GPT6-Astra打造我的AI二次元老婆｜I Turned ChatGPT Astra Into An AI Waifu",
+    "video_id": "bseedTDICJ1",
+    "views": 658
+  },
+  "seed_provenance": {
+    "bvid": "BV1vRYm62EqM",
+    "published_at": "2026/9/12 05:05:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vRYm62EqM"
+  },
+  "version": 1
+}

@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "engineering"
+    ],
+    "formats": [
+      "comparison",
+      "documentary",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "howitsmade",
+      "如何制造",
+      "材料力学",
+      "工程学",
+      "桥梁建筑",
+      "结构工程",
+      "工字钢",
+      "工业·工程·机械",
+      "historyofeverydayite"
+    ],
+    "video_id": "bseedwe3JEd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhy can an I-beam carry enormous loads while using surprisingly little steel?\n\nIn this video, we look inside an I-beam to understand what happens when a beam bends, why the flanges are positioned so far apart, what the web actually does, and how engineers use geometry to create strong, efficient structures. We’ll also look at the limits of I-beams and why their dimensions have to be carefully designed.\n\nTimestamps:\n0:03 - Intro\n1:01 - What Happens When a Beam Bends\n1:50 - The Importance of Distance\n2:43 - What the Web Actually Does\n3:42 - Why Less Metal Can Work Better\n4:38 - The Limits of the Shape\n5:37 - Why Engineers Use the Shape\n6:34 - Conclusion\n\n#ibeam  #engineering  #structuralengineering  #engineeringexplained  #materialsscience  #construction  #howthingswork  #architecture",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 481,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T11:12:26+00:00",
+    "tags": [
+      "科普",
+      "HowItsMade",
+      "如何制造",
+      "材料力学",
+      "工程学",
+      "桥梁建筑",
+      "结构工程",
+      "工字钢",
+      "工业·工程·机械",
+      "HistoryOfEverydayIte"
+    ],
+    "title": "工字钢为何用钢少却强度惊人？｜Why Are I-Beams So Strong With So Little Metal?",
+    "video_id": "bseedwe3JEd",
+    "views": 5
+  },
+  "seed_provenance": {
+    "bvid": "BV1rLbK6tEbg",
+    "published_at": "2026/9/7 19:12:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rLbK6tEbg"
+  },
+  "version": 1
+}

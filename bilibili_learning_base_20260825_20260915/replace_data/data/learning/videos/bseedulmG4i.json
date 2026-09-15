@@ -1,0 +1,89 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "every x comparison",
+      "minecraft",
+      "minecraft mods",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "幸运方块",
+      "我的世界",
+      "minecraft",
+      "模组挑战",
+      "随机宝箱",
+      "生存挑战",
+      "搞笑时刻",
+      "minecraft but every",
+      "op长矛"
+    ],
+    "video_id": "bseedulmG4i"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMinecraft, But Every Chest is OP.. (SPEAR Edition) Every chest is stuffed with insanely OP loot, but this time it's all about the SPEAR in this modded Minecraft challenge!\n\n⛏️ More Minecraft But Challenges:\nMinecraft, But Every Chest is OP.. → https://www.youtube.com/watch?v=jHia2xXan7w\nMinecraft, But Every Chest is OP.. (MACE Edition) → https://www.youtube.com/watch?v=zrXsowOMb2w\nMinecraft, But Every Ore is SUPER OP.. → https://www.youtube.com/watch?v=1Nbk9yLeKLE\n\n👇 My Minecraft Challenge Friends:\n@Graser \n\nMod Download:\n- Honestly I should just upload them all at this point, where should I put them?\n\nConnect With Me!\n🐥 Twitter: https://twitter.com/Kiingtong\n📸 Instagram: https://www.instagram.com/Kiingtong/\n\nIn this modded Minecraft challenge, every chest we open is packed with overpowered loot, and this run is all about the OP spear. We race to grab the best gear and master the chaos. Can we survive and win this ultimate Minecraft But challenge against each other? 😁\n\n#minecraftbut #minecraftchallenge #minecraft",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1537,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T20:29:40+00:00",
+    "tags": [
+      "单机游戏",
+      "幸运方块",
+      "我的世界",
+      "Minecraft",
+      "模组挑战",
+      "随机宝箱",
+      "生存挑战",
+      "搞笑时刻",
+      "minecraft but every",
+      "OP长矛"
+    ],
+    "title": "我的世界：每个箱子都是神装？超OP长矛挑战！｜Minecraft, But Every Chest is OP.. (SPEAR Edition)",
+    "video_id": "bseedulmG4i",
+    "views": 49
+  },
+  "seed_provenance": {
+    "bvid": "BV13jYa6tEnd",
+    "published_at": "2026/9/10 04:29:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13jYa6tEnd"
+  },
+  "version": 1
+}

@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Seedance",
+      "AI video generation"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "seedance",
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "文生视频",
+      "ai filmmaking",
+      "图生视频",
+      "ai 视频生成",
+      "kling 3.0",
+      "seedance 2",
+      "工具测评",
+      "kling 3"
+    ],
+    "video_id": "bseedDlRGfx"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=fK_r0QCEk9s\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nKling 3 vs Seedance 2 is one of the biggest AI video generator comparisons of 2026. Which model could be the best AI video generator 2026 for cinematic videos, AI filmmaking, text-to-video, and image-to-video?\n\nIn this Kling 3 vs Seedance 2 full comparison, both AI video models are tested side by side using different creative scenarios to see how they handle video quality, realistic motion, prompt accuracy, character consistency, camera movement, native audio, cinematic storytelling, and creative control.\n\nKling 3 brings a multimodal AI video workflow built around text, images, audio, and video. This comparison explores how Kling 3 handles complex scenes, storytelling, multi-shot sequences, subject consistency, motion, dialogue, and cinematic visuals.\n\nSeedance 2 also takes a multimodal approach to AI video generation, allowing creators to work with text, image, video, and audio references. The tests examine how Seedance 2 performs with motion, visual consistency, reference-driven generation, prompt understanding, complex interactions, and cinematic scenes.\n\nThe goal is simple: use similar creative challenges and compare the generated results.\n\nThis AI video generator comparison covers:\n\n• Kling 3 vs Seedance 2 video quality\n• Text-to-video AI\n• Image-to-video AI\n• Character consistency\n• Motion and physics\n• Prompt accuracy\n• Cinematic camera movement\n• Native audio and dialogue\n• Multi-shot storytelling\n• Visual realism\n• Creative control\n• Overall AI filmmaking workflow\n\nAI…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 342,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T09:30:24+00:00",
+    "tags": [
+      "文生视频",
+      "AI filmmaking",
+      "图生视频",
+      "AI 视频生成",
+      "Kling 3.0",
+      "Seedance 2",
+      "计算机技术",
+      "工具测评",
+      "Kling 3"
+    ],
+    "title": "Kling 3 与 Seedance 2：2026 最强 AI 视频生成器实测对｜Kling 3 vs Seedance 2: Best AI Video G…",
+    "video_id": "bseedDlRGfx",
+    "views": 57
+  },
+  "seed_provenance": {
+    "bvid": "BV1RttR6SEWy",
+    "published_at": "2026/9/3 17:30:24",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1RttR6SEWy"
+  },
+  "version": 1
+}

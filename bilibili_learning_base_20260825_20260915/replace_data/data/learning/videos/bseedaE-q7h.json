@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "glm",
+      "open source ai",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "大模型评测",
+      "ai 工具测评",
+      "开源模型对比",
+      "本地部署指南",
+      "代码生成能力",
+      "金融文档处理",
+      "huggingface 资源",
+      "openrouter 接入"
+    ],
+    "video_id": "bseedaE-q7h"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=v2MdlxhMmVg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGLM 5.3 Flash is here, and I put its coding and agent abilities through a brutal test. This review covers benchmarks, pricing, coding performance, OpenRouter access, and the strange OX-Alpha connection.\n\nWas OX-Alpha on OpenRouter and OpenCode actually GLM 5.3 Flash? I compare GLM 5.3 vs 5.3 Flash, look at the GLM 5.3 Flash benchmarks, coding agent performance, weights, HuggingFace availability, and GLM 5.3 price. We also test GLM 5.3 Flash against OX-Alpha and discuss how it compares with models like Kimi K3.\n\n💻 Codes used in Video: https://github.com/47thtechcorner/RayCodes_GLM_5_3_Flash\n🔥 To support the channel: https://ko-fi.com/prayasjain\n\n#GLM53Flash #GLM53 #OXAlpha",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 724,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:10:22+00:00",
+    "tags": [
+      "大模型评测",
+      "AI 工具测评",
+      "开源模型对比",
+      "中英双语",
+      "中文翻译",
+      "本地部署指南",
+      "代码生成能力",
+      "金融文档处理",
+      "HuggingFace 资源",
+      "OpenRouter 接入"
+    ],
+    "title": "【中英双语】GLM 5.3 Flash 发布：三项严苛测试揭秘 OX-Alpha 身｜GLM 5.3 Flash Dropped: 3 Brutal Test…",
+    "video_id": "bseedaE-q7h",
+    "views": 59
+  },
+  "seed_provenance": {
+    "bvid": "BV1ta4y65ERT",
+    "published_at": "2026/8/29 16:10:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ta4y65ERT"
+  },
+  "version": 1
+}

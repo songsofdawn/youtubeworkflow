@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "extreme_survival",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft build",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "极限生存",
+      "我的世界",
+      "建筑教程",
+      "minecraft",
+      "云上城堡",
+      "minecraft builds",
+      "硬核模式",
+      "生存建造",
+      "农场设计",
+      "minecraft building i"
+    ],
+    "video_id": "bseedMBm6kB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI built a massive Minecraft cloud castle in my survival world to prepare for the upcoming Dappled Forest update.\n\nThe new update is bringing colorful additions like wool slabs, stairs, and cushions to the game. My Coral Palace is over 10,000 blocks away from my base and still disconnected from the Nether hub, so I needed a more efficient solution. This build serves as a central hub for three major farms I will need to gather resources for the new content.\n\nEverything here is done freehand in my Hardcore Minecraft survival building world without the use of Litematica. I am walking through the construction process today and even showing off a secret feature I included in the design. If you enjoy large-scale projects and efficient Minecraft farm design, stick around for the build tour.\n\nSubscribe to follow along with the rest of my forever world projects.\n\nVisit my website for more info - https://www.linkzzeytv.com\nPatreon Schematics - https://www.patreon.com/c/linkzzey/posts\nhttps://www.twitch.tv/linkzzey\n\n\n#minecraft  #minecraftsurvival  #minecraftbuilding",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 949,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T16:35:17+00:00",
+    "tags": [
+      "极限生存",
+      "我的世界",
+      "建筑教程",
+      "Minecraft",
+      "云上城堡",
+      "minecraft builds",
+      "硬核模式",
+      "生存建造",
+      "农场设计",
+      "minecraft building i"
+    ],
+    "title": "极限生存建成云端城堡，过程差点让我弃坑！｜This build ALMOST made me GIVE UP in Hardcore Minecraft",
+    "video_id": "bseedMBm6kB",
+    "views": 45
+  },
+  "seed_provenance": {
+    "bvid": "BV19GbT6EEPB",
+    "published_at": "2026/9/8 00:35:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV19GbT6EEPB"
+  },
+  "version": 1
+}

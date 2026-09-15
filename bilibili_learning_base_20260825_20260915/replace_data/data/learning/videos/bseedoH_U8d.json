@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "what if",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手工diy",
+      "盐锅",
+      "解压切割",
+      "铸造",
+      "奇思妙想",
+      "高压水刀",
+      "煎蛋",
+      "硬核实验",
+      "waterjet channel",
+      "water jet"
+    ],
+    "video_id": "bseedoH_U8d"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 7,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n✅ Download Fishing Clash on your mobile device for free 👉 https://fishingclash.link/WaterjetChannel26. New users who use my code WATERJET26 will get a $20-value starter pack for free!\n\nThanks to @NFTI  for helping out!\n\n- OUR DISCORD -\nWe started a Discord channel and would love to have you join! It's the best place to chat if you've got any suggestions, video ideas, or just want to hangout: https://discord.gg/t4KFPeMvBc\n\nInstagram:  https://www.instagram.com/waterjetchannel\nFacebook:  https://www.facebook.com/waterjetchannel\nTikTok:  https://www.tiktok.com/@waterjetchannel\nTwitter: https://x.com/RealWaterjet\n\nMerch Store!\nhttps://waterjetmuseum.com\n\n- BUSINESS INQUIRIES -\nEmail us at: waterjetmgmt@gmail.com",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 822,
+    "likes": 133,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T14:52:17+00:00",
+    "tags": [
+      "手工DIY",
+      "盐锅",
+      "解压切割",
+      "铸造",
+      "奇思妙想",
+      "高压水刀",
+      "煎蛋",
+      "硬核实验",
+      "waterjet channel",
+      "water jet"
+    ],
+    "title": "用盐铸一口平底锅，煎蛋自带咸味？｜What If Frying Pans Were Made Of Salt?",
+    "video_id": "bseedoH_U8d",
+    "views": 9097
+  },
+  "seed_provenance": {
+    "bvid": "BV1sVbM6qEAW",
+    "published_at": "2026/9/7 22:52:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sVbM6qEAW"
+  },
+  "version": 1
+}

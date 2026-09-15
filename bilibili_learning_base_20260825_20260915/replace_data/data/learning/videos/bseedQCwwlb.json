@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "猎奇",
+      "盘点",
+      "奇闻趣事",
+      "趣味测试",
+      "反应视频",
+      "sssniperwolf",
+      "sniper wolf"
+    ],
+    "video_id": "bseedQCwwlb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHello friends today we are watching Cool Things You've Never Seen Before! Leave a Like if you enjoyed and watch the last vid https://youtu.be/d66umaSdVtY Subscribe to join the Wolf Pack and enable notifications! http://bit.ly/SubSSSniperWolf\n\nTikTok: http://tiktok.com/@sssniperwolf\nInstagram: http://instagram.com/sssniperwolf\nTwitter: http://www.twitter.com/sssniperwolf\nFacebook: https://www.facebook.com/sssniperwolf\nOfficial Merch: https://ogwolfpack.com/\n\nCreators featured in this video:\n\n@_yh.yhh \n@badbitchbotany \n@yvng_cantaloupe \n@krisjonnes \n@milanosreviews \n@smokeyandbandit.cats \n@lynalumno \n@keskonsemare \n@b1tchwithbadposture\n@d0gjelly_ \n@jennyisthegreatest \n@peppersahahaha \n@microwave_experience \n@hayes_comedy  \n@unholygrail51 \n@defyingcynthia \n@eee.127 \n@garbamillothegreat34 \n@g40jordy \n@dashik__gubanova \n@loganscandies",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 751,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T02:35:57+00:00",
+    "tags": [
+      "搞笑",
+      "猎奇",
+      "盘点",
+      "奇闻趣事",
+      "趣味测试",
+      "反应视频",
+      "SSSniperWolf",
+      "sniper wolf"
+    ],
+    "title": "那些你从没见过的离谱奇物，世界最长床有多夸张？｜Cool Things You've Probably Never Seen Before",
+    "video_id": "bseedQCwwlb",
+    "views": 10
+  },
+  "seed_provenance": {
+    "bvid": "BV1R7YS6SEqU",
+    "published_at": "2026/9/12 10:35:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1R7YS6SEqU"
+  },
+  "version": 1
+}

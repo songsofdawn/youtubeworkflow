@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "cleaning_transformation",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "house cleaning"
+    ],
+    "formats": [
+      "transformation",
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "extreme house cleaning"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "改造前后对比",
+      "治愈装修",
+      "田园生活",
+      "森林小屋",
+      "房屋装修",
+      "老房改造",
+      "解压视频",
+      "废墟翻新",
+      "buried in the wild"
+    ],
+    "video_id": "bseed7v6PLF"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n🌲 BURIAL IN THE WILD | Abandoned House Restoration & Forest Home Renovation\n\n🏚️ Deep in the forest, a long-abandoned house has been forgotten for years, slowly disappearing beneath overgrown vegetation, dirt, debris, and decay. Now, the restoration begins.\n\n🛠️ Follow this satisfying abandoned house renovation from the first cleanup and removal of overgrowth to structural repairs, interior remodeling, flooring, painting, kitchen renovation, bathroom restoration, and the final home transformation.\n\n🎧 Designed for fans of ASMR renovation, restoration ASMR, construction sounds, satisfying cleaning, home makeovers, abandoned places, and cinematic transformations. Enjoy the natural sounds of tools, materials, construction work, and the surrounding forest without distracting narration or background music.\n\n🏡 Watch a forgotten forest property transform into a peaceful and beautiful forest home — combining restoration, renovation, interior design, and nature-inspired living.\n\n✨ What you'll find on Buried in the Wild:\n🌿 Abandoned house restoration\n🏚️ Forgotten homes & hidden forest houses\n🛠️ House renovation & rebuilding\n🧹 Satisfying deep cleaning & demolition\n🏠 Interior renovation & home makeover\n🎧 ASMR construction & restoration sounds\n🌲 Forest homes & nature-inspired living\n✨ Before-and-after house transformations\n\n🔔 Subscribe to Buried in the Wild for more abandoned house renovations, relaxing restoration projects, satisfying transformations, and cinematic forest home makeovers.\n\n🎬 This AI-generated video is created for artistic, conceptual, and entertainment purposes. The renovation and construction processes shown may not reflect real-world e…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 646,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T02:40:05+00:00",
+    "tags": [
+      "改造前后对比",
+      "治愈装修",
+      "无配音",
+      "田园生活",
+      "森林小屋",
+      "房屋装修",
+      "老房改造",
+      "解压视频",
+      "废墟翻新",
+      "Buried in the Wild"
+    ],
+    "title": "荒废森林小屋大改造，前后对比太震撼｜This Forest House Was Left to Rot… The Transformation Is Unbe…",
+    "video_id": "bseed7v6PLF",
+    "views": 83
+  },
+  "seed_provenance": {
+    "bvid": "BV15gYe6gEpa",
+    "published_at": "2026/9/13 10:40:05",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15gYe6gEpa"
+  },
+  "version": 1
+}

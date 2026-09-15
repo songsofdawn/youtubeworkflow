@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "experiment",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai",
+      "图灵测试",
+      "机器学习",
+      "english",
+      "大模型",
+      "科技历史",
+      "gpu 发展",
+      "tedx 演讲"
+    ],
+    "video_id": "bseedFp573I"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=Wr_tz54sSPY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this insightful talk, Professor Michael Wooldridge of Oxford University pulls back the curtain on the \"overnight\" AI revolution. Far from being a recent phenomenon, the journey of Artificial Intelligence began in the 1940s in Manchester, England.\n\nFrom the code-breaking genius of Alan Turing to the modern-day phenomena of Nvidia and OpenAI, Wooldridge traces the high-stakes history of the technology that is currently reshaping our world.\n\nThe Professor's talk covers..\n\nThe Early Days: How the first digital computers and the Turing Test set the stage for machine intelligence.\n\nThe Neural Network Breakthrough: Why the 1980s got the science right, but lacked the data and power to make it work.\n\nThe GPU Revolution: The unlikely story of how computer game chips (designed for explosions in Call of Duty) became the secret sauce for modern AI.\n\nThe Rise of Transformers: How a 2017 Google research paper led to the birth of GPT-3 and the early success of ChatGPT.\n\nClever vs Gimmicky vs. Useful: Why AI can solve complex prime number equations in Latin, but still can’t figure out how to load your dishwasher. Michael Wooldridge is the Ashall Professor of the Foundations of Artificial Intelligence at Oxford University. He is best known for his pioneering work on multi-agent systems building multiple artificial intelligences that can cooperate, negotiate, and decipher convoluted problems similar to human collaboration.\n\nIn 2023, he delivered the Royal Institution Christmas Lectures, titled ‘The Truth About A…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1000,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T16:04:51+00:00",
+    "tags": [
+      "AI",
+      "人工智能",
+      "图灵测试",
+      "机器学习",
+      "计算机技术",
+      "English",
+      "大模型",
+      "科技历史",
+      "GPU 发展",
+      "TEDx 演讲"
+    ],
+    "title": "【中英双语】牛津教授揭秘 AI 革命：从图灵到 Transformer 的历程｜The AI revolution didn’t happen overnig…",
+    "video_id": "bseedFp573I",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1LutW6aE6t",
+    "published_at": "2026/8/31 00:04:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1LutW6aE6t"
+  },
+  "version": 1
+}

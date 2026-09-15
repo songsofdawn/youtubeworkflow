@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "industry"
+    ],
+    "formats": [
+      "documentary",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "薯条",
+      "美食科普",
+      "how it's made",
+      "食品加工",
+      "自动化生产线",
+      "factory",
+      "白色城堡",
+      "工业纪录片",
+      "工厂揭秘",
+      "小汉堡"
+    ],
+    "video_id": "bseed34hFDx"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhite Castle has been serving its famous tiny sliders for generations.\n\nFrench fries turn ordinary potatoes into billions of crispy golden strips, while Mushroom Bites transform simple mushrooms into crunchy, bite-sized snacks.\n\nThey look like familiar fast-food favorites, but behind them are surprisingly precise production systems designed for speed, consistency, and flavor.\n\nSo how are White Castle sliders, French fries, and Mushroom Bites actually made?\n\nLet’s step inside and find out.\n\n👉 Like, subscribe, and hit the bell 🔔 to keep exploring the sweet side of the world with Captain Discovery!\n\nIf you are the owner or if you want to be featured please contact us at: captaindiscoveryus@gmail.com\nWe will follow your request as soon as we receive your message.\n\nCopyright disclaimer section 107 of the Copyright Act 1976. \"Fair use\" is allowed for purposes such as criticism, comment, news reporting, teaching, scholarships, and research.\n\nWe are not affiliated with the businesses whose products are shown in this documentary!\n\n#howitsmade #whitecastle #captaindiscovery",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1653,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T15:43:26+00:00",
+    "tags": [
+      "薯条",
+      "美食科普",
+      "how it's made",
+      "食品加工",
+      "自动化生产线",
+      "factory",
+      "白色城堡",
+      "工业纪录片",
+      "工厂揭秘",
+      "小汉堡"
+    ],
+    "title": "揭秘White Castle小汉堡薯条工厂生产线｜How It’s Made: White Castle Sliders, French Fries, Mus…",
+    "video_id": "bseed34hFDx",
+    "views": 15
+  },
+  "seed_provenance": {
+    "bvid": "BV1LmY361E7e",
+    "published_at": "2026/9/10 23:43:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1LmY361E7e"
+  },
+  "version": 1
+}

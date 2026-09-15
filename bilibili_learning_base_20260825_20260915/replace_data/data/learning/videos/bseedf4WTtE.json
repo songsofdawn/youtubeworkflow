@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.52,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "chemistry",
+      "metals",
+      "electrochemistry"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chemistry experiment",
+      "metalworking science"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "电化学技术",
+      "贵金属提取",
+      "废金属回收",
+      "电解精炼",
+      "科普知识",
+      "工业工程",
+      "黄金回收",
+      "工业·工程·机械",
+      "electrolytic gold re",
+      "gold recovery using"
+    ],
+    "video_id": "bseedf4WTtE"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=GVXOd4Owauc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n@MakeGold Did you know that electricity can be used to recover gold from certain gold-bearing solutions? Electrochemical techniques, often called electrowinning or electrolytic recovery, use an electrical current to help deposit dissolved metal onto an electrode.\n\nIn this video, we explore the fascinating principle behind recovering gold from solution using electricity and show why electrochemical technology is important in precious-metal recovery and refining.\n\n⚡ Recovering gold using electrical current\n💎 Gold recovery from gold-bearing solutions\n🔬 Understanding electrolysis and electrowinning\n♻️ Precious-metal recovery and recycling\n✨ Watch electrochemical gold recovery in action\n\nThe effectiveness of the process depends on the solution chemistry, concentration, electrode system, and other operating conditions. Other dissolved metals may also deposit, so the recovered material is not necessarily pure gold without further refining.\n\n⚠️ Safety: Gold-bearing solutions can contain corrosive chemicals, toxic dissolved metals, and may produce hazardous gases under electrolysis. Professional equipment, ventilation, PPE, electrical safety measures, and proper hazardous-waste treatment are essential.\n\n👍 Like, Share & Subscribe for more gold recovery, precious-metal refining, e-waste recycling, and gold-processing videos!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 511,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T21:03:00+00:00",
+    "tags": [
+      "电化学技术",
+      "贵金属提取",
+      "废金属回收",
+      "电解精炼",
+      "科普知识",
+      "工业工程",
+      "黄金回收",
+      "工业·工程·机械",
+      "electrolytic gold re",
+      "gold recovery using"
+    ],
+    "title": "【中英双语】用电流从溶液中提取黄金：电解精炼原理与安全｜A method of using electricity to extract gold from…",
+    "video_id": "bseedf4WTtE",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV1Hctx61Eft",
+    "published_at": "2026/8/31 05:03:00",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Hctx61Eft"
+  },
+  "version": 1
+}

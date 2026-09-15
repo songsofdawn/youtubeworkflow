@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "baking"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "baking",
+      "farm to table cooking",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "田园生活",
+      "治愈系",
+      "雨景",
+      "慢生活",
+      "烘焙教程",
+      "家庭料理",
+      "田园美食",
+      "桃子蛋糕",
+      "法式乡村"
+    ],
+    "video_id": "bseedhHQmxl"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=KQNyYcmiGqA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBonjour friends,  \n\nHow have you been? \n\nThe weather has been colder lately and the rain is coming back. I'm so so happy about it. The garden is like me; it's feeling alive again. \n\nI picked my first tomatoes of the season; I think I'm going to have a lot more soon. The peach trees were overflowing with fruits, so I harvested them and baked a really simple but delicious upside down cake with it. I enjoyed it outside with vanilla ice cream. It was delicious. \n\nThe recipe is down below if you want to try it. 🤗\n\nHope you will have a great day. \n\nThank you so much for watching this video and for your support. ❤️\n\nTake care friends, see you soon  \n\n🏡🌧️\n\n🍑☀️ Upside down peach cake 🍑☀️\n\nPeaches ( Enough to cover the bottom of your pan, I used around 6 of them)\n\nFor the batter :\n\n150G Sugar \n150 Soft butter \n3 eggs \n150g Flour \n10g Baking powder \nA pinch of salt\n\nFor the caramel : \n100g Sugar \n\n- Preheat your oven to 180°C \n- In a big bowl mix together the soft butter and sugar until fully combined.\n- Add the eggs one by one, until you obtain a homogeneous batter. \n- Add the flour, baking powder and salt. Mix together until smooth and set aside. \n- Put the leftover sugar in a pan and heat it gently while stirring until it forms a caramel, don't overcook it or it will be bitter. \n- Pour the caramel in the bottom of your buttered and floured pan and add the peaches cut in halves. \n- Pour the batter on top of your peaches and bake for about 35/40 minutes. Until golden brown and the…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1180,
+    "likes": 37,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T22:30:58+00:00",
+    "tags": [
+      "田园生活",
+      "治愈系",
+      "雨景",
+      "慢生活",
+      "烘焙教程",
+      "家庭料理",
+      "田园美食",
+      "桃子蛋糕",
+      "法式乡村"
+    ],
+    "title": "【中英双语】法国乡村雨天采摘桃子与制作倒置蛋糕的治愈日常｜Slow days in a French little village, peach harves…",
+    "video_id": "bseedhHQmxl",
+    "views": 626
+  },
+  "seed_provenance": {
+    "bvid": "BV1ohts6KEmm",
+    "published_at": "2026/8/31 06:30:58",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ohts6KEmm"
+  },
+  "version": 1
+}

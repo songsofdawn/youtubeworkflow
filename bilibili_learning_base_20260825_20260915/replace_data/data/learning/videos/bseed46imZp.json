@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "openai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "数学",
+      "学习",
+      "千禧年数学难题",
+      "纳维斯托克方程",
+      "难题",
+      "openai"
+    ],
+    "video_id": "bseed46imZp"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "-",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 12,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T22:58:33+00:00",
+    "tags": [
+      "数学",
+      "学习",
+      "千禧年数学难题",
+      "纳维斯托克方程",
+      "难题",
+      "OpenAI"
+    ],
+    "title": "OpenAI宣布解决千禧年数学难题NS方程",
+    "video_id": "bseed46imZp",
+    "views": 222
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZkYp6mESH",
+    "published_at": "2026/9/9 06:58:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZkYp6mESH"
+  },
+  "version": 1
+}

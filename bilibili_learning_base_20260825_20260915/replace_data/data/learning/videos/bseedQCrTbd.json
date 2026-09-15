@@ -1,0 +1,121 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "AI agents",
+      "AI safety"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "ai agents",
+      "ai safety",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程",
+      "ai安全",
+      "app development",
+      "fireship",
+      "huggingface",
+      "网络安全",
+      "openai",
+      "webdev",
+      "ai智能体"
+    ],
+    "video_id": "bseedQCrTbd"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nNamespace is actually the fastest way to run your GitHub Actions (and more). Try it for free - https://namespace.so/github-actions\n\nOpenAI finally published the postmortem on the Hugging Face hack and it turns out it's way more interesting than we first though. Let's dive in.\n\n#coding #programming\n\nWant more Fireship?\n\n🗞️ Newsletter: https://bytes.dev\n🧠 Courses: https://fireship.dev",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 406,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T07:47:02+00:00",
+    "tags": [
+      "编程",
+      "AI安全",
+      "app development",
+      "Fireship",
+      "HuggingFace",
+      "网络安全",
+      "计算机技术",
+      "OpenAI",
+      "webdev",
+      "AI智能体"
+    ],
+    "title": "AI史上最离谱黑客事件后续：细节比想象更疯狂｜The most interesting hack in history just got weirder...",
+    "video_id": "bseedQCrTbd",
+    "views": 15
+  },
+  "seed_provenance": {
+    "bvid": "BV1sNYM6mEU4",
+    "published_at": "2026/9/10 15:47:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sNYM6mEU4"
+  },
+  "version": 1
+}

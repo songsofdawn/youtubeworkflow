@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home vegetable garden",
+      "harvest and preserve",
+      "vegetable garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "生活技巧",
+      "diy 手工",
+      "阳台种植",
+      "蔬菜种植",
+      "家庭菜园",
+      "有机农业",
+      "城市绿化",
+      "容器园艺"
+    ],
+    "video_id": "bseedJSbgDA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=RdFPCUZ7mWM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGrowing tomatoes in bottles on a balcony is a simple way to enjoy fresh produce throughout the year.\nIn this video, I share how recycled bottles can support healthy tomato plants with abundant fruit.\nThis method is suitable for small spaces and helps create a productive green balcony at home.\nA friendly approach for urban living and beginner gardeners.\n\n#tomatoes #plasticbottle #balconygarden #containergardening #urbangardening #homegrown #vegetablegarden #originalcontent #global",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1536,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T12:11:30+00:00",
+    "tags": [
+      "生活技巧",
+      "中文翻译",
+      "中英双语",
+      "DIY 手工",
+      "阳台种植",
+      "蔬菜种植",
+      "家庭菜园",
+      "有机农业",
+      "城市绿化",
+      "容器园艺"
+    ],
+    "title": "【中英双语】阳台塑料瓶种番茄：小空间全年收获新鲜果实教程｜Growing Tomatoes in Bottles on Balcony for Fresh F…",
+    "video_id": "bseedJSbgDA",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1pdtw6DEKA",
+    "published_at": "2026/8/28 20:11:30",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1pdtw6DEKA"
+  },
+  "version": 1
+}

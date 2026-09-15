@@ -1,0 +1,124 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "ChatGPT",
+      "Fable 5.1",
+      "LLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "chatgpt",
+      "fable 5.1",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "开发工具推荐",
+      "openai chatgpt",
+      "anthropic fable",
+      "ai 模型对比",
+      "chatgpt 5.6",
+      "ai code generator",
+      "软件性能分析",
+      "大语言模型测试",
+      "代码生成器评测"
+    ],
+    "video_id": "bseed7yNKYP"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=ua0SblzFq-M\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFable 5.1 vs ChatGPT 5.6: which model actually handles your code and problem-solving better? Let's look at the data.\n\nAnthropic's Fable 5.1 is positioned as a serious code builder, but it is going up against a two-month-old ChatGPT 5.6. I put these models to the test across several scenarios to see which one delivers more reliable results for daily development tasks.\n\nThis AI performance comparison focuses on output quality, logic, and speed. If you are choosing an AI code generator for your workflow, you need to know if the newer model justifies the switch or if the current standard still holds up. We break down the specifics of how each model manages complex requests.\n\nSubscribe for practical systems and business judgment that help ambitious builders do better work with less friction.\n\n0:00 - Intro: Claude vs ChatGPT\n0:27 - Pricing comparison\n1:28 - Setting up the head-to-head test\n3:04 - Thoroughness test prompt (fact-checking a script)\n4:03 - Creativity test prompt (building a mystery game)\n5:52 - How Claude vs ChatGPT operate differently\n8:00 - Checking in on the game results\n11:25 - Moving to the agentic capability test\n13:29 - Final results comparison\n15:30 - Wrap-up and call to action",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 943,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T13:20:48+00:00",
+    "tags": [
+      "开发工具推荐",
+      "OpenAI ChatGPT",
+      "Anthropic Fable",
+      "计算机技术",
+      "AI 模型对比",
+      "ChatGPT 5.6",
+      "AI code generator",
+      "软件性能分析",
+      "大语言模型测试",
+      "代码生成器评测"
+    ],
+    "title": "Fable 5.1 与 ChatGPT 5.6 代码生成能力实测对比｜Fable 5.1 vs GPT-5.6 Sol: Which One Actually…",
+    "video_id": "bseed7yNKYP",
+    "views": 72
+  },
+  "seed_provenance": {
+    "bvid": "BV1R5tU6NE3V",
+    "published_at": "2026/9/2 21:20:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1R5tU6NE3V"
+  },
+  "version": 1
+}

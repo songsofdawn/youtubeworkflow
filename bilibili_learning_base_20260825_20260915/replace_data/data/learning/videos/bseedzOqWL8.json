@@ -1,0 +1,116 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPT-6",
+      "AI coding"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "gpt-6",
+      "ai coding",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "科技评测",
+      "3d建模",
+      "gpt6",
+      "ai生成3d",
+      "blender",
+      "ai编程",
+      "deepseek"
+    ],
+    "video_id": "bseedzOqWL8"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nAI 3D Generation Showcase: DSV4.1, GPT-6, and Blender MCP Demonstrations\n\nVideo Breakdown:\n\n0:00 – 1:10 | DSV4.1 Mechanical City Webpage: The demonstration opens with the DSV4.1 model generating a highly detailed, interactive 3D webpage. The central focus is a wind-up music box featuring a mechanical city on a tabletop. The 3D environment showcases dynamic elements like spinning gears, a rotating Ferris wheel, and an adjustable, glowing internal light source. A side control panel allows the user to manipulate rendering settings, lighting intensity, and rotation speed in real-time.\n\n1:10 – 1:54 | GPT-6 Astra Clockwork City: The video transitions to a \"GPT 6 Astra\" interface, which generates a visually distinct take on the same prompt. This 3D webpage features a stylized, pastel-toned clockwork city situated on a circular music box base. The model includes animated windmills, a clock tower, and a Ferris wheel. The interface on the right side provides sliders and toggles to adjust environmental settings, daylight conditions, and automated camera panning.\n\n1:54 – 2:34 | DSV4.1 Blender MCP Image-to-3D Conversion: The final segment shifts from web generation to 3D asset creation. It starts with a single 2D reference image of a dark, futuristic tank. Using DSV4.1 routed through the Blender Model Context Protocol (MCP), the flat image is converted into a fully structured 3D model directly inside the Blender workspace. The video proves the model's depth by panning around the tank and toggling through different viewport shading options, revealing a complex wireframe mesh that accurately reflects the original 2D design.\n👇 Let me know in the comments: Which AI built the better 3D racing game?…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 156,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T14:08:54+00:00",
+    "tags": [
+      "科技评测",
+      "3D建模",
+      "人工智能",
+      "GPT6",
+      "AI生成3D",
+      "无配音",
+      "计算机技术",
+      "Blender",
+      "AI编程",
+      "DeepSeek"
+    ],
+    "title": "DeepSeek V4.1对决GPT-6：AI生成3D城市谁更强？｜DeepSeek V4.1 Flash 0910 vs GPT-6: Who Will W…",
+    "video_id": "bseedzOqWL8",
+    "views": 76
+  },
+  "seed_provenance": {
+    "bvid": "BV1eLYm6VEca",
+    "published_at": "2026/9/11 22:08:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eLYm6VEca"
+  },
+  "version": 1
+}

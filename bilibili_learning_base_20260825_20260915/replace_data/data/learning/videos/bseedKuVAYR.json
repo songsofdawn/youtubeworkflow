@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "反战运动",
+      "越南战争",
+      "尼克松",
+      "国民警卫队",
+      "美国历史",
+      "历史纪录片",
+      "肯特州立大学",
+      "kent ohio",
+      "kent state shooting"
+    ],
+    "video_id": "bseedKuVAYR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n📚  Thanks so much to Nebula for helping us cover important historical tales like this one. Visit them at https://go.nebula.tv/extrahistory and get 50% off your Nebula subscription.\n\nOn May 4, 1970, hundreds of Ohio National Guard troops occupied the Kent State University campus. Armed with M-1 rifles, bayonets, tear gas, and live ammunition, their presence transformed an already tense campus into a powder keg.\nFor many students, the war in Vietnam had suddenly come home. Protests had erupted across the country following President Nixon's expansion of the war into Cambodia, but few could have imagined just how deadly the confrontation at Kent State would become.\n\nSupport History:\n◼ Watch Extra History ad-free & get 1-week early access on *NEBULA* https://go.nebula.tv/extrahistory \n◼ Suggest & Vote on our next episodes, get exclusive content & 24-hour early access on *PATREON* https://bit.ly/EHPatreon OR *MEMBERSHIPS* here: https://www.youtube.com/channel/UCCODtTcd5M1JavPCOr_Uydg/join\n◼ Show off your fandom with *MERCH* from our store! http://extracredits.store/  \n◼ Interested in sponsoring an episode?* Email us: extracredits@standard.tv \n\nJoin Us On:\n◼ Bluesky - https://bsky.app/profile/extracredits.bsky.social \n◼ TikTok - https://www.tiktok.com/@extracreditz\nhttps://twitter.com/extracreditz | https://www.facebook.com/ExtraCredits/ | http://instagram.com/extracredits \n◼ Extra Credits Gaming: https://www.youtube.com/@extracredits | http://www.twitch.tv/extracredits/\n\nMiss an Episode in…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1080,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T05:39:38+00:00",
+    "tags": [
+      "反战运动",
+      "越南战争",
+      "尼克松",
+      "国民警卫队",
+      "美国历史",
+      "历史纪录片",
+      "肯特州立大学",
+      "Kent ohio",
+      "kent state shooting"
+    ],
+    "title": "四死俄亥俄：1970肯特州立大学枪击事件｜Four Dead in Ohio | Kent State Shootings 2 | U.S. History",
+    "video_id": "bseedKuVAYR",
+    "views": 124
+  },
+  "seed_provenance": {
+    "bvid": "BV1onYM6iEsE",
+    "published_at": "2026/9/10 13:39:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1onYM6iEsE"
+  },
+  "version": 1
+}

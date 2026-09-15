@@ -1,0 +1,70 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "跳跳乐",
+      "平台跳跃",
+      "硬核游戏",
+      "roblox",
+      "搞笑游戏时刻"
+    ],
+    "video_id": "bseedpNocYU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGAME LINK: https://www.roblox.com/games/11684369582/I-Wanna-Test-The-Game\n\n💬Join the AllameenxVerse Official Discord: / https://discord.com/invite/aFz4YjwG4K\n\n⬇️FOLLOW THE SOCIALS⬇️\n🎵 TikTok: / https://www.tiktok.com/@allameenxverse\n📸 Instagram: / https://www.instagram.com/Allameen.x/",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 987,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T05:13:44+00:00",
+    "tags": [
+      "网络游戏",
+      "跳跳乐",
+      "平台跳跃",
+      "硬核游戏",
+      "游戏挑战",
+      "Roblox",
+      "搞笑游戏时刻"
+    ],
+    "title": "搞人游戏:挑战Roblox史上最难跳跳乐，全程崩溃尖叫",
+    "video_id": "bseedpNocYU",
+    "views": 85
+  },
+  "seed_provenance": {
+    "bvid": "BV1pVYY6EEfc",
+    "published_at": "2026/9/13 13:13:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1pVYY6EEfc"
+  },
+  "version": 1
+}

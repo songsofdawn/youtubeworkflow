@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "wildlife"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "wildlife documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "山羊",
+      "美洲狮",
+      "动物生存",
+      "悬崖求生",
+      "mountain goat",
+      "自然纪录片",
+      "野生动物",
+      "puma",
+      "动物追击"
+    ],
+    "video_id": "bseedtkWaL5"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMountain Goat’s Cliffside Feeding Turns Into a Puma Chase | Wildlife Documentary\n\nHigh above a deep alpine valley, a mountain goat climbs a near-vertical cliff in search of food. Sparse grass and small plants offer little nourishment, so the goat moves toward a long tree branch growing far out from the rock face. Balanced above the abyss, it begins feeding on fresh leaves — until a puma appears on the cliff behind it.\n\nThe predator watches and waits, unable to safely reach the goat while it remains far out on the branch. But when the mountain goat finally returns toward the rock wall, the situation changes instantly. A short but intense chase begins across narrow ledges high above the canyon. With the puma closing in, the goat reaches an enormous gap between two cliffs and must attempt one final risky escape across a long suspended rope.\n\nChapters\n00:00 - Mountain Goat Climbs the Cliffside Branch\n03:00 - Puma Appears and the Chase Begins\n05:00 - Mountain Goat Crosses the Rope\n\nThis story shows how balance, terrain awareness, and careful movement can become powerful survival advantages in the mountains. Sometimes survival is not about being stronger or faster, but about using the environment better than the predator.\n\nThis video combines real wildlife footage with AI technology to recreate the situation in the safest possible way.\n\nSubscribe for more wildlife survival stories, dramatic animal encounters, and fascinating journeys from the natural world.\n\n#MountainGoat #Puma #WildlifeDocumentary #Wi…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 491,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T12:12:30+00:00",
+    "tags": [
+      "山羊",
+      "美洲狮",
+      "动物生存",
+      "悬崖求生",
+      "mountain goat",
+      "自然纪录片",
+      "野生动物",
+      "puma",
+      "动物追击"
+    ],
+    "title": "山羊悬崖觅食遭美洲狮追杀，命悬一线｜Mountain Goat’s Cliffside Feeding Turns Into a Puma Chase | W…",
+    "video_id": "bseedtkWaL5",
+    "views": 76
+  },
+  "seed_provenance": {
+    "bvid": "BV1v1Yu6uE6p",
+    "published_at": "2026/9/10 20:12:30",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1v1Yu6uE6p"
+  },
+  "version": 1
+}

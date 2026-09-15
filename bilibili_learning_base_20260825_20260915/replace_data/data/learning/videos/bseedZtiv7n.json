@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "pizza"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "pizza taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "吃播",
+      "早餐披萨",
+      "pizza challenge",
+      "eating challenge",
+      "美食挑战",
+      "限时挑战",
+      "缅因州",
+      "大胃王挑战"
+    ],
+    "video_id": "bseedZtiv7n"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nToday I’m in Portland, Maine at Mister Bagel taking on their GIANT Breakfast Pizza Challenge! 🍕🥓🍳\n\nHungry challengers have just 30 minutes to finish a massive breakfast pizza loaded with ½ lb of garlic cream cheese, ½ lb of jalapeño cream cheese, ½ lb of cheese, 8 eggs, ½ lb of ham, 1 lb of bacon, and 1 lb of sausage, all piled on top of 1.5 lbs of dough!\n\nFinish it in time and the pizza is FREE, plus you’ll earn a winner’s shirt and a spot on the Wall of Fame! 🏆\n\nCan I conquer this massive breakfast pizza before the clock hits zero, or will I end up with egg on my face? 😅\n\nA huge thank you to Jane and Joel for the amazing pizza, kindness, and hospitality!\n\n🍕 Subscribe for weekly food challenges and restaurant adventures, and comment below what I should take on next!\n\nWant to sponsor a challenge?  Send me an Email at Elessig37@gmail.com  Feel like sending a card or anything else?  Send it to P.O. Box 343 Pekin, IN 47165 and be sure to Email me.  Have a blessed week and thank you for watching!\n\nZelle – Elessig37@gmail.com\nVenmo –@Eli-Lessig \nCash App – $EliLessig\nPaypal – elessig37@gmail.com\nElessig37@gmail.com\nIG – Eli Lessig\nFacebook – Facebook.com/A guy named Eli\n\n#aguynamedeli #elilessig #eatitall #foodchallenge #manvfood #manvsfood #foodie #pizza #breakfast #maine #bagel #challenge",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 678,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T17:51:56+00:00",
+    "tags": [
+      "吃播",
+      "早餐披萨",
+      "pizza challenge",
+      "eating challenge",
+      "美食挑战",
+      "限时挑战",
+      "美食测评",
+      "缅因州",
+      "美食探店",
+      "大胃王挑战"
+    ],
+    "title": "30分钟挑战6斤重巨无霸早餐披萨！数百人失败的大胃王挑战｜I'VE WAITED TWO YEARS TO ATTEMPT THIS BUCKET LIST…",
+    "video_id": "bseedZtiv7n",
+    "views": 26
+  },
+  "seed_provenance": {
+    "bvid": "BV1bkYH6fErK",
+    "published_at": "2026/9/9 01:51:56",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1bkYH6fErK"
+  },
+  "version": 1
+}

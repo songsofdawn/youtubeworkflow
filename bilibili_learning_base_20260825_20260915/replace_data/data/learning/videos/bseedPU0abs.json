@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "RAM",
+      "PC hardware"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "pc memory",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "apple silicon",
+      "桌面电脑推荐",
+      "m6 vs m5 pro",
+      "m5 max mac studio",
+      "mac 选购指南",
+      "本地 ai 开发",
+      "统一内存配置",
+      "mac studio 评测"
+    ],
+    "video_id": "bseedPU0abs"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=K1x0jUPbWdc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nApple’s 2026 desktop Mac lineup looks simple—until memory, storage, and Apple’s pricing ladder push you toward the next machine.\n\nIn this pre-release buying guide, I compare the M6 Mac mini, M5 Pro Mac mini, M5 Max Mac Studio, and M5 Ultra Mac Studio. The real decision is not simply which chip is fastest. It is how much unified memory your workload needs, whether you are CPU- or GPU-limited, and whether your configuration has crossed into the next product tier.\n\nThis video is based on Apple specifications and U.S. pricing available on August 31, 2026. Independent testing of shipping hardware was still pending at the time of production.\n\nCHAPTERS\n00:00 Introduction\n01:49 Choose Memory First\n03:57 M6 vs M5 Pro\n05:51 M5 Max & M5 Ultra\n07:57 Local AI\n09:01 Price Crossovers\n10:36 My Recommendations\n\nCORRECTION\nIn the United States, doing a storage upgrade yourself does not automatically void the entire warranty. Apple may exclude damage caused by the upgrade, and consumer rights vary by country.\n\nSOURCES\nApple Mac mini announcement:\nhttps://www.apple.com/newsroom/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/\n\nApple Mac Studio announcement:\nhttps://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/\n\nMac mini specifications:\nhttps://www.apple.com/mac-mini/specs/\n\nMac Studio specifications:\nhttps://www.apple.com/mac-studio/specs/\n\nApple Developer — Run local agentic AI on the Mac using MLX:\nhttps://www.youtube.com/watch?v=wyk…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 733,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:29:08+00:00",
+    "tags": [
+      "Apple Silicon",
+      "桌面电脑推荐",
+      "计算机技术",
+      "M6 vs M5 Pro",
+      "M5 Max Mac Studio",
+      "Mac 选购指南",
+      "本地 AI 开发",
+      "统一内存配置",
+      "Mac Studio 评测"
+    ],
+    "title": "2026 款 Mac mini 与 Mac Studio M5/M6 选｜M6 Mac mini vs M5 Pro, Max & Ultra: Which…",
+    "video_id": "bseedPU0abs",
+    "views": 411
+  },
+  "seed_provenance": {
+    "bvid": "BV13At76GEUJ",
+    "published_at": "2026/9/2 05:29:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13At76GEUJ"
+  },
+  "version": 1
+}

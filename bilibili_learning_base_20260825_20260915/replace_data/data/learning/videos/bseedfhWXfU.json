@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "restoration"
+    ],
+    "formats": [
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "解压修复",
+      "三星s25ultra",
+      "samsung galaxy s25 u",
+      "数码修复",
+      "手机维修",
+      "翻新修复",
+      "极客diy",
+      "垃圾场寻宝",
+      "phone restoration"
+    ],
+    "video_id": "bseedfhWXfU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nRestoration Destroyed SAMSUNG GALAXY S25 ULTRA Found in the Landfill\n\nOther Top 5 Restoration Videos:\n= = = = = = = = =\n1. 🥰Big Lucky! i Found Galaxy S24 Ultra, iPhone 13 & Much More  Restoration S24 Ultra Cracked\nhttps://youtu.be/bRIFk5ATdF4\n\n2. 😍i Found Many AirPods 2-3 Cases, iPad mini & More! - Restoration Vivo iQoo 5G Phone\nhttps://youtu.be/TPCv84S0WYs\n\n3. Lucky Day! Found many broken iPhones in the garbage dump! - Restoring iPhone 13 Pro Max\nhttps://youtu.be/NNYdGWhkewA\n\n4. 🥰Great Day! Found iPad 10, OnePlus 9R, Apple Watch & Many More! - Restoration OnePlus Cracked\nhttps://youtu.be/YesEKrBB8qQ\n\n5. 🥰Lucky Day! Found Huawei Mate X6 Demo, Samsung, iPhone 17 Pro Max Box - Restoration Galaxy S21 Ultra\nhttps://youtu.be/AjSCgqdbFLU\n\n= = = = = = = = =\n\nFound a destroyed Samsung Galaxy S25 Ultra at the landfill! Watch the full process of bringing this device back to life.\n\nCleaning and repairing discarded devices is a passion. Dealing with a badly damaged Samsung Galaxy S25 Ultra requires careful disassembly and patience. Every component is inspected to ensure the internal structure is sound before replacing the broken screen and back cover.\n\nDetailed phone restoration projects like this one demonstrate how to recover lost tech. Whether you are interested in electronics repair or just enjoy seeing a smartphone repair from start to finish, the process shows that even garbage dump finds can work again. If you enjoy seeing found electronics come back to life, please subscribe and turn on…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 952,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T14:31:50+00:00",
+    "tags": [
+      "解压修复",
+      "三星S25Ultra",
+      "Samsung Galaxy S25 U",
+      "数码修复",
+      "手机维修",
+      "翻新修复",
+      "极客DIY",
+      "垃圾场寻宝",
+      "phone restoration"
+    ],
+    "title": "印度老哥垃圾场捡到报废三星S25 Ultra，全面翻新复活",
+    "video_id": "bseedfhWXfU",
+    "views": 230
+  },
+  "seed_provenance": {
+    "bvid": "BV1FXYM61EhN",
+    "published_at": "2026/9/10 22:31:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1FXYM61EhN"
+  },
+  "version": 1
+}

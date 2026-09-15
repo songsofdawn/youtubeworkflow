@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "every x comparison",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "极限生存",
+      "minecraft",
+      "通关挑战",
+      "随机挑战"
+    ],
+    "video_id": "bseedmHDTKv"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI beat Minecraft, but every layer is a random block.\n\nEnjoy the video, and subscribe!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2449,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T19:20:46+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "极限生存",
+      "Minecraft",
+      "游戏挑战",
+      "通关挑战",
+      "随机挑战"
+    ],
+    "title": "我通关了我的世界，但每一层都是随机方块！｜Minecraft but every layer is a random block",
+    "video_id": "bseedmHDTKv",
+    "views": 108
+  },
+  "seed_provenance": {
+    "bvid": "BV1zmbu6AEGP",
+    "published_at": "2026/9/8 03:20:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zmbu6AEGP"
+  },
+  "version": 1
+}

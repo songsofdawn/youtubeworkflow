@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手机游戏",
+      "游戏杂谈",
+      "星穹铁道",
+      "崩坏星穹铁道",
+      "抽卡游戏",
+      "游戏分析",
+      "米哈游",
+      "hsr"
+    ],
+    "video_id": "bseedm7GFeC"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 17,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA discussion about the state of Honkai: Star Rail and how things have changed since Planarcadia released in 4.0.\n\nSocials: \nDiscord: https://discord.gg/CdjGktUUSb  \nTwitter: https://x.com/fl2ur_\nTwitch: https://www.twitch.tv/fl2ur\n\nCredits:\nEditing: Aki\nAudio Help: MooseOnCaffeine\n\nThis video is intended as constructive criticism. Despite having criticisms, Hoyo games are still some of my favorite games and I like playing them :)\n\nTimestamp\n00:00 Intro\n02:40 Lack of Combat Content\n06:37 Recent Apoc Shadow\n07:25 The Meta Shifts Quickly\n10:33 Pull income\n14:33 Story Buildup & Payoff\n17:56 Character SP’s\n21:19 Where is the Game's Focus\n24:18 Personal Thoughts\n\n#hsr #honkaistarrail #hoyoverse",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1582,
+    "likes": 31,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T08:14:57+00:00",
+    "tags": [
+      "手机游戏",
+      "游戏杂谈",
+      "星穹铁道",
+      "崩坏星穹铁道",
+      "抽卡游戏",
+      "游戏分析",
+      "米哈游",
+      "HSR"
+    ],
+    "title": "老外吐槽：崩坏星穹铁道怎么了？4.0版本后游戏状态烂完了！！！",
+    "video_id": "bseedm7GFeC",
+    "views": 1973
+  },
+  "seed_provenance": {
+    "bvid": "BV1eMYC6aEoq",
+    "published_at": "2026/9/14 16:14:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eMYC6aEoq"
+  },
+  "version": 1
+}

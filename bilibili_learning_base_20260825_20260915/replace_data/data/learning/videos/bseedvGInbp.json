@@ -1,0 +1,98 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "chemistry",
+      "crystals",
+      "materials"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "chemistry experiment",
+      "crystal growth",
+      "materials science"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "化学实验",
+      "diy手工",
+      "材料制作",
+      "耐心养成",
+      "晶体生长"
+    ],
+    "video_id": "bseedvGInbp"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=2pc9T2cOnn8\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nI spent 1 year growing this copper acetate crystal from copper metal and vinegar.\n\nCopper acetate crystals grow much slower compared to many other crystals, due to its low solubility in water. The process took me 1 year and 19 days in total. But the patience is definitely worth it!\n\nFor a detailed written guide on making this work, check out my son's blog post at https://crystalverse.com/copper-acetate-crystals\n\nDo note that copper acetate is mildly toxic. Either wash your hands after touching it, or wear gloves when handling. Keep away from children and food.\n\nFor family friendly crystals, check out my other vids.\n\n---\n\nMATERIALS\n\nI bought my materials in Malaysia, but the items below are similar ones available on Amazon — they work just as well if you’d like to try this experiment yourself.\n\n• Copper chops (so you don't have to cut them): https://amzn.to/4qVLzO9\n• Vinegar (more concentrated version): https://amzn.to/4hRokAG\n• Hydrogen peroxide: https://amzn.to/47zghFg\n• Nylon fishing line (clear, 0.14 mm): https://amzn.to/3LvU9mF\n• 250 mL beaker: https://amzn.to/49P4mob\n• 600 mL beaker: https://amzn.to/445FbKh\n• Large flat dish: https://amzn.to/43sxb5T\n• Plastic petri dish (90 × 15 mm): https://amzn.to/43YeDdX\n• Plastic funnel: https://amzn.to/4oEcbll\n• Filter paper: https://amzn.to/4oAKD01\n• Precision tweezers: https://amzn.to/3JIbpoa\n• Digital scale: https://amzn.to/4olYTsy\n\nThese are Amazon affiliate links — I may earn a small commission if you purchase through them, at no extra cost to you.\n\nThank you for supporting this channel!\n\n---\n\nVIDEO CHAPTERS  \n\n00:00 Getting the materials\n00:41 Making the copper acetate\n01:36 Evaporating the solution  \n02:…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 571,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T05:36:43+00:00",
+    "tags": [
+      "化学实验",
+      "DIY手工",
+      "材料制作",
+      "耐心养成",
+      "无配音",
+      "计算机技术",
+      "科学科普",
+      "晶体生长"
+    ],
+    "title": "【无配音】用铜和醋培育黑色醋酸铜晶体，耗时一年十九天｜Growing A Black Crystal from Just Copper & Vinegar",
+    "video_id": "bseedvGInbp",
+    "views": 159
+  },
+  "seed_provenance": {
+    "bvid": "BV1sq4k6wEPb",
+    "published_at": "2026/8/29 13:36:43",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sq4k6wEPb"
+  },
+  "version": 1
+}

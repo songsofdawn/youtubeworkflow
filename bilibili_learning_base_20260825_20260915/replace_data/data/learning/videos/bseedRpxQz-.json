@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "industry"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "财经商业",
+      "算力经济",
+      "华尔街",
+      "英伟达",
+      "金融衍生品",
+      "科技股",
+      "ai泡沫"
+    ],
+    "video_id": "bseedRpxQz-"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n✨ Try Morph for FREE: https://modelcode.ai/morph\nUse code HOUSEOFEL to get 60,000 free credits per month for your first year.\nAnalyze your codebase for FREE. Pay only if you decide to modernize.\n\nWall Street is quietly building an entirely new market around artificial intelligence, and it could tell us more about the future of the AI boom than any earnings call or CEO keynote ever will. Nvidia is making extraordinary amounts of money, compute is being treated more and more like a commodity, and billions of dollars are being layered into financial structures designed to bet on what AI infrastructure will be worth years from now. The question is whether this is the beginning of a mature new market, or whether finance has arrived just in time to make an already complicated boom even more fragile.\n\n☕ Support the channel on Ko-fi:\n➡️ https://ko-fi.com/houseofel\n\n#Nvidia #ArtificialIntelligence #AI #WallStreet #JensenHuang #Derivatives #TechStocks #AIBubble #HouseofEl",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1245,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T12:21:02+00:00",
+    "tags": [
+      "人工智能",
+      "财经商业",
+      "算力经济",
+      "华尔街",
+      "英伟达",
+      "金融衍生品",
+      "科技股",
+      "AI泡沫"
+    ],
+    "title": "华尔街正在悄悄给AI热潮加杠杆吗｜They're Hiding the AI Crash",
+    "video_id": "bseedRpxQz-",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV1BGbs6GExo",
+    "published_at": "2026/9/6 20:21:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1BGbs6GExo"
+  },
+  "version": 1
+}

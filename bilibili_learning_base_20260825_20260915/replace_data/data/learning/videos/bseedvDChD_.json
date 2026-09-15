@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "redstone",
+      "building",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "100_days",
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft 100 days",
+      "minecraft redstone",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑教程",
+      "我的世界",
+      "红石机械",
+      "生存挑战"
+    ],
+    "video_id": "bseedvDChD_"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=kmAaRk53VZ0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nToday, .Watch to find out what happens!\n\nSocials: https://solo.to/techys",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1047,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T17:52:04+00:00",
+    "tags": [
+      "建筑教程",
+      "我的世界",
+      "网络游戏",
+      "游戏实况",
+      "红石机械",
+      "生存挑战"
+    ],
+    "title": "【中英双语】Minecraft：在方块里生存 100 天，建造温馨小家｜Techy Survives 100 Days inside Block in Min…",
+    "video_id": "bseedvDChD_",
+    "views": 165
+  },
+  "seed_provenance": {
+    "bvid": "BV1qbtL62Ezb",
+    "published_at": "2026/9/2 01:52:04",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qbtL62Ezb"
+  },
+  "version": 1
+}

@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "high protein"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "high protein recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "三明治",
+      "牛油果",
+      "金枪鱼",
+      "高蛋白",
+      "快手早餐",
+      "早餐食谱",
+      "hollyfood"
+    ],
+    "video_id": "bseedVnTLWi"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis Tuna Avocado Spread is creamy, savory, and ready in about five minutes the kind of breakfast that actually holds you over until lunch.\n\nPremium tuna gets folded together with ripe avocado, crisp cucumber, fresh herbs, and a squeeze of lime. It's rich without being heavy, and it works on toast, in a sandwich, or straight from the jar with crackers.\n\nIf you've been looking for how to make tuna sandwich that isn't drowning in mayo, this is it. And if you're a fan of how to make a tuna melt, this same spread works beautifully just add cheese and toast it in a pan.\n\nThe technique borrows a little from how to make guacamole with avocado mash it just enough to stay creamy, but leave a few chunks for texture. That's what makes it feel substantial instead of like a paste.\n\nIngredients:\n\n1 avocado\n1/2 green lemon juice\n5oz/1 can yellow tuna\n2 eggs\n1/3 cup finely chopped cucumber\n1/4 cup diced red onion\nCilantro\n1 tsp dijon mustard\n1/2 tsp garlic flakes\n1/4 tsp red chili flakes\nSalt\n1 tbsp avocado mayo\n2 pcs Sourdough bread\nCheddar cheese\n\nThis is a genuine instant protein rich breakfast and one of my go-to quick instant breakfast options for busy mornings. If you're collecting avocado sandwich recipes or looking for more avocado breakfast recipes and avocado recipes in general, this one belongs in the rotation.\n\nIt also pairs beautifully with a boiled egg on the side if you're into healthy meals with eggs or healthy egg recipes for weight loss, that combination is hard to beat.\n\nWhether you're after healt…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 395,
+    "likes": 32,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T00:39:47+00:00",
+    "tags": [
+      "三明治",
+      "牛油果",
+      "美食制作",
+      "金枪鱼",
+      "高蛋白",
+      "快手早餐",
+      "早餐食谱",
+      "yt:cc=on",
+      "HollyFood"
+    ],
+    "title": "5分钟搞定高蛋白金枪鱼牛油果酱早餐｜High Protein Tuna Avocado Spread for Breakfast | Quick & Easy…",
+    "video_id": "bseedVnTLWi",
+    "views": 989
+  },
+  "seed_provenance": {
+    "bvid": "BV1sPYk6jEig",
+    "published_at": "2026/9/14 08:39:47",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sPYk6jEig"
+  },
+  "version": 1
+}

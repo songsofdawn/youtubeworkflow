@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "GPT-6",
+      "Claude",
+      "Fable 5.1",
+      "Qwen",
+      "GLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "gpt-6",
+      "claude",
+      "fable 5.1",
+      "qwen",
+      "glm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai新闻",
+      "anthropic",
+      "openai",
+      "大模型",
+      "alibaba",
+      "glm"
+    ],
+    "video_id": "bseedAe8Ze6"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 4,
+    "description": "https://www.youtube.com/watch?v=sIakce3-sPU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n👉 Turn your infrastructure incidents into repeatable AI-powered workflows with Plural Workbenches — book a demo: https://www.plural.sh/\n\n🚨 GPT-6 leaks are getting absolutely insane. OpenAI has reportedly finished a massive new pretrain codenamed “Bel”, rumored to contain 10T+ total parameters and potentially serve as the foundation for whatever comes after GPT-6.\n\nJoin the private community to get WoAI Bench Pro, exclusive AI freebies and discounts, early model access, automation templates, practical resources and upcoming AI training.\n👉 Join Today! https://www.skool.com/worldofai\n\n🔗 My Links:\nSponsor a Video or Do a Demo of Your Product, Contact me: intheworldzofai@gmail.com\n🔥 Become a Patron (Private Discord): https://patreon.com/WorldofAi\n🧠 Follow me on Twitter: https://twitter.com/intheworldofai \n🚨 Subscribe To The SECOND Channel: https://www.youtube.com/@UCYwLV1gDwzGbg7jXQ52bVnQ \n👩🏻‍🏫 Learn to code with Scrimba – from fullstack to AI https://scrimba.com/?via=worldofai (20% OFF)\n🚨 Subscribe To The FREE AI Newsletter For Regular AI Updates: https://intheworldofai.com/\n👾 Join the World of AI Discord! : https://discord.gg/NPf8FCn4cD\n\n[Must Watch]:\nOpenAI's GPT-6 Astra WILL BE AGI! Greatest AI Model Ever!: https://youtu.be/KbYio-N8_LU\nQwen 3.8 Max IS OUT! Best Open Model? (Fully Tested): https://youtu.be/vmLwsoVRo30\nDeepSeek V4 Flash GA IS INCREDIBLE! Powerful, Cheap, & Fast! (Fully Tested): https://youtu.be/wT42SgaOPK4\n\n📌 LINKS & RESOURCES\nWorld of AI…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 748,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:14:49+00:00",
+    "tags": [
+      "人工智能",
+      "AI新闻",
+      "Anthropic",
+      "中英双语",
+      "中文翻译",
+      "科技资讯",
+      "OpenAI",
+      "大模型",
+      "Alibaba",
+      "GLM"
+    ],
+    "title": "【中英双语】GPT-6 Bel泄露、Claude Fable 5.1与Qwen 4等｜GPT-6 'Bel' HUGE Leaks, Fable 5.1 To…",
+    "video_id": "bseedAe8Ze6",
+    "views": 57
+  },
+  "seed_provenance": {
+    "bvid": "BV18a4y6VEPj",
+    "published_at": "2026/8/29 16:14:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18a4y6VEPj"
+  },
+  "version": 1
+}

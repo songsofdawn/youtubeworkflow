@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "fried chicken",
+      "fast food"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "food taste test",
+      "fried chicken",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "kfc",
+      "炸鸡",
+      "快餐",
+      "fried chicken",
+      "popeyes",
+      "chick-fil-a",
+      "美食排名",
+      "best fried chicken"
+    ],
+    "video_id": "bseedvyjqRV"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 16,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTaking care of your health just got easier, thanks to the sponsor of today's video Zocdoc, start here at: https://zocdoc.com/MeatGuy\n\nToday we're tasting EVERY fried chicken in America, from fast food classics like Popeyes, Chick-fil-A and Raising Caines to mid tier options and finally the fanciest we could find... this one gets crazy!\n\n—————\nSUBSCRIBE and RING THE BELL to get notified when I post a video!\n\nPLATFORMS\n-Snapchat: https://www.snapchat.com/add/maxthemeatguy?share_id=Nzg2RjE4&locale=en_US\n-Instagram: https://www.instagram.com/maxthemeatguy/\n-TikTok: https://www.tiktok.com/@maxthemeatguy\n-Facebook: https://www.facebook.com/MaxTheMeatGuy\n-YouTube: https://youtube.com/c/maxthemeatguy\n\nOTHER LINKS\nhttps://www.beacons.ai/maxthemeatguy\n\nWEBSITE\nhttps://www.maxthemeatguy.com/\n\nFILMED BY\nSophia Greb https://www.youtube.com/c/SophiaGreb\n—————",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2363,
+    "likes": 75,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T22:09:52+00:00",
+    "tags": [
+      "KFC",
+      "炸鸡",
+      "快餐",
+      "美食测评",
+      "fried chicken",
+      "Popeyes",
+      "Chick-fil-A",
+      "美食排名",
+      "best fried chicken"
+    ],
+    "title": "吃遍全美炸鸡！从7-11到高档餐厅大排名｜I Ate EVERY Fried Chicken in America",
+    "video_id": "bseedvyjqRV",
+    "views": 4732
+  },
+  "seed_provenance": {
+    "bvid": "BV1JGY66AEj5",
+    "published_at": "2026/9/14 06:09:52",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1JGY66AEj5"
+  },
+  "version": 1
+}

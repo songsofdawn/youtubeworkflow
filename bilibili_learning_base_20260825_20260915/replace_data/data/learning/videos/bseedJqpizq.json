@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "乐高",
+      "机械",
+      "lego technic",
+      "极客制作",
+      "水下机器人",
+      "arduino",
+      "遥控潜艇",
+      "极客diy"
+    ],
+    "video_id": "bseedJqpizq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nImproved radio-controlled submarine, with two new features: 1) a moving weight for changing pitch, and 2) a water pump based ballast system. Lots of minor improvements too. Equipped with an Arduino Nano ESP32, a pressure sensor and a gyro/accelerometer sensor. Tested in a swimming pool and a small river. Enjoy!\n\n0:00 building\n4:10 test in a swimming pool\n4:46 test in a river\n\nSPECS\nDisplacement: 2.95 kg\nTest depth: 1.5 m\nHull: acrylic plastic cylinder (250x120x3mm)\nRound nose: plastic half ball (12 cm diameter)\nExtra weight: 1.35 kg of tungsten pellets\nPump: Kamoer NKP peristaltic pump modified with Lego parts\nBallast tank: 50 ml animal IV bag\nMoving weight: 400g of steel washer plates\nPropellers: non-Lego 4-blade 55mm diameter PC prop, L/R handed\nMagnetic coupling: K&J Magnetics D36-N52 neodymium magnet\nMotors: 3x Lego PF M-motor (8883), 1x Lego PF XL-motor (8882)\nMotor driver: DRV8833\nRadio control: Graupner R700 40MHz receiver, Graupner X-412 40MHz controller\nPressure sensor: Honeywell SSCMANV030PA2A3\nIMU sensor: MPU-6050 6-Axis Accel/Gyro sensor\nComputer: Arduino Nano ESP32\nPower supply: Lego Rechargeable Battery Box 9V (8878)\nOn-board camera: GoPro 8\n\nC++ CODE, PART LIST, AND OTHER DETAILS\nhttps://brickexperimentchannel.wordpress.com/rc-submarine-5-0-blog-post-series/\n\nPREVIOUS SUBS\n1.0 syringe ballast https://www.youtube.com/watch?v=tGEZApd9MMk\n2.0 magnetic coupling https://www.youtube.com/watch?v=MdfUSNzc0Xk\n3.0 balloon and compressor https://www.youtube.com/watch?v=n83cSg3wohU\n4.0 automatic depth control https://www.youtube.com/watch?v=KLEH8RJsYgI",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 498,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T13:36:15+00:00",
+    "tags": [
+      "DIY",
+      "乐高",
+      "机械",
+      "Lego Technic",
+      "极客制作",
+      "无配音",
+      "水下机器人",
+      "Arduino",
+      "遥控潜艇",
+      "极客DIY"
+    ],
+    "title": "用乐高打造可下潜遥控潜艇5.0！配重调姿+水泵压载｜Building a Lego-powered Submarine 5.0 - moving weight…",
+    "video_id": "bseedJqpizq",
+    "views": 60
+  },
+  "seed_provenance": {
+    "bvid": "BV1tnYu6xEXA",
+    "published_at": "2026/9/10 21:36:15",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tnYu6xEXA"
+  },
+  "version": 1
+}

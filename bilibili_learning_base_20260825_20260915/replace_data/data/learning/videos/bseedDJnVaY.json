@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process",
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "harvest and preserve",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "家庭种植",
+      "自制冰沙",
+      "观赏玉米",
+      "田园生活",
+      "夏日饮品",
+      "园艺技巧",
+      "西瓜采摘",
+      "fresh corn inspectio"
+    ],
+    "video_id": "bseedDJnVaY"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=tQisiQH3I9M\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEver wondered how to tell if your garden watermelon is actually ripe before you cut it open? In today's episode of Yard to Table Appalachian Homesteading, we are heading into the garden to harvest the perfect watermelon and some beautiful ornamental corn. Join us as we explore the rewards of a summer harvest and turn our hard work into a delicious, refreshing treat.\n\nIn this video, we walk you through the practical process of checking watermelon tendrils and yellow bellies to ensure peak sweetness. We also harvest a variety of decorative corn, discussing the vibrant colors like blue and pink that make for excellent fall wreaths and decor. You will learn how to identify common garden pests like squash bugs and see what happens when corn faces disease or poor pollination.\n\nTo wrap things up, Mary shares her special recipe for a healthy watermelon smoothie. This drink uses frozen strawberries, bananas, milk, and local honey for a perfect summer cooldown without any added sugar. Whether you are a seasoned gardener or just starting your homesteading journey, there is plenty of helpful advice on harvesting and enjoying your produce.\n\nChapters\n0:00 Finding the ripe watermelons\n3:15 Harvesting the garden haul\n5:50 Picking ornamental decorative corn\n8:45 Identifying garden pests and corn issues\n11:30 Shucking corn to reveal vibrant colors\n15:20 Watermelon smoothie recipe and prep\n18:45 Blending and thickening the smoothie\n21:30 Refreshing summer treat taste test\n\nIf you enjoyed this Yard-to-table journey, ple…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1356,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:07:49+00:00",
+    "tags": [
+      "家庭种植",
+      "自制冰沙",
+      "观赏玉米",
+      "中文翻译",
+      "中英双语",
+      "田园生活",
+      "夏日饮品",
+      "园艺技巧",
+      "西瓜采摘",
+      "fresh corn inspectio"
+    ],
+    "title": "【中英双语】庭院采摘：挑选熟透西瓜与观赏玉米，制作夏日冰沙｜Harvesting Ornamental Corn & Making Watermelon Sm…",
+    "video_id": "bseedDJnVaY",
+    "views": 2
+  },
+  "seed_provenance": {
+    "bvid": "BV1jR496JERy",
+    "published_at": "2026/8/27 20:07:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1jR496JERy"
+  },
+  "version": 1
+}

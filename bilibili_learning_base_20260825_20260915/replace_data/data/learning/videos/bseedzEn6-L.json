@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "GPT-6",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "gpt-6",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai",
+      "财经商业",
+      "sam altman",
+      "ipo",
+      "agi",
+      "openai",
+      "彭博社",
+      "astra"
+    ],
+    "video_id": "bseedzEn6-L"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOpenAI CEO and co-founder Sam Altman discusses the rollout of GPT-6 Astra, the company's latest AI model, and says the tech industry has done a terrible job of communicating the benefits of AI. Speaking with Ed Ludlow on \"Bloomberg The Close,\" Altman also says he assumes the company will go public one day.\n\n--------\n\nMore on Bloomberg Television and Markets\n\n \n\nLike this video? Subscribe and turn on notifications so you don't miss any videos from Bloomberg Markets & Finance: https://tinyurl.com/ysu5b8a9\n\nVisit http://www.bloomberg.com for business news & analysis, up-to-the-minute market data, features, profiles and more.\n\n \n\nConnect with Bloomberg Television on:\n\nX: https://twitter.com/BloombergTV\n\nFacebook: https://www.facebook.com/BloombergTelevision\n\nInstagram: https://www.instagram.com/bloombergtv/\n\n \n\nConnect with Bloomberg Business on:\n\nX: https://twitter.com/business\n\nFacebook: https://www.facebook.com/bloombergbusiness\n\nInstagram: https://www.instagram.com/bloombergbusiness/\n\nTikTok: https://www.tiktok.com/@bloombergbusiness?lang=en\n\nReddit: https://www.reddit.com/r/bloomberg/\n\nLinkedIn: https://www.linkedin.com/company/bloomberg-news/\n\n \n\nMore from Bloomberg:\n\nBloomberg Radio: https://twitter.com/BloombergRadio\n\n\n\nBloomberg Surveillance: https://twitter.com/bsurveillance\n\nBloomberg Politics: https://twitter.com/bpolitics\n\nBloomberg Originals: https://twitter.com/bbgoriginals\n\n \n\nWatch more on YouTube:\n\nBloomberg Technology: https://www.youtube.com/@BloombergTechnology\n\nBloomberg Originals:…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 753,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T23:48:42+00:00",
+    "tags": [
+      "AI",
+      "人工智能",
+      "财经商业",
+      "Sam Altman",
+      "IPO",
+      "AGI",
+      "OpenAI",
+      "彭博社",
+      "Astra"
+    ],
+    "title": "OpenAI CEO专访：GPT-6 Astra是迈向AGI的一步｜OpenAI's Sam Altman on Astra Model Debut, Ben…",
+    "video_id": "bseedzEn6-L",
+    "views": 81
+  },
+  "seed_provenance": {
+    "bvid": "BV1m9Y56MEbU",
+    "published_at": "2026/9/11 07:48:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1m9Y56MEbU"
+  },
+  "version": 1
+}

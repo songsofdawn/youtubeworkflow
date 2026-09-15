@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "游戏杂谈",
+      "童年回忆",
+      "游戏剧情解说",
+      "flash游戏",
+      "老爹游戏",
+      "游戏考据",
+      "papalouie",
+      "papa louie",
+      "papa's games"
+    ],
+    "video_id": "bseed3nZczr"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFor twenty years, Papa Louie has ruled over his home with an iron fist. And after four years, I have finally decided to once again face my biggest enemy. In this adventure, I go through all his atrocities across decades of history! \n\nEdited by @Fembee \n\nThumbnail Art by https://www.suprdee2.com/\n\nFind More of Me Down Below! (or here https://linktr.ee/therealchoopo)\n\n⭐️SUBSCRIBE!-https://youtube.com/@choopotwoopo?si=QI1XFmHxCMgzL9so ⭐️\n\n⭐️⭐️OTHER CHANNEL https://m.youtube.com/choopo  ⭐️⭐️\n\nSilly rambling channel  https://www.youtube.com/channel/UC4t3D5yZUqtqmgGebKHP5Bw\n\n⚜️⚜️MERCH- https://choopo.store ⚜️⚜️\n\n❗️https://gamersupps.gg/Choopo❗️\n\n⭐️INSTAGRAM-https://www.instagram.com/therealchoopo/\n\n⭐️ DISCORD-https://discord.gg/2z4w2nmwUn\n\n⭐️ TWITTER-https://twitter.com/therealchoopo\n\n0:00 Before the Games and Worldbuilding\n4:40 Louie's Reign of Terror\n16:36 Louie's Redemption Begins\n24:33 Gurth and Munchmore\n28:12 World Peace and Bad Decisions\n35:46 The Next Chapter and Choopo Announcements\n\nSongs Used (In Order, good luck trying to find a specific one)\n\nPapa’s Pizzeria - Intro\nPapa’s Freezeria - Order Station/Lobby\nPapa’s Freezeria - Title Card\nPapa’s Donuteria - Order Station/Stats\nPapa’s Cluckeria - Slush Station\nPapa’s Cluckeria - Order Station (with boombox, jukebox and phonograph)\nPapa Louie: When Pizzas Attack! - 2nd Floor\nPapa Louie 2: When Burgers Attack! - Level Select\nPapa Louie: When Pizzas Attack!…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2381,
+    "likes": 73,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T04:30:19+00:00",
+    "tags": [
+      "游戏杂谈",
+      "单机游戏",
+      "童年回忆",
+      "游戏剧情解说",
+      "Flash游戏",
+      "老爹游戏",
+      "游戏考据",
+      "PapaLouie",
+      "papa louie",
+      "papa's games"
+    ],
+    "title": "老爹游戏系列20年剧情全解：披萨店主的黑暗帝国｜The Complete Story of Papa’s Games (500k Special)",
+    "video_id": "bseed3nZczr",
+    "views": 2279
+  },
+  "seed_provenance": {
+    "bvid": "BV1MbYs6KELc",
+    "published_at": "2026/9/9 12:30:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1MbYs6KELc"
+  },
+  "version": 1
+}

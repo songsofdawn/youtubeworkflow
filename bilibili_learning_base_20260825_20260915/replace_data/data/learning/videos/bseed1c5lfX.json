@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "化学",
+      "手工diy",
+      "动画科学",
+      "魔法帽工坊",
+      "科学实验",
+      "极客diy",
+      "墨水制作"
+    ],
+    "video_id": "bseed1c5lfX"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCan magic from anime actually exist in real life? In Witch Hat Atelier, witches cast spells not with mana, but by drawing with a special \"magic ink.\" In this video, I decided to test the science behind it and recreate that exact ink using real chemistry!\n\nBy breaking down the clues from the anime—like the Silverwood tree and traditional ink formulation—I combined carbon, a natural binder, glycerin, and real silver powder to make a shimmering, functional ink. And to bring the whole thing to life, I set up a chemical reaction that makes the drawn spell look like it's literally bursting into flames.\n\nWhich anime magic or invention should I try to bring to life next? Drop your ideas in the comments below!\n\nDon't forget to like, subscribe, and hit the bell icon if you love anime science experiments.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 319,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T13:39:57+00:00",
+    "tags": [
+      "化学",
+      "手工DIY",
+      "动画科学",
+      "魔法帽工坊",
+      "科学实验",
+      "极客DIY",
+      "墨水制作"
+    ],
+    "title": "用真实化学复刻《魔女之旅》的魔法墨水",
+    "video_id": "bseed1c5lfX",
+    "views": 8
+  },
+  "seed_provenance": {
+    "bvid": "BV1YCbW6AE5g",
+    "published_at": "2026/9/6 21:39:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1YCbW6AE5g"
+  },
+  "version": 1
+}

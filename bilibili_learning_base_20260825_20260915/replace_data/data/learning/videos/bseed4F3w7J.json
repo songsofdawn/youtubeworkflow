@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "farm",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home vegetable garden",
+      "harvest and preserve",
+      "vegetable garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "饲养动物",
+      "邻里互助",
+      "农场生活",
+      "田园风光",
+      "乡村日常",
+      "家庭菜园",
+      "慢节奏生活",
+      "peaceful farm life"
+    ],
+    "video_id": "bseed4F3w7J"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=4nantRwi-gE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nAnother quiet and meaningful day unfolds here on the farm. In today’s video, I take care of my farm animals and harvest a fresh basket of homegrown vegetables from the garden. I share a little piece of the harvest with my animals, then pack up the rest to give to my lovely neighbor. In return, a basket of rice paddy is shared back - a simple,rustic exchange filled with local warmth and community love.\nIf this slice of peaceful country life brings comfort to your day, please give it a thumbs up, subscribe, and share your thoughts below! \n#slowliving \n#peacefullife \n#farmlife \n#rurallife \n#harvestingveggies \n#careanimals \n#backyardgardening",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1028,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T11:34:06+00:00",
+    "tags": [
+      "饲养动物",
+      "邻里互助",
+      "中文翻译",
+      "中英双语",
+      "农场生活",
+      "田园风光",
+      "乡村日常",
+      "家庭菜园",
+      "慢节奏生活",
+      "Peaceful farm life"
+    ],
+    "title": "【中英双语】宁静农场日常：采摘蔬菜、与邻居交换稻米及照料动物｜Peaceful Farm Life : Harvesting Veggies and Trad…",
+    "video_id": "bseed4F3w7J",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1z44R64Emh",
+    "published_at": "2026/8/27 19:34:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1z44R64Emh"
+  },
+  "version": 1
+}

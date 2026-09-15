@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process",
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手工制作",
+      "金属加工",
+      "首饰制作",
+      "生活美学",
+      "手工珠宝",
+      "创意改造",
+      "环保材料",
+      "diy 教程"
+    ],
+    "video_id": "bseed2I6chh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=iCTLU8pzwuk\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nHow I turn a hex nut into beautiful flower ring - handmade jewelry\n\nIn this video, I’ll show you how I transform a brass hex nut into a beautiful flower ring. This is part of a series on creating jewelry from unconventional materials; crafting a ring from a brass hex nut is quite challenging because the alloy—containing zinc, nickel, and copper—is hard to melt and difficult to shape. Nevertheless, I’ll turn it into a lovely floral ring. The design is simple, featuring petals inspired by the *Jasminum sambac* flower, an emerald center, and tsavorite accents on the band—making it a stunning piece to wear. As with my other videos, I use simple tools and techniques, so you can create your own jewelry at home by following along. You can also order this ring in materials like silver, gold, or palladium, or request a personalized design; feel free to contact me via my website or Etsy shop. Thank you so much for watching!\n\n#jewelrymaker \n#howtomakejewelry \n#handmadejewelry \n#uniquejewelrymaker\n#jewelrymaking",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 816,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:48:25+00:00",
+    "tags": [
+      "手工",
+      "手工制作",
+      "无配音",
+      "金属加工",
+      "首饰制作",
+      "生活美学",
+      "手工珠宝",
+      "创意改造",
+      "环保材料",
+      "DIY 教程"
+    ],
+    "title": "【无配音】黄铜六角螺母改造成茉莉花戒指的手工制作教程｜How I turn a hex nut into beautiful flower ring - ha…",
+    "video_id": "bseed2I6chh",
+    "views": 17
+  },
+  "seed_provenance": {
+    "bvid": "BV1ec416WELx",
+    "published_at": "2026/8/29 15:48:25",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ec416WELx"
+  },
+  "version": 1
+}

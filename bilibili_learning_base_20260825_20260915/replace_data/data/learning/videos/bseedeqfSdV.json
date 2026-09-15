@@ -1,0 +1,88 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival",
+      "100_days"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft 100 days",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "极限生存",
+      "我的世界",
+      "minecraft",
+      "minecraft hardcore",
+      "生存挑战",
+      "100天生存",
+      "海洋生存",
+      "mc硬核模式"
+    ],
+    "video_id": "bseedeqfSdV"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔸️Download modpack, world, texturepack, shaders ► https://www.patreon.com/Skillux/posts/world-mods-from-162836716?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link\n🔹Download all the custom music and other sound design effects from this video ► https://www.patreon.com/posts/download-music-136063742?\n\n↓↓↓ \n\nI Survived 100 Days in an OCEAN in Minecraft Hardcore 1.21.3\nMinecraft Hardcore Mode is the hardest difficulty of the game Minecraft. If you die in Minecraft Hardcore Mode, you`ll die forever and the world will be deleted. Hardcore Mode has a slightly higher difficulty than just Hardcore. Mobs spawn even more actively, attack even harder and have even more stamina and detection range than when playing on Hard Survival difficulty. \n\n↓↓↓\n\n00:00 - Introduction \n00:26 - Survival \n00:56:49 - Ending\n\n↓↓↓\n\nThank you very much for watching this video and supporting me as a content creator. Support me more by watching my other videos! Please share this video with your friends ;) \n\nTags: #minecraft, #100days, #minecraftsurvival, #survivalminecraft",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3442,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T12:22:46+00:00",
+    "tags": [
+      "极限生存",
+      "我的世界",
+      "单机游戏",
+      "minecraft",
+      "minecraft hardcore",
+      "生存挑战",
+      "100天生存",
+      "海洋生存",
+      "MC硬核模式"
+    ],
+    "title": "在全是海的世界极限生存100天｜I Survived 100 Days in ONLY OCEAN in Minecraft Hardcore",
+    "video_id": "bseedeqfSdV",
+    "views": 67
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZmYi6QELm",
+    "published_at": "2026/9/13 20:22:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZmYi6QELm"
+  },
+  "version": 1
+}

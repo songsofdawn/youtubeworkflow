@@ -1819,6 +1819,116 @@ input[type="checkbox"] {
   overflow: auto;
 }
 
+.publish-order {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.publish-order-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.publish-order-head strong {
+  font-size: 13px;
+}
+
+.publish-order-head > span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.publish-order-list {
+  display: grid;
+  gap: 5px;
+  max-height: min(58vh, 620px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.publish-order-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: rgba(14, 17, 19, 0.7);
+  font-size: 11px;
+}
+
+.publish-order-row.current {
+  border-color: rgba(200, 245, 96, 0.35);
+}
+
+.publish-order-position {
+  color: var(--accent);
+  font: 800 12px/1 var(--mono);
+  text-align: center;
+}
+
+.publish-order-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.publish-order-copy strong,
+.publish-order-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.publish-order-copy strong {
+  font-size: 12px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.35;
+}
+
+.publish-order-copy small {
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.publish-order-status {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 10px;
+  white-space: normal;
+}
+
+.publish-order-actions {
+  grid-column: 2;
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.publish-order-actions button {
+  min-height: 30px;
+  padding: 5px 9px;
+  font-size: 10px;
+}
+
+.publish-order-priority {
+  color: #ffb444;
+}
+
 .job-item {
   min-width: 0;
   padding: 11px;

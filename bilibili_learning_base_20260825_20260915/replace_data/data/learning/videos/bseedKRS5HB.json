@@ -1,0 +1,95 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "horror games",
+      "game development"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "手机网页游戏",
+      "程序生成内容",
+      "ai 游戏开发",
+      "恐怖游戏制作",
+      "独立游戏实验",
+      "claude 编程挑战",
+      "claude horror game",
+      "生存恐怖机制"
+    ],
+    "video_id": "bseedKRS5HB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=e8nMs_iy_BQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI gave Claude just 15 minutes to build a playable horror game from scratch; and somehow, it managed to finish at the last possible moment.\n\nI then played the game on my phone to see if Claude could actually make something scary, playable, and worth surviving.\n\n---\n\n🎮 Play the game yourself (I've optimized the game code and now it's less than 1500 lines of code):\n\n[https://drive.google.com/file/d/1VFfyCzOBZnvw9uxro5zoNh70rhJCphwF/view?usp=drivesdk]\n\n---\n\n📱 HTML viewer used (for full screen gameplay on mobile):\n[https://codeshack.io/html-viewer/]\n\n---\n\nIf you enjoyed the experiment, subscribe for more AI game-building challenges.\n\n#AI #GameDevelopment #HorrorGame",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 375,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:47:58+00:00",
+    "tags": [
+      "手机网页游戏",
+      "程序生成内容",
+      "AI 游戏开发",
+      "中文翻译",
+      "恐怖游戏制作",
+      "中英双语",
+      "独立游戏实验",
+      "Claude 编程挑战",
+      "Claude horror game",
+      "生存恐怖机制"
+    ],
+    "title": "【中英双语】15 分钟让 AI 从零开发恐怖游戏，成品竟超出预期｜I Gave Claude 15 Minutes to Make a Horror Game",
+    "video_id": "bseedKRS5HB",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ck4y6iE7t",
+    "published_at": "2026/8/29 16:47:58",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ck4y6iE7t"
+  },
+  "version": 1
+}

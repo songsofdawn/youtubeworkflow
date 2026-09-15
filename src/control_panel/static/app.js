@@ -13,6 +13,8 @@ const state = {
   publishTitleBase: "",
   publishAutoTitle: true,
   publishDynamicAuto: true,
+  publishPriorityDefault: false,
+  publishPriority: false,
   renderReviewTask: null,
   coverPreviewTask: null,
   coverInitialized: false,
@@ -92,6 +94,15 @@ function targetLabel(target) {
   return parts.at(-1) || target || "未命名任务";
 }
 
+function publishTargetTitle(target) {
+  const label = targetLabel(target);
+  const readable = label
+    .replace(/^[A-Za-z0-9_-]{11}[_-]*/, "")
+    .replace(/_+/g, " ")
+    .trim();
+  return readable || label;
+}
+
 function updatePublishDescriptionCount() {
   const field = $("#publishDescription");
   const counter = $("#publishDescriptionCount");
@@ -139,6 +150,7 @@ function renderDashboard(dashboard) {
   $("#metricPublished").textContent = summary.published;
   renderHealth(dashboard.health);
   renderScheduler(dashboard.scheduler);
+  renderPublishOrder(dashboard.scheduler?.publishing || {});
   renderTasks(dashboard.tasks);
   renderJobs(dashboard.jobs);
   if (state.coverPreviewTask && $("#coverPreviewDialog").open) updateCoverPreview();
@@ -384,6 +396,44 @@ function renderScheduler(scheduler) {
   container.innerHTML = resourceSlots
     + `<span class="scheduler-slot global">全局 ${Number(globalSlot.running)}/${Number(globalSlot.capacity)}</span>`
     + guardSlot;
+}
+
+function renderPublishOrder(publishing) {
+  const container = $("#publishOrder .publish-order-list");
+  if (!container) return;
+  const queue = Array.isArray(publishing?.queue) ? publishing.queue : [];
+  if (!queue.length) {
+    container.innerHTML = '<p class="muted">暂无排队投稿</p>';
+    return;
+  }
+  container.innerHTML = queue.map((job, index) => {
+    const current = job.status === "running";
+    const status = current
+      ? "当前投稿"
+      : String(job.step || "").includes("投稿保护") ? "等待冷却" : "等待中";
+    const priority = Number(job.priority || 0) > 0
+      ? '<span class="publish-order-priority">优先</span>'
+      : "";
+    const queuedBefore = queue.slice(0, index).some((item) => item.status !== "running");
+    const queuedAfter = queue.slice(index + 1).some((item) => item.status !== "running");
+    const controls = !current
+      ? `<span class="publish-order-actions">
+          <button class="button button-ghost button-small move-publish-job" type="button" data-job-id="${escapeHtml(job.id)}" data-direction="up" ${queuedBefore ? "" : "disabled"}>上移</button>
+          <button class="button button-ghost button-small move-publish-job" type="button" data-job-id="${escapeHtml(job.id)}" data-direction="down" ${queuedAfter ? "" : "disabled"}>下移</button>
+          <button class="button button-ghost button-small prioritize-job" type="button" data-job-id="${escapeHtml(job.id)}">置顶</button>
+        </span>`
+      : "";
+    const directTitle = String(job.title || job.original_title || "").trim();
+    const title = directTitle && !/^[A-Za-z0-9_-]{11}[_-]/.test(directTitle)
+      ? directTitle
+      : publishTargetTitle(job.target) || directTitle || job.video_id || "未命名投稿";
+    return `<div class="publish-order-row${current ? " current" : ""}">
+      <span class="publish-order-position">${index + 1}</span>
+      <span class="publish-order-copy" title="${escapeHtml(title)}"><strong>${escapeHtml(title)}</strong></span>
+      <span class="publish-order-status" title="${escapeHtml(job.step || status)}">${priority}${priority ? " · " : ""}${status}</span>
+      ${controls}
+    </div>`;
+  }).join("");
 }
 
 function renderHealth(health) {
@@ -740,15 +790,28 @@ function renderTasks(tasks) {
     const image = task.thumbnail_url
       ? `<img class="task-thumb" src="${escapeHtml(task.thumbnail_url)}" alt="" loading="lazy">`
       : `<div class="task-thumb"></div>`;
-    const publishAction = active ? "" : task.stages.publish.state === "complete"
+    const activePublishPriorityAction = active && active.status === "queued"
+      ? `<button class="task-menu-item prioritize-active-task" type="button" role="menuitem" title="将此视频的排队投稿置顶" aria-label="优先投稿" data-job-id="${escapeHtml(active.id)}">优先投稿</button>`
+      : active && active.kind === "publish"
+        ? `<button class="task-menu-item" type="button" role="menuitem" disabled title="当前投稿正在上传，不能移动">优先投稿（当前上传中）</button>`
+        : "";
+    const publishAction = active ? activePublishPriorityAction : task.stages.publish.state === "complete"
       ? task.bilibili_url
         ? `<button class="task-menu-item open-bilibili" type="button" role="menuitem" title="打开B站稿件" aria-label="打开B站稿件">打开B站稿件</button>`
         : ""
       : task.stages.publish.state === "active"
         ? ""
       : task.stages.render.state === "complete"
-          ? `<button class="task-menu-item publish-task" type="button" role="menuitem" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">投稿到哔哩哔哩</button>`
+          ? `<button class="task-menu-item publish-task" type="button" role="menuitem" title="投稿到哔哩哔哩" aria-label="投稿到哔哩哔哩">投稿到哔哩哔哩</button>
+             <button class="task-menu-item publish-priority-task" type="button" role="menuitem" title="打开投稿窗口并置顶排队" aria-label="优先投稿">优先投稿</button>`
           : "";
+    const publishPriorityAction = !active
+      && task.stages.publish.state !== "complete"
+      && task.stages.publish.state !== "active"
+      ? task.stages.render.state === "complete"
+        ? ""
+        : `<button class="task-menu-item" type="button" role="menuitem" disabled title="请先完成成片或排版复核">优先投稿（需先完成成片）</button>`
+      : "";
     const layoutReview = !active
       && task.stages.publish.state !== "complete"
       && !["ORIGINAL_MEDIA", "FALLBACK_PENDING"].includes(task.automation_status)
@@ -798,6 +861,7 @@ function renderTasks(tasks) {
           <button class="icon-button task-more" type="button" title="更多任务操作" aria-label="更多任务操作" aria-haspopup="menu" aria-expanded="false">…</button>
           <div class="task-more-menu" role="menu" hidden>
             ${publishAction}
+            ${publishPriorityAction}
             ${renderAction}
             <button class="task-menu-item redownload-task" type="button" role="menuitem" title="${active ? "请先终止或等待当前任务完成" : "重新下载并修复原始素材"}" ${active ? "disabled" : ""}>重新下载</button>
             <button class="task-menu-item preview-cover" type="button" role="menuitem" title="预览原封面、中文封面或重新生成">封面与封面文案</button>
@@ -1191,7 +1255,8 @@ $("#discoveryForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   state.discoveryAutoRestorePending = false;
   const packs = $$("#discoveryPacks input:checked").map((input) => input.value);
-  if (!packs.length) return toast("请至少选择一个发现领域", true);
+  const discoveryScope = $("#discoveryScope").value;
+  if (discoveryScope === "manual" && !packs.length) return toast("手动聚焦请至少选择一个领域", true);
   const button = $(".discovery-submit", event.currentTarget);
   button.disabled = true;
   button.querySelector("span").textContent = "正在发现…";
@@ -1204,6 +1269,8 @@ $("#discoveryForm").addEventListener("submit", async (event) => {
         per_pack: Number($("#discoveryPerPack").value),
         minimum_duration_minutes: Number($("#discoveryMinDurationMinutes").value),
         maximum_duration_minutes: Number($("#discoveryMaxDurationMinutes").value),
+        discovery_scope: discoveryScope,
+        search_strength: $("#discoverySearchStrength").value,
       }),
     });
     const jobId = queued.job?.id;
@@ -1501,6 +1568,17 @@ $("#taskList").addEventListener("click", async (event) => {
   }
   if (event.target.closest(".publish-task")) {
     await openPublishDialog(row.dataset.task);
+    return;
+  }
+  if (event.target.closest(".publish-priority-task")) {
+    state.publishPriorityDefault = true;
+    await openPublishDialog(row.dataset.task);
+    return;
+  }
+  const activePriorityButton = event.target.closest(".prioritize-active-task");
+  if (activePriorityButton) {
+    await prioritizePublishJob(activePriorityButton);
+    return;
   }
   if (event.target.closest(".open-bilibili") && row.dataset.bilibiliUrl) {
     window.open(row.dataset.bilibiliUrl, "_blank", "noopener,noreferrer");
@@ -1957,6 +2035,46 @@ $("#manualCoverChoice").addEventListener("change", () => {
 });
 updateCoverRequestControls();
 
+async function prioritizePublishJob(button) {
+  button.disabled = true;
+  try {
+    await api(`/api/jobs/${button.dataset.jobId}/prioritize`, {
+      method: "POST",
+      body: "{}",
+    });
+    toast("投稿已置顶；当前投稿完成后将自动接续");
+    await refreshDashboard();
+  } catch (error) {
+    button.disabled = false;
+    toast(error.message, true);
+  }
+}
+
+async function movePublishJob(button) {
+  button.disabled = true;
+  try {
+    await api(`/api/jobs/${button.dataset.jobId}/move`, {
+      method: "POST",
+      body: JSON.stringify({ direction: button.dataset.direction }),
+    });
+    toast("投稿顺序已调整");
+    await refreshDashboard();
+  } catch (error) {
+    button.disabled = false;
+    toast(error.message, true);
+  }
+}
+
+$("#publishOrder").addEventListener("click", async (event) => {
+  const moveButton = event.target.closest(".move-publish-job");
+  if (moveButton) {
+    await movePublishJob(moveButton);
+    return;
+  }
+  const button = event.target.closest(".prioritize-job");
+  if (button) await prioritizePublishJob(button);
+});
+
 $("#jobList").addEventListener("click", async (event) => {
   const resultButton = event.target.closest(".show-discovery-result");
   if (resultButton) {
@@ -2086,6 +2204,8 @@ async function openPublishDialog(task) {
     $("#publishOnlySelf").checked = defaults.is_only_self;
     $("#publishNoReprint").checked = defaults.no_reprint;
     $("#publishUseCover").checked = defaults.use_cover;
+    state.publishPriority = state.publishPriorityDefault;
+    state.publishPriorityDefault = false;
     $("#publishUseCover").disabled = !defaults.cover_available;
     $("#publishConfirm").checked = false;
     $("#publishAccount").innerHTML = defaults.accounts.length
@@ -2160,7 +2280,7 @@ $("#publishForm").addEventListener("submit", async (event) => {
   const button = $("#submitPublish");
   button.disabled = true;
   try {
-    await api("/api/publish", {
+    const payload = await api("/api/publish", {
       method: "POST",
       body: JSON.stringify({
         task: state.publishTask,
@@ -2179,11 +2299,18 @@ $("#publishForm").addEventListener("submit", async (event) => {
         is_only_self: $("#publishOnlySelf").checked,
         no_reprint: $("#publishNoReprint").checked,
         use_cover: $("#publishUseCover").checked,
+        priority: state.publishPriority,
         confirm_publish: $("#publishConfirm").checked,
       }),
     });
+    state.publishPriority = false;
     $("#publishDialog").close();
-    toast("投稿任务已加入队列");
+    const job = payload.job || {};
+    toast(job.reused
+      ? (job.queue_message || "这个视频已在投稿队列中，不会重复投稿")
+      : job.priority
+        ? "投稿任务已置顶；当前投稿完成后自动接续"
+        : "投稿任务已加入队列；当前投稿完成后自动接续");
     await refreshDashboard();
   } catch (error) {
     button.disabled = false;

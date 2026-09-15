@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "aquariums",
+      "fish"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "aquarium rescue",
+      "aquarium",
+      "fish rescue",
+      "betta fish rescue"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "水族箱",
+      "鱼类饲养",
+      "斗鱼",
+      "观赏鱼",
+      "拯救",
+      "宠物",
+      "造景",
+      "aquarium",
+      "开缸",
+      "betta"
+    ],
+    "video_id": "bseedjPtAKE"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI rescued a dying betta fish from a supermarket tank and gave him a real home. This is the full story of how a store bought betta went from a tiny cup to a fully cycled aquarium and what actually changed for him along the way.\n\nMost supermarket bettas are kept in tiny, unfiltered cups under stressful conditions, and a lot of them don’t make it. This video follows the entire rescue process: what his condition looked like when I found him, the quarantine and acclimation process, setting up a proper heated and filtered tank, and the recovery over the following days and weeks.\n\nIf you’ve ever walked past a betta in a grocery store cup and wondered whether it’s worth saving one, this video shows exactly what that looks like and what it takes to actually keep one alive and thriving long term.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 614,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T14:07:40+00:00",
+    "tags": [
+      "水族箱",
+      "鱼类饲养",
+      "斗鱼",
+      "观赏鱼",
+      "拯救",
+      "宠物",
+      "造景",
+      "aquarium",
+      "开缸",
+      "Betta"
+    ],
+    "title": "超市濒死斗鱼被我救回家，开缸全程记录｜Saving a Dying Supermarket Betta Fish",
+    "video_id": "bseedjPtAKE",
+    "views": 43
+  },
+  "seed_provenance": {
+    "bvid": "BV1MFYd64E95",
+    "published_at": "2026/9/12 22:07:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1MFYd64E95"
+  },
+  "version": 1
+}

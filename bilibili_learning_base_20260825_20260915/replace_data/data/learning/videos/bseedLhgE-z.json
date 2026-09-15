@@ -1,0 +1,119 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI coding",
+      "AI agents"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai coding",
+      "ai agents",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "程序员",
+      "lexfridman",
+      "rubyonrails",
+      "科技访谈",
+      "智能体",
+      "dhh",
+      "ai编程",
+      "lex ai",
+      "alex friedman"
+    ],
+    "video_id": "bseedLhgE-z"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nLex Fridman Podcast full episode: https://www.youtube.com/watch?v=NYFGCESmikA\nThank you for listening ❤ Check out our sponsors: https://lexfridman.com/sponsors/cv10019-sb\nSee below for guest bio, links, and to give feedback, submit questions, contact Lex, etc.\n\n*GUEST BIO:*\nDHH is the creator of Ruby on Rails, Omarchy Linux, CTO of 37signals, and a racecar driver.\n\n*CONTACT LEX:*\n*Feedback* - give feedback to Lex: https://lexfridman.com/survey\n*AMA* - submit questions, videos or call-in: https://lexfridman.com/ama\n*Hiring* - join our team: https://lexfridman.com/hiring\n*Other* - other ways to get in touch: https://lexfridman.com/contact\n\n*EPISODE LINKS:*\nDHH's X: https://x.com/dhh\nDHH's Blog: https://world.hey.com/dhh\nOmarchy: https://omarchy.org\nRuby on Rails: https://rubyonrails.org\n37signals: https://37signals.com\n\n*SPONSORS:*\nTo support this podcast, check out our sponsors & get discounts:\n*Wispr Flow:* AI-powered voice dictation app.\nGo to https://lexfridman.com/s/wispr_flow-cv10019-sb\n*Blitzy:* AI agent for large enterprise codebases.\nGo to https://lexfridman.com/s/blitzy-cv10019-sb\n*NetSuite:* Business management software.\nGo to https://lexfridman.com/s/netsuite-cv10019-sb\n*Shopify:* Sell stuff online.\nGo to https://lexfridman.com/s/shopify-cv10019-sb\n*LMNT:* Zero-sugar electrolyte drink mix.\nGo to https://lexfridman.com/s/lmnt-cv10019-sb\n*Plaud:* AI-powered note-taking devices and software.\nGo to https://lexfridman.com/s/plaud-cv10019-sb\n*Higgsfield AI:* AI-based video generation, filmmakin…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1026,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T10:02:13+00:00",
+    "tags": [
+      "程序员",
+      "LexFridman",
+      "RubyOnRails",
+      "科技访谈",
+      "智能体",
+      "计算机技术",
+      "DHH",
+      "AI编程",
+      "lex ai",
+      "alex friedman"
+    ],
+    "title": "DHH谈AI智能体编程：让代码自己变简单｜Strategies for programming with AI agents | DHH and Lex Fr…",
+    "video_id": "bseedLhgE-z",
+    "views": 32
+  },
+  "seed_provenance": {
+    "bvid": "BV1M6bK63EY5",
+    "published_at": "2026/9/7 18:02:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1M6bK63EY5"
+  },
+  "version": 1
+}

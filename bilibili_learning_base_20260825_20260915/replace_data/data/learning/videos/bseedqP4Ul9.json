@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "steak"
+    ],
+    "formats": [
+      "comparison",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "steak recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "牛排",
+      "西餐教程",
+      "煎牛排",
+      "菲力牛排",
+      "make steak diane",
+      "白兰地蘑菇酱",
+      "steak diane",
+      "牛排戴安"
+    ],
+    "video_id": "bseedqP4Ul9"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSteak Diane is a steakhouse classic you should be making at home. Use my Factor link https://factor.yt.link/qxr5LGs and code BRIANLAGERSTROMBTS for 50% off your first box + a full year of free breakfast! Delicious food made easy. T&C apply.\n\n▶️WATCH NEXT:\nFRENCH PEPPER STEAK: https://youtu.be/fXMj9C-x0yc?si=p9fvlWSUoLZF2T-2\nCHICKEN PICCATA: https://youtu.be/g6r1gAztDtY?si=Kj2wmmt44MKlxVJn\n\n\n📝 DETAILED RECIPES ON MY BLOG: https://brianlagerstrom.com/recipes\n\n🔪MY GEAR:\n10\" FRYING PAN WITH LID: https://amzn.to/3UL1Mu1\nCUTTING BOARD: https://amzn.to/341OgnD\nWHITE SPATULA: https://amzn.to/4gMNCBb\nSTEAK WEIGHT (burger press): https://amzn.to/4A94Sbs\nPORTABLE BUTANE BURNER: https://amzn.to/4h3rHVm\nFAVORITE STAINLESS BOWL: https://amzn.to/49kGBTU \nAMAZON STORE: https://www.amazon.com/shop/brianlagerstrom\n**As an Amazon Associate I earn from qualifying purchases**\n\nRECIPE:\nSteak:\n▪9-10 oz filet mignon\n▪coarse salt\n▪black pepper\n▪neutral oil (canola, avocado, etc)\n\nDiane Sauce:\n▪85g (about 4-5) cremini/baby bellas, med diced\n▪60g (1 large) shallot, finely diced\n▪8g (2 cloves) garlic, minced\n▪125g (1/2 cup) cognac \n▪175g (3/4 cup) beef stock\n▪15g (1 Tbsp) Dijon \n▪10g (2 tsp) Worcestershire sauce\n▪60g (1/4 cup) heavy cream\n30g (2 Tbsp) unsalted butter\n1g (about 1 tsp) fresh thyme, minced (3 sprigs)\n2g (about 1 Tbsp) fresh parsley, minced\nneutral oil\n\n1. Slice the filet crosswise into 2 medallions. Pound to even 3/4-inch thickness and season with salt and pepper. rest on plate.\n2…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1090,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T16:47:59+00:00",
+    "tags": [
+      "牛排",
+      "美食制作",
+      "西餐教程",
+      "煎牛排",
+      "菲力牛排",
+      "make steak diane",
+      "白兰地蘑菇酱",
+      "steak diane",
+      "牛排戴安"
+    ],
+    "title": "15分钟搞定经典牛排戴安，蘑菇白兰地奶油酱绝了｜The 15 Minute Steak Dish Everyone Forgot About",
+    "video_id": "bseedqP4Ul9",
+    "views": 423
+  },
+  "seed_provenance": {
+    "bvid": "BV1mLeV6uESW",
+    "published_at": "2026/9/15 00:47:59",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1mLeV6uESW"
+  },
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Steam"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "独立游戏",
+      "射击游戏",
+      "new games",
+      "第三人称射击",
+      "steam",
+      "pvp",
+      "upcoming games",
+      "terminalwar"
+    ],
+    "video_id": "bseedXDYdb-"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIf Naughty Dog won't make The Last of Us Online and Factions, indie devs will do it. Terminal War is a new brutal action PvP game that looks absolutely amazing. Drop a LIKE on the video for more gameplay soon! Coming to Steam: https://store.steampowered.com/app/3788160/Terminal_War/\n👾Click that SUBSCRIBE button to never miss a video!\n\n#thelastofus #newgame #newgames2026 \n\n🔻\nIf you're a game developer/publisher and would like to feature your game on our channel, contact us through our email now and let us know about it: mathieuofficial@hotmail.com\n\nMy email for business inquiries: mathieuofficial@hotmail.com",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 536,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T14:34:31+00:00",
+    "tags": [
+      "游戏资讯",
+      "独立游戏",
+      "射击游戏",
+      "单机游戏",
+      "new games",
+      "第三人称射击",
+      "Steam",
+      "PvP",
+      "upcoming games",
+      "TerminalWar"
+    ],
+    "title": "新独立游戏Terminal War实机展示：硬核PvP射击｜This NEW Indie Game Is The Real Deal...",
+    "video_id": "bseedXDYdb-",
+    "views": 41
+  },
+  "seed_provenance": {
+    "bvid": "BV1sHt66tEgD",
+    "published_at": "2026/9/4 22:34:31",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sHt66tEgD"
+  },
+  "version": 1
+}

@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "pizza"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "pizza taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "吃播",
+      "亚利桑那美食",
+      "美食挑战",
+      "大胃王挑战",
+      "food challenge",
+      "eating show",
+      "团队挑战",
+      "披萨挑战",
+      "maxvsfood"
+    ],
+    "video_id": "bseedUgcPs5"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSOLO ATTEMPT AT A TEAM PIZZA CHALLENGE WHICH HASN'T BEEN BEATEN IN 14 YEARS...\n\nSee @scotteats video here: https://youtu.be/gA4op31cdt4?si=NPs_z-ZH_FCKzgo5\n\nIn my SECOND video of my Arizona tour and my FIRST with my good buddy Scott Eats, we headed to Il Primo to take on their TEAM pizza challenge which hadn't been beaten since 2012 by a TEAM (that's 14 years!!)",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 676,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T15:46:29+00:00",
+    "tags": [
+      "吃播",
+      "亚利桑那美食",
+      "美食挑战",
+      "美食测评",
+      "大胃王挑战",
+      "food challenge",
+      "eating show",
+      "团队挑战",
+      "披萨挑战",
+      "MaxvsFood"
+    ],
+    "title": "单人挑战14年无人攻破的团队披萨大胃王挑战｜SOLO ATTEMPT AT A TEAM PIZZA CHALLENGE WHICH HASN'T BEEN…",
+    "video_id": "bseedUgcPs5",
+    "views": 37
+  },
+  "seed_provenance": {
+    "bvid": "BV1ewt663Eow",
+    "published_at": "2026/9/4 23:46:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ewt663Eow"
+  },
+  "version": 1
+}

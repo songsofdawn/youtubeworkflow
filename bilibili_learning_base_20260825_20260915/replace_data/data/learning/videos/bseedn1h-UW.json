@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "CPU",
+      "PC building"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "cpu engineering",
+      "pc build",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "电子维修",
+      "针脚修复",
+      "硬件翻新",
+      "极客技术",
+      "故障排查",
+      "amd锐龙",
+      "diy装机",
+      "cpu维修"
+    ],
+    "video_id": "bseedn1h-UW"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=vx8ZIcea2wI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video I try to repair 12 broken Ryzen CPUs I bought for just $10 a piece. I'll build a test bench, unbend pins, run stress tests, and try my hand at re-attaching microscopic pins. \n\nCheck out @JFIXX1 if you haven't already!\n\n0:00 Introduction\n0:37 Assembling Test Bench\n7:34 CPU Inspection & Pin Unbending\n18:26 CPU Pin Soldering\n24:00 Final Results\n24:27 Conclusion",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1505,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:58:42+00:00",
+    "tags": [
+      "电子维修",
+      "针脚修复",
+      "硬件翻新",
+      "极客技术",
+      "中英双语",
+      "中文翻译",
+      "故障排查",
+      "AMD锐龙",
+      "DIY装机",
+      "CPU维修"
+    ],
+    "title": "【中英双语】花$120买12颗坏Ryzen CPU，能修好赚钱吗？｜I Bought 12 Broken Ryzen CPUs for $10 Each -…",
+    "video_id": "bseedn1h-UW",
+    "views": 5
+  },
+  "seed_provenance": {
+    "bvid": "BV1Lw416XENZ",
+    "published_at": "2026/8/29 15:58:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Lw416XENZ"
+  },
+  "version": 1
+}

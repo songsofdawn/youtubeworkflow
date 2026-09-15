@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI agents"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai agents",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "自动化工作流",
+      "agent开发",
+      "周报生成",
+      "ai教程",
+      "工具推荐",
+      "竞品分析",
+      "效率提升"
+    ],
+    "video_id": "bseedG1KcYF"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=c3iVw0MBZTE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBuild an AI competitor research agent that finds important product updates and emails you a useful digest every week.\n\nIn this tutorial, I build the agent through conversation in Agenta. It researches our market, identifies competitors, adds web search, schedules a weekly run, connects Gmail, and sends the finished report. I also show how to inspect and edit the agent’s instructions instead of treating the automation like a black box.\n\nYou will learn how to:\n\n- Create a specialized AI agent from a plain-language request.\n- Give it web-search access.\n- Schedule it to run every Monday.\n- Inspect and edit its instructions, tools, and schedule.\n- Connect Gmail and deliver the report automatically.\n- Test the automation without waiting for its scheduled run.\n\nTry Agenta: https://agenta.ai\nGitHub: https://github.com/Agenta-AI/agenta\n\nWhat recurring research should I automate next? Tell me in the comments.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 403,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T11:07:41+00:00",
+    "tags": [
+      "人工智能",
+      "自动化工作流",
+      "Agent开发",
+      "周报生成",
+      "AI教程",
+      "中英双语",
+      "中文翻译",
+      "工具推荐",
+      "竞品分析",
+      "效率提升"
+    ],
+    "title": "【中英双语】手把手教你用Agenta搭建竞品监控AI助手并自动周报｜Build an Agent That Tracks Your Competitors W…",
+    "video_id": "bseedG1KcYF",
+    "views": 10
+  },
+  "seed_provenance": {
+    "bvid": "BV1F84R6xELw",
+    "published_at": "2026/8/27 19:07:41",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1F84R6xELw"
+  },
+  "version": 1
+}

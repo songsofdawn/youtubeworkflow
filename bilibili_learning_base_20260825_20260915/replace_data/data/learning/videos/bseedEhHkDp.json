@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "暴食挑战",
+      "挑战失败",
+      "汉堡",
+      "美食挑战",
+      "大胃王挑战",
+      "美国餐厅"
+    ],
+    "video_id": "bseedEhHkDp"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nget some merch: https://siryacht.com\n\nInstagram: https://instagram.com/siryacht\nTikTok: https://tiktok.com/@siryacht\nTwitter: https://twitter.com/SirYacht_\nFacebook: https://facebook.com/siryacht\n\n🎙️ Podcast: @shipheads \n🎹 Music channel: @boatboyrecords \n🏝️ Vlog channel: @yachtvoyages \n🩳 Shorts channel: @siryacht2 \n\n🎶 Outro: \"OBSESSED WITH U\" by Hoodie Allen    \nAll other music via Artlist.\n\nToday I'm going to Bearden's, a local burger joint in the Cleveland suburb of Rocky River, to be the 1st person to their monstrous eating challenge...",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 855,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T17:45:06+00:00",
+    "tags": [
+      "暴食挑战",
+      "挑战失败",
+      "汉堡",
+      "美食挑战",
+      "美食记录",
+      "美食测评",
+      "大胃王挑战",
+      "美国餐厅"
+    ],
+    "title": "挑战餐厅超大份灰熊汉堡大胃王挑战赛｜Can I Be The First To Beat This Massive Eating Challenge?",
+    "video_id": "bseedEhHkDp",
+    "views": 86
+  },
+  "seed_provenance": {
+    "bvid": "BV1X8b762EQu",
+    "published_at": "2026/9/6 01:45:06",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1X8b762EQu"
+  },
+  "version": 1
+}

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "中国历史",
+      "文化",
+      "趣味历史",
+      "人文历史",
+      "老外",
+      "涨知识",
+      "历史科普",
+      "动画科普",
+      "朝代更迭",
+      "历史通史"
+    ],
+    "video_id": "bseedcIm0Bz"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n4000 Years of History in 32 minutes, medium rare\n🕊️SUPPORT OUR CHANNEL: https://heyhistorically.com/join\n\n🌐 Be part of Historically everywhere:\n➡ https://heyhistorically.com/youtube\n➡ https://heyhistorically.com/discord\n➡ https://heyhistorically.com/twitter\n➡ https://heyhistorically.com/tiktok\n\n🎓Source? It appeared in my dream:\n➡ https://heyhistorically.com/fact19\n\n💡Got ideas? Or want to work with us?\n➡ IDEAS: suggestions@heyhistorically.com\n➡ WORK: jobs@heyhistorically.com\n➡ BUSINESS: contact@heyhistorically.com\n\n🧭 Timestamps:\n0:00 Nothing Dynasty\n0:50 Xia Dynasty\n2:12 Shang Dynasty\n2:39 Zhou Dynasty\n4:25 Warring States 1\n6:58 Qin Dyansty\n8:30 Warring States 2\n10:32 Han Dynasty\n13:30 Wang Mang Dynasty\n14:09 Han 2 Dynasty\n15:08 Warring States 3\n18:58 Jin Dynasty\n19:28 Warring States 4\n20:20 Sui Dynasty\n20:54 Warring States 5\n21:05 Tang Dynasty\n21:24 WU ZETAIN TIME\n21:29 Tang 2 Dynasty\n21:53 Warring States 6\n22:41 Song Dynasty\n26:43 Yuan Dynasty\n27:46 Ming Dynasty\n28:48 Qing Dynasty\n30:41 China Dy-- Wait no, just China\n30:58  Warring States 7\n31:55 OUR CHINESE DOODLIES\n\n🎵 All sounds and music via Envato Elements. Proof of license available on request. Some SFX may be copyright free.\n\n#history #4k #funny \n\n   (•‿•)\n  /(     )\\   ← your friendly neighborhood doodlie\n   ^^  ^^",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1897,
+    "likes": 15,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T12:57:04+00:00",
+    "tags": [
+      "中国历史",
+      "文化",
+      "趣味历史",
+      "人文历史",
+      "老外",
+      "涨知识",
+      "历史科普",
+      "动画科普",
+      "朝代更迭",
+      "历史通史"
+    ],
+    "title": "老外32分钟爆笑讲完中国四千年历史｜The ENTIRE History of CHINA",
+    "video_id": "bseedcIm0Bz",
+    "views": 631
+  },
+  "seed_provenance": {
+    "bvid": "BV1nYYu67Eme",
+    "published_at": "2026/9/10 20:57:04",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1nYYu67Eme"
+  },
+  "version": 1
+}

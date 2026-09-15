@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "cleaning_transformation",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "carpet cleaning",
+      "pressure washing",
+      "deep cleaning"
+    ],
+    "formats": [
+      "transformation",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "carpet cleaning",
+      "deep cleaning",
+      "pressure washing"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "地毯清洗",
+      "地毯修复",
+      "清洗前后对比",
+      "高压水枪",
+      "满足感",
+      "timelapse",
+      "解压视频",
+      "深度清洁"
+    ],
+    "video_id": "bseedNkGZJs"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nSuper Dirty Rug Deep Clean | ASMR Carpet Restoration Magic\n✨ Extreme Transformation of a Filthy Shag Rug | Satisfying Deep Wash ExperienceThis shaggy rug wasn’t just dirty — it was buried under layers of mud, dust, hair, and compacted grime that had settled deep into every fiber. The thick buildup made the rug look lifeless, stiff, and completely worn out. During the restoration, high‑pressure water, neon foam reactions, and intense scrubbing reveal just how much dirt was trapped inside.\n\n\nAs the foam activates and the mud breaks apart, the rug slowly returns to its original softness. Watching the contrast between the filthy sections and the freshly cleaned areas creates an insanely satisfying ASMR moment. Every stroke of the brush, every burst of foam, and every color change tells the story of a rug being brought back from the edge. 💚🧽✨\n\n\n\nMy suggestion for you👇\n\nhttps://youtu.be/wEQ7aqLWI2E?is=QmJ9jk0FdzULxcSv\n\nhttps://youtu.be/RdM9Oyq_aWw?is=b6NykerR8zdg0Sn9\n\nhttps://youtu.be/Nmcm5L5fBcQ?is=7ofVkPbToY27Vfyi\n\nFavorite Playlists👇\n\nhttps://youtu.be/ZP2QT6yk9Is?is=Nj-9lgoj8iz1I0F2\n\nhttps://youtube.com/playlist?list=PLpiXYYq_v2DODyJX3whjxBB_ZfwL1Ppv-&si=FszT2NncId9rblsI\n\nhttps://youtube.com/playlist?list=PLpiXYYq_v2DPPCFUsizLUV_9ybKgkF2h5&si=cLYMxoBMSJ6JHSxF\n\n\n\nI'm pouriya — I revive rugs that everyone else has given up on. With passion and precision, I bring neglected carpets back to life so dramatically that even the owners can’t recognize their own rug afterward. 💪😲If you enjoy these transformations, hit like and subscribe to support my work.\nYour support helps me save more “hopeless” rugs.\n\nDon’t miss the next unbelievable restoration — subscribe now.…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 386,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-15T02:00:48+00:00",
+    "tags": [
+      "地毯清洗",
+      "地毯修复",
+      "清洗前后对比",
+      "无配音",
+      "高压水枪",
+      "满足感",
+      "timelapse",
+      "解压视频",
+      "深度清洁"
+    ],
+    "title": "泥浆地毯深度清洗，解压全过程太爽了｜Super Dirty Extreme Rug Cleaning😳 ASMR Deep Carpet Restorati…",
+    "video_id": "bseedNkGZJs",
+    "views": 8
+  },
+  "seed_provenance": {
+    "bvid": "BV1Uzej6JE4D",
+    "published_at": "2026/9/15 10:00:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Uzej6JE4D"
+  },
+  "version": 1
+}

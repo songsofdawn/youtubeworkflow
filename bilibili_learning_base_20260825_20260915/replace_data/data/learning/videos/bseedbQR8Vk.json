@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening",
+      "vegetable garden"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "菜园参观",
+      "种菜",
+      "有机种植",
+      "家庭园艺",
+      "阳台种菜",
+      "立体种植",
+      "小空间园艺",
+      "grow veg",
+      "growveg",
+      "园艺灵感"
+    ],
+    "video_id": "bseedbQR8Vk"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEnjoy a no-obligation, completely free trial of the Garden Planner here: \nhttps://www.GrowVeg.com/grow-planner-free\n\nAnd for your completely free abridged version of Ben's book, click here:\nhttps://www.growveg.com/grow-book-download\n\nTo see more of Marv and Char's garden, you can follow their channel here:\nhttps://www.youtube.com/channel/UCgaF2riY92oXA1xPnptfqOw\n\nOr you can check out their website here:\nhttps://plantedinthegarden.com/\n\nOver the years we have filmed quite a few incredible gardens, including some tiny back yards which yield impressive harvests. But this July we hopped across the pond to Canada to visit the most productive tiny garden we've ever filmed, belonging to Marv and Char Lopez of the popular channel Planted in the Garden, based in Ontario. With all sorts of ingenious solutions for growing bumper harvests in a small spaces, this tour will open our eyes to just how much it is possible to grow, in no matter what size space.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1355,
+    "likes": 28,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T12:01:57+00:00",
+    "tags": [
+      "菜园参观",
+      "种菜",
+      "有机种植",
+      "家庭园艺",
+      "阳台种菜",
+      "立体种植",
+      "小空间园艺",
+      "grow veg",
+      "growveg",
+      "园艺灵感"
+    ],
+    "title": "巴掌大的小院竟能种出这么多菜！加拿大夫妻的爆产小菜园｜The Most Productive Tiny Garden We’ve Ever Filmed",
+    "video_id": "bseedbQR8Vk",
+    "views": 957
+  },
+  "seed_provenance": {
+    "bvid": "BV1rebN6xEbj",
+    "published_at": "2026/9/7 20:01:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rebN6xEbj"
+  },
+  "version": 1
+}

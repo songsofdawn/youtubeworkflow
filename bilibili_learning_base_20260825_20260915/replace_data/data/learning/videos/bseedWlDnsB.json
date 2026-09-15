@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "balcony gardening",
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening",
+      "harvest and preserve"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "新手教程",
+      "茄子种植",
+      "高产技巧",
+      "家庭园艺",
+      "阳台种菜",
+      "循环利用",
+      "容器种植",
+      "eggplant growing"
+    ],
+    "video_id": "bseedWlDnsB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=c9fZkNmVJmE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA Bumper Eggplant Harvest From a Simple Recycled Plastic Tub — The Results Will Amaze You!\n\nWonder Gardening is a gardening channel for everyone who loves plants and wants to turn a small space into a fresh, green garden. Here you’ll find simple, easy-to-follow videos—from growing vegetables at home to creative, budget-friendly gardening ideas.\n\n🍓 What you’ll see on this channel:\n\n- Step-by-step guides to grow vegetables, flowers, and strawberries, from planting to harvest\n\n- Practical tips for seed starting, watering, fertilizing, and pest control\n\n- Space-saving and recycled gardening setups using foam boxes, plastic jugs, baskets, trellises, and containers\n\n- Real gardening experiences, harvest videos, and helpful tricks for beginners\n\n#garden\n#gardening \n#beginners \n#fruits \n#vegetables \n#gardenhack\n#easytrick",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1126,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:25:42+00:00",
+    "tags": [
+      "新手教程",
+      "茄子种植",
+      "高产技巧",
+      "中文翻译",
+      "中英双语",
+      "家庭园艺",
+      "阳台种菜",
+      "循环利用",
+      "容器种植",
+      "eggplant growing"
+    ],
+    "title": "【中英双语】塑料桶挂架种茄子：小空间也能大丰收｜A Bumper Eggplant Harvest From a Simple Recycled Plasti…",
+    "video_id": "bseedWlDnsB",
+    "views": 30
+  },
+  "seed_provenance": {
+    "bvid": "BV1yF4y6NEbT",
+    "published_at": "2026/8/29 17:25:42",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1yF4y6NEbT"
+  },
+  "version": 1
+}

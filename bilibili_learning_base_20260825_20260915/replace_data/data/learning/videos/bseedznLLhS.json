@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "investigation",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "explained",
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "优化模组",
+      "minecraft fps",
+      "nvidium",
+      "optifine",
+      "游戏优化",
+      "fps提升"
+    ],
+    "video_id": "bseedznLLhS"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 5,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nthank you so much for the support on the last video! hopefully this video is even more helpful and informative. comment what video you'd like to see from me next!\n\n00:00 Nvidium https://modrinth.com/mod/nvidium\n00:28 OptiFine https://optifine.net/downloads\n01:03 Embeddium https://modrinth.com/mod/embeddium/versions\n01:45 VulkanMod https://modrinth.com/mod/vulkanmod\n02:23 GPUShift https://modrinth.com/mod/gpushift\n03:11 Moonrise https://modrinth.com/mod/moonrise-opt\n03:43 Packet Fixer https://modrinth.com/mod/packet-fixer\n04:35 GPUBooster https://modrinth.com/mod/gputape\n05:19 StutterFix https://modrinth.com/mod/stutterfix\n05:58 Noisium https://modrinth.com/mod/noisium\n06:40 Async https://modrinth.com/mod/async\n07:17 Particle Core https://modrinth.com/mod/particle-core\n08:00 BadOptimizations https://modrinth.com/mod/badoptimizations\n08:42 Memory Leak Fix https://modrinth.com/mod/memoryleakfix\n09:22 Enhanced Block Entities https://modrinth.com/mod/ebe\n10:11 BetterBlockEntities https://modrinth.com/mod/better-block-entities\n11:07 ScalableLux https://modrinth.com/mod/scalablelux\n11:41 LazyDFU https://modrinth.com/mod/lazydfu\n12:26 ServerCore https://modrinth.com/mod/servercore\n13:21 Ixeris https://modrinth.com/mod/ixeris\n14:08 Entity View Distance https://modrinth.com/mod/entity-view-distance",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 891,
+    "likes": 34,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T21:20:11+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "优化模组",
+      "minecraft fps",
+      "Nvidium",
+      "OptiFine",
+      "游戏优化",
+      "FPS提升"
+    ],
+    "title": "20个Minecraft优化模组详解：帧数翻倍神器｜More minecraft optimization mods explained (no ai)",
+    "video_id": "bseedznLLhS",
+    "views": 1087
+  },
+  "seed_provenance": {
+    "bvid": "BV1TpYa6WELc",
+    "published_at": "2026/9/10 05:20:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1TpYa6WELc"
+  },
+  "version": 1
+}

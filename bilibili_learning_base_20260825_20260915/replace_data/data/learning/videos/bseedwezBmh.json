@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "试吃",
+      "贫困料理",
+      "粉丝投稿",
+      "猎奇美食",
+      "faze rug",
+      "等级排名",
+      "rug"
+    ],
+    "video_id": "bseedwezBmh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThese were delicious!! Thank you for your suggestions!\n🟢 $350 INTRO OFFER: Head to https://chime.yt.link/WWz3H2P for up to $350 and 5% cash back with Chime® Thanks Chime for sponsoring this video!\n🔴 SUBSCRIBE ► https://www.youtube.com/rug\n🔵 NEW 1UP CANDY ► https://1upcandy.com/\n\n🟣 PrizePicks ► https://link.prizepicks.com/LME0/RUG\n\nFOLLOW MY OTHER SOCIALS!!\nInstagram ► https://www.instagram.com/fazerug/\nTikTok ► https://www.tiktok.com/@rug\nTwitter ► https://twitter.com/FaZeRug\nSnapchat ► https://www.snapchat.com/add/thefazerug\n\nChime is a fintech, not a bank. Banking services and Chime Card provided by Chime's bank partners.\n$350 Intro Offer: Terms apply, must open the new account and complete qualifying activities to earn up to $350.00 in rewards. Link to full terms can be found at https://www.chime.com/join/promos/intro-offer-v2b/#terms \n\nAmerica's #1 Choice: Ranking based on a blind survey conducted by Chime in May 2026 of consumers who opened a new personal checking account at a different institution listed in the survey in the preceding six months. Chime offers access to checking accounts used for everyday banking.\n\nSavings APY: No min. balance required. For more information on Annual Percentage Yields, go to chime.com/disclosures\n\n9x times national average: Comparison to national average rate on the FDIC’s National Rates and Rate Caps website, as of 08/21/2026.\n\n5% Cash Back: Cash back on eligible Chime Card purchases. Terms and limits apply. To apply for a Chime Car…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1735,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T17:14:34+00:00",
+    "tags": [
+      "试吃",
+      "贫困料理",
+      "美食测评",
+      "粉丝投稿",
+      "猎奇美食",
+      "FaZe Rug",
+      "等级排名",
+      "rug"
+    ],
+    "title": "试吃粉丝最离谱的贫困料理并打分排名！｜I Tried My Subscribers' Craziest Struggle Meals!",
+    "video_id": "bseedwezBmh",
+    "views": 497
+  },
+  "seed_provenance": {
+    "bvid": "BV1qxYH66EBw",
+    "published_at": "2026/9/9 01:14:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qxYH66EBw"
+  },
+  "version": 1
+}

@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "street food",
+      "Korean food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "street food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "街头小吃",
+      "旅行见闻",
+      "street food",
+      "美式热狗",
+      "韩国街头美食",
+      "korean street food"
+    ],
+    "video_id": "bseeddsaL1h"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=ICDbdcd_ACo\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n300 Hot Dogs SOLD OUT in 5 Hours! Amazing American Hot Dogs | Korean Street Food\n\n300 Hot Dogs Sold in Just 5 Hours?! BEST EVER American Hot Dogs | Korean street food\n\n\nWatch 300 hot dogs SOLD OUT in just 5 hours! See how these amazing American-style hot dogs are prepared, cooked, and served in a busy Korean street food scene.\n\nChannel: Jelly Discovery\nChannel Link: https://www.youtube.com/@Jellydescovery6\nEmail: khanpak12345676@gmail.com\nLocation: South Korea\n\nIf you love Korean street food, satisfying cooking, and delicious food preparation, make sure to LIKE, COMMENT, and SUBSCRIBE for more videos.\n\n#KoreanStreetFood #HotDogs #StreetFood",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1029,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:53:58+00:00",
+    "tags": [
+      "美食制作",
+      "街头小吃",
+      "无配音",
+      "美食记录",
+      "旅行见闻",
+      "street food",
+      "美式热狗",
+      "韩国街头美食",
+      "Korean street food"
+    ],
+    "title": "韩国街头美式热狗5小时售罄，制作过程超满足｜300 Hot Dogs SOLD OUT in 5 Hours! Amazing American H…",
+    "video_id": "bseeddsaL1h",
+    "views": 34
+  },
+  "seed_provenance": {
+    "bvid": "BV1oj4y6WEAo",
+    "published_at": "2026/8/29 17:53:58",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1oj4y6WEAo"
+  },
+  "version": 1
+}

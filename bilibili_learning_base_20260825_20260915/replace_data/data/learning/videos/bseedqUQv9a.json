@@ -1,0 +1,97 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "psychology"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Personal Development",
+        "name": "personal_development_psychology",
+        "suggested_entities": [
+          "psychology",
+          "habits",
+          "identity",
+          "personal growth"
+        ],
+        "suggested_formats": [
+          "experiment",
+          "documentary"
+        ]
+      }
+    ],
+    "topics": [
+      "冥想",
+      "专注力提升",
+      "情绪管理",
+      "心理调节",
+      "内心平静",
+      "自我成长",
+      "思维训练",
+      "正念练习"
+    ],
+    "video_id": "bseedqUQv9a"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=3B968a19CN4\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI used to think meditation was a waste of time. Then I tried it every day for 30 days — and slowly, I noticed something changing.\n\nMy mind became quieter. My focus improved. I stopped reacting to everything so quickly. And for the first time in a long time, I started feeling present instead of constantly distracted by my own thoughts.\n\nIn this video, I share what happened during my 30-day meditation challenge, from the restless first days to the changes I noticed in my focus, awareness, emotional control, and inner peace.\n\nYou’ll discover:\n\nWhat 30 days of daily meditation can feel like\nWhy sitting in silence can be harder than it sounds\nHow meditation can help with focus and overthinking\nWhat happens when you stop running from your thoughts\nWhy awareness can change the way you react to life\nHow meditation can help you build mental clarity and discipline\nWhy you don't need hours of meditation to start changing your mind\n\nThe goal isn't to stop thinking.\n\nIt's to stop being controlled by every thought that appears.\n\nYou don't need to become a monk. You don't need perfect silence. You can start with five minutes a day — sit down, breathe, and simply notice what's happening inside your mind.\n\nBecause sometimes the biggest transformation doesn't come from doing more.\n\nIt comes from finally becoming still enough to see what's already there.\n\n📖 The Art of Being Unstoppable\n\nIf you're ready to sharpen your mind, build discipline, develop resilience, and take back control of your life, check out The…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 760,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:16:10+00:00",
+    "tags": [
+      "冥想",
+      "专注力提升",
+      "中文翻译",
+      "中英双语",
+      "情绪管理",
+      "心理调节",
+      "内心平静",
+      "自我成长",
+      "思维训练",
+      "正念练习"
+    ],
+    "title": "【中英双语】坚持冥想 30 天：我的大脑发生了什么变化｜I Meditated for 30 Days — Here's What Happened to M…",
+    "video_id": "bseedqUQv9a",
+    "views": 0
+  },
+  "seed_provenance": {
+    "bvid": "BV1hN4R6kEub",
+    "published_at": "2026/8/27 20:16:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hN4R6kEub"
+  },
+  "version": 1
+}

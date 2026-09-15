@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "cleaning_transformation",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "carpet cleaning",
+      "deep cleaning"
+    ],
+    "formats": [
+      "restoration",
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "carpet cleaning",
+      "deep cleaning"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "地毯清洗",
+      "颜色还原",
+      "复古地毯",
+      "清洁修复",
+      "地毯",
+      "解压",
+      "深度清洁"
+    ],
+    "video_id": "bseedMB2zRr"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nWatch this incredible deep cleaning transformation of a heavily soiled vintage rug! lnitially covered in deep mud and dirt that made it took completely dark grey, the washing process reveals a stunning cream background with bright yellow and brown geometric patterns. Enjoy the rich foam scrubbing, heavy water rinsing, and smooth squeegee extraction in this relaxing ASMR rug restoration!\n#carpetcleaning #satisfying #asmr #transformation  #relaxing",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1330,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T10:10:34+00:00",
+    "tags": [
+      "治愈",
+      "地毯清洗",
+      "颜色还原",
+      "复古地毯",
+      "清洁修复",
+      "地毯",
+      "解压",
+      "深度清洁"
+    ],
+    "title": "超解压：污泥古董地毯深度清洗，洗净后花纹美到不敢认！",
+    "video_id": "bseedMB2zRr",
+    "views": 68
+  },
+  "seed_provenance": {
+    "bvid": "BV1RVYe6TEeT",
+    "published_at": "2026/9/13 18:10:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1RVYe6TEeT"
+  },
+  "version": 1
+}

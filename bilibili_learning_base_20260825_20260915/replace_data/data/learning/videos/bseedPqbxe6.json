@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "世界历史",
+      "二战",
+      "人文历史",
+      "绥靖政策",
+      "history",
+      "波兰战役",
+      "军事史",
+      "苏德互不侵犯条约",
+      "epic history tv"
+    ],
+    "video_id": "bseedPqbxe6"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDon't miss 'History's Most Daring Raids' on Nebula and get 50% off an annual subscription: https://nebula.tv/realtimehistory/historys-most-daring-raids?ref=epichistory\n\n------------------------------------\n\nIn January 1939, many Europeans dared to hope the worst was over. They were wrong.\n\nThis is the story of the year that changed everything — from the intensifying clashes on the Soviet-Japanese frontier, to Hitler and Stalin’s secret pact to carve up Eastern Europe, and their invasion of Poland that plunged the world into its most devastating conflict.\n\nWe explore World War 2's opening moves, as the Soviet Union invades Finland and the Allies prepare for battle on the Western Front.\n\n-------------------------------------\n\nThank you to our series historical consultant, Professor Richard Overy of the University of Exeter. Find out more about his research and publications here: https://experts.exeter.ac.uk/1234-richard-overy/about\n\nYou can find some of Richard Overy's work in our online bookshop, as well as more great titles on World War Two and other Epic History topics: \nUK site - https://uk.bookshop.org/shop/epichistorytv\nUS site - https://bookshop.org/shop/epichistorytv\nAs a bookshop.org affiliate we earn from qualifying purchases, while donating 10% of sales to support independent bookshops!\n\n📚 Recommended reading:\n'The Inter-War Crisis' by Richard Overy - US: https://bookshop.org/a/99532/9781138963252 / UK: https://uk.bookshop.org/a/12275/9781138963252\n'Why The Allies Won' by Richard Over…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2170,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T10:00:00+00:00",
+    "tags": [
+      "世界历史",
+      "二战",
+      "人文历史",
+      "绥靖政策",
+      "history",
+      "波兰战役",
+      "军事史",
+      "苏德互不侵犯条约",
+      "epic history tv"
+    ],
+    "title": "1939：二战前夜，欧洲如何走向深渊｜World War 2: 1939",
+    "video_id": "bseedPqbxe6",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV147YT6SEFj",
+    "published_at": "2026/9/10 18:00:00",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV147YT6SEFj"
+  },
+  "version": 1
+}

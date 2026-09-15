@@ -1,0 +1,128 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "GPT-6",
+      "Astra",
+      "Claude",
+      "Fable 5.1",
+      "AI coding"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "gpt-6",
+      "astra",
+      "claude",
+      "fable 5.1",
+      "ai coding",
+      "ai game development",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "minecraft",
+      "ai游戏开发",
+      "人工智能对决",
+      "gpt-6",
+      "vibe coding",
+      "claude",
+      "ai编程",
+      "claude fable 5.1",
+      "gpt-6 astra"
+    ],
+    "video_id": "bseed7tMa1v"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIf you appreciate the time and effort I put into my videos and games, please subscribe, like and leave a comment! It helps a LOT! 🙏\n\n💬 DISCORD\n👉 https://discord.gg/ZQ5DZan2W7\n\nHope you guys enjoyed. These models are both insane and the final results were so close. Let me know which model you guys think won this one!\n\n⏱️ CHAPTERS\n0:00 - GPT-6 Astra vs Claude Fable 5.1\n0:16 - Claude Fable 5.1 prompt\n0:38 - Claude's Minecraft\n5:09 - GPT-6 Astra prompt\n5:17 - Astra's Minecraft\n8:22 - The winner\n\nWhich game should Claude and Astra build next? Drop it in the comments 👇\n\n#claude #fable #gpt6 #astra #minecraft #ai #aicoding #gamedev",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 522,
+    "likes": 13,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T15:25:16+00:00",
+    "tags": [
+      "Minecraft",
+      "AI游戏开发",
+      "人工智能对决",
+      "GPT-6",
+      "Vibe Coding",
+      "计算机技术",
+      "Claude",
+      "AI编程",
+      "claude fable 5.1",
+      "gpt-6 astra"
+    ],
+    "title": "GPT-6对决Claude：谁做的Minecraft更炸？｜ChatGPT 6 Astra vs Claude Fable 5.1 Make Minecraft",
+    "video_id": "bseed7tMa1v",
+    "views": 829
+  },
+  "seed_provenance": {
+    "bvid": "BV1QrY26iEMm",
+    "published_at": "2026/9/11 23:25:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QrY26iEMm"
+  },
+  "version": 1
+}

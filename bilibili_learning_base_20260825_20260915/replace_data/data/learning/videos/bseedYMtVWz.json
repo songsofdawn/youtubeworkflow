@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Blender",
+      "3D art",
+      "animation"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "blender 3d",
+      "3d art",
+      "animation process",
+      "animation"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "动画短片",
+      "赛璐璐渲染",
+      "3d动画",
+      "npr",
+      "blender",
+      "三维制作",
+      "日系动画",
+      "anime style animatio",
+      "blender 4.4 npr"
+    ],
+    "video_id": "bseedYMtVWz"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nThis is a small project I created using Blender 4.4, incorporating the NPR branch from its beta version. I aimed to achieve a 'slice of life' vibe in an anime-style short animation, and it truly felt worthwhile for me. I hope you all enjoy it! All project files related to this are available on my Patreon.\n\nMusic - Music - アイカツ！アレンジCD『Sweets』 crossfade\n\nLinks -\nPatreon - https://www.patreon.com/c/cgdash\nTwitter - https://x.com/notifications\nInstagram - https://www.instagram.com/cgdash_/\nDiscord - https://discord.gg/myKVYDeM5Y\n\n#blender \n#blender3d \n#3dcg \n#blendernpr\n#b3d",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 17,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T18:53:12+00:00",
+    "tags": [
+      "动画短片",
+      "赛璐璐渲染",
+      "3D动画",
+      "无配音",
+      "NPR",
+      "Blender",
+      "三维制作",
+      "日系动画",
+      "Anime Style Animatio",
+      "Blender 4.4 NPR"
+    ],
+    "title": "用Blender做出超治愈的日系动画短片｜Cute Anime Style Animation in Blender | CGDASH #blenderani…",
+    "video_id": "bseedYMtVWz",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV11aYo6WEPr",
+    "published_at": "2026/9/13 02:53:12",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11aYo6WEPr"
+  },
+  "version": 1
+}

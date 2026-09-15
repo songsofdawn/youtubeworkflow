@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "industry"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "普京",
+      "中国汽车技术",
+      "中俄关系",
+      "putin",
+      "工业制造",
+      "时政新闻",
+      "vladimir putin",
+      "俄罗斯汽车",
+      "高尔基汽车厂",
+      "gaz工厂"
+    ],
+    "video_id": "bseedwRCuVw"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=YiE176OwCiw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nRussian President Vladimir Putin gets behind the wheel of a new Chinese-designed Russian car during a visit to the Gorky Automotive Plant in Nizhny Novgorod, with footage showing Putin test-driving the vehicle at the manufacturing facility.\n\nPutin visited the Gorky Automotive Plant in Nizhny Novgorod, where he inspected the automotive operation and took the new vehicle for a test drive.\n\nThe footage shows the Russian president behind the wheel as he tests the car inside the manufacturing plant. The visit highlights Russia’s domestic automotive industry and its growing links with Chinese automotive technology and design.\n\nThe vehicle is part of a broader shift in Russia’s automotive market, where Chinese automakers and technology have become increasingly important. Cooperation between Russian manufacturers and Chinese companies has expanded as the industry adapts to major changes in the market.\n\nPutin’s factory visit also puts the spotlight on Russian car manufacturing, industrial production and Moscow’s efforts to maintain and develop its automotive sector.\n\nThe Gorky Automotive Plant, commonly known as GAZ, is one of Russia’s historic vehicle manufacturers and is based in Nizhny Novgorod.\n\nDWS News brings you the latest footage from Putin’s visit, including the moment the Russian president takes the new car for a test drive.\n\nWatch the full video for the scenes from the automotive plant and Putin behind the wheel.\n\nSubscribe for unfiltered international news.\n\n#Putin #VladimirPutin #Russ…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 338,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T17:00:18+00:00",
+    "tags": [
+      "普京",
+      "中国汽车技术",
+      "中俄关系",
+      "Putin",
+      "工业制造",
+      "时政新闻",
+      "Vladimir Putin",
+      "俄罗斯汽车",
+      "高尔基汽车厂",
+      "GAZ工厂"
+    ],
+    "title": "【中英双语】普京试驾中国设计俄产新车：高尔基汽车厂探访实录｜WATCH: Russian President Vladimir Putin Test-Driv…",
+    "video_id": "bseedwRCuVw",
+    "views": 86
+  },
+  "seed_provenance": {
+    "bvid": "BV1tCtp6JEwQ",
+    "published_at": "2026/8/31 01:00:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tCtp6JEwQ"
+  },
+  "version": 1
+}

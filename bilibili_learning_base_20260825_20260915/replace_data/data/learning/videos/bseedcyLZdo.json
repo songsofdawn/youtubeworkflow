@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "outdoor_travel",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Turkey"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge"
+    ],
+    "search_concepts": [
+      "travel exploration"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "烤鱼",
+      "街头美食",
+      "海鲜",
+      "加济安泰普",
+      "doner kebab",
+      "鳟鱼",
+      "土耳其美食",
+      "炭火烧烤",
+      "kebab baba"
+    ],
+    "video_id": "bseedcyLZdo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nWelcome to our Taste Guide Kebab Baba Channel. To Support Us Please Subscribe to Our Channel. Restaurant informations: (Alidayi Balik) Gazianatep, Turkey location: https://g.co/kgs/Wg3ZfVk instagram: https://www.instagram.com/alidayibalik/?hl=en \n#kebabbaba  \n #Food #grilledfish",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 551,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T15:02:26+00:00",
+    "tags": [
+      "烤鱼",
+      "街头美食",
+      "海鲜",
+      "加济安泰普",
+      "doner kebab",
+      "无配音",
+      "鳟鱼",
+      "土耳其美食",
+      "炭火烧烤",
+      "kebab baba"
+    ],
+    "title": "土耳其街头现烤鳟鱼！渔场直供炭火鲜香四溢｜Fresh Trout Straight From Farm to Fire! 🤯 | Turkish Stree…",
+    "video_id": "bseedcyLZdo",
+    "views": 27
+  },
+  "seed_provenance": {
+    "bvid": "BV1sgbM6zEor",
+    "published_at": "2026/9/7 23:02:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1sgbM6zEor"
+  },
+  "version": 1
+}

@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "LLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "llm",
+      "open source ai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程辅助",
+      "大语言模型",
+      "腾讯混元",
+      "开源 ai",
+      "workbuddy",
+      "hy4 preview",
+      "hy4 评测",
+      "hy4 ai",
+      "770b 参数"
+    ],
+    "video_id": "bseedwvN4sH"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=g53Z0XQUnRc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA brand-new AI model has just been released! 🚀\n\nSupport Me: https://www.buymeacoffee.com/codewithyousaf\n\nTencent Hunyuan has released Hy4 Preview, a new open-source AI model with:\n🔥 770B Total Parameters\n⚡ 49B Active Parameters\n🧠 1M+ Context Window\n💻 Built for Coding & Productivity\n📊 Office, Research, Frontend & Game Development\n\nThe exciting part is that Hy4 Preview is now available on WorkBuddy for a limited 14-day period.\n\nIn this video, I show you how to access Hy4 Preview and test its capabilities with real-world AI agent workflows, including research, frontend development, and game development.\n\nAlso, Hy3 access has been extended until September 30.\n\nTry Hy4 Preview and let me know in the comments what you think about this new model!\n\n#Hy4 #Hunyuan #AI #Coding #AIModels #OpenSourceAI",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 502,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T17:41:46+00:00",
+    "tags": [
+      "人工智能",
+      "编程辅助",
+      "大语言模型",
+      "腾讯混元",
+      "开源 AI",
+      "WorkBuddy",
+      "hy4 preview",
+      "Hy4 评测",
+      "hy4 ai",
+      "770B 参数"
+    ],
+    "title": "【中英双语】腾讯开源模型 Hy4 Preview 免费试用两周评测与代码实战｜Tencent Hy4 Preview is Free for 14 Days!…",
+    "video_id": "bseedwvN4sH",
+    "views": 117
+  },
+  "seed_provenance": {
+    "bvid": "BV16ftp6uETq",
+    "published_at": "2026/8/31 01:41:46",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16ftp6uETq"
+  },
+  "version": 1
+}

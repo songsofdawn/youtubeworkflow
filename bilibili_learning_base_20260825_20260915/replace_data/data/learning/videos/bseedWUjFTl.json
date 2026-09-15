@@ -1,0 +1,124 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "Fable 5.1",
+      "AI coding"
+    ],
+    "formats": [
+      "experiment",
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "fable 5.1",
+      "ai coding",
+      "ai game development",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "ai游戏开发",
+      "ai工具评测",
+      "ai coding",
+      "minecraft模组",
+      "程序人生",
+      "ai编程",
+      "无代码开发",
+      "claude ai测试",
+      "ai builds minecraft"
+    ],
+    "video_id": "bseedWUjFTl"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFable 5.1 Is literally insane. Never though itcould get this much better than Fable 5. today i tested claude fable 5.1 by making 3 entirely different games. if you guys enjoyed it please let me know in the description below\n\nI hope you guys enjoyed the Video\n\nAlso join the Discord: \nhttps://discord.gg/9qWemTNrZ\nYou can show off your own AI creations and chat with others about them there\n\nChapters\n\n00:00 Intro\n00:39 Game 1: Minecraft\n04:37 Game 2: Plants vs Zombies\n09:27 Game 3: New York City with Spider-Man\n12:23 Verdict",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 827,
+    "likes": 18,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T09:44:48+00:00",
+    "tags": [
+      "AI游戏开发",
+      "AI工具评测",
+      "AI Coding",
+      "计算机技术",
+      "Minecraft模组",
+      "程序人生",
+      "AI编程",
+      "无代码开发",
+      "Claude AI测试",
+      "AI Builds Minecraft"
+    ],
+    "title": "用Claude Fable 5.1从零生成我的世界、植物大战僵尸与蜘蛛侠游戏｜Testing Claude Fable 5.1 so you dont hav…",
+    "video_id": "bseedWUjFTl",
+    "views": 1138
+  },
+  "seed_provenance": {
+    "bvid": "BV1YLtZ6xE7g",
+    "published_at": "2026/9/3 17:44:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1YLtZ6xE7g"
+  },
+  "version": 1
+}

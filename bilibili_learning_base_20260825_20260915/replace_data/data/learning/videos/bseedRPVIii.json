@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "what happens if",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "技术实验",
+      "方块渲染",
+      "版本测试",
+      "游戏故障",
+      "程序原理",
+      "存档损坏",
+      "缺失纹理"
+    ],
+    "video_id": "bseedRPVIii"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=4mNrVJ5QQ8c\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYou probably know what happens if you delete all textures in Minecraft, you get the purple checkerboard texture, but what happens if you delete even that? Does the game crash or display some cursed visuals? It is time to find out by removing the fallback texture from the game as well and test a few versions including the legacy console and bedrock editions.\n\nChapters:\n0:00 Intro\n0:10 Beta 1.7.3\n2:43 Beta 1.7.3 No Fallback\n3:24 1.7.10\n4:11 26.2\n5:25 Modern Bedrock\n6:03 Bedrock 1.12\n8:02 Legacy Console\n8:59 LCE No Fallback\n10:31 Pocket Edition 0.6\n10:50 Conclusion",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 699,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:22:16+00:00",
+    "tags": [
+      "我的世界",
+      "技术实验",
+      "方块渲染",
+      "中英双语",
+      "中文翻译",
+      "版本测试",
+      "游戏故障",
+      "程序原理",
+      "存档损坏",
+      "缺失纹理"
+    ],
+    "title": "【中英双语】删除Minecraft所有纹理后游戏会怎样？｜What Happens If You Delete Minecraft's Textures?",
+    "video_id": "bseedRPVIii",
+    "views": 63
+  },
+  "seed_provenance": {
+    "bvid": "BV1zT4y68E9z",
+    "published_at": "2026/8/29 17:22:16",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zT4y68E9z"
+  },
+  "version": 1
+}

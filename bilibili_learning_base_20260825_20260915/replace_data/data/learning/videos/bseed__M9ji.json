@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "fried chicken",
+      "air fryer"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "fried chicken",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "日本料理",
+      "炸鸡排",
+      "咖喱饭",
+      "空气炸锅",
+      "日式咖喱",
+      "鸡肉料理",
+      "japanese food",
+      "chef's labo"
+    ],
+    "video_id": "bseed__M9ji"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis video will show you how to cook easy Japanese Chicken thigh Katsu curry recipe with air fryer!! Hope it helps!!\n\n👉Subtitle is available\n\n------\n\n🍿Air fryer recipe playlist: https://www.youtube.com/playlist?list=PLpdhLra5W3wZVvYejVJVB2OdKQbNcf0y7\n\n-------\n\n🧑‍💻Behind the scene of CHEF'S LABO: https://youtu.be/T52iKtNxpIA\n(Day in my life vlog as a chef / YouTuber)\n\n-------\n\nHow to make super tasty seasoning: https://youtu.be/vbLeBHiTpWY\n*Use this to replace regular salt. It makes even better👍\n\nHow to reuse Kombu: https://youtu.be/LupTHtPL4VY\n\n--------\n\n🍙 FAQ about ingredients: https://www.chefslabo.com/general-7\n\nExamples\n・What is kombu?\n・Which brand of soy sauce should I buy?\n・Is there any substitute of sake, mirin, kombu?\n・Should I not boil Kombu?\n\n------\n\n(Chapter)\n0:00 Easiest Curry\n1:05 Easiest Curry 2\n2:05 Easiest Curry 3\n3:20 Air fryer Chicken katsu\n4:30 Air fryer Chicken katsu 2\n5:55 Air fryer Chicken katsu 3\n6:33 Air fryer Chicken katsu 4\n\n\n-------\n\n[Ingredients] (2 serves)\n\n[Curry]\nWater 570ml\nKombu 2g\nNeutral oil about 1tbsp (15ml)\nFrozen onion 250g\nGarlic 1tsp (8g)\nSalt 2 pinches\nBlack pepper\n\nJapanese curry roux 46g\nWorcestershire sauce 1/2tsp (2.5ml)\nMilk 1tbsp (15ml)\n\n---------\n\n[Katsu]\nChicken thigh 400-430g\nSalt 5g\nSugar 4g\nEgg 1\nAll purpose flour 1.5tbsp (15g)\nToban Djan 1/4tsp (2g)\n\nDry panko 110g\nNeural oil 55g\n\n----------\n\nIf this video was useful, please hit 👍 button!!\nAnd consider supporting me!! It helps me keep going!!\n\n🙏 Support CHEF'S LAB…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 441,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T18:18:40+00:00",
+    "tags": [
+      "美食制作",
+      "日本料理",
+      "炸鸡排",
+      "美食教程",
+      "咖喱饭",
+      "空气炸锅",
+      "日式咖喱",
+      "鸡肉料理",
+      "Japanese food",
+      "chef's labo"
+    ],
+    "title": "用空气炸锅搞定日式炸鸡排咖喱，新手也能一次成功｜Easiest Chicken Katsu Curry you can Finally Cook at Home",
+    "video_id": "bseed__M9ji",
+    "views": 284
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZGYB6WEYD",
+    "published_at": "2026/9/14 02:18:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZGYB6WEYD"
+  },
+  "version": 1
+}

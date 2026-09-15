@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "巫师3",
+      "游戏盘点",
+      "鬼武者",
+      "游戏推荐",
+      "新游戏",
+      "force",
+      "control",
+      "gaming"
+    ],
+    "video_id": "bseedItnK1g"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSeptember is jam packed with new games to check out, here are the ones I’m looking forward to playing! \n\nBest NEW Games\n00:00 12 Best NEW Games To Play In September 2026\n00:21 Crimson Moon - Sept 1\n02:38 The Blood of Dawnwalker - Sept 2\n05:09 Onimusha: Way of the Sword - Sept 4\n06:47 Wardogs - Sept 10\n08:46 Control Resonant - Sept 24\n10:22 Witcher 3 Remaster - Sept 29\n\nHonorable Mentions\n11:37 Sprawl Zero - Sept 8\n12:37 Aniimo - Sept 16\n13:41 Silent Hill Townfall - Sept 24\n14:34 Minecraft Dungeons 2 - Sept 29\n\n1.0 Updates\n15:22 Valheim - Sept 9\n16:00 Runescape Dragonwilds - Sept 15\n\nUpdates / Playtests\n17:14 Crazy Taxi World Tour - Sept 11\n\n17:57 What I'll Be Playing\n\n#NewGames #PC #UpcomingGames",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1161,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T14:42:02+00:00",
+    "tags": [
+      "游戏资讯",
+      "巫师3",
+      "单机游戏",
+      "游戏盘点",
+      "鬼武者",
+      "游戏推荐",
+      "新游戏",
+      "Force",
+      "Control",
+      "Gaming"
+    ],
+    "title": "2026年9月最值得期待的12款新游戏盘点｜12 Best NEW Games To Play In September 2026",
+    "video_id": "bseedItnK1g",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1Cst66xEiV",
+    "published_at": "2026/9/4 22:42:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Cst66xEiV"
+  },
+  "version": 1
+}

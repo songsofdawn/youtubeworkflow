@@ -1,0 +1,92 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "animation"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "animation"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Entertainment & Pop Culture",
+        "name": "entertainment_pop_culture",
+        "suggested_entities": [
+          "comics",
+          "comedy",
+          "fandom",
+          "creator stories"
+        ],
+        "suggested_formats": [
+          "documentary",
+          "comparison",
+          "challenge"
+        ]
+      }
+    ],
+    "topics": [
+      "暗恋",
+      "动画故事",
+      "故事分享",
+      "个人经历",
+      "恋爱经历",
+      "职场故事"
+    ],
+    "video_id": "bseedfQnqgb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA couple years ago, I was 16. He was 24.\nAnd somehow, my teenage brain decided to develop a crush...\nDid I flirt with him? No.\nDid I confess? Absolutely not.\nDid I eventually gather enough courage to give him a cookie and immediately run away?\n...Yes.\nThis is the story of my most hopeless crush and my complete lack of flirting skills. 😭\nWelcome to my first proper storytime! 🫶\nThanks for watching!\n#Storytime #AnimatedStorytime #Animation #CrushStory #StorytimeAnimation",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 311,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T09:45:50+00:00",
+    "tags": [
+      "暗恋",
+      "搞笑",
+      "动画故事",
+      "故事分享",
+      "个人经历",
+      "恋爱经历",
+      "职场故事"
+    ],
+    "title": "16岁那年我暗恋24岁同事的故事｜I Had a Crush on My 24-Year-Old Coworker...",
+    "video_id": "bseedfQnqgb",
+    "views": 4
+  },
+  "seed_provenance": {
+    "bvid": "BV1nzt26gEiB",
+    "published_at": "2026/9/5 17:45:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1nzt26gEiB"
+  },
+  "version": 1
+}

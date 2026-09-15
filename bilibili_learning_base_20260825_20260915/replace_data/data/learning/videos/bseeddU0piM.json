@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "health science"
+    ],
+    "formats": [
+      "investigation",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "退休生活",
+      "老年健康",
+      "饮食建议",
+      "鸡蛋营养",
+      "眼部保健",
+      "营养科普",
+      "胆固醇真相"
+    ],
+    "video_id": "bseeddU0piM"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=dH1cSW2_a84\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhat really happens when someone over 65 eats four eggs every day? Eggs provide valuable protein and nutrients—but four daily eggs may also affect cholesterol differently depending on your health, medications and overall diet.\n\nIn this video, a doctor explains the possible benefits, the potential risks and which seniors should be especially careful. Watch until the end before making eggs a daily habit.\n\nThis video is for general education and is not a substitute for personal medical advice. Speak with your healthcare professional before making a major dietary change, particularly if you have high cholesterol, diabetes or heart disease.\n\n#SeniorHealth #Eggs #HealthyAging #Over65 #Nutrition",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 782,
+    "likes": 66,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T21:14:43+00:00",
+    "tags": [
+      "退休生活",
+      "科学科普",
+      "老年健康",
+      "饮食建议",
+      "鸡蛋营养",
+      "眼部保健",
+      "营养科普",
+      "胆固醇真相"
+    ],
+    "title": "【中英双语】65 岁后每天吃 4 个鸡蛋，医生揭秘对眼睛和胆固醇的真实影响｜Over 65? What Happens When You Eat 4 Eggs…",
+    "video_id": "bseeddU0piM",
+    "views": 4997
+  },
+  "seed_provenance": {
+    "bvid": "BV14Qts6QEu1",
+    "published_at": "2026/8/31 05:14:43",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV14Qts6QEu1"
+  },
+  "version": 1
+}

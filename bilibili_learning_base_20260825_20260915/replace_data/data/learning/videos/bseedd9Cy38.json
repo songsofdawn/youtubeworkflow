@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building",
+      "shaders"
+    ],
+    "formats": [
+      "build",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑教程",
+      "建筑设计",
+      "光影",
+      "我的世界",
+      "访谈",
+      "游戏",
+      "minecraft",
+      "建筑大神",
+      "minecraft building"
+    ],
+    "video_id": "bseedd9Cy38"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 8,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nshader-settings on my Discord: discord.gg/TxA4hXB8Dk\ncheck out Lazy_Alice: https://www.instagram.com/lazy_alice.mc?igsi=MWpyZXQ4bHdxc2NoaA==\ncheck out my patreon: https://www.patreon.com/cw/Evil_Lupin\n\nTimestamps:\n\n00:00 - Introduction\n00:55 - Who is Lazy_Alice\n03:25 - Inspirations\n04:20 - How Long does it Take?  \n05:14 - Why this scale?\n07:10 - Starting a build\n09:00 - Statue building Lesson\n11:47 - Lore behind builds\n13:15 - Teaching Axioms modify tool \n15:13 - Building Advice for New builders\n17:07 - TREE lessons\n20:39 - Landscaping Tips\n21:43 - How to make huge Fields\n22:44 - Cinematics & Instagram \n23:50 - Shaders\n25:22 - Final quick questions\n28:08 - Future outlook & outro",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1757,
+    "likes": 40,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T19:59:29+00:00",
+    "tags": [
+      "建筑教程",
+      "单机游戏",
+      "建筑设计",
+      "光影",
+      "我的世界",
+      "访谈",
+      "游戏",
+      "Minecraft",
+      "建筑大神",
+      "Minecraft building"
+    ],
+    "title": "对话我的世界建筑大神：他是怎么做到的？｜I asked a Minecraft Building GOD how he does it! ft. Lazy_A…",
+    "video_id": "bseedd9Cy38",
+    "views": 775
+  },
+  "seed_provenance": {
+    "bvid": "BV17PYo6kEdw",
+    "published_at": "2026/9/13 03:59:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV17PYo6kEdw"
+  },
+  "version": 1
+}

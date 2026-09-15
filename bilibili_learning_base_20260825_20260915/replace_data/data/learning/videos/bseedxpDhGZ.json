@@ -1,0 +1,88 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home vegetable garden",
+      "harvest and preserve",
+      "vegetable garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "potatoes",
+      "种植实验",
+      "新手指南",
+      "家庭菜园",
+      "有机农业",
+      "土豆种植",
+      "工业·工程·机械",
+      "容器园艺",
+      "收获对比",
+      "potato harvest"
+    ],
+    "video_id": "bseedxpDhGZ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=xfRyFNpFXSc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nAre you curious about growing potatoes in containers but unsure which size works best? In this grow bag experiment, we’re finally performing our Kennebec potato harvest to see if the container size really makes a difference! We are comparing a 10 gallon vs 15 gallon grow bag to find out which one produces the best homegrown potatoes.\n\nWhether you are looking for vegetable gardening for beginners or advanced container gardening tips, this potato harvest 2026 has some surprising results. We kept everything consistent—the same variety, organic soil, and fertilizer—to ensure these are the best grow bags for potatoes for your garden. Stick around for the final weight comparison and a special message of hope from Mountains in Heaven.\n\nMy best growing potato video link here: https://youtu.be/xfRyFNpFXSc\n\nKey Highlights:\n\nOrganic potato growing results\nStep-by-step potatoes in grow bags sifting\nFinal yield comparison: 10 vs 15 gallon\n\nTimestamps: \n0:00 - Introduction to the Potato Experiment \n0:45 - The Setup: 10 Gallon vs 15 Gallon Grow Bags \n1:30 - Starting the 10-Gallon Bag Harvest \n3:15 - Initial Impressions: Potato Size & Quality \n4:45 - Harvesting the 15-Gallon Grow Bag \n6:30 - Comparing the Yields: Sizing Them Up \n7:15 - Final Weight Results & Conclusion \n8:00 - A Message of Hope from Mountains in Heaven\n\n#gardening #potatoharvest #growbags #containergardening #mountainsinheaven #kennebecpotatoes #growyourfood #homesteading #organicgardening",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 481,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T22:20:40+00:00",
+    "tags": [
+      "potatoes",
+      "种植实验",
+      "新手指南",
+      "家庭菜园",
+      "有机农业",
+      "土豆种植",
+      "工业·工程·机械",
+      "容器园艺",
+      "收获对比",
+      "potato harvest"
+    ],
+    "title": "【中英双语】10加仑与15加仑种植袋土豆收获实验对比结果｜Potatoes in Grow Bags: 10 Gallon vs 15 Gallon Expe…",
+    "video_id": "bseedxpDhGZ",
+    "views": 41
+  },
+  "seed_provenance": {
+    "bvid": "BV1vvts6YEgA",
+    "published_at": "2026/8/31 06:20:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vvts6YEgA"
+  },
+  "version": 1
+}

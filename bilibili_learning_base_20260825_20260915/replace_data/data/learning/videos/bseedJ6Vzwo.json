@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "high protein",
+      "noodles"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "high protein recipe",
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "印度料理",
+      "儿童餐盒",
+      "健康早餐",
+      "快手早餐",
+      "素食食谱",
+      "减脂饮食",
+      "高蛋白食物",
+      "无面粉食谱"
+    ],
+    "video_id": "bseedJ6Vzwo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=cKiYnnG5cJ0\n【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nStop Eating Junk! Try this Two High Protine Healthy Vegetarian Recipes Indian |  Breakfast Recipe\n\nLooking for a healthy, high-protein breakfast recipe for weight loss? Try this Oats Moong Dal with Vegetables breakfast recipe – a perfect combination of nutrition and taste. This easy Indian vegetarian breakfast is made with rolled oats, green moong dal, and fresh vegetables, making it rich in protein, fiber, and essential nutrients.\nThis less oil, no maida breakfast recipe is ideal for weight loss, kids' tiffin box, and a healthy lifestyle. It keeps you full for a longer time and helps in managing weight naturally.\n\nPerfect for busy mornings, this quick and easy healthy breakfast recipe is ready in minutes and tastes absolutely delicious!\n\n🌿 Why You’ll Love This Recipe:\n✔ High Protein & High Fiber Breakfast\n✔ Less Oil & No Maida Recipe\n✔ Perfect for Weight Loss\n✔ Indian Vegetarian Diet Recipe\n✔ Easy & Quick Morning Breakfast\n✔ Healthy Tiffin B\nox Recipe\n\nTry this recipe today and enjoy a tasty, guilt-free healthy breakfast 😋\n\nIf you like the recipe, LIKE 👍 SHARE 🔁 & SUBSCRIBE 🔔 for more healthy veg recipes.\n\n#10MinutesBreakfast\n#InstantHealthyBreakfast\n#QuickBreakfastRecipes\n#HealthyIndianBreakfast\n#WeightLossBreakfast\n#VegBreakfastRecipes\n#EasyBreakfastIdeas\n\n\nbreakfast recipes\neasy indian recipes\nquick tiffin ideas\nsimple homemade recipes\nhealthy breakfast\nsuji cheela recipe\nwheat paratha recipes\nmoong dal dosa\nkids lunch box recipes\n10 minutes breakfast recipes\nviral breakfast recipes\ntrending tiffin recipe\nYouTube viral food shorts\nquick indian breakfast\nOffice lunch box recipes\nnew breakfast recipes for school\nkids meals\nIndian lunch box…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 394,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T19:38:01+00:00",
+    "tags": [
+      "印度料理",
+      "美食制作",
+      "儿童餐盒",
+      "健康早餐",
+      "快手早餐",
+      "无配音",
+      "素食食谱",
+      "减脂饮食",
+      "高蛋白食物",
+      "无面粉食谱"
+    ],
+    "title": "高蛋白低油印度素食早餐：燕麦绿豆汤配蔬菜｜Stop Eating Junk! Try this Two High Protine Healthy Vegeta…",
+    "video_id": "bseedJ6Vzwo",
+    "views": 9
+  },
+  "seed_provenance": {
+    "bvid": "BV1Eyt562EYQ",
+    "published_at": "2026/9/2 03:38:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Eyt562EYQ"
+  },
+  "version": 1
+}

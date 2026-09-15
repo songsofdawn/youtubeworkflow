@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "steak"
+    ],
+    "formats": [
+      "challenge",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "steak recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "荒野求生",
+      "自然食材",
+      "丛林生存",
+      "户外美食",
+      "原始烹饪",
+      "石头烤肉",
+      "野外捕猎",
+      "primitive cooking",
+      "jungle cooking"
+    ],
+    "video_id": "bseedDShG7P"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=TI1FMldppFM\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nI explore the wilderness and cook primitive meals using only what nature provides. Every meal is made over an open fire with simple tools, wild ingredients, and survival skills. From forest foraging to outdoor cooking, this channel is all about authentic bushcraft, adventure, and the art of making incredible food in the wild.\n\nNew videos every week.\nSubscribe and join the adventure! 🌲🔥🥩\n\n#tuna #steak #cooking #primitive #stone #jungle #wild #stone",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1093,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T14:56:48+00:00",
+    "tags": [
+      "荒野求生",
+      "自然食材",
+      "丛林生存",
+      "无配音",
+      "户外美食",
+      "原始烹饪",
+      "石头烤肉",
+      "野外捕猎",
+      "primitive cooking",
+      "jungle cooking"
+    ],
+    "title": "【无配音】热石烤金枪鱼排：荒野原始烹饪实录｜Tuna Steak 🥩 Cooked🔥on a Hot Stone (Primitive Cooking)",
+    "video_id": "bseedDShG7P",
+    "views": 8
+  },
+  "seed_provenance": {
+    "bvid": "BV1WStn6qEFP",
+    "published_at": "2026/8/30 22:56:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1WStn6qEFP"
+  },
+  "version": 1
+}

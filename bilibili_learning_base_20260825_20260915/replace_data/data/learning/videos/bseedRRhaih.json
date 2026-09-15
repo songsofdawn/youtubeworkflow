@@ -1,0 +1,115 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "RAM"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "pc memory",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "sim2real",
+      "hugging face",
+      "本地 ai",
+      "microduck",
+      "开源机器人",
+      "raspberry pi",
+      "强化学习",
+      "开发者硬件"
+    ],
+    "video_id": "bseedRRhaih"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=nq0ZTUZcdTU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHugging Face just put a programmable AI robot on sale for $399.\nThe cute part is the distraction. The training loop is the product.\n\nA $399 walking robot sounds like a novelty until you notice what Hugging Face actually exposed: the simulator, SDK, reinforcement learning stack, and robot software. Microduck is not a household assistant, and that is the point. The bigger shift is a cheap physical target for local AI developers who want to train, deploy, break, fix, and share real robot behaviors instead of staying trapped in a chat box.\n\n0:00 Intro\n1:36 What Hugging Face Actually Shipped\n3:02 Why Small And Cheap Is The Point\n4:11 Sim To Real, And The Stack Underneath\n5:43 Robot Behaviors As Shareable Models\n7:15 Where The Preorder Hype Breaks Down\n8:36 What Developers Will Actually Build\n10:16 Should You Buy One\n\nWatch next:\n  The local AI setup this robot plugs into - https://youtu.be/XHbt-aYwGIs\n  What happens when agents get real infrastructure - https://youtu.be/iodMtjeJ43A\n  The hardware side of running models yourself - https://youtu.be/evkv0_HrhFM\n\nSources and workings: https://codinghorizon.dev/hugging-face-microduck-programmable-ai-robot/\n\n@CodingHorizon on X: https://x.com/CodingHorizon\n\nNarration is synthesised.\n\n#localai #opensource #robotics",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 695,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T17:25:28+00:00",
+    "tags": [
+      "Sim2Real",
+      "Hugging Face",
+      "本地 AI",
+      "MicroDuck",
+      "计算机技术",
+      "开源机器人",
+      "Raspberry Pi",
+      "强化学习",
+      "开发者硬件"
+    ],
+    "title": "【中英双语】Hugging Face MicroDuck：399 美元可编程本地 A｜Hugging Face MicroDuck: Programmable…",
+    "video_id": "bseedRRhaih",
+    "views": 420
+  },
+  "seed_provenance": {
+    "bvid": "BV1hvtp6REbg",
+    "published_at": "2026/8/31 01:25:28",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1hvtp6REbg"
+  },
+  "version": 1
+}

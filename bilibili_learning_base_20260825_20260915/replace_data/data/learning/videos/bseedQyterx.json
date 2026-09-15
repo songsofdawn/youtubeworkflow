@@ -1,0 +1,108 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM",
+      "LLM"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "glm",
+      "llm",
+      "open source ai",
+      "ai model benchmark",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "游戏开发教程",
+      "开源模型",
+      "ai 编程",
+      "大语言模型评测",
+      "glm-5.3",
+      "glm-5.3-flash",
+      "unity 引擎",
+      "glm 5.3",
+      "c# 物理模拟",
+      "zhipu ai"
+    ],
+    "video_id": "bseedQyterx"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=tIinugnl3yA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGLM 5.3 is here, and it’s a game-changer for developers! In this video, we test the GLM 5.3-Flash AI model to see if it can handle a complex, realistic 3D game inside the Unity game engine. While many creators use AI to build simple HTML games, we’re pushing GLM 5.3 to the limit by implementing advanced C# physics and game logic in a professional environment.\n\nWe put this new AI model to the test by building a real-time drifting calculator and a dynamic collectible spawning system. We also compare GLM 5.3 vs Kimi K3, looking at the massive price difference (GLM 5.3 is 3x cheaper!) and the 1 million context window performance. If you want to start making games using AI, this breakdown of GLM 5.3-Flash and its integration with VS Code and Unity is a must-watch.\n\n[[Chapters]]\n0:00 - Introduction to GLM 5.3 & Unity\n0:30 - GLM 5.3 Specs vs Kimi K3 (Pricing & Context)\n1:05 - The Limitations: Why Multimodal Matters\n1:45 - Why Test AI on 3D Games vs HTML?\n2:20 - Setting up GLM 5.3 in VS Code (Kilocode)\n3:00 - Task 1: Building a Drift Calculation System\n5:05 - Testing the AI-Generated Drift Feature\n7:30 - Should I start a Game Dev channel?\n8:15 - Task 2: Implementing a Collectibles Manager\n9:40 - Testing Spawn Logic & Vehicle Interaction\n10:50 - Final Verdict: Is GLM 5.3 the best coding LLM?\n\nDo you want to see a full series on building a GTA-style game using AI? Let me know in the comments! 🎮\n\nSubscribe for more AI Coding tutorials: [Link]\nFollow me on Twitter/X: [Link]\n\n#GLM5 #Unity #AIProgramming #G…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 721,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:30:10+00:00",
+    "tags": [
+      "游戏开发教程",
+      "开源模型",
+      "AI 编程",
+      "大语言模型评测",
+      "GLM-5.3",
+      "GLM-5.3-Flash",
+      "Unity 引擎",
+      "GLM 5.3",
+      "C# 物理模拟",
+      "Zhipu AI"
+    ],
+    "title": "在 Unity 中实测 GLM 5.3：用 AI 构建 3D 赛车游戏与｜I Tested GLM 5.3 in Unity Game Engine – Ho…",
+    "video_id": "bseedQyterx",
+    "views": 61
+  },
+  "seed_provenance": {
+    "bvid": "BV15ct76CEpU",
+    "published_at": "2026/9/2 05:30:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15ct76CEpU"
+  },
+  "version": 1
+}

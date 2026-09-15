@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "Bedrock"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft bedrock",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "极限生存",
+      "minecraft",
+      "基岩",
+      "硬核模式",
+      "wisp",
+      "mine craft"
+    ],
+    "video_id": "bseedA826O2"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEvery Step Spawns BEDROCK in Minecraft... (Challenge)\nSUB TO THE IRL CHANNEL: @KitWisp \n\nFOLLOW ME:\nInstagram - @wispexe\nDiscord - https://discord.gg/wisp\n\nCheck out the best server hosting here:\nhttps://lilypad.gg/wisp\n\n#Minecraft #MinecraftChallenge #HardcoreMinecraft",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1055,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T11:15:35+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "极限生存",
+      "Minecraft",
+      "挑战",
+      "基岩",
+      "游戏挑战",
+      "硬核模式",
+      "Wisp",
+      "mine craft"
+    ],
+    "title": "每走一步都变基岩？MC极限挑战｜Minecraft, But Walking Spawns Bedrock...",
+    "video_id": "bseedA826O2",
+    "views": 63
+  },
+  "seed_provenance": {
+    "bvid": "BV1inY76tEci",
+    "published_at": "2026/9/11 19:15:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1inY76tEci"
+  },
+  "version": 1
+}

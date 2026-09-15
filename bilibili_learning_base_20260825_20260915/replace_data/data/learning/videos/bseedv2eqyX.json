@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "chemistry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "crystals",
+      "materials"
+    ],
+    "formats": [
+      "full_process",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "crystal growth",
+      "materials science"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "宝石制作",
+      "科学实验",
+      "科普知识",
+      "diy 手工",
+      "材料科学",
+      "激光技术",
+      "晶体生长",
+      "极客diy"
+    ],
+    "video_id": "bseedv2eqyX"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=2E6yW2bTLys\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI finally grew a real gem-sized ruby at home!  This project has taken me over a year but I feel like I'm only just getting started.\nGet your own home-made rubies here! https://store.gemsofscience.com/products/my-home-grown-ruby-crystals-flux-gems-made-by-me\n\nThanks again to @styropyro  for letting me borrow his laser!  Stay tuned, we have some other projects in the works!\n\nSpecial thanks to my friends @FrankieSmileShow  @LightningOnDemand @glockenspielsdesk , Baen, Storby and international musical superstar @mguybowman  for providing voiceovers!\n\nFigures borrowed from Beginner's Guide to Flux Crystal Growth by Makoto Tachibana, Flux Growth of Hexagonal Bipyramidal Ruby Crystals (Oishi et al 2004), Growth of Hexagonal Bipyramidal Ruby Crystals by the Evaporation of a Li2O–MoO3 Flux (Teshima et al 2005), Spherulite-shaped cristobalite by fused silica devitrification (Malo et al 2011), Investigation of low-pressure cold-gas dynamic spraying of polyamide-12 (PA12) on steel surfaces (Tillmann et al 2019)\n\nAnd thanks to Dr. Allen Glazner who taught me about crystal thermal cycling!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 614,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T04:45:17+00:00",
+    "tags": [
+      "宝石制作",
+      "科学实验",
+      "中英双语",
+      "中文翻译",
+      "科普知识",
+      "DIY 手工",
+      "材料科学",
+      "激光技术",
+      "晶体生长",
+      "极客DIY"
+    ],
+    "title": "【中英双语】在家用激光培育红宝石晶体全过程记录｜I made my own rubies!",
+    "video_id": "bseedv2eqyX",
+    "views": 23
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ub4k6qEpY",
+    "published_at": "2026/8/29 12:45:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ub4k6qEpY"
+  },
+  "version": 1
+}

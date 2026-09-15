@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "nature_animals",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "wildlife",
+      "fish"
+    ],
+    "formats": [
+      "documentary",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "wildlife documentary",
+      "fish rescue"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "环境保护",
+      "野生动物",
+      "自然纪录片",
+      "生态保护",
+      "入侵物种",
+      "俄勒冈州",
+      "opb",
+      "科学·探索·自然",
+      "潜水捕鱼",
+      "oregon public broadc"
+    ],
+    "video_id": "bseedN_hOrg"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=rFfWZLT_DcM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSpearfishing for smallmouth bass in Oregon rivers is an adventurous new way to remove non-native species and help salmon.\n\nIt started as an experiment on the Coquille River, where illegally introduced bass ate so many salmon they caused a population crash.\n\nMangers opened the river to spearfishing to remove as many bass as possible.\n\nJared Nagreen and Aaron Griffin dove in to help protect salmon.\n\nRead more: https://www.opb.org/article/2026/08/27/new-bass-fishery-in-oregon-helps-salmon-by-spearing-their-invasive-predators/ \n\nOPB acknowledges misspelling 'Department' in Gary Vonderohe's title and regrets the error.  \n\nFor more stories like this visit OPB online at https://opb.org \n---\nOregon Public Broadcasting aims to elevate and amplify the community, connect Oregon and its neighbors, and illuminate a wider world through stories. OPB Every Day. OPB Everywhere. \n\nOne way to support OPB and the work of public media is to subscribe to our channel for new OPB videos every month: https://www.youtube.com/opb?sub_confirmation=1\n\nMember support makes all the videos on the OPB YouTube channel possible, and everything else you love. Ensure the next important story is covered and join in as a Sustainer now at https://www.opb.org/give/?s=OAMEGNW260500005\n\n#oregonfieldgudie #OPB #PacificNorthWest",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 565,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T14:47:19+00:00",
+    "tags": [
+      "环境保护",
+      "野生动物",
+      "自然纪录片",
+      "生态保护",
+      "入侵物种",
+      "俄勒冈州",
+      "opb",
+      "科学·探索·自然",
+      "潜水捕鱼",
+      "oregon public broadc"
+    ],
+    "title": "【中英双语】俄勒冈河流：潜水捕食鲈鱼以保护濒危鲑鱼｜An adventurous way to help salmon: Spearfishing for b…",
+    "video_id": "bseedN_hOrg",
+    "views": 6
+  },
+  "seed_provenance": {
+    "bvid": "BV1PhtW67ETw",
+    "published_at": "2026/8/30 22:47:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PhtW67ETw"
+  },
+  "version": 1
+}

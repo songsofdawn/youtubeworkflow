@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "animation",
+      "drawing"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "animation process",
+      "animation",
+      "drawing"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "绘画",
+      "手书",
+      "少女",
+      "animationmeme",
+      "蔚蓝档案ost",
+      "oc",
+      "原创角色",
+      "animation meme",
+      "진수성찬"
+    ],
+    "video_id": "bseedeA8rNV"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n이름: 스피냐\n자캐에용\nBGM: Blue Archive OST 267 \n__________________________________________________________________________\n\n멤버십\nhttps://www.youtube.com/channel/UCJEWldhiDQcKQc-uABa7LWg/join\n__________________________________________________________________________\n\nEmail: hamsterlinya@gmail.com\nPixiv: https://www.pixiv.net/users/128677334\nX: https://x.com/Youtube_J2SC",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 67,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T03:40:10+00:00",
+    "tags": [
+      "绘画",
+      "手书",
+      "少女",
+      "AnimationMeme",
+      "蔚蓝档案OST",
+      "OC",
+      "原创角色",
+      "无配音",
+      "Animation meme",
+      "진수성찬"
+    ],
+    "title": "手书动画：自家OC少女的薛定谔时刻｜Schrödinger",
+    "video_id": "bseedeA8rNV",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1RNYX6xEw3",
+    "published_at": "2026/9/12 11:40:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1RNYX6xEw3"
+  },
+  "version": 1
+}

@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "restoration",
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "工具技巧",
+      "家居修复",
+      "材料混合",
+      "废物利用",
+      "生活小妙招",
+      "diy 手工",
+      "创意改造",
+      "墙面处理"
+    ],
+    "video_id": "bseed9LOala"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=X9o6jvIutnM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nYou are watching “😱 Mix WHITE CEMENT with PAINT and See the Amazing Result!” on SmartTool99. In today’s video, I’ll show you an interesting DIY experiment that combines white cement with paint to create a tough and durable coating mixture for home projects. If you enjoy DIY, home repair, creative ideas, and useful life hacks, this paint mixing trick is definitely worth seeing. We’ll go through the preparation, mixing process, application, and final result so you can see how the mixture behaves on the surface. This project also explores how to use paint properly and how common materials can be combined in an unexpected way. For electricians, makers, and DIY enthusiasts, it’s another creative approach to reusing available materials, reducing unnecessary waste, and getting more value from everyday supplies. Watch until the end to see this white cement and paint mixture being applied and discover how the finished surface turns out after the complete process.\nIf you found this video useful, please Like, Share, Subscribe, and follow SmartTool99 for more DIY projects, painting tips, home repairs, recycling ideas, useful tricks, and creative experiments!\n#SmartTool99 #WhiteCement #Paint #MixingPaint #PaintMixing #PaintingTips #DIY #DIYProjects #HomeImprovement #WallPainting #HomeRepair #RepairTips #LifeHacks #CreativeDIY #CementMix",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 575,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:04:37+00:00",
+    "tags": [
+      "工具技巧",
+      "家居修复",
+      "材料混合",
+      "废物利用",
+      "中英双语",
+      "生活小妙招",
+      "中文翻译",
+      "DIY 手工",
+      "创意改造",
+      "墙面处理"
+    ],
+    "title": "【中英双语】白水泥加油漆自制强力涂层：DIY 实验与修复技巧｜😱 Mix WHITE CEMENT with PAINT and See the Amazi…",
+    "video_id": "bseed9LOala",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1fQ496HEEk",
+    "published_at": "2026/8/27 20:04:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1fQ496HEEk"
+  },
+  "version": 1
+}

@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "锻造",
+      "原始技术",
+      "熔炉",
+      "科普实验",
+      "primitive technology",
+      "冶铁",
+      "primitive",
+      "diy实验",
+      "survival技能"
+    ],
+    "video_id": "bseed0wQQCA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI made iron using the old blower variant but using a larger diameter fan (30 cm rather than 25 cm). I did a longer smelt and a shorter smelt. The long smelt made 10 g of iron but the short smelt made 14 g sugesting that multiple shorter duration smelts may be more effective at producing iron rather than one long smelt. The iron was then put into a knife shaped mold and placed in a forge under a flattened tuyere to spread the blast ino a sheet. The iron in the mold partially welded and fused but didn't completely melt and it was broken in the middle. I put this down to the mold being too far under the tuyere blast as the coals above got white hot. I'm counting this as a partial sucess because the result could still be sharpened into some type of tool. The iron knife I made previously this was melted much more completely in its mold and further exeperimentation would be needed to re-learn this method of insitu casting.\n\n#primitivetechnology #iron #handmade #engineering \n\nThe ultimate challenge is seeing how far human ingenuity can go. Subscribe here:\nhttps://www.youtube.com/channel/UCAL3JXZSzSm8AlZyD3nQdBA?sub_confirmation=1\n\nAbout Primitive Technology:\nBuilding things in the wild completely from scratch no modern tools, no modern materials.\nThe challenge is simple but strict: If I need a fire, I make a fire stick. If I need an axe, I shape a stone. Every hut is built solely from trees, mud, and rocks. I don't live in the wild, but I love discovering just how far we can go using only natural materials…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1561,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T17:24:18+00:00",
+    "tags": [
+      "手工",
+      "锻造",
+      "原始技术",
+      "熔炉",
+      "科普实验",
+      "primitive technology",
+      "冶铁",
+      "primitive",
+      "DIY实验",
+      "Survival技能"
+    ],
+    "title": "原始技术：铁粒熔焊实验，短次熔炼更出铁｜Primitive Technology: Iron Prill Welding Experiment",
+    "video_id": "bseed0wQQCA",
+    "views": 136
+  },
+  "seed_provenance": {
+    "bvid": "BV1BwbE6REA6",
+    "published_at": "2026/9/6 01:24:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1BwbE6REA6"
+  },
+  "version": 1
+}

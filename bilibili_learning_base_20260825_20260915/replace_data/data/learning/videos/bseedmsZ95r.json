@@ -1,0 +1,108 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Claude",
+      "AI agents",
+      "AI video generation"
+    ],
+    "formats": [
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "claude",
+      "ai agents",
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai动画",
+      "ai视频生成",
+      "chatgpt",
+      "claude vs chatgpt",
+      "ai电影工作流",
+      "claude",
+      "ai智能体",
+      "chatgpt vs claude",
+      "ai制作动画预告片"
+    ],
+    "video_id": "bseedmsZ95r"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI turned two computers into competing AI anime studios to test an end-to-end AI video generation workflow: one run by ChatGPT, the other by Claude. Each AI agent had to create an original anime trailer, and you decide which studio gets $500 to make Episode 1.\n\nThis AI filmmaking challenge went far beyond generating a few clips. Each studio had to develop an original story and characters, use AI image generation and AI animation to build every shot, create AI voices, music, and sound effects, and complete its own AI video editing before delivering a finished 60–90-second trailer.\n\nUsing OpenAI Codex and Claude Code, I gave each AI control of its own computer and access to the same production tools. Kling AI served as the primary AI video generator, ElevenLabs handled AI voice generation and audio, and both agents built automated video editing workflows to assemble their final AI films.\n\nFollow both autonomous AI agents from the first pitch to the final premiere as they tackle character consistency, image-to-video animation, AI storytelling, and the creative decisions that separate a real movie trailer from AI slop. ChatGPT had the stronger PC and more expensive plan; Claude had an old gaming computer and something to prove.\n\nCan autonomous AI agents make an anime people actually want to watch—or can even the best AI video tools generate clips without making a coherent film? Watch both original trailers, then judge which AI anime studio did it better.\n\nVOTE IN THE COMMENTS: ChatGPT or Claude?\nWhich…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 637,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T23:11:30+00:00",
+    "tags": [
+      "AI动画",
+      "AI视频生成",
+      "ChatGPT",
+      "claude vs chatgpt",
+      "AI电影工作流",
+      "计算机技术",
+      "Claude",
+      "AI智能体",
+      "chatgpt vs claude",
+      "AI制作动画预告片"
+    ],
+    "title": "让ChatGPT和Claude各自经营AI动画工作室对决｜I Gave ChatGPT and Claude $200 to Build Rival Anim…",
+    "video_id": "bseedmsZ95r",
+    "views": 5
+  },
+  "seed_provenance": {
+    "bvid": "BV17kbE6tErd",
+    "published_at": "2026/9/6 07:11:30",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV17kbE6tErd"
+  },
+  "version": 1
+}

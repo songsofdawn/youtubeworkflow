@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "product test",
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑安全",
+      "工程科普",
+      "火灾实验",
+      "科学测试",
+      "保温材料",
+      "装修知识",
+      "matt risinger",
+      "房屋结构"
+    ],
+    "video_id": "bseedwbT0sw"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=y2u2vqAzq0U\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMatt Risinger sets up a hands-on experiment on the Build Show, framing it around the real toll of electrical fires in American homes each year. He builds four identical wall mockups—one empty cavity, one with canned spray foam, one with fiberglass, and one with mineral wool insulation—then ignites simulated electrical fires inside each using fire-starter cubes. Watching how flames spread, smolder, or self-extinguish across the different materials, he tracks smoke, char, and structural damage in real time before opening the walls to inspect the aftermath. The test reveals meaningful differences in how insulation type affects fire containment within standard interior wall framing, offering practical insight for builders weighing sound control against fire safety.\n\nRSVP For BuildShowLive 2026 in San Antonio - Tickets on Sale May 1st https://bsl.buildshownetwork.com/EWfSx\n\n➤CHANNELS:\nPodcasts:  ⁨@BuildShowPodcasts⁩  \nBuild Experts:  ⁨@BuildShowNetwork⁩  \nBuild Show Live:  ⁨@BuildShowLive⁩  \n\n➤BUILD GEAR STORE:\n https://build-gearstore.com/\n\n➤SUBSCRIBE TO THE PODCAST:\n Apple: https://apple.co/32AOwgU\n Spotify: https://spoti.fi/3FXNg4X\n\n➤SIGN UP FOR THE NEWSLETTER:\n https://buildshownetwork.com/newsletter\n\n➤ADVERTISE WITH US:\n https://www.buildproductions.com\n\n➤LEARN MORE ABOUT BUILDING:\nhttp://thebuildshow.com/\n\n➤SOCIALS:\nInstagram: https://www.instagram.com/risingerbuild/\nInstagram: https://www.instagram.com/thebuildshow/\nFacebook: https://www.facebook.com/buildshownetwor…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 805,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:44:01+00:00",
+    "tags": [
+      "建筑安全",
+      "工程科普",
+      "火灾实验",
+      "中英双语",
+      "中文翻译",
+      "科学测试",
+      "保温材料",
+      "装修知识",
+      "Matt Risinger",
+      "房屋结构"
+    ],
+    "title": "【中英双语】四种墙体保温材料的防火性能实测对比｜Which Insulation Is Actually Fire-Safe? We Tested It",
+    "video_id": "bseedwbT0sw",
+    "views": 5
+  },
+  "seed_provenance": {
+    "bvid": "BV1Wk4y6iEfM",
+    "published_at": "2026/8/29 16:44:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Wk4y6iEfM"
+  },
+  "version": 1
+}

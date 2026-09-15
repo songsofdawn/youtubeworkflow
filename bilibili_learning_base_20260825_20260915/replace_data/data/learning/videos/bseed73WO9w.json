@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.66,
+      "story_strength": 0.7,
+      "visual_payoff": 0.7
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "street food"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "street food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "街头美食",
+      "印度小吃",
+      "趣味饮食",
+      "美食挑战",
+      "momo",
+      "骰子游戏",
+      "golgappa",
+      "ding dong girls"
+    ],
+    "video_id": "bseed73WO9w"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=EtXiWJdDyvI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIf you are interested to join Ding Dong Girls \n   email us at - girlsdingdong05@gmail.com\n\n#foodchallenge",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1631,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T11:44:10+00:00",
+    "tags": [
+      "街头美食",
+      "印度小吃",
+      "趣味饮食",
+      "美食挑战",
+      "中英双语",
+      "中文翻译",
+      "Momo",
+      "骰子游戏",
+      "Golgappa",
+      "Ding Dong Girls"
+    ],
+    "title": "【中英双语】骰子决定吃多少：挑战印度街头美食拼盘｜Dice will Decide our Bite Food Challenge | Golgappa, M…",
+    "video_id": "bseed73WO9w",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1ws4R6fE5f",
+    "published_at": "2026/8/27 19:44:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ws4R6fE5f"
+  },
+  "version": 1
+}

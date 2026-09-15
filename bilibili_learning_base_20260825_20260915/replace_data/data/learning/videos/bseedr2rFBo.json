@@ -1,0 +1,103 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "3D art",
+      "animation"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "3d art",
+      "animation process",
+      "animation"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai动画",
+      "google flow",
+      "仙侠",
+      "3d动画",
+      "ai视频教程",
+      "国风场景",
+      "ai创作",
+      "new ai niche",
+      "viral ai niche"
+    ],
+    "video_id": "bseedr2rFBo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nCinematic 3D Donghua landscapes and Xianxia fantasy environments are pulling millions of views across YouTube, TikTok, and Instagram Reels. The majestic floating peaks, ancient pagoda architecture, and glowing spiritual mist create unmatched visual retention.\n\nIn this step-by-step tutorial, we break down two distinct creation methods using ChatGPT paired with Google Flow's OmniFlash engine:\n1. 3-Shot Continuous Multi-Angle Cinematic Sequences (Wide, Macro, Aerial)\n2. Single 10-Second Multi-Scene Morphing Prompts\n\n📦 GET THE PROMPT FILE:\nComment Word \"Donghua\" Below and I'll Send Link In reply.\n\n🛠️ PRODUCTION UTILITIES:\n• Prompt Engine: ChatGPT Standard (Donghua Worldbuilder Node)\n• Video Rendering Suite: Google Flow (OmniFlash Model Profile)\n• Aspect Ratio: 16:9 Landscape / 9:16 Vertical\n• Audio Design: CapCut Desktop / Mobile\n\nIf you want to track the newest viral AI creation frameworks before the feeds hit saturation, drop a LIKE and hit SUBSCRIBE! 🚀\n\n#Donghua #AIAnimation #GoogleFlow #FantasyLandscape #ViralNiche",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 258,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:48:37+00:00",
+    "tags": [
+      "AI动画",
+      "Google Flow",
+      "仙侠",
+      "3D动画",
+      "计算机技术",
+      "AI视频教程",
+      "国风场景",
+      "AI创作",
+      "New ai niche",
+      "viral ai niche"
+    ],
+    "title": "用免费AI制作3D国风仙侠动画教程｜How to Make Viral 3D Donghua Animations Using Free AI (Step-b…",
+    "video_id": "bseedr2rFBo",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV1eTtk61EW3",
+    "published_at": "2026/9/5 02:48:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1eTtk61EW3"
+  },
+  "version": 1
+}

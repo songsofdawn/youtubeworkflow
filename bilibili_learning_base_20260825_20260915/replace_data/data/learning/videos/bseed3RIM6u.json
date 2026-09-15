@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "comparison",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "冷知识",
+      "美食探索",
+      "巧克力布丁果",
+      "热带水果",
+      "奇特水果",
+      "罕见水果",
+      "unique fruits",
+      "exotic fruits"
+    ],
+    "video_id": "bseed3RIM6u"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nNature is full of surprises, and some fruits are so unusual they hardly look real. In this video, you'll discover 25 exotic fruits from around the world, each with unique shapes, vibrant colors, fascinating origins, and incredible flavors.\n\nFrom the chocolate-flavored Black Sapote and giant Marang to the nutritious Baobab fruit, creamy Cupuaçu, sweet Atemoya, and many other rare tropical treasures, these amazing fruits showcase the incredible diversity of nature.\n\n🍈 Which fruit would you love to try? Let us know in the comments!\n\nChapters:\n00:00 - rare fruits\n00:23 - black sapote\n01:36 - nipa fruit\n02:49 - kepel fruit\n04:11 - marang\n05:26 - rambai\n06:38 - pequi\n07:58 - baobab\n08:53 - safou\n10:06 - cupuaçu\n11:26 - decaisnea fruit\n12:32 - ceylon gooseberry \n13:44 - atemoya\n15:09 - dabai\n15:49 - cocona\n17:09 - abiu\n17:48 - madroño\n18:37 - chokecherry\n19:25 - natal plum\n20:08 - pitangatuba\n20:53 - feijoa\n21:55 - mamoncillo de monte\n22:34 - desert lime\n23:21 - pawpaw\n\n--------------------------------------------------------------------------------\nVideo thumbnails are a composite image and may not correspond to the content. Thank you for your understanding!\n--------------------------------------------------------------------------------\nCOPYRIGHT DISCLAIMER\nFlora does not fully own the material compiled in this video. It belongs to individuals or organizations that deserve respect.\nWe use under: Copyright Disclaimer, Section 107 of the Copyright Act 1976. \"Fair Use\" is permitted for purposes such as…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1443,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T19:39:53+00:00",
+    "tags": [
+      "冷知识",
+      "科普",
+      "美食探索",
+      "巧克力布丁果",
+      "热带水果",
+      "美食测评",
+      "奇特水果",
+      "罕见水果",
+      "Unique Fruits",
+      "Exotic Fruits"
+    ],
+    "title": "25种长得像假水果的奇特果实，你敢吃几种？｜25 Exotic Fruits That Don't Look Real",
+    "video_id": "bseed3RIM6u",
+    "views": 42
+  },
+  "seed_provenance": {
+    "bvid": "BV13ReL6nEiy",
+    "published_at": "2026/9/15 03:39:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13ReL6nEiy"
+  },
+  "version": 1
+}

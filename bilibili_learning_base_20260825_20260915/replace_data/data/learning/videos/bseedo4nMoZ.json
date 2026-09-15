@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Gemini",
+      "AI video generation"
+    ],
+    "formats": [
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "explained",
+      "gemini",
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai 视频生成",
+      "视频制作工具",
+      "技术评测",
+      "谷歌 ai",
+      "gemini omni",
+      "4k 导出",
+      "场景扩展"
+    ],
+    "video_id": "bseedo4nMoZ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=qQjZNdURxzg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGemini Omni 1.1 Flash is Google’s newest AI video model update and in this full breakdown, I test every major feature to find out how good it actually is.\n\nGemini Omni 1.1 Flash can generate videos from text, images, and video references while producing synchronized audio. The new version introduces videos up to 40 seconds long through scene extension, first-and-last-frame keyframing, improved character consistency, video references, a faster 360p draft mode, and 1080p and 4K exports.\n\nBut specifications don’t tell us whether an AI video generator is genuinely useful, so I put Gemini Omni 1.1 through a complete set of real-world tests.\n#GeminiOmni #AIVideo #GoogleAI",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 580,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T16:49:26+00:00",
+    "tags": [
+      "AI 视频生成",
+      "计算机技术",
+      "视频制作工具",
+      "技术评测",
+      "谷歌 AI",
+      "Gemini Omni",
+      "4K 导出",
+      "场景扩展"
+    ],
+    "title": "【中英双语】Google Gemini Omni 1.1 Flash 视频模型深度评｜Gemini Omni 1.1 Flash Explained: Ful…",
+    "video_id": "bseedo4nMoZ",
+    "views": 262
+  },
+  "seed_provenance": {
+    "bvid": "BV1gjtW6oEqm",
+    "published_at": "2026/8/31 00:49:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1gjtW6oEqm"
+  },
+  "version": 1
+}

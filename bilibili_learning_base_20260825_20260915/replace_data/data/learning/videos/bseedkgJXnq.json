@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "creative process"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "古典音乐",
+      "延时摄影",
+      "放松助眠",
+      "花卉绽放",
+      "4k 画质",
+      "植物生长",
+      "自然治愈",
+      "莫扎特音乐",
+      "blooming flowers"
+    ],
+    "video_id": "bseedkgJXnq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=88djEhxqw84\n【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nFlowers Blooming to Mozart - Experience the mesmerizing beauty of nature as various flowers bloom in stunning time-lapse, perfectly synchronized with Mozart's masterpiece, \"Eine kleine Nachtmusik.\" From delicate petals unfolding to vibrant colors coming to life, this video offers a peaceful moment of relaxation and wonder.\n\nWhether you're looking for a calming background, a study aid, or simply want to witness the magic of plant growth, we hope this visual and musical journey inspires you.\n\nPlants featured in this Time-lapse Video: Passion Flower, Agapanthus Flower, Lily Flowers, Canna Indica - Indian Shot, Narcissus, Lupin Flower, Hibiscus, Larkspur Delphinium, Rose, Roses, Chrysanthemum, Tulip, Scadoxus Multiflorus, Dandelion, Cactus Flower, Apple Flowers, Hyacinth, Kalanchoe, Amaryllis - More Plant and Flower Timelapse Videos: https://www.youtube.com/playlist?list=PLYY0cI3sAdGyzB3Y0reZ-I117aE6-v5Gv\n\nIf you enjoy the harmony of nature and classical music, please subscribe to @Temponaut_Timelapse for more botanical art and macro explorations!\n\nTime-lapse Stock Footage Videos at https://www.TIME-LAPSE-FOOTAGE.com\nhttps://www.time-lapse-footage.com/stock-footage-clips/videos-plants-and-flowers\n\nTimestamps: \n0:00 Passion Flowers \n0:57 Canna Indica Blooming \n1:47 Larkspur Flowering \n3:25 Hibiscus Flower Opening \n4:12 Mesmerizing Scadoxus Plant \n5:06 Dandelion Flower \n6:23 Cactus Blooming \n7:40 Amaryllis Flowering \n8:29 Colored Lilies \n9:07 Yellow Rose Blooming \n10:44 Kalanchoe Flower Reversed \n11:08 Red Lily Flower Reversed\n\nMusic: Wolfgang Amadeus Mozart – Serenade No. 13 for strings in G major, K. 525 \"Eine kleine Nachtmusik\"\nVideo © TEMPONAUT Timelapse - https://www.time-lapse-footage.com\nA…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 690,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T19:45:04+00:00",
+    "tags": [
+      "古典音乐",
+      "延时摄影",
+      "放松助眠",
+      "花卉绽放",
+      "4K 画质",
+      "无配音",
+      "植物生长",
+      "自然治愈",
+      "莫扎特音乐",
+      "Blooming Flowers"
+    ],
+    "title": "莫扎特小夜曲配百花绽放延时摄影，治愈自然之美｜Mesmerizing Blooming Flowers Time-lapse - Mozart: Eine k…",
+    "video_id": "bseedkgJXnq",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1rCt567Eir",
+    "published_at": "2026/9/2 03:45:04",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rCt567Eir"
+  },
+  "version": 1
+}

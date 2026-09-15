@@ -1,0 +1,94 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "industry"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Personal Development",
+        "name": "personal_development_psychology",
+        "suggested_entities": [
+          "psychology",
+          "habits",
+          "identity",
+          "personal growth"
+        ],
+        "suggested_formats": [
+          "experiment",
+          "documentary"
+        ]
+      }
+    ],
+    "topics": [
+      "决策疲劳",
+      "富人思维",
+      "系统思考",
+      "财富积累",
+      "思维框架",
+      "长期主义",
+      "注意力管理",
+      "生产力习惯"
+    ],
+    "video_id": "bseedKLjpeH"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=TJjKYNhdbjg\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDiscover how a 30-day experiment in millionaire thinking shifted focus from money problems to decision quality and attention management. Learn how eliminating decision fatigue and building simple daily systems creates sustainable long-term wealth.\n\nSubscribe to The Better Life Project for actionable frameworks on mindset and productivity.\n\nChapters:\n00:00 Voice profile, 30 years old male, deep resonant voice, smooth\n03:10 Voice profile, 30 years old male, deep resonant voice, smooth\n06:18 Calm authoritative tone, slow steady pacing, clear articulation\n09:29 money because money can be regained while time cannot\n12:42 tone, slow steady pacing, clear articulation\n15:49 Spoken dialogue slash narration, realizing heightened awareness as the\n18:58 another major trap in modern work culture\n22:11 tone, slow steady pacing, clear articulation\n\n#MillionaireMindset #Productivity #TheBetterLifeProject",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1520,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:29:44+00:00",
+    "tags": [
+      "决策疲劳",
+      "中英双语",
+      "中文翻译",
+      "富人思维",
+      "系统思考",
+      "财富积累",
+      "思维框架",
+      "长期主义",
+      "注意力管理",
+      "生产力习惯"
+    ],
+    "title": "【中英双语】30 天富人思维实验：从金钱焦虑到决策质量与注意力管理｜I Tried Thinking Like a Millionaire for 30 Da…",
+    "video_id": "bseedKLjpeH",
+    "views": 3
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ug4R6MEPF",
+    "published_at": "2026/8/27 20:29:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ug4R6MEPF"
+  },
+  "version": 1
+}

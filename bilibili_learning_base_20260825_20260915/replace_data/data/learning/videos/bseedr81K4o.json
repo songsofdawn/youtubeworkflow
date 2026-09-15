@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Bitcoin"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "every x comparison",
+      "bitcoin industry"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "新手教程",
+      "加密货币入门",
+      "被动收入指南",
+      "比特币挖矿",
+      "矿机测评",
+      "冷钱包存储",
+      "硬件对比分析",
+      "挖矿收益率"
+    ],
+    "video_id": "bseedr81K4o"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=bG7Syi0fjCE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThanks to Monarch for partnering with me! Start your free trial and get 50% off your first year of total money clarity using my link https://monarchmoney.yt.link/QXrQzsq or code wolf50 for 50% Off Monarch Core tier.\n\nGet a Ledger Cold Storage Device and Protect Your Bitcoin:\nhttps://shop.ledger.com/?r=ba3a50ccb56c\n\nGet $20 in Bitcoin on Coinbase After You Trade $15 (New Customers):\nhttps://coinbase.com/join/8PSSQH8?src=ios-link\n\nI Tested Bitcoin Miners at EVERY Price Point\n\nDescription: In this video, I tested Bitcoin miners at EVERY price point from lottery miners, $5,000 of Asic crypto miners running at a hosting facility with cheap electricity rates, and even Altcoin mining in my basement so you guys can learn from the experience and determine which price point of Bitcoin mining is best for you. Can we smash 2,500 likes on this video? \n\nInspired by Your Friend Andy: I Tested Bitcoin Miners at EVERY Price Point\nhttps://www.youtube.com/watch?v=_UP-08k9rGs&t=803s",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 587,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:27:34+00:00",
+    "tags": [
+      "新手教程",
+      "加密货币入门",
+      "被动收入指南",
+      "中文翻译",
+      "中英双语",
+      "比特币挖矿",
+      "矿机测评",
+      "冷钱包存储",
+      "硬件对比分析",
+      "挖矿收益率"
+    ],
+    "title": "【中英双语】从$70彩票矿机到ASIC：实测全价位比特币挖矿收益｜I Tested Bitcoin Miners at EVERY Price Point",
+    "video_id": "bseedr81K4o",
+    "views": 64
+  },
+  "seed_provenance": {
+    "bvid": "BV1JQ4y68EnW",
+    "published_at": "2026/8/29 15:27:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1JQ4y68EnW"
+  },
+  "version": 1
+}

@@ -1,0 +1,107 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "ChatGPT",
+      "GPT-6",
+      "Astra",
+      "AI agents"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "chatgpt",
+      "gpt-6",
+      "astra",
+      "ai agents",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "chatgpt",
+      "gpt-6",
+      "ai agents",
+      "agi",
+      "openai",
+      "ai智能体",
+      "arc-agi-3"
+    ],
+    "video_id": "bseedXpGaUA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n*Join my private WhatsApp group: https://aiwithkyle.com/ai-with-kyle-group-chat\n\n*Want to build a business with AI but have no idea where to start? Build your personalized AI income plan and execute this week: https://aiwithkyle.com/join-freedom-os\n\n*Media/Sponsorship Inquiries: https://aiwithkyle.com/media-kit\n\n===\n\nGet AI-Ready with Kyle's free 5-Day Challenge: https://aiwithkyle.com/join\n\nSubscribe and turn on notifications to catch the next live stream: https://www.youtube.com/channel/UChlLglbHDASnoGkbjDeHnQg\n\nGPT-6 Astra launched overnight with one of the wildest benchmark tables I've seen. Its 99.9% ARC-AGI-3 score has people claiming AGI is here. The test measures whether an agent can explore an unfamiliar world, learn its rules and act efficiently. Astra's biggest practical jump is computer use.\n\nARC Prize's standard harness gave Astra 62.7%. OpenAI's Provider Adapter produced the 99.9% result by preserving reasoning state and compacting long conversations. The video also covers a week-long Manhattan build in Unreal Engine, Apple Park in Blender and an interactive Library of Alexandria.\n\nI also cover the messy rollout, who gets access first and the banked Codex resets OpenAI is giving paid ChatGPT users while they wait. If Astra is in your account, give it a large computer-use or coding job. An email rewrite will tell you almost nothing about this model.\n\nChapters:\n\n0:00 GPT-6 Astra launches\n0:43 What OpenAI actually changed\n1:32 Is Astra AGI?\n2:25 The 99.9% ARC-AGI-3 result\n3:14 What ARC-AGI…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1142,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T17:26:45+00:00",
+    "tags": [
+      "人工智能",
+      "ChatGPT",
+      "GPT-6",
+      "AI agents",
+      "科技资讯",
+      "计算机技术",
+      "AGI",
+      "OpenAI",
+      "AI智能体",
+      "ARC-AGI-3"
+    ],
+    "title": "GPT-6 Astra发布：99.9% ARC-AGI-3分数算AGI吗｜Did OpenAI Just Achieve AGI? ChatGPT GPT-6…",
+    "video_id": "bseedXpGaUA",
+    "views": 34
+  },
+  "seed_provenance": {
+    "bvid": "BV1rytz6XEUe",
+    "published_at": "2026/9/5 01:26:45",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rytz6XEUe"
+  },
+  "version": 1
+}

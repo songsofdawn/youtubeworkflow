@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "restoration",
+      "antiques"
+    ],
+    "formats": [
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "老物件翻新",
+      "解压修复",
+      "修复",
+      "除锈",
+      "古董机械",
+      "restoration",
+      "机械修复",
+      "面粉磨",
+      "restoration video"
+    ],
+    "video_id": "bseed9AaHhn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nA rusty flour mill, more than 100 years old… sitting silent and forgotten for decades. 😱🔧\nCan we bring it back to life?\n\nIn this video, we take on the complete restoration of an extremely old Antique Flour Mill. Over the years, the machine became heavily covered in rust, its parts were badly stuck, and the original mechanism had almost stopped working.\n\nWe carefully took the old machine apart, cleaned every part, removed the heavy rust, restored the damaged and seized components, and rebuilt its original mechanical system.\n\nThe most satisfying moment comes at the end, when this machine, silent for more than 100 years, finally starts moving and works again. ❤️‍🔥\n\nThis is more than just cleaning a machine — it’s a journey of bringing a forgotten piece of history back to life.\n\n👍 If you enjoyed the video, don’t forget to Like.\n💬 Comment and tell us which old machine we should restore next.\n🔔 Subscribe for more amazing restoration videos.\n\n#FlourMill #machinerestoration #restoration #vintage #rustremoval #toolrestoration #asmr #restorationvideos #restore",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1819,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T10:37:34+00:00",
+    "tags": [
+      "手工",
+      "老物件翻新",
+      "解压修复",
+      "修复",
+      "除锈",
+      "古董机械",
+      "restoration",
+      "机械修复",
+      "面粉磨",
+      "restoration video"
+    ],
+    "title": "修复尘封百年的锈蚀面粉磨，它还能转起来吗？｜I Found a 100-Year-Old Rusty Flour Mill… Does It Still Wo…",
+    "video_id": "bseed9AaHhn",
+    "views": 118
+  },
+  "seed_provenance": {
+    "bvid": "BV1K8Ye64Ezn",
+    "published_at": "2026/9/13 18:37:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1K8Ye64Ezn"
+  },
+  "version": 1
+}

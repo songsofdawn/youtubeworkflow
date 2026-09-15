@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home vegetable garden",
+      "vegetable garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "园艺",
+      "阳台种菜",
+      "gardening",
+      "家庭菜园",
+      "植物养护",
+      "种植技巧",
+      "工业·工程·机械"
+    ],
+    "video_id": "bseedFc4ACU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=weogjYaiOzo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThank you. \nIf you want to see more videos like this, \nplease hit the subscribe button to see my new video\n\n#EYGardening",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 698,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-28T12:28:23+00:00",
+    "tags": [
+      "园艺",
+      "DIY",
+      "中英双语",
+      "中文翻译",
+      "阳台种菜",
+      "Gardening",
+      "家庭菜园",
+      "植物养护",
+      "种植技巧",
+      "工业·工程·机械"
+    ],
+    "title": "【中英双语】在家轻松种植百香果的园艺教程｜Growing passion fruit at home is not difficult if you watc…",
+    "video_id": "bseedFc4ACU",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1KStw6REG9",
+    "published_at": "2026/8/28 20:28:23",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1KStw6REG9"
+  },
+  "version": 1
+}

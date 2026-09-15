@@ -158,6 +158,8 @@ def make_handler(
                             else None
                         ),
                         ranking_mode=str(body.get("ranking_mode") or "hot"),
+                        discovery_scope=str(body.get("discovery_scope") or "auto"),
+                        search_strength=str(body.get("search_strength") or "standard"),
                     )
                     self._json(HTTPStatus.ACCEPTED, {"job": job})
                     return
@@ -369,6 +371,20 @@ def make_handler(
                 if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/retry"):
                     job_id = parsed.path.split("/")[3]
                     self._json(HTTPStatus.ACCEPTED, {"job": app.retry_job(job_id)})
+                    return
+                if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/prioritize"):
+                    job_id = parsed.path.split("/")[3]
+                    self._json(
+                        HTTPStatus.ACCEPTED,
+                        {"job": app.prioritize_publish(job_id)},
+                    )
+                    return
+                if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/move"):
+                    job_id = parsed.path.split("/")[3]
+                    self._json(
+                        HTTPStatus.ACCEPTED,
+                        {"job": app.move_publish(job_id, str(body.get("direction") or ""))},
+                    )
                     return
                 if parsed.path.startswith("/api/jobs/") and parsed.path.endswith("/cancel"):
                     job_id = parsed.path.split("/")[3]

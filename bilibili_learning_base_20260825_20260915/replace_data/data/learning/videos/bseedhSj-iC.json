@@ -1,0 +1,89 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods",
+      "Bedrock",
+      "physics"
+    ],
+    "formats": [
+      "experiment",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft mods",
+      "minecraft bedrock",
+      "minecraft physics"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "物理模组",
+      "模组推荐",
+      "游戏模组",
+      "布娃娃物理",
+      "基岩版",
+      "eckosoldier",
+      "physics pro addon",
+      "physics pro 1.0 addo"
+    ],
+    "video_id": "bseedhSj-iC"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMinecraft Bedrock physics just got a serious upgrade with Physics Pro 1.0.\n✅Become Official Member: https://www.youtube.com/channel/UCkjxZqW8zRi4rexA3TMvmrA/join\nHELP ME REACH 2 MILLION SUBSCRIBERS: http://bit.ly/2qptXQy\n\n► Follow me on Twitter: https://twitter.com/EcKoxSoldier\n► Twitch: https://www.twitch.tv/eckoxsoldier\n► Discord: https://discord.gg/eckodiles \n► TikTok: https://www.tiktok.com/@eckoxsoldier\n► Instagram:  https://instagram.com/therealecko\n► Book Me! https://www.cameo.com/eckosoldier\n\nBuy using my support a creator link: https://buy.minecraft.net/physicsproaddon\nDownload: https://bedrock.gg/@team-workbench/physics-pro-1-0-add-on\n\nBuy Cheap Games & Minecoins!\nhttps://ene.ba/EckoSoldier\nhttps://ene.ba/EckoSoldier-GiftCards\nhttps://ene.ba/EckoSoldier-Minecraft\n\nPhysics Pro 1.0 brings realistic player and item physics to Minecraft Bedrock Edition. Players can ragdoll from creeper explosions and knockback swords, items can bounce on slime blocks and slide across ice, and accurate block collision boxes make for some really fun interactions. It also works with Actions & Stuff and custom content, with 3D item support for Actions & Stuff planned for the 1.1 update.\n\n00:00 Addon details \n00:49 How it works \n2:20 Custom Settings \n4:04 Mob physics\n6:40 Physics modifiers \n11:30 Item Physics \n14:15 TNT Physics \n15:10 Actions & Stuff support \n17:43 Snoozeberry explained \n18:47 Cool physics \n22:30 Easter egg\n22:50 More tests \n26:23 All Mobs Physics \n\n**Thankyou Team Workbench for provid…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1990,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T06:18:15+00:00",
+    "tags": [
+      "我的世界",
+      "Minecraft",
+      "物理模组",
+      "模组推荐",
+      "游戏模组",
+      "布娃娃物理",
+      "基岩版",
+      "ECKOSOLDIER",
+      "physics pro addon",
+      "physics pro 1.0 addo"
+    ],
+    "title": "苦力怕炸飞变布娃娃？MC史上最爽物理模组实测｜PHYSICS PRO 1.0 ADDON Adds INSANE Ragdoll Physics to Min…",
+    "video_id": "bseedhSj-iC",
+    "views": 311
+  },
+  "seed_provenance": {
+    "bvid": "BV1vDYa6PEJw",
+    "published_at": "2026/9/13 14:18:15",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vDYa6PEJw"
+  },
+  "version": 1
+}

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Claude"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "claude",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "ai",
+      "minecraft",
+      "chatgpt",
+      "游戏模组",
+      "claude",
+      "silas ai"
+    ],
+    "video_id": "bseed7cfdoV"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTry Fish Audio: https://fish.audio/?fpr=erq8yc\n\nJOIN THE DISCORD: https://discord.gg/7MQBCZcfM\n\nBusiness inquiries: silasedelchannel@gmail.com\n\nMUSIC:\nEpidemic Sound\nArtlist\nPonder @Pondermusic\n(some is custom made)\n\nGEAR:\nComputer: Macbook Pro M3 Max\nMonitors: https://a.co/d/0cny7MX8\nCamera: https://amzn.to/4pCFTZc\nLens: https://amzn.to/4yQc0ca\nMic: https://amzn.to/45hc86J\nMic Arm: https://amzn.to/4baunOF\nMouse: https://amzn.to/4fPyLFr\nDesk: https://amzn.to/4wVJfZF\n\n(some are affiliate links)\n\n\n0:00 Intro\n0:14 ChatGPT 1st Mod\n2:09 Claude 1st Mod\n6:20 ChatGPT 2nd Mod\n8:11 Claude 2nd Mod\n10:31 ChatGPT Final Mod\n12:04 Claude Final Mod\n13:22 Final Test\n13:43 Outro\n\n#FishAudio #FishAudioTurns1",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 848,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T08:38:44+00:00",
+    "tags": [
+      "人工智能",
+      "我的世界",
+      "AI",
+      "单机游戏",
+      "Minecraft",
+      "ChatGPT",
+      "游戏模组",
+      "Claude",
+      "Silas AI"
+    ],
+    "title": "让ChatGPT和Claude互相比赛做离谱的Minecraft模组｜ChatGPT vs Claude Make Ridiculous Mods (ft.…",
+    "video_id": "bseed7cfdoV",
+    "views": 54
+  },
+  "seed_provenance": {
+    "bvid": "BV1MDbH6SEHS",
+    "published_at": "2026/9/6 16:38:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1MDbH6SEHS"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "traditional food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "traditional food",
+      "countryside food",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "菠菜酱",
+      "传统美食",
+      "农村生活",
+      "伊朗乡村美食",
+      "手工酥饼",
+      "田园烹饪",
+      "kand matbaxi",
+      "kand hayati"
+    ],
+    "video_id": "bseedGQt-n_"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nCooking meat hand pies in a pot with spinach sauce\n\n#iraniancooking #azerbaijancooking  #recipe  #youtube #azerbaycan #asmr #recipe #iran\n\nhello! my name is maryam.i live in a house in the heart of the forest and next to the rice fields with my sister and my family.we cook with love in our beautiful rural kitchen and share these beauties with you.i hope you enjoy watching our videos. \nplease support our channel🙏❤️\n\nhttps://www.youtube.com/channel/UCXwb868GfJxab-DIdWToopw\n\nrecent video:\n\nLife in the mountains: harvesting beans and cooking them with meat and fresh bread\nhttps://youtu.be/lB6OLBxU5tc\n\nIRAN village life; cooking bread and traditional dishes\nhttps://youtu.be/uLKOoq6Ihts\n\nIRAN rural life; Baking bread with Iranian rice and yogurt soup\nhttps://youtu.be/zISfNEpoEYg\n\nIRAN village cooking; Cooking lamb neck with rice and vegetables\nhttps://youtu.be/8c-oESbFE-E\n\nIran Rural life; Cooking beef tongue with mushroom sauce\nhttps://youtu.be/jbFjJbg8rBM\n\nIRAN village life; Baking bread and fried chicken with vegetables\nhttps://youtu.be/ECPW0urUp5M\n\nHarvesting green beans and cooking them with meat and rice\nhttps://youtu.be/71OLDfJYGdA\n\nIRAN rural life; Making cheese and cheesy bread\nhttps://youtu.be/gaIIfb4Zwqo\n\nIRAN village life; Butchering a lamb and cooking it with rice\nhttps://youtu.be/TXc97f5fis0\n\nwww.zamandarimaryam757@gmail",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1741,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T10:20:21+00:00",
+    "tags": [
+      "美食制作",
+      "菠菜酱",
+      "无配音",
+      "传统美食",
+      "农村生活",
+      "伊朗乡村美食",
+      "手工酥饼",
+      "田园烹饪",
+      "kand matbaxi",
+      "kand hayati"
+    ],
+    "title": "伊朗乡村厨房：手作肉馅酥饼配菠菜酱｜Cooking meat hand pies in a pot with spinach sauce",
+    "video_id": "bseedGQt-n_",
+    "views": 49
+  },
+  "seed_provenance": {
+    "bvid": "BV1W1Y763Eig",
+    "published_at": "2026/9/11 18:20:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1W1Y763Eig"
+  },
+  "version": 1
+}

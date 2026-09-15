@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "游戏解说",
+      "minecraft",
+      "猎人追击",
+      "多人游戏",
+      "速通",
+      "manhunt"
+    ],
+    "video_id": "bseedmB5TNe"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis Manhunt was played on 💻 *PLOOMSY.NET* with random viewers (Java IP)\n\nIn this video, I get hunted by 4 and a HALF hunters trying to stop me. Will I beat the game before they do? Watch until the end to find out. This was my best manhunt yet.\n\nMain channel (SUBSCRIBE):  @PIoomsy  \nDiscord: discord.gg/5vs3atE5Tr\nLive stream (where the manhunt was from): https://www.youtube.com/live/2ClRqEBjIjg?si=RV-0oO_oMlHf5w36&t=8540\n\n\nNot Minecraft, But Water Rises or Minecraft, But Lava Rises, or any other but challenge like that. This is a speed run / speed runner of Minecraft against a killer / assassin\n\nedited by king of nits 👑",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1036,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-03T10:54:02+00:00",
+    "tags": [
+      "单机游戏",
+      "我的世界",
+      "游戏解说",
+      "Minecraft",
+      "猎人追击",
+      "多人游戏",
+      "速通",
+      "Manhunt"
+    ],
+    "title": "随机猎人追击战：我的世界极限速通挑战｜Speedrunner VS 4.5 Hunters",
+    "video_id": "bseedmB5TNe",
+    "views": 22
+  },
+  "seed_provenance": {
+    "bvid": "BV1WDto6kEvW",
+    "published_at": "2026/9/3 18:54:02",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1WDto6kEvW"
+  },
+  "version": 1
+}

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "product testing"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "抽卡",
+      "开箱",
+      "宝可梦",
+      "桌游棋牌",
+      "开卡",
+      "拆包",
+      "宝可梦卡牌",
+      "卡牌收藏",
+      "pokemon cards",
+      "1000 packs"
+    ],
+    "video_id": "bseedDzhEiq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOpening 1,000 packs of Pokemon cards until we pull the chase\nWatch My Previous Video: https://youtu.be/1C2dd9eaJ3g\n\nIn this video, I surprise Lincoln by having us open 1,000 packs of Pokemon cards, but the first person to pull a chase card wins every card. Lincoln first arrives to the card shop not knowing what's going on. I then surprise Lincoln with 1000 packs of Pokemon and we open packs until we pull the best pokemon card!\n\nSUBSCRIBE NOW! - http://bit.ly/Leonhart54\nSupport the channel, join the Hart Squad & receive exclusive rewards: https://www.youtube.com/leonhart54/join\n\n► Support the channel via Patreon: https://www.patreon.com/LeonhartYT\n► Follow Me On Facebook: https://www.facebook.com/Leonhart54YT/\n► Follow My Twitter: https://twitter.com/LeonhartYT\n► Follow Me On Instagram: https://instagram.com/leonhart/\n► Join My Discord: https://discord.gg/kVbpyZJ\n\nI make videos that cover opening Pokemon cards ranging from new Pokemon card sets to the rarest Pokemon cards in the world with lots of vintage packs of Pokémon cards.\n\n► Contact Leonhart!\nLeonhartEntertainment@gmail.com\n\nSupport the channel, join the Hart Squad & receive exclusive rewards: https://www.youtube.com/leonhart54/join",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1339,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T15:05:33+00:00",
+    "tags": [
+      "抽卡",
+      "开箱",
+      "宝可梦",
+      "桌游棋牌",
+      "开卡",
+      "拆包",
+      "宝可梦卡牌",
+      "卡牌收藏",
+      "pokemon cards",
+      "1000 packs"
+    ],
+    "title": "狂拆1000包宝可梦卡！抽出追逐卡比赛才结束｜1,000 PACKS... BUT Video Ends If We Pull the CHASE CARD",
+    "video_id": "bseedDzhEiq",
+    "views": 124
+  },
+  "seed_provenance": {
+    "bvid": "BV1rBbT6hEG3",
+    "published_at": "2026/9/7 23:05:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rBbT6hEG3"
+  },
+  "version": 1
+}

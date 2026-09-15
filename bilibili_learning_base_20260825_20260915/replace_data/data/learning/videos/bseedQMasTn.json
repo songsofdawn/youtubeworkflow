@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft hardcore",
+      "方块限制",
+      "minecraft but",
+      "极限玩法",
+      "生存挑战",
+      "硬核游戏",
+      "创意玩法",
+      "末地传送"
+    ],
+    "video_id": "bseedQMasTn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=SxD6FKsmJKU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHardcore Minecraft but with a twist because in this video I can only mine a set amount of blocks before getting teleported to the end with whatever materials I can gather - will I be able to beat all 6 challenges set in this video? \n\nJoin the discord\nhttps://discord.gg/8MAv9hUExJ\n\nIf you enjoyed the video the subscribe\nhttps://www.youtube.com/channel/UCINHbL9-1j1CUYGUWbThh9w?sub_confirmation=1\n\nCheck out my Second Channel\n @2cowB \n\nMinecraft Hardcore\nMinecraft Hardcore Challenge\n\nMusic from Epidemic Sound:\nhttps://www.epidemicsound.com/",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 834,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T20:40:39+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "minecraft hardcore",
+      "方块限制",
+      "minecraft but",
+      "极限玩法",
+      "生存挑战",
+      "硬核游戏",
+      "创意玩法",
+      "末地传送"
+    ],
+    "title": "【中英双语】我的世界：仅挖掘25块方块即传送末地挑战｜Minecraft but I can only Mine 25 Blocks",
+    "video_id": "bseedQMasTn",
+    "views": 23
+  },
+  "seed_provenance": {
+    "bvid": "BV186ts6FEmf",
+    "published_at": "2026/8/31 04:40:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV186ts6FEmf"
+  },
+  "version": 1
+}

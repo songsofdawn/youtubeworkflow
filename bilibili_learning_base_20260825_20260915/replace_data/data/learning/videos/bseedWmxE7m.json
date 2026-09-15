@@ -1,0 +1,99 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY",
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "openrouter",
+      "3d建模测试",
+      "多模态编程",
+      "ai模型评测",
+      "摩托车模拟",
+      "代码生成",
+      "前端设计",
+      "极客diy"
+    ],
+    "video_id": "bseedWmxE7m"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=c4UiiWU7DoI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTimestamps:\n\n00:00 - Intro\n01:28 - First Look\n02:15 - Technical Look\n03:09 - Motorcycle Simulation Test\n06:17 - Watch Website Test\n10:16 - 3D CAD Model Test\n13:57 - Creative Frontend Test\n17:00 - Ship Combat Simulation Test\n21:02 - Multimodal Coding Test\n23:57 - Closing Thoughts\n\nAI Integration & Consulting: https://bijanbowen.com/\nJoin the Discord: https://discord.gg/hfaR2exy7S\n\nIn this video, we take a hands-on look at Ox Alpha, a mysterious new stealth reasoning model currently available through OpenRouter.\n\nWe test the model across a range of practical coding and creative tasks, including a motorcycle simulation, frontend design, 3D CAD modeling, a ship combat simulation, and multimodal coding.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1488,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T13:04:03+00:00",
+    "tags": [
+      "OpenRouter",
+      "3D建模测试",
+      "多模态编程",
+      "AI模型评测",
+      "中文翻译",
+      "摩托车模拟",
+      "中英双语",
+      "代码生成",
+      "前端设计",
+      "极客DIY"
+    ],
+    "title": "【中英双语】实测神秘隐身模型Ox Alpha：从摩托模拟到3D建模！",
+    "video_id": "bseedWmxE7m",
+    "views": 32
+  },
+  "seed_provenance": {
+    "bvid": "BV1Cw896iE4P",
+    "published_at": "2026/8/26 21:04:03",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Cw896iE4P"
+  },
+  "version": 1
+}

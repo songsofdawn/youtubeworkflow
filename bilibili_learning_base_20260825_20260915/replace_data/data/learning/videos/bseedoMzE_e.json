@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft but",
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "沙盒游戏",
+      "minecraft",
+      "搞笑实况",
+      "创意地图",
+      "解谜冒险",
+      "多人合作",
+      "时间循环",
+      "blockrat"
+    ],
+    "video_id": "bseedoMzE_e"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=L06vCwMJmYA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\nHey! I'm stuck in a timeloop!\n                            +=======V=======+\n                         Join my discord server!! \n                                  https://discord.gg/cxeUS63rsd\n                            +=======^=======+\n\n\nThis map was built by @Subscribble for this video!\n\nThis video was inspired by the game Unloop\nThe mo…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1031,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T18:36:40+00:00",
+    "tags": [
+      "单机游戏",
+      "沙盒游戏",
+      "Minecraft",
+      "搞笑实况",
+      "创意地图",
+      "解谜冒险",
+      "多人合作",
+      "时间循环",
+      "BlockRat"
+    ],
+    "title": "【中英双语】我的世界时间循环冒险：30 秒逃生挑战｜Minecraft but I'm Stuck in a Time Loop...",
+    "video_id": "bseedoMzE_e",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV1KGtL6tEF1",
+    "published_at": "2026/9/2 02:36:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1KGtL6tEF1"
+  },
+  "version": 1
+}

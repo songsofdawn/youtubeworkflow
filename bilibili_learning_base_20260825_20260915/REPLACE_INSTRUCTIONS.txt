@@ -1,0 +1,9 @@
+推荐：不要直接覆盖，优先在项目根目录运行：
+python merge_into_project.py .
+
+如果要彻底重置 learning：
+1. 备份原 data/learning
+2. 将 replace_data/data/learning 覆盖到项目 data/learning
+3. 运行一次智能发现；discovery_strategy.json 会自动重建
+
+注意：直接替换 events.sqlite3 会清空旧 query performance。

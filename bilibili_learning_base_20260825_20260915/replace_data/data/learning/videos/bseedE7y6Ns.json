@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "机械原理",
+      "校园项目",
+      "stem 教育",
+      "极客制作",
+      "生活小妙招",
+      "科学实验",
+      "手工 diy",
+      "废旧利用"
+    ],
+    "video_id": "bseedE7y6Ns"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=RyvXNs9Eb1E\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI’m Java Creativity, and I’ve come up with an amazing science experiment idea: a practical, portable vacuum cleaner for tidying up scattered debris.\nTools maker an efficient DIY vacuum cleaner using recycled materials like a plastic bottle, a DC motor, an old USB cable, a 9-volt battery, popsicle sticks, cardboard, an on-off switch, mosquito netting, wire, PVC pipe, and glue.\nHere’s a DC motor science project you can try at home: learn how to make vacuum cleaner at home with plastic bottle or recycled materials that makes household chores easier.\nThis is a battery powered vacuum cleaner, 100% successful experiments and science projects that turns recycled materials into a vacuum cleaner maker—perfect for school projects and sure to impress your teacher, everyone else, and earn you top marks.\nLet me know in the comments section if you run into any issues 💬. \n\n#vacuum #vacuumcleaner #maker #science #experiment\n\nBecome a paid member here 👇\nhttps://www.youtube.com/channel/UCGVo6el7gUlD--rGLa9U3nQ/join\n\nDon't forget to like and share my video on your social media.\n\nSubscribe now, Bro 👇\nhttps://www.youtube.com/c/JavaCreativityOfficial\n\nFollow my social media 👇\nhttps://tiktok.com/@javacreativity/\nhttps://www.facebook.com/Javacreativityofficial\nhttps://instagram.com/gditian\nhttps://pin.it/4T168zzv9",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 521,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T13:59:39+00:00",
+    "tags": [
+      "机械原理",
+      "校园项目",
+      "STEM 教育",
+      "极客制作",
+      "中文翻译",
+      "中英双语",
+      "生活小妙招",
+      "科学实验",
+      "手工 DIY",
+      "废旧利用"
+    ],
+    "title": "【中英双语】塑料瓶自制吸尘器：9V电池驱动的科学小发明教程｜How To Make Vacuum Cleaner At Home | DIY Vacuum C…",
+    "video_id": "bseedE7y6Ns",
+    "views": 44
+  },
+  "seed_provenance": {
+    "bvid": "BV1Kn4o6gEWA",
+    "published_at": "2026/8/27 21:59:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Kn4o6gEWA"
+  },
+  "version": 1
+}

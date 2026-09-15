@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "game development"
+    ],
+    "formats": [
+      "simulation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "独立开发",
+      "roblox",
+      "解压游戏",
+      "游戏机制设计",
+      "roblox game developm",
+      "切东西模拟器",
+      "satisfying games"
+    ],
+    "video_id": "bseedZEP37v"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nPLAY THE GAME ⭐: \nhttps://www.roblox.com/games/78906059644178/Satisfying-Slices\n\nJoin the Discord: 👀\nhttps://discord.gg/vcapm7akaZ\n\nBuilding a Roblox game development project focused on satisfying visuals and audio. See how I crafted the core slicing loop.\n\nMaking satisfying games requires a tight loop. I started this project by refining the sensation of slicing objects with a knife, ensuring every interaction feels rewarding. This process involved extensive Roblox coding to perfect the feedback loop and sound design.\n\nThe progression system centers on earning in-game currency, which players spend on upgrades to enhance their slicing abilities. I walk through the technical challenges of implementing these game mechanics and the balancing required to keep the gameplay loop engaging for Roblox game development.\n\nWhether you are interested in Roblox scripting or just curious about how to make a game feel polished, this breakdown shows exactly how I approached the design process.\n\nSubscribe for weekly game development breakdowns, and let me know in the comments if you want to see the finished release.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 659,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T08:42:41+00:00",
+    "tags": [
+      "网络游戏",
+      "游戏开发",
+      "独立开发",
+      "Roblox",
+      "解压游戏",
+      "游戏机制设计",
+      "Roblox game developm",
+      "切东西模拟器",
+      "satisfying games"
+    ],
+    "title": "我做了一款全网最解压的Roblox切切乐游戏！｜I Made the NEW Most Satisfying Roblox Game!",
+    "video_id": "bseedZEP37v",
+    "views": 492
+  },
+  "seed_provenance": {
+    "bvid": "BV146Y96nE9f",
+    "published_at": "2026/9/12 16:42:41",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV146Y96nE9f"
+  },
+  "version": 1
+}

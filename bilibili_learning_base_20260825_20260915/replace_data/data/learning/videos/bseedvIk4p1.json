@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "balcony garden",
+      "home gardening",
+      "vegetable garden"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "小空间种植",
+      "新手指南",
+      "家庭园艺",
+      "有机蔬菜",
+      "阳台种菜",
+      "diy改造",
+      "容器种植",
+      "黄瓜种植教程"
+    ],
+    "video_id": "bseedvIk4p1"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=2I89RhGq0ao\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGrow Giant Cucumbers in Old Buckets! 🥒 Easy Container Gardening Trick\n\n\nCan you really grow a huge cucumber harvest in an old bucket? Absolutely! 🌱 In this video, we’ll show you how to turn simple old buckets into a productive cucumber garden, even if you have limited space.\n\nYou’ll learn how to choose the right bucket, create proper drainage, prepare the best soil mix, plant cucumber seeds, provide enough sunlight and water, feed the plants properly, and train cucumber vines vertically with a simple trellis. We’ll also compare container-grown cucumbers with traditional ground-grown cucumbers and explain why vertical growing can save space while making the fruits easier to see and harvest.\n\nFrom the first tiny seedling to flowering, fruit development, and finally a fresh cucumber harvest, this complete guide covers the important steps for growing healthy cucumbers in containers.\n\nWhether you have a backyard, patio, balcony, rooftop, or only a small growing space, this simple bucket gardening method can help you grow fresh cucumbers at home. 🥒🌿\n\nWatch until the end to see how an ordinary old bucket can become a productive cucumber garden!\n\n🔥 Hashtags\n\n#CucumberGrowing #GrowCucumbers #ContainerGardening #BucketGardening #GardeningTips #CucumberPlant #VegetableGardening #HomeGardening #GrowYourOwnFood #OrganicGardening #UrbanGardening #SmallSpaceGardening #BackyardGarden #GardenTips #CucumberHarvest #GardeningHacks #VegetableGarden #GrowingVegetables #GardenIdeas #Cucumbers\n\n🔑 Ke…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 666,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:14:40+00:00",
+    "tags": [
+      "小空间种植",
+      "新手指南",
+      "中文翻译",
+      "中英双语",
+      "家庭园艺",
+      "有机蔬菜",
+      "阳台种菜",
+      "DIY改造",
+      "容器种植",
+      "黄瓜种植教程"
+    ],
+    "title": "【中英双语】旧桶变菜园：阳台种大黄瓜的容器种植全攻略｜Grow Giant Cucumbers in Old Buckets! 🥒 Easy Contain…",
+    "video_id": "bseedvIk4p1",
+    "views": 32
+  },
+  "seed_provenance": {
+    "bvid": "BV1DN4R6rE4A",
+    "published_at": "2026/8/27 20:14:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1DN4R6rE4A"
+  },
+  "version": 1
+}

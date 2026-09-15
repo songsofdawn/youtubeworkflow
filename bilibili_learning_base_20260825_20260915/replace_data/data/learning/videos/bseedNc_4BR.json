@@ -1,0 +1,91 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "Astra",
+      "Seedance",
+      "AI video generation"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "astra",
+      "seedance",
+      "ai video generation",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "3d建模",
+      "ai自动化",
+      "chatgpt",
+      "ai工作流",
+      "提示词工程",
+      "seedance",
+      "blender教程",
+      "ai视频",
+      "ansh mehra",
+      "ansh mehra ai"
+    ],
+    "video_id": "bseedNc_4BR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOpenAI's Astra just scored 99.9% on ARC-AGI-3, effectively reaching human parity on a benchmark that tests whether a model can explore an unfamiliar environment, set its own goals, and plan its way through.\n\nWe are super close to AGI. AGI means an AI that not only matches human cognition but also has the potential to surpass it.\n\nSo let's look at one useful use case you can apply today. In this video, we build scenes in Blender and use them to drive Seedance, giving you control over camera, composition and continuity that a text prompt alone will never give you.\n\n\nYou'll learn:\n\n- Why a 3D scene beats a text prompt for controlling AI video\n- Setting up a basic scene in Blender from scratch\n- Blocking your camera angle and movement before you generate anything\n- Exporting the right frames to feed into Seedance\n- Writing the Seedance prompt around your Blender render\n- Keeping shots consistent across a full sequence\n- Where this workflow breaks, and what to fix by hand\n\nThe goal isn't to learn another AI tool.\n\nThe goal is to control the output, so your shot looks like the one in your head and not like the one the model guessed at.\n\n\nDownload all the Blender files: \nhttps://drive.google.com/drive/folders/1E9sSa4TcBZv7jTHoh5RVrw8dAuzvSK5r?usp=sharing\n\n\nLet me know in the comments: what would you build with this workflow?\n\n\nJoin our Broadcast Community\nhttps://ig.me/j/AbYz7q54oZ3CBSHs/\n\n👉🏻  Learn AI Tools like ChatGPT for Free:\nhttps://www.youtube.com/playlist?list=PLlHtucAD9KT3mCqOBIrJwO2rsfia_wj1…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 478,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T02:07:49+00:00",
+    "tags": [
+      "3D建模",
+      "AI自动化",
+      "ChatGPT",
+      "AI工作流",
+      "提示词工程",
+      "Seedance",
+      "Blender教程",
+      "AI视频",
+      "Ansh Mehra",
+      "Ansh Mehra AI"
+    ],
+    "title": "用AI控制Blender生成3D场景，再驱动Seedance出片｜Full GPT Astra + Blender + Seedance 2.5 Tutori…",
+    "video_id": "bseedNc_4BR",
+    "views": 32
+  },
+  "seed_provenance": {
+    "bvid": "BV1tuY56uE9K",
+    "published_at": "2026/9/11 10:07:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tuY56uE9K"
+  },
+  "version": 1
+}

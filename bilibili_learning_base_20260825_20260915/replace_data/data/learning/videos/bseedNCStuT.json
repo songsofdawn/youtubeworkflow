@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening",
+      "self-sufficient farming",
+      "farm"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "self sufficient farm",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "玻璃宝石玉米",
+      "nixtamalization",
+      "田园生活",
+      "玉米饼",
+      "自给自足",
+      "田园美食",
+      "家庭农场",
+      "epic homesteading",
+      "epic gardening"
+    ],
+    "video_id": "bseedNCStuT"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nEver wondered if you can make tortillas from homegrown corn? Watch @jacquesinthegarden and me put our Glass Gem Corn to the test as we nixtamalize, mill, press, and cook it into fresh tortillas.\n\nIN THIS VIDEO\n\n→ Glass Gem Flint Corn Seeds: https://growepic.co/4iUYsX6\n→ Early Jalapeño Chile Pepper Seeds: https://growepic.co/3SFn2ki\n→ Sweetie Pole Cherry Tomato Seeds: https://growepic.co/4r2b8NX\n→ Gladstone Onion Seeds: https://growepic.co/3UyYDgS\n\nSUPPORT EPIC HOMESTEADING\n \n→ Shop: https://growepic.co/shop\n→ Seeds: https://growepic.co/botanicalinterests\n \nLEARN MORE\n \n→ All Our Channels: https://growepic.co/youtube\n→ Blog: https://growepic.co/blog\n→ Podcast: https://growepic.co/podcasts\n→ Discord: https://growepic.co/discord\n→ Instagram: https://growepic.co/insta\n→ TikTok: https://growepic.co/tiktok\n→ Pinterest: https://growepic.co/pinterest\n→ Twitter: https://growepic.co/twitter\n→ Facebook: https://growepic.co/facebook\n→ FB Group: https://growepic.co/fbgroup\n\nTIMESTAMPS\n0:00 Intro\n0:16 Glass Gem Corn Harvest\n3:38 De-kerneling and Weighing\n6:17 Nixtamalization Process\n9:12 Rinsing and Grinding\n13:15 Pressing and Cooking\n16:00 Making and Tasting\n\nDISCLAIMER\n\nEpic Gardening occasionally links to goods or services offered by vendors to help you find the best products to care for plants. Some of these may be affiliate links, meaning we earn a small commission if items are purchased. As an Amazon Associate, we earn from qualifying purchases. More info on our process: http…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1147,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T03:47:05+00:00",
+    "tags": [
+      "美食制作",
+      "玻璃宝石玉米",
+      "Nixtamalization",
+      "田园生活",
+      "玉米饼",
+      "自给自足",
+      "田园美食",
+      "家庭农场",
+      "epic homesteading",
+      "epic gardening"
+    ],
+    "title": "从种到吃！用自家种的玻璃宝石玉米做墨西哥薄饼｜I Grew My Own Tortillas",
+    "video_id": "bseedNCStuT",
+    "views": 166
+  },
+  "seed_provenance": {
+    "bvid": "BV1xnYr61E2F",
+    "published_at": "2026/9/14 11:47:05",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xnYr61E2F"
+  },
+  "version": 1
+}

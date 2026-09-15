@@ -1,0 +1,95 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "game development"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程入门",
+      "独立游戏教程",
+      "godot 引擎",
+      "ai 游戏开发",
+      "手机游戏制作",
+      "opus 5",
+      "游戏资产生成",
+      "makko 工具"
+    ],
+    "video_id": "bseedXo6Ju9"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=7W7PP7LvLiw\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTry out Makko: https://go.makko.ai/letta-idle-acres-1\nUse code LETTA at checkout to get 20% off your first month.\n\n\nEmail: marketing@lettacorporation.com\nWebsite: https://lettacorporation.com\n\nWebsite for sponsors: https://lettacorporation.com/sponsor/\n\n\nAI won't replace you, but someone who knows how to use it will.\n\nThat's why at Letta Corporation, we help developers use AI as a creative tool for game development.\n\nI'm Marco Paoletta, founder of Letta. On this channel, we show you how to build video games in Godot, and how to use AI tools to make better games faster.\n\nWe cover 3D model generators, sprite generators, sound effects, music tools, and more, across 50+ videos on AI for game development.\n\nWe believe AI should help humans create better work, not replace it. Used well, it lets developers iterate faster, experiment more, and focus on design, creativity, and polish.\n\nWe make game development practical and accessible, with tutorials, courses, and clear tips for beginners and experienced developers.\n\nBehind Letta: 5+ years in game dev, dozens of courses created for Zenva (1M+ learners), and games shipped with studios like Voodoo and FiveBits.\n\n\n🎓 Learn Game Development & AI ✨\n📚 All my courses are available on Skillshare: access them ALL with just ONE subscription.\n✨ Enjoy 1 month free + 60% off your first month: https://www.skillshare.com/en/r/profile/Marco-Paoletta/18838753\n\n🎯You can also get them separately on Udemy:\n\nThese links may include exclusive, time-limited discounts—d…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 816,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T04:37:22+00:00",
+    "tags": [
+      "编程入门",
+      "独立游戏教程",
+      "Godot 引擎",
+      "AI 游戏开发",
+      "中英双语",
+      "中文翻译",
+      "手机游戏制作",
+      "Opus 5",
+      "游戏资产生成",
+      "Makko 工具"
+    ],
+    "title": "【中英双语】Godot 游戏开发：用 Opus 5+Makko AI 快速制作手机农｜Opus 5 + Makko Is The BEST Combo For…",
+    "video_id": "bseedXo6Ju9",
+    "views": 33
+  },
+  "seed_provenance": {
+    "bvid": "BV1bx4k66ErF",
+    "published_at": "2026/8/29 12:37:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1bx4k66ErF"
+  },
+  "version": 1
+}

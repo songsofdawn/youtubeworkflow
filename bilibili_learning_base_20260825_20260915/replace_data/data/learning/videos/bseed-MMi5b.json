@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening",
+      "harvest and preserve",
+      "vegetable garden"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "秋季收获",
+      "阳台花园",
+      "家庭园艺",
+      "亲子时光",
+      "蔬菜种植",
+      "有机农业",
+      "教师日常"
+    ],
+    "video_id": "bseed-MMi5b"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=JL9efJ-bsIY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWhat does a day in the life of a mom, teacher, and gardener actually look like? Today we're taking you along for the first day of school—from the morning rush and heading back to the classroom to coming home and taking care of a garden that definitely hasn't slowed down!\n\nSummer may be winding down, but life in the garden is still incredibly busy. In this episode, we're giving you a behind-the-scenes look at what our everyday life is really like and how we balance family, teaching, gardening, harvesting, cooking, and everything in between.\n\nThe first day of school means a big change in our routine, but tomatoes still need picking, peppers keep ripening, weeds keep growing, and the garden doesn't particularly care how busy we are!\n\nCome spend the day with us as we go from the classroom back to the garden and show you what it takes to fit gardening into an already busy life.\n\nIf you're trying to balance gardening with work, kids, family, or just everyday life, we hope this episode shows that you don't need unlimited time to grow your own food—you just have to make gardening part of your life.\n\nSubscribe to Very Good Gardening and follow along with the entire Fall Season of Harvest Time!\n\n#Gardening #DayInTheLife #HarvestTime #FallGarden #VegetableGarden #GardeningLife #HomeGarden #GardenHarvest\nShop my Garden Merch: https://verygoodgardening-shop.fourthwall.com \nExclusive Content: https://bonusview.com/verygoodgardening \n\nFollow VeryGoodGardening:\nYouTube: https://youtube.com/@verygoodgardeningmd\nI…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 589,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T11:43:07+00:00",
+    "tags": [
+      "生活记录",
+      "秋季收获",
+      "中英双语",
+      "中文翻译",
+      "阳台花园",
+      "家庭园艺",
+      "亲子时光",
+      "蔬菜种植",
+      "有机农业",
+      "教师日常"
+    ],
+    "title": "【中英双语】开学日忙碌日常：兼顾教学、带娃与打理菜园｜How Do We Find Time for This Garden?! Day in the Life",
+    "video_id": "bseed-MMi5b",
+    "views": 1
+  },
+  "seed_provenance": {
+    "bvid": "BV1qe4R6QEGV",
+    "published_at": "2026/8/27 19:43:07",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qe4R6QEGV"
+  },
+  "version": 1
+}

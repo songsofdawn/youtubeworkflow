@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "creative process"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "植物延时摄影",
+      "ai 视频生成",
+      "创意工作流",
+      "社交媒体爆款",
+      "短视频创作",
+      "google flow ai",
+      "免费工具教程",
+      "视觉连续性"
+    ],
+    "video_id": "bseediXOb_G"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=-Yt6u7anYmA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🌱 Create VIRAL AI Plant Growth Timelapse Videos for FREE!\n\nIn this step-by-step tutorial, I’ll show you how to create satisfying, realistic AI plant growth timelapse videos using free AI tools — from generating the plant visuals to creating smooth growth animations and producing engaging short-form content.\n\nPerfect for YouTube Shorts, TikTok, Instagram Reels, and viral AI content creators. \n\nLearn the workflow, create your own AI plant videos, and turn simple ideas into highly engaging timelapse content.\n\nWatch till the end and start creating! 🌿✨\n\n🔥 Subscribe to the channel, like the video & comment “AI PLANT TIMELAPSE” or “MASTER PROMPT” to get the prompt! 🌱\n\n\n⚠️ Disclaimer: This video is AI-generated for educational and creative purposes. AI tools and features may change or become paid over time.\n\n\nKeywords:\nai plant growth videos, ai plant timelapse, ai plant growth timelapse, how to create ai plant videos, viral ai videos, ai video generation, free ai video generator, ai timelapse video, plant growth animation ai, realistic plant growth ai, satisfying ai videos, satisfying plant timelapse, ai generated videos, viral ai content, ai shorts, youtube shorts ai, ai video tutorial, free ai tools, ai content creation, plant timelapse tutorial, ai animation, realistic ai videos, viral shorts ideas, ai video editing, Aixentra\n\n\n\n#Aixentra #AI #AIVideo #AIContent #AIGenerated #AIVideoGenerator #AIShorts #ViralAI #ViralVideos #YouTubeShorts #Shorts #PlantGrowth #PlantTimelapse…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 329,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:00:39+00:00",
+    "tags": [
+      "植物延时摄影",
+      "AI 视频生成",
+      "创意工作流",
+      "社交媒体爆款",
+      "中文翻译",
+      "中英双语",
+      "短视频创作",
+      "Google Flow AI",
+      "免费工具教程",
+      "视觉连续性"
+    ],
+    "title": "【中英双语】免费教程：用AI工具制作植物生长延时摄影视频｜How to Create Viral AI Plant Growth Timelapse Vide…",
+    "video_id": "bseediXOb_G",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV1bE421c7jv",
+    "published_at": "2026/8/29 17:00:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1bE421c7jv"
+  },
+  "version": 1
+}

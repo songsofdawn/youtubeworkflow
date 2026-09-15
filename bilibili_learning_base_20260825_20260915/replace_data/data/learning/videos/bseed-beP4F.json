@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Fable 5.1",
+      "LLM"
+    ],
+    "formats": [
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "product test",
+      "fable 5.1",
+      "llm",
+      "ai model benchmark",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "ai",
+      "科技前沿",
+      "编程辅助工具",
+      "大语言模型",
+      "anthropic fable",
+      "fable",
+      "工作效率提升",
+      "ai 模型评测",
+      "软件应用测评"
+    ],
+    "video_id": "bseed-beP4F"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=yZddAiz4HP8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDan Shipper, CEO of Every, spent a week testing Anthropic's latest model: Fable 5.1. This is your day one vibe check.\n\nRead the full Fable 5.1 vibe check article\nhttps://every.to/vibe-check/fable-5-1-vibe-check?utm_source=youtube&utm_medium=video&utm_campaign=fable_5_1&utm_content=vibe_check_article\n\nFable 5.1 prompt library\nhttps://every.to/claude-fable-5-prompt-library?utm_source=youtube&utm_medium=video&utm_campaign=fable_5_1&utm_content=prompt_library\n\nFollow Dan Shipper: https://x.com/danshipper\nFollow Every: https://x.com/every\n\nTimestamps:\n00:00 Intro\n01:42 Coding\n06:26 Knowledge work\n12:45 Writing\n19:52 Closing thoughts",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1245,
+    "likes": 9,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:03:19+00:00",
+    "tags": [
+      "AI",
+      "科技前沿",
+      "编程辅助工具",
+      "大语言模型",
+      "Anthropic Fable",
+      "软件应用",
+      "Fable",
+      "工作效率提升",
+      "AI 模型评测",
+      "软件应用测评"
+    ],
+    "title": "实测 Anthropic Fable 5.1：一周体验与性能对比｜We Tested Anthropic's Fable 5.1 for a Week",
+    "video_id": "bseed-beP4F",
+    "views": 1430
+  },
+  "seed_provenance": {
+    "bvid": "BV1v5t56TEhD",
+    "published_at": "2026/9/2 05:03:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1v5t56TEhD"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "restoration",
+      "antiques"
+    ],
+    "formats": [
+      "restoration",
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "木工",
+      "古董家具修复",
+      "旧物改造",
+      "antique",
+      "复古家具",
+      "家具翻新",
+      "furniture",
+      "伊斯特莱克",
+      "褪漆"
+    ],
+    "video_id": "bseedFdQU9i"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDon’t miss FlexiSpot’s Labor Day Sale!\nShop the sale here: https://go.flexispot.com/2dUnHH\nCheck out the FlexiSpot Kana Japanese Joinery Bed:\nUS: https://go.flexispot.com/MadCityModern-JPBF\nCA: https://go.flexispot.com/MadCityModern\nUse code “BARRY” to get an extra $50 OFF the Bed!\n\nI Found this Painted Dresser in the Thrift Store, and tried to restore it.\n\n#restoration #furniturerestoration  #howto #antique \n\nSURFPREP SANDER DISCOUNT: https://www.surfprepsanding.com?aff=143\nUSE CODE: MADCITY10\n\n 🙏 🙏🙏 HERE ARE WAYS YOU CAN HELP SUPPORT THE CHANNEL:\n\n  PATREON Membership: https://www.patreon.com/madcitymodern\n\n🎁🎁🎁Amazon Wishlist:\nhttps://www.amazon.com/hz/wishlist/ls/2FZALYX4P3CEL?ref_=wl_share\n\n✉️ ✉️ ✉️ Send Letters, Postcards, and other Mail!\n\nMad City Modern\nP.O. Box 7695\n3902 Milwaukee Street\nMadison, Wisconsin, USA 53707\n\nFollow Me On Instagram!\n      https://www.instagram.com/madcityfurniture/\n\nFollow Me On Facebook\nhttps://www.facebook.com/madcitymodern\n\n🔨🔨TOOLS USED IN THIS VIDEO\n\nBelow You Will Find the Link for Most of the Tools and Products I Use in My Shop!\n____________________________________________________________________________\n 🔨🔨🔨MY FURNITURE PRODUCT STOREFRONT: https://www.amazon.com/shop/madcitymodern\n_____________________________________________________________________________\n\nFLAT BAHCO CARBIDE SCRAPER: https://amzn.to/2VAbYY5\n\nWWW.BCMASK.COM\n10% OFF BASE CAMP MASK: https://bcmask.com/discount/MCM10?ref=MADCITYMODERN\nCODE: MC…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1292,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T09:26:25+00:00",
+    "tags": [
+      "木工",
+      "手工",
+      "古董家具修复",
+      "旧物改造",
+      "Antique",
+      "复古家具",
+      "家具翻新",
+      "Furniture",
+      "伊斯特莱克",
+      "褪漆"
+    ],
+    "title": "30美元淘来的黄漆古董斗柜，褪漆重生太惊艳｜Ep.173 STRIPPING Years of UGLY Paint From This ANTIQUE Dr…",
+    "video_id": "bseedFdQU9i",
+    "views": 108
+  },
+  "seed_provenance": {
+    "bvid": "BV1r6Ye6SEmX",
+    "published_at": "2026/9/13 17:26:25",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1r6Ye6SEmX"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "game development"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "科技前沿",
+      "蜘蛛侠重制",
+      "火焰纹章复刻",
+      "机械变色龙",
+      "ai 游戏开发",
+      "fable 5 对比",
+      "ox alpha 模型",
+      "ai 生成游戏评测"
+    ],
+    "video_id": "bseedx8Dr2i"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=-V0O0oj6rTs\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSo this secret model just dropped called Ox Alpha. Some of the benchmarks are saying it's better than Fable and SOL. So I had to put it to the test. I had it recreate the Mecha Chameleon, Fire Emblem, and Spiderman games. The results were very interesting.... \n\n0:00 Intro \n0:19 Mecha Chameleon \n1:25 A glitch LOL\n2:23 Other Game Mode for Mecha Chameleon\n2:59 Fire Emblem \n4:53 Different Characters \n7:53 Got COOKED\n8:18 Spiderman\n8:29 Swinging/Climbing\n8:53 Combat\n9:24 Comedy\n10:20 Pizza Mission\n10:43 More combat",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 675,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T10:08:39+00:00",
+    "tags": [
+      "科技前沿",
+      "蜘蛛侠重制",
+      "火焰纹章复刻",
+      "机械变色龙",
+      "AI 游戏开发",
+      "Fable 5 对比",
+      "中文翻译",
+      "中英双语",
+      "Ox Alpha 模型",
+      "AI 生成游戏评测"
+    ],
+    "title": "【中英双语】实测 Ox Alpha 生成三款游戏：结果令人意外｜I Tested Ox Alpha on 3 Games (The Results Are S…",
+    "video_id": "bseedx8Dr2i",
+    "views": 66
+  },
+  "seed_provenance": {
+    "bvid": "BV1Hg896cEcE",
+    "published_at": "2026/8/26 18:08:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Hg896cEcE"
+  },
+  "version": 1
+}

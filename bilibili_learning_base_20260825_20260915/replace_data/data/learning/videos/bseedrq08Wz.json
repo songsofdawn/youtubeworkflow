@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "product test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "新加坡美食",
+      "自制教程",
+      "辣椒酱",
+      "家庭烹饪",
+      "慢生活",
+      "娘惹料理",
+      "卤猪肠",
+      "kway chap recipe",
+      "kway chap"
+    ],
+    "video_id": "bseedrq08Wz"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=bNv-MNh6BEM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nKway Chap has always been one of my favourite Singaporean hawker classics, and this time I’m making it from scratch at home! 🇸🇬\n\nI first made Kway Chap when we were living in Shanghai during COVID, when I couldn’t come home to Singapore and started recreating the dishes I missed. This is my tried-and-tested version, now made for a Kway Chap dinner with friends!\n\nIn this Slow Day, I’ll show you how I make the braising liquid, prepare the pork belly and pre-cooked large intestines, make the chilli sauce, and prepare the two aromatic toppings that I think make Kway Chap extra special — crispy garlic and fried shallots with their infused oils. \n\nI’ve also shared a few little tips along the way, including my shortcut for the large intestines and how I make my hard-boiled eggs. And yes… there’s no small intestine because I don’t eat it! 🤣\n\n📖 Full Kway Chap recipe: https://asingaporeanmum.com/2026/08/29/homemade-kway-chap/\n\nCome along for more slow days, home cooking and little moments from our everyday lives. 🌿\n\n#KwayChap #SingaporeFood #SingaporeanFood #HawkerFood #SlowDaysWithMe\n\n⸻\n\n🛍️🛒Links🔗✨\n\nKway Chap by Lau Boon Heng — https://s.shopee.sg/3VjoARmn9c\nCooked Pig’s Large Intestines — https://s.shopee.sg/60R99qAgqz\nFried Garlic with Oil — https://s.shopee.sg/AKa8JowOzb\nFried Shallots with Oil — https://s.shopee.sg/4LIvApZpPN\n\n⸻\n\nWelcome to A Singaporean Mum — a cosy space where I share real life, home cooking, family moments, and slow living in…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1141,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T22:54:36+00:00",
+    "tags": [
+      "美食制作",
+      "新加坡美食",
+      "自制教程",
+      "辣椒酱",
+      "家庭烹饪",
+      "慢生活",
+      "娘惹料理",
+      "卤猪肠",
+      "kway chap recipe",
+      "Kway Chap"
+    ],
+    "title": "【中英双语】新加坡娘惹美食：在家复刻经典 Kway Chap 猪肠粉｜My Tried & Tested Kway Chap Recipe | Singapo…",
+    "video_id": "bseedrq08Wz",
+    "views": 85
+  },
+  "seed_provenance": {
+    "bvid": "BV19dtW6FEMt",
+    "published_at": "2026/8/31 06:54:36",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV19dtW6FEMt"
+  },
+  "version": 1
+}

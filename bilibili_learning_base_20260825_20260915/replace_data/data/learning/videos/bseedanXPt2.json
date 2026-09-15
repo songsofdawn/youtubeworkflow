@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Blender",
+      "3D art",
+      "animation"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "blender 3d",
+      "3d art",
+      "animation"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "动画制作",
+      "chladni",
+      "粒子系统",
+      "blender",
+      "科学可视化",
+      "curtis",
+      "几何图形",
+      "程序化生成",
+      "holt"
+    ],
+    "video_id": "bseedanXPt2"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=crhNMGx33RM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTalking about the Chladni project.\n❤ Get access to files and tools: https://curtisholt.online/patreon\n🌌 Learn more about the project: https://curtisholt.online/the-connected-space\n💜 Member's lounge: https://curtisholt.online/members\n💎 More Blender Tools: https://curtisholt.online/store\n🤝 Connect with Talent: https://curtisholt.online/services",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 504,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:44:32+00:00",
+    "tags": [
+      "动画制作",
+      "教程",
+      "Chladni",
+      "粒子系统",
+      "Blender",
+      "科学可视化",
+      "curtis",
+      "几何图形",
+      "程序化生成",
+      "holt"
+    ],
+    "title": "用物理实验制作3D艺术：沙板共振与Blender节点教程｜We Turned a Physics Experiment Into a 3D Art Tool!",
+    "video_id": "bseedanXPt2",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV1Lotj6jEFV",
+    "published_at": "2026/9/2 05:44:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Lotj6jEFV"
+  },
+  "version": 1
+}

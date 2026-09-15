@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "extreme_survival",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "wilderness",
+      "survival"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "what if",
+      "extreme survival"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "荒野求生",
+      "minecraft",
+      "生存挑战",
+      "游戏模组",
+      "游戏推荐",
+      "野外生存",
+      "mod 介绍"
+    ],
+    "video_id": "bseedgZ0vXQ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=jlhDNnkPBUQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHello! Today, I’m introducing a list of mods that would turn Minecraft into a fun outdoor survival game by making the game into an experience when you choose living outside in the wilderness. Giving you things to do out there and making it more realistic living out there! Hope you enjoy the video!\n\n\n===================\n🎬 Mods Used In this Video\n===================\n0:00 Intro \n0:36 Legendary Survival Overhaul\nhttps://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul\n1:47 Thin Air\nhttps://modrinth.com/mod/thinair-relived\n2:27 Farmer's Respite\nhttps://www.curseforge.com/minecraft/mc-mods/farmers-respite\n3:29 Forager's Insight\nhttps://www.curseforge.com/minecraft/mc-mods/foragers-insight\n4:06 Honey's Delight\nhttps://www.curseforge.com/minecraft/mc-mods/honeys-delight\n4:54 [Let's Do] WilderNature\nhttps://www.curseforge.com/minecraft/mc-mods/lets-do-wildernature\n5:47 Hot Iron \nhttps://www.curseforge.com/minecraft/mc-mods/hot-iron\n6:56 Enchanted Fishing Line\nhttps://www.curseforge.com/minecraft/mc-mods/enchanted-fishing-line\n7:10 Better Fishing\nhttps://modrinth.com/mod/better-fishing-system\n7:50 Villager Comfort\nhttps://www.curseforge.com/minecraft/mc-mods/villager-comfort-updated\n8:28 Lios Overhauled Villages\nhttps://www.curseforge.com/minecraft/mc-mods/lios-overhauled-villages\n\n\n🧊 Subscribe!! It's Free! 🧊\n► www.youtube.com/@NexusBliss?sub_confirmation=1\n\n🎮 Join My Discord Server!!\n► https://discord.gg/Q57cce8wwx\n\n🌟Become a Member – Get exclusive perks & support me dir…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 541,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T17:57:21+00:00",
+    "tags": [
+      "单机游戏",
+      "荒野求生",
+      "Minecraft",
+      "生存挑战",
+      "游戏模组",
+      "游戏推荐",
+      "野外生存",
+      "MOD 介绍"
+    ],
+    "title": "【中英双语】让 Minecraft 野外生存更真实的模组合集｜What if Minecraft had an Outdoor Update",
+    "video_id": "bseedgZ0vXQ",
+    "views": 225
+  },
+  "seed_provenance": {
+    "bvid": "BV1Vdt56uEdh",
+    "published_at": "2026/9/2 01:57:21",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Vdt56uEdh"
+  },
+  "version": 1
+}

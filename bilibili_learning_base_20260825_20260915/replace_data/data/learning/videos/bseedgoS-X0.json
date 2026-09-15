@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "AI image generation"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "ai image generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai修图",
+      "gpt image 2.5",
+      "ai教程",
+      "openai",
+      "ai绘画",
+      "图像生成",
+      "photoshop插件",
+      "pouya eti",
+      "pouyaeti"
+    ],
+    "video_id": "bseedgoS-X0"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGPT Image 2.5 Just Dropped: 7 Things That Changed vs GPT Image 2 (And It's Coming to Photoshop)\n\n📄 The GPT Image 2.5 announcement: https://openai.com/index/introducing-chatgpt-images-2-5/\n🎨 ETI Image Photoshop Plugin (GPT Image 2.5 arriving within a day): https://university.pouyaeti.com/eti-image-photoshop-plugin\n🖥️ Rangy AI: https://www.rangy.ai/\n\n\n🔔 A full test video on GPT Image 2.5 is coming in a day or two, and a NEW Photoshop plugin\nnext week. Subscribe and turn on the bell so you don't miss either:\n👈 /  @pouyaeti\n\n\n🎬 LINKS to related videos:\n\n• Grok Imagine 2 is out of control (And It's 15x Cheaper Than Nano Banana Pro): https://youtu.be/NE2_w4_aDig?si=qDFfWvWCJa3Rn0a3\n• This JSON Prompt Trick Steals Any Image's Lighting in Photoshop: https://youtu.be/YiC3G76-22c?si=kxxi8UEVEK5YAdZs\n• Seedream 5 Pro vs Nano Banana Pro vs GPT Image 2: https://youtu.be/UcjybvWBSdo?si=iqu22lk2agBCEUso\n\n\n📝 ABOUT THIS VIDEO:\n\nGPT Image 2.5 went live minutes before I recorded this, and it is the update I have been\nwaiting for. GPT Image 2 is still one of the best image generators available, so 2.5 is\ncompeting with its own predecessor, and the announcement page shows exactly where it wins.\n\nThe biggest change is the one that has frustrated everyone using AI to edit photos. When you\nask GPT Image 2.5 to change one thing, everything else stays put. Change the clothes and the\nfingernails, the background, the lighting on the face are all untouched. Put a costume on a\ndog and the dog, the roo…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 504,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T01:28:40+00:00",
+    "tags": [
+      "AI修图",
+      "GPT Image 2.5",
+      "AI教程",
+      "软件应用",
+      "OpenAI",
+      "AI绘画",
+      "图像生成",
+      "Photoshop插件",
+      "pouya eti",
+      "pouyaeti"
+    ],
+    "title": "GPT Image 2.5发布：7大升级改写AI修图｜GPT Image 2.5 Just Dropped: 7 Things That Changed vs…",
+    "video_id": "bseedgoS-X0",
+    "views": 365
+  },
+  "seed_provenance": {
+    "bvid": "BV14yYH6tEVu",
+    "published_at": "2026/9/9 09:28:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV14yYH6tEVu"
+  },
+  "version": 1
+}

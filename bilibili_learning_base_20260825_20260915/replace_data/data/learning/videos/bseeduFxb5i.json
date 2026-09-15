@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "vegetable garden",
+      "balcony gardening",
+      "gardening"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "home vegetable garden",
+      "vegetable garden",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "园艺",
+      "生活小妙招",
+      "gardening",
+      "家庭菜园",
+      "植物养护",
+      "田园美食",
+      "番茄种植"
+    ],
+    "video_id": "bseeduFxb5i"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=fUW1remBqRI\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nThank you. \nIf you want to see more videos like this, \nplease hit the subscribe button to see my new video\n\n#EYGardening",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 581,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T04:27:47+00:00",
+    "tags": [
+      "DIY",
+      "园艺",
+      "无配音",
+      "生活小妙招",
+      "Gardening",
+      "家庭菜园",
+      "植物养护",
+      "田园美食",
+      "番茄种植"
+    ],
+    "title": "【无配音】番茄高产种植技巧：家庭阳台也能种出满满果实｜If only I had known sooner — Tomatoes bearing an ast…",
+    "video_id": "bseeduFxb5i",
+    "views": 176
+  },
+  "seed_provenance": {
+    "bvid": "BV1Gc4C61Ejt",
+    "published_at": "2026/8/29 12:27:47",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Gc4C61Ejt"
+  },
+  "version": 1
+}

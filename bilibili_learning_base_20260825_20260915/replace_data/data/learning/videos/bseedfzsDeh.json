@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "baking",
+      "noodles",
+      "cheese"
+    ],
+    "formats": [
+      "full_process",
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "baking",
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "美食纪录片",
+      "奶酪知识",
+      "美国美食",
+      "家庭烹饪",
+      "烘焙教程",
+      "西式料理",
+      "意面做法"
+    ],
+    "video_id": "bseedfzsDeh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=4HXpwbDrb4A\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMaster the rich, comforting flavors of the Mediterranean with an easy casserole, essential feta cheese shopping rules, and a silky braised vegetable side dish. Bridget Lancaster makes a traditional Greek pastitsio, and shares a time-saving hack: parcooking pasta in a béchamel sauce. Jack Bishop shares what you need to know about buying feta cheese and why you should avoid pre-crumbled feta. Julia Collin Davison shares the three essential types of kitchen towels to streamline your kitchen cleanup. Finally, Lan Lam makes a hearty dish of braised eggplant with paprika and yogurt, with advice on which types of eggplant are best to use, and tips on the best way to braise and glaze them for a perfectly savory bite.\n\nPastitsio Recipe: https://cooks.io/3UiAXNB\nThe Best Feta Cheese: https://cooks.io/4qFWGuX\nThe Best Kitchen Towels: https://cooks.io/4zSKcV4\nBraised Eggplant with Paprika, Coriander, and Yogurt Recipe: https://cooks.io/3UhAiMk\n\nSubscribe to ATK Full Episodes: https://youtube.com/@ATKFullEpisodes?sub_confirmation=1 \n\nDiscover more rigorously tested recipes like those shown in this episode on the America’s Test Kitchen App: https://cooks.io/41U3KZF\n\nGet exclusive access to every recipe, review, and more via our homepage: https://cooks.io/4gieBEv\n\nBuy The Complete America's Test Kitchen TV Show Cookbook 2001–2026: https://cooks.io/4zEO4ZB\n\nDiscover the latest recipes, tips, and tricks from Cook’s Insider: https://cooks.io/4ccP50Z\n\nSubscribe to Cook's Illustrated: https://cooks.io/3Uzctj5…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1442,
+    "likes": 5,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T13:55:01+00:00",
+    "tags": [
+      "美食制作",
+      "美食纪录片",
+      "奶酪知识",
+      "中英双语",
+      "中文翻译",
+      "美国美食",
+      "家庭烹饪",
+      "烘焙教程",
+      "西式料理",
+      "意面做法"
+    ],
+    "title": "【中英双语】美式测试厨房：希腊千层面帕斯蒂乔与菲达奶酪选购指南｜Why You Should Cook Your Pasta in Béchamel | Fu…",
+    "video_id": "bseedfzsDeh",
+    "views": 42
+  },
+  "seed_provenance": {
+    "bvid": "BV1PH4o6zE2g",
+    "published_at": "2026/8/27 21:55:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PH4o6zE2g"
+  },
+  "version": 1
+}

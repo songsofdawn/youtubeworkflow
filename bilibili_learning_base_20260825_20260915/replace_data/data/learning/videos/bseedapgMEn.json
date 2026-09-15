@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "physics"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "暗物质",
+      "量子物理",
+      "弦理论",
+      "cern",
+      "大型强子对撞机",
+      "标准模型",
+      "额外维度"
+    ],
+    "video_id": "bseedapgMEn"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=hOCUnrpQWvA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n## 🚀 SEO-Friendly YouTube Description\n\nWhat if the universe we see is only a fraction of what actually exists? 🌌 In this fascinating exploration, we examine the possibility that CERN’s experiments could be opening a window into a **hidden universe**—a realm of particles, forces, and dimensions that remain invisible to our everyday senses.\n\nCERN’s Large Hadron Collider is designed to probe the deepest structure of matter, while modern particle physics continues to investigate some of the biggest unanswered questions in science. Researchers are exploring possibilities involving **dark matter, hidden sectors, invisible particles, extra dimensions, and physics beyond the Standard Model**. CERN itself describes “Hidden Valley” theories in which a possible dark sector could contain particles that interact only extremely weakly with ordinary matter.\n\n⚠️ **Important:** This video explores scientific theories, hypotheses, and current research. The phrase “hidden universe” refers to possibilities such as hidden sectors, dark matter, and other physics beyond the Standard Model—not confirmed evidence of a literal parallel universe.\n\n### ⏱️ TIMESTAMPS\n\n00:00 🌌 The Universe We Cannot See\n01:42 🔬 What CERN Is Really Searching For\n03:38 ⚛️ Inside the Large Hadron Collider\n05:31 🧩 The Mystery Beyond the Standard Model\n07:24 🌑 What Is the Hidden Universe?\n09:18 🕶️ The Dark Sector Explained\n11:16 🧲 Dark Matter and the Invisible Cosmos\n13:12 🚪 Could Particles Ente…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2004,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-27T12:25:03+00:00",
+    "tags": [
+      "暗物质",
+      "量子物理",
+      "弦理论",
+      "中文翻译",
+      "中英双语",
+      "CERN",
+      "大型强子对撞机",
+      "科学科普",
+      "标准模型",
+      "额外维度"
+    ],
+    "title": "【中英双语】CERN 或发现隐藏宇宙：布莱恩·格林解读暗物质与额外维度｜CERN May Have Found Evidence of a Hidden Un…",
+    "video_id": "bseedapgMEn",
+    "views": 28
+  },
+  "seed_provenance": {
+    "bvid": "BV1ES496XEmd",
+    "published_at": "2026/8/27 20:25:03",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ES496XEmd"
+  },
+  "version": 1
+}

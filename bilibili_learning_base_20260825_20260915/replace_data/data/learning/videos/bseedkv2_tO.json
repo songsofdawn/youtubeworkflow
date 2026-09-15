@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "园艺",
+      "植物实验",
+      "仙人掌",
+      "火龙果",
+      "种植",
+      "plants",
+      "种子发芽",
+      "gardening",
+      "家庭种菜"
+    ],
+    "video_id": "bseedkv2_tO"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nNormally you’d throw moldy dragonfruit in the garbage, but I placed it in a terracotta pot to see if I could grow 100+ baby dragons. Since dragonfruits grow into cactuses…I was hyped to see if they would really grow.🐉\n\nWell guess what? It did grow and now I have an army of baby cactuses in my house! This….is the full story!👀\n\nI was able to track every stage of my experiment using my app: Grow It! There are over 400 experiments to try out…so download it and start one with me!! \n\nThe links to download on the App Store and Google Play are below!  \n\n🔗Download ‘GROW IT!’ On the APP STORE Here:  https://apps.apple.com/ca/app/grow-it-plant-scanner-lab/id6762371470\n\n🔗Download ‘GROW IT!’ On the GOOGLE PLAY Here: https://play.google.com/store/apps/details?id=com.growithjessie.growit&pcampaignid=web_share\n\n📧 Have Questions or Just Want to Chat? 📧\nFeel free to email me anytime at: growithjessie@gmail.com\n\n✨ Shop My Faves on Amazon! ✨\nBrowse all my plant and gardening must-haves here: https://www.amazon.ca/shop/growithjessie\n\n👻 Let's Connect on Snapchat! 👻\nJoin me for some quick snaps and exclusive sneak peeks: \nPAGE: https://www.snapchat.com/add/growithjessie\nSHOW: https://www.snapchat.com/p/ec40f82c-b9a8-4d2b-be22-78806101ef6c/574334059302912\n\n📘 Follow Me on Facebook! 📘\nStay up to date with my latest DIYs, projects, and plant care tips: https://www.facebook.com/growithjessie\n\n🎵 Catch Me on TikTok! 🎵\nFor fun, quick clips and plant inspo: \nhttps://www.tiktok…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 420,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T13:28:54+00:00",
+    "tags": [
+      "园艺",
+      "治愈",
+      "植物实验",
+      "仙人掌",
+      "火龙果",
+      "种植",
+      "plants",
+      "种子发芽",
+      "gardening",
+      "家庭种菜"
+    ],
+    "title": "一个发霉火龙果能种出100棵仙人掌吗？｜I Turned 1 Dragonfruit into 100 Cactuses",
+    "video_id": "bseedkv2_tO",
+    "views": 33
+  },
+  "seed_provenance": {
+    "bvid": "BV1ndYJ6GE96",
+    "published_at": "2026/9/8 21:28:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ndYJ6GE96"
+  },
+  "version": 1
+}

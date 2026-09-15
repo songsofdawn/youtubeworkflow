@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "extreme_survival",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "survival"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "extreme survival"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "建筑教程",
+      "我的世界",
+      "树屋建造",
+      "cryptozoology",
+      "生存挑战",
+      "硬核生存",
+      "丛林世界"
+    ],
+    "video_id": "bseedF7OiGg"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=52wkUuvBhDY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI Spent 100 Days in a Jungle Only World in Hardcore Minecraft!\n\n🌍 Download the World: https://www.patreon.com/cryptozoology/posts/167117563\n\n✨ Shaders: Complementary\n\n❤️ Join the Community:\n➤ Patreon: https://www.patreon.com/cryptozoology\n➤ Discord: https://discord.gg/NunDXsSuWn\n➤ Twitch: https://www.twitch.tv/cryptozoologyy\n➤ Instagram: https://www.instagram.com/cryptozoology.yt\n\n#minecraft #letsplay #minecraftsurvival",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3526,
+    "likes": 10,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T05:34:17+00:00",
+    "tags": [
+      "建筑教程",
+      "我的世界",
+      "游戏实况",
+      "树屋建造",
+      "cryptozoology",
+      "中英双语",
+      "中文翻译",
+      "生存挑战",
+      "硬核生存",
+      "丛林世界"
+    ],
+    "title": "【中英双语】Minecraft 硬核生存：100 天打造丛林树屋村落｜I Survived 100 Days Building a TREEHOUSE VIL…",
+    "video_id": "bseedF7OiGg",
+    "views": 211
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ma4k6iEcD",
+    "published_at": "2026/8/29 13:34:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ma4k6iEcD"
+  },
+  "version": 1
+}

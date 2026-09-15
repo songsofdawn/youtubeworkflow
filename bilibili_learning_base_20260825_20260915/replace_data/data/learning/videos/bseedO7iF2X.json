@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "full_process",
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "搞笑短剧",
+      "糖果制作",
+      "草莓芝士蛋糕",
+      "手工糖果",
+      "hersheys糖果店",
+      "缎带糖",
+      "candy making",
+      "hercules candy"
+    ],
+    "video_id": "bseedO7iF2X"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWe were forced to make this against our will...By the Cryptic Candy Caper! But I think you guys will really like the new cheesecake filled ribbon candy! Stawberry flavoring on one side, cheesecake flavoring on the other side, filled with chocolate, dried strawberries and Golden Grahams® cereal. What's not to love? You can get your strawberry cheese cake ribbon candy here! ↓↓↓\nhttps://tinyurl.com/cryptic-candy-caper-candy\n\n🌐Our website!\nhttps://herculescandy.com/\n\nIf you like the sounds of candy making then you'll love our ASMR channel!\nhttps://www.youtube.com/@HerculesCandyASMR\n---------------------------------------------------\nSubscribe and hit the 🔔 for new videos every Tuesday and livestreams most Thursdays & Fridays (unless posting these videos have made us too busy 😂)\n---------------------------------------------------\n😊 Let’s stay in touch!\n📌Instagram: https://www.instagram.com/herculescandy/?hl=en \n📌Facebook: https://www.facebook.com/Hercules-Candy-Co-145420888813009/\n📌TikTok: https://www.tiktok.com/@herculescandy?lang=en\n📌ASMR TikTok: https://www.tiktok.com/@herculescandyasmr\n---------------------------------------------------\n🕒 Timestamps\n00:00 the ransom note!\n1:45 the first pour & scrape\n2:39 flavoring & coloring the batch\n4:35 the second pour & scrape\n5:31 coloring the other half of the batch\n6:18 cooling the batch on the table\n8:35 NOT sponsored by these gloves!\n10:11 on the hook\n13:16 how we clean the kettles in between batches\n13:52 back to the hook…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1996,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T08:23:36+00:00",
+    "tags": [
+      "美食制作",
+      "搞笑短剧",
+      "糖果制作",
+      "草莓芝士蛋糕",
+      "手工糖果",
+      "Hersheys糖果店",
+      "缎带糖",
+      "candy making",
+      "hercules candy"
+    ],
+    "title": "被神秘勒索信逼着做的草莓芝士蛋糕糖｜We were forced to make this against our will...",
+    "video_id": "bseedO7iF2X",
+    "views": 147
+  },
+  "seed_provenance": {
+    "bvid": "BV1s5Yv6xEKY",
+    "published_at": "2026/9/13 16:23:36",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1s5Yv6xEKY"
+  },
+  "version": 1
+}

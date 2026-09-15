@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "knife making",
+      "restoration"
+    ],
+    "formats": [
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "knife making",
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "刀具修复",
+      "asmr restoration",
+      "变废为宝",
+      "翻新",
+      "解压",
+      "除锈",
+      "工具修复"
+    ],
+    "video_id": "bseedwGMbJ8"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n🔥 Just Insert a Copper Tube Into a Drill! Old Rusty Knife – Destroyed to Treasure! 🔥\n\n\n\nWhat happens when you combine an old rusty knife, a drill, a copper tube, a spark plug, charcoal, powder, and a welding rod? The transformation is something you have to see!\n\n\n\nIn this satisfying DIY knife restoration project, I take a heavily rusted and damaged old knife and give it a completely new life. Using an unusual combination of materials and workshop techniques, I work through the restoration step by step — from rust removal and repair to grinding, sanding, polishing, and final finishing.\n\n\n\nThe old, forgotten knife slowly transforms from destroyed and covered in rust into a stunning restored treasure.\n\n\n\n✨ What You'll See in This Video:\n\n🔪 Old rusty knife restoration\n\n🔩 Copper tube and drill technique\n\n⚡ Spark plug featured in the restoration process\n\n🖤 Charcoal and powder used during the project\n\n🔥 Welding rod used for repair work\n\n🧽 Rust and corrosion removal\n\n🛠️ Repairing and reshaping damaged parts\n\n🪚 Grinding, sanding, and polishing\n\n✨ Amazing before-and-after transformation\n\n🎧 Satisfying workshop & ASMR restoration sounds\n\n♻️ From Destroyed to Treasure\n\n\n\n🧰 Materials & Tools Featured:\n\n• Copper tube\n\n• Drill\n\n• Spark plug\n\n• Charcoal\n\n• Powder\n\n• Welding rod\n\n• Sandpaper\n\n• Grinding and polishing tools\n\n• Workshop equipment\n\n\n\n❤️ More Than Just Restoration\n\n\n\nAn old rusty tool may look worthless, but restoration can reveal a completely different story. With patience, creativity, and craftsmanship, forgotten objects can be given a second chance.\n\n\n\nEvery restoration project is a journey from old and damaged to useful and…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1170,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T09:44:54+00:00",
+    "tags": [
+      "DIY",
+      "手工",
+      "刀具修复",
+      "ASMR restoration",
+      "无配音",
+      "变废为宝",
+      "翻新",
+      "解压",
+      "除锈",
+      "工具修复"
+    ],
+    "title": "废刀翻新：锈死老刀翻新成宝｜Just insert a copper tube into Drill! Old Rusty Knife – Destroy…",
+    "video_id": "bseedwGMbJ8",
+    "views": 98
+  },
+  "seed_provenance": {
+    "bvid": "BV1XfYe6iEWD",
+    "published_at": "2026/9/13 17:44:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1XfYe6iEWD"
+  },
+  "version": 1
+}

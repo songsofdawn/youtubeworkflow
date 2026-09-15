@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "everyday science"
+    ],
+    "formats": [
+      "documentary",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "冷知识",
+      "历史",
+      "人文历史",
+      "奇葩职业",
+      "职业",
+      "世界史",
+      "科普动画",
+      "搞笑历史",
+      "miserable jobs in hi",
+      "worst jobs in histor"
+    ],
+    "video_id": "bseedjl_Obq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThese videos are always, and forever, created by a human. (it's me)\n\nsubscribe or be employed.\n\nIf you are feeling a bit unhappy with your place of employment, remember that it could always be so... SO much worse. Not to invalidate your unhappiness, but it's true. History has had a crazy amount of just such odd jobs that were either miserable, deadly, ridiculous, or all of the above. So enjoy this video on your union mandatory day off or lunch break, cause not everyone is as fortunate as you. Here's a historical employment opportunities that I believe were some of the Most Miserable Jobs in History.\n\nCHAPTERS:\n0:00 - The Pearly Gates!\n6:39 - The Executive Executioner!\n11:10 - The Melancholic Mines!\n15:28 - Keeper of the Light!\n\nchat history, chathistory, trust me bro, sam o nella, samonella, oversimplified, bluejay, goodenough, casually explained, history explained",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1237,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T10:54:38+00:00",
+    "tags": [
+      "冷知识",
+      "历史",
+      "人文历史",
+      "奇葩职业",
+      "职业",
+      "世界史",
+      "科普动画",
+      "搞笑历史",
+      "miserable jobs in hi",
+      "worst jobs in histor"
+    ],
+    "title": "史上最惨职业大盘点：采珠人、刽子手与守塔人｜The Most Miserable Jobs in History [NO AI]",
+    "video_id": "bseedjl_Obq",
+    "views": 16
+  },
+  "seed_provenance": {
+    "bvid": "BV1r5Yg6JEPs",
+    "published_at": "2026/9/10 18:54:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1r5Yg6JEPs"
+  },
+  "version": 1
+}

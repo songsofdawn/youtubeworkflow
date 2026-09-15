@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "GPT-6",
+      "Astra",
+      "LLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "gpt-6",
+      "astra",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "大语言模型",
+      "gpt-6",
+      "agi",
+      "openai",
+      "ai科普"
+    ],
+    "video_id": "bseed-KYEAa"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOn September 3rd, 2026, OpenAI released GPT-6 Astra and president Greg Brockman told reporters, \"Welcome to the AGI era.\" Astra scored 99.9% on ARC-AGI-3, 98% on FrontierMath Tier 4, and became the first model to hit \"Critical\" on OpenAI's own cybersecurity risk framework. Headlines ran with it. But the term \"AGI\" has never had an agreed definition — not even from Shane Legg, the researcher who helped coin it in 2001 and is still trying to pin it down 25 years later.\n\nSo what would actually have to be true for Brockman's claim to hold up? OpenAI's own charter defines AGI as systems that \"outperform humans at most economically valuable work\" — a strong starting point, but one Princeton researchers say is missing a piece after tracking capability and reliability across 14 models from OpenAI, Google, and Anthropic. Cloudflare won't let Astra publish a security patch without a human sign-off. OpenAI's own chief scientist says the model's monitoring is \"fragile\" and getting worse. And Astra's most powerful capability isn't even available to the public. Line up what OpenAI itself is doing with this model, and the picture gets a lot more complicated than \"Welcome to the AGI era.\"\n\nSupport the channel by buying me a coffee! → https://buymeacoffee.com/betterway\n\nCredits:\nPexels\nPixbay\nUnsplash\nImgflip\n\nMusic:\nIodine - Blue Wednesday",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 575,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T00:34:29+00:00",
+    "tags": [
+      "人工智能",
+      "大语言模型",
+      "GPT-6",
+      "科技资讯",
+      "AGI",
+      "科学科普",
+      "OpenAI",
+      "AI科普"
+    ],
+    "title": "GPT-6发布就宣布AGI？但它连这点都做不到｜No, GPT-6 Astra Is Not AGI",
+    "video_id": "bseed-KYEAa",
+    "views": 24
+  },
+  "seed_provenance": {
+    "bvid": "BV1TQbg6JECx",
+    "published_at": "2026/9/8 08:34:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1TQbg6JECx"
+  },
+  "version": 1
+}

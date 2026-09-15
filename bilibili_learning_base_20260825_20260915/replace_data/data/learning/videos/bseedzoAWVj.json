@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPU",
+      "PC building"
+    ],
+    "formats": [
+      "build",
+      "comparison",
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gpu hardware",
+      "pc build",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "geforce 256",
+      "显卡评测",
+      "游戏怀旧",
+      "diy装机",
+      "复古科技",
+      "数码科普",
+      "硬件历史"
+    ],
+    "video_id": "bseedzoAWVj"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=DKDmf_YsqFU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThe legendary GeForce 256.\n________________________________________\n\nBecome a Lecctron Channel Member to support the channel and get exclusive perks for only $1:\nhttps://www.youtube.com/channel/UCoe9JNwWfmVj69LVsUuwqWA/join\n________________________________________\n\nTry an ExitLag free trial and drop your ping TODAY:\nhttps://exitl.ag/lecctron\n________________________________________\n\nUse my Fortnite creator code LEC.\n________________________________________\n\nFollow me on all these platforms:\n\ndiscord: https://discord.gg/lec\ninstagram: https://www.instagram.com/lecctron\ntiktok: https://www.tiktok.com/@lecctron\nsecond tiktok: https://www.tiktok.com/@lecctron1\nwebsite: https://www.lecctron.com\n________________________________________\n\nEnjoying the music?\n\n@meedowmusic\n@incompetech_kmac\n@kade9476\nMCSM OST\n________________________________________\n\nMy Main PC Parts! (No sponsored links, but as an Amazon Associate I may earn a small percentage from qualifying purchases):\n\nGPU: Zotac Trinity GeForce RTX 4080\nhttps://amzn.to/46OYNEJ\n\nCPU: Ryzen 9 9950X3D\nhttps://amzn.to/48RGuy0\n\nCPU Cooler: MSI MAG CORELIQUID I360\nhttps://amzn.to/4aHWbe3\n\nRAM: Corsair Dominator Titanium 64GB 6000MHZ CL30 DDR5\nhttps://amzn.to/3KEzInx\n\nMotherboard: GIGABYTE B850 AORUS WIFI7\nhttps://amzn.to/492MzYH\n\nSSD 1: SAMSUNG 990 EVO Plus 4TB Gen 4\nhttps://amzn.to/4nHczhy\n\nSSD 2: Western Digital PC SN810 1TB Gen 4\nhttps://amzn.to/4f0TZhI (out of stock, similar product linked)\n\nPSU: Corsair RM1000X\nhttps://amzn.to/4oSkxFy\n\nPeripherals!:\n\nMain…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 592,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T05:49:54+00:00",
+    "tags": [
+      "GeForce 256",
+      "显卡评测",
+      "游戏怀旧",
+      "中英双语",
+      "中文翻译",
+      "计算机技术",
+      "DIY装机",
+      "复古科技",
+      "数码科普",
+      "硬件历史"
+    ],
+    "title": "【中英双语】27年后，Nvidia首款显卡GeForce 256还能玩游戏吗？｜Can the World's First GPU Still Run Gam…",
+    "video_id": "bseedzoAWVj",
+    "views": 20
+  },
+  "seed_provenance": {
+    "bvid": "BV1FK4k6WE2Q",
+    "published_at": "2026/8/29 13:49:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1FK4k6WE2Q"
+  },
+  "version": 1
+}

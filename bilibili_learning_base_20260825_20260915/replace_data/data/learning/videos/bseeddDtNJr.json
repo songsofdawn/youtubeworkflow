@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude",
+      "AI coding"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "ai coding",
+      "claude code",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "便携工具",
+      "claudecode",
+      "跨平台",
+      "u盘",
+      "开源项目",
+      "ai编程",
+      "ai编程助手",
+      "deepseek",
+      "tech jarvis",
+      "tech jarves"
+    ],
+    "video_id": "bseeddDtNJr"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nClaude Code AI Agent on USB lets you carry a portable AI coding setup across Windows, Mac, and Linux. Run Claude Code from a USB drive, external SSD, or any folder and keep your coding environment portable.\n\nIn this video, I’ll show you how to set up Claude Code Portable on a USB drive and use the same setup across Windows, macOS, and Linux — including the terminal and browser-based dashboard.\n\n\nYou’ll see the complete setup process on Windows first, then move the same USB drive to Mac and Linux and continue working with the same configuration, projects, settings, and saved provider setup.\n\n\n✔ Run Claude Code from a USB drive\n✔ Claude Code on Windows, Linux & Mac✔ Browser-based Claude Code dashboard\n✔ Connect multiple AI providers\n✔ Use USB, external SSD, or internal SSD\n\n\n📌 Download Links:\nGitHub Repository: https://github.com/techjarves/ClaudeCode-Portable\n\n\n\n🎥 Related Videos:\nLocal AI on USB: https://youtu.be/yeFvP3SWMak\nOpenClaw on USB : https://youtu.be/OXu1c5MYTvI\nHermes Agenton USB: https://youtu.be/TWZv6fo3JLc\n\n\n\n📅 Timestamps:\n00:00 – Claude Code on USB Demo\n00:58 – Works on Windows, Mac & Linux (No Subscription)\n01:34 – Install Claude Code Portable on Windows\n02:43 – Connect Free AI Providers (DeepSeek, NVIDIA & More)\n04:29 – Run Claude Code From USB on Mac\n06:05 – Use Claude Code Portable on Linux\n\n\n\n\n🤝 Connect with Us:\nChannel Membership: https://www.youtube.com/channel/UCbekhhidkzkGryM7mi5Ys_w/join\nTwitter (X): https://twitter.com/jarves_usaram\nTele…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 421,
+    "likes": 6,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T17:21:23+00:00",
+    "tags": [
+      "便携工具",
+      "ClaudeCode",
+      "跨平台",
+      "U盘",
+      "开源项目",
+      "AI编程",
+      "AI编程助手",
+      "DeepSeek",
+      "tech jarvis",
+      "tech jarves"
+    ],
+    "title": "把Claude Code装进U盘！免费随身携带的AI编程环境｜I Put Claude Code on a USB… And It’s Free & Work…",
+    "video_id": "bseeddDtNJr",
+    "views": 204
+  },
+  "seed_provenance": {
+    "bvid": "BV1QcYZ6YEJ1",
+    "published_at": "2026/9/13 01:21:23",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QcYZ6YEJ1"
+  },
+  "version": 1
+}

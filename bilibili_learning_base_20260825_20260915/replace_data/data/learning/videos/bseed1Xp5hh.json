@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "希特勒",
+      "二战",
+      "世界历史",
+      "人文历史",
+      "history hit",
+      "历史科普",
+      "纳粹德国",
+      "二战历史",
+      "历史学家",
+      "history hit youtube"
+    ],
+    "video_id": "bseed1Xp5hh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDid Hitler fight in WW1? What happened in the bunker? Did Hitler have a micro penis? \n\nJoin historian Emma Craigie as she answers your questions about Adolf Hitler.\n\nEmma Craigie is the author of four books including the critically acclaimed novel 'Chocolate Cake with Hitler', and co-author of the Sunday Times best-seller 'Hitler's Last Day: Minute by Minute'\n\n00:00 Intro Highlights\n00:31 Introduction by Author Emma Craigie\n01:01 Was Hitler German or Austrian?\n01:24 Did Hitler have a bad childhood?\n02:01 Did Hitler want to become a priest?\n02:37 Did Hitler get rejected from art school twice?\n03:44 When did Hitler move to Germany?\n05:58 Did Hitler fight in World War I?\n08:34 Personal details and habits during WWI\n09:03 How did World War I affect Hitler's politics?\n10:06 Why did Hitler go to prison?\n11:14 Did Hitler write Mein Kampf himself?\n11:47 How did Hitler gain power?\n13:01 Why did Hitler choose the swastika?\n15:38 Did Hitler shout in all of his speeches?\n16:30 When did Hitler start blaming Jewish people?\n17:34 Did Hitler create the concentration camp system?\n18:55 Did Hitler know about the Holocaust as it was happening?\n19:39 Did Hitler want a war?\n22:05 Did Hitler personally plan military operations?\n24:11 How did Hitler lose the war?\n24:44 What happened in Hitler's bunker?\n26:00 Did Hitler only have one testicle or a micropenis?\n26:44 Was Hitler asexual?\n27:34 Was Hitler a vegetarian?\n28:11 Why did Hitler have a moustache?\n28:44 Was Hitler insane?\n29:36 Did Hitler survive the war?\n\n #WW2 #Hitl…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1877,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T11:25:01+00:00",
+    "tags": [
+      "希特勒",
+      "二战",
+      "世界历史",
+      "人文历史",
+      "history hit",
+      "历史科普",
+      "纳粹德国",
+      "二战历史",
+      "历史学家",
+      "history hit youtube"
+    ],
+    "title": "历史学家在线回答关于希特勒的网友提问｜WW2 Expert Answers Hitler Questions",
+    "video_id": "bseed1Xp5hh",
+    "views": 119
+  },
+  "seed_provenance": {
+    "bvid": "BV1BzYu6VEzt",
+    "published_at": "2026/9/10 19:25:01",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1BzYu6VEzt"
+  },
+  "version": 1
+}

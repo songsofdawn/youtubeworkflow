@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "baking",
+      "noodles"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "baking",
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "烘焙",
+      "曲奇",
+      "解压美食",
+      "曲奇面团",
+      "cookies",
+      "美食实验",
+      "cookie dough"
+    ],
+    "video_id": "bseedlmaf27"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 39,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nThis is what happens when you bake cookie dough like this.\n\nIf you'd like to support the channel..\n\nMy Amazon affiliate link:\nhttps://amzn.to/48xymnV\n\n--------------------------\nThe above are affiliate links, which means, at no extra cost to you, I'll receive a small commission for purchases through those links. This helps support the channel, thank you.\n\n*Casual Cooking’s content is for entertainment only. Use of this information is strictly at your own risk. Casual Cooking will not assume any liability for direct or indirect losses or damages that may result from the use of information contained in this video including but not limited to economic loss, injury, illness or loss of life. Links above include affiliate commission or referrals. I'm part of an affiliate network and I receive compensation from partnering websites. The content of this video may be outdated or inaccurate.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 42,
+    "likes": 220,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T16:32:55+00:00",
+    "tags": [
+      "美食制作",
+      "烘焙",
+      "曲奇",
+      "解压美食",
+      "曲奇面团",
+      "无配音",
+      "cookies",
+      "美食实验",
+      "cookie dough"
+    ],
+    "title": "整桶曲奇面团直接烤会发生什么？｜Baking a tub of cookie dough like this..",
+    "video_id": "bseedlmaf27",
+    "views": 19871
+  },
+  "seed_provenance": {
+    "bvid": "BV1YUY86oEoe",
+    "published_at": "2026/9/10 00:32:55",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1YUY86oEoe"
+  },
+  "version": 1
+}

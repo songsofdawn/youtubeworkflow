@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing",
+      "challenges"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "键盘操作",
+      "反应力",
+      "搞笑瞬间",
+      "速度测试",
+      "罗布乐思"
+    ],
+    "video_id": "bseedU7fU5V"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=iN393G2Nh8g\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nMinecraft vs Roblox – +1 Speed Keyboard Escape Roblox Chase Test\n#minecraft #roblox #keyboardescape",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 487,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:57:08+00:00",
+    "tags": [
+      "网络游戏",
+      "我的世界",
+      "键盘操作",
+      "反应力",
+      "搞笑瞬间",
+      "速度测试",
+      "无配音",
+      "游戏挑战",
+      "罗布乐思"
+    ],
+    "title": "【无配音】Minecraft与Roblox键盘逃生竞速挑战｜Minecraft vs Roblox – +1 Speed Keyboard Escape Ro…",
+    "video_id": "bseedU7fU5V",
+    "views": 728
+  },
+  "seed_provenance": {
+    "bvid": "BV1w14y6vE91",
+    "published_at": "2026/8/29 16:57:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1w14y6vE91"
+  },
+  "version": 1
+}

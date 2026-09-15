@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "drawing"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "drawing"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "绘画",
+      "可爱",
+      "手绘",
+      "数字绘画",
+      "艺术创作",
+      "系外行星",
+      "天文科普",
+      "手绘挑战",
+      "职业职场",
+      "气体巨星"
+    ],
+    "video_id": "bseedM5egBj"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=RIS7ZAsb29k\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nWelcome to another drawing challenge by **Wibbydraw**!\n\nThis time, I’m drawing **HR 8799 b**, a young gas giant exoplanet located approximately **130–133 light-years from Earth**.\n\nWatch as I draw the planet in three different time limits:\n\n- 30 Seconds\n- 3 Minutes\n- 30 Minutes\n\nHR 8799 b is one of four confirmed planets orbiting the star HR 8799. It was discovered through **direct imaging** and is estimated to have a mass around seven times that of Jupiter. The planet orbits its star at approximately 68 astronomical units and takes about 466 Earth years to complete one orbit.\n\nWhich version looks the best: the 30-second, 3-minute, or 30-minute drawing?\n\nSubscribe to **Wibbydraw** for more drawing challenges, space art, and astronomy-inspired artwork!\n\n**Note:** The colors, clouds, rings, and surrounding objects in this artwork are artistic interpretations and are not confirmed features of HR 8799 b.\n\n#Wibbydraw #HR8799b #Exoplanet #DrawingChallenge #SpaceArt #PlanetDrawing #AstronomyArt #GasGiant #CosmicArt #DigitalArt",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 391,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T13:35:54+00:00",
+    "tags": [
+      "绘画",
+      "可爱",
+      "手绘",
+      "数字绘画",
+      "艺术创作",
+      "系外行星",
+      "天文科普",
+      "手绘挑战",
+      "职业职场",
+      "气体巨星"
+    ],
+    "title": "30秒/3分钟/30分钟手绘系外行星HR 8799 b对比挑战｜Drawing HR 8799 b in 30 Seconds vs 3 Minut…",
+    "video_id": "bseedM5egBj",
+    "views": 19
+  },
+  "seed_provenance": {
+    "bvid": "BV1YGtH6QE45",
+    "published_at": "2026/8/30 21:35:54",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1YGtH6QE45"
+  },
+  "version": 1
+}

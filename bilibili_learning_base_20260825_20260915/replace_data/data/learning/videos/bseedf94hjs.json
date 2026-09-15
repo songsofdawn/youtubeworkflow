@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "游戏杂谈",
+      "我的世界",
+      "minecraft",
+      "farlands",
+      "边境之地",
+      "游戏bug",
+      "kendal"
+    ],
+    "video_id": "bseedf94hjs"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOrdina ora il mio nuovo Peluche ufficiale\nhttps://gigaciao.com/products/peluche-kendall\n\n#adv\n\nInstagram: https://www.instagram.com/ale_kendal\n\nIn elenco AGCOM.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 711,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T04:37:10+00:00",
+    "tags": [
+      "游戏杂谈",
+      "单机游戏",
+      "我的世界",
+      "Minecraft",
+      "FarLands",
+      "边境之地",
+      "游戏bug",
+      "Kendal"
+    ],
+    "title": "我在新版Minecraft里找到了消失16年的边境之地｜HO TROVATO \"FAR LANDS\" NELLA NUOVA VERSIONE DI MINE…",
+    "video_id": "bseedf94hjs",
+    "views": 69
+  },
+  "seed_provenance": {
+    "bvid": "BV1a4YQ6HEUS",
+    "published_at": "2026/9/12 12:37:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1a4YQ6HEUS"
+  },
+  "version": 1
+}

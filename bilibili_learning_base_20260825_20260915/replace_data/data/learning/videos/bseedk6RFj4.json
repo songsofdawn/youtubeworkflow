@@ -1,0 +1,76 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "blacksmithing"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "blacksmith forging"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "锻造",
+      "斧头制作",
+      "铁匠",
+      "传统工艺",
+      "打铁",
+      "维京战斧"
+    ],
+    "video_id": "bseedk6RFj4"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\n（原视频未提供简介）",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2251,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T06:30:27+00:00",
+    "tags": [
+      "锻造",
+      "手工",
+      "斧头制作",
+      "铁匠",
+      "传统工艺",
+      "打铁",
+      "无配音",
+      "维京战斧"
+    ],
+    "title": "老铁匠打造一把维京战斧全过程｜Forging a Viking Battle AXE",
+    "video_id": "bseedk6RFj4",
+    "views": 25
+  },
+  "seed_provenance": {
+    "bvid": "BV1ZnbP6jEHk",
+    "published_at": "2026/9/7 14:30:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1ZnbP6jEHk"
+  },
+  "version": 1
+}

@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI video generation"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "视频后期",
+      "ai动画",
+      "minimax",
+      "comfyui",
+      "低显存",
+      "ai视频",
+      "turbo lora",
+      "reference-to-video",
+      "8gb 그래픽카드",
+      "8gb vram"
+    ],
+    "video_id": "bseed5OUoTJ"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n8GB VRAM 환경에서 MiniMax 애니메이션을 만드는 과정을 처음부터 결과물까지 정리했습니다. Alibaba Turbo LoRA를 Reference-to-Video 워크플로우에 연결하고 8스텝으로 생성한 뒤, 잘못 표현된 장면을 역재생·비율 조절·컷 편집으로 살리는 방법을 보여드립니다. HitPaw 업스케일링 전후 비교와 CapCut·Premiere Pro를 활용한 후처리 방향도 함께 다룹니다.\n6~7분 생성 시간과 약 0.5메가픽셀 결과는 영상에 나온 이번 테스트 조건의 측정값입니다. \n\n🚀 Deno AI HUB (Workflow, Tools)\nhttps://deno2026.github.io/Deno-AI-HUB/\n\n💻 PC Spec\n9950X3D\n256GB RAM\nRTX Pro 6000\n\n00:00 최종 결과부터 확인\n00:46 Deno 인사와 영상 배경\n00:57 Alibaba Turbo LoRA 첫인상\n01:18 LoRA 적용 결과\n01:27 기존 LoRA의 오디오 문제\n01:42 하루 약 100개 생성 테스트\n02:12 Reference-to-Video 워크플로우\n02:25 LoRA Loader 추가\n02:32 Image-to-Video와 Reference-to-Video 선택\n02:51 로컬 노드와 간단 입력 구성\n03:13 8GB VRAM 서브컴 테스트\n03:20 SageAttention·Turbo LoRA·8스텝\n03:32 영상당 약 6~7분\n03:43 0.5메가픽셀 한계\n04:12 사라지는 음식과 동작 오류\n04:36 Seedance도 피할 수 없는 생성 오류\n04:54 열차 차단기 장면 분석\n05:20 타협 가능한 오류는 편집으로 해결\n05:32 역재생과 비율 조절\n06:19 컷 편집으로 문제 장면 제거\n06:34 화질 한계와 상용 업스케일러\n07:13 HitPaw Animation 모델\n07:4…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 602,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T19:07:40+00:00",
+    "tags": [
+      "视频后期",
+      "AI动画",
+      "MiniMax",
+      "ComfyUI",
+      "低显存",
+      "AI视频",
+      "Turbo LoRA",
+      "Reference-to-Video",
+      "8GB 그래픽카드",
+      "8GB VRAM"
+    ],
+    "title": "8GB显存用MiniMax Turbo LoRA做AI动画工作流｜8GB VRAM으로 MiniMax 애니 만들기 | Alibaba Turbo LoRA…",
+    "video_id": "bseed5OUoTJ",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV1vPtk6mECE",
+    "published_at": "2026/9/5 03:07:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vPtk6mECE"
+  },
+  "version": 1
+}

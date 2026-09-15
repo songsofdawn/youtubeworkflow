@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "趣味科普",
+      "diy 创意",
+      "西瓜实验",
+      "生活小妙招",
+      "科学实验",
+      "可乐实验",
+      "手工 diy",
+      "居家好物",
+      "creation nova"
+    ],
+    "video_id": "bseedk7PL5Y"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=toBJYbZ2JkA\n【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nHello everyone! You are watching video \"I Poured Coca-Cola and Toothpaste into a Watermelon... Half the World Will Be Amazed!\"\n\nI Poured Coca-Cola and Toothpaste into a Watermelon... 🍉🥤🦷😱 Half the World Will Be Amazed!\n\n🔥 What happens when Coca-Cola and toothpaste are poured into a watermelon? The result is completely unexpected! This crazy-looking experiment combines three everyday items in a way you've probably never seen before.\n\nIn this video, Creation Nova takes on this unusual watermelon experiment and reveals the surprising transformation step by step. The final result is something you definitely won't want to miss!\n\n👉 What you'll discover:\n✅ A unique Coca-Cola and toothpaste experiment\n✅ A surprising watermelon transformation\n✅ A creative experiment using everyday items\n✅ An unexpected final result\n\n💡 You've probably never seen Coca-Cola and toothpaste used like this before!\n\n⚠️ Safety first: Do not consume the mixture or use it on food intended for eating. Keep toothpaste and experimental mixtures away from your eyes and mouth, and perform the demonstration in a safe, controlled environment.\n\n⚡ Watch until the end to see the incredible result!\n\n👍 LIKE • 💬 COMMENT • 🔔 SUBSCRIBE to Creation Nova for more amazing experiments, creative DIY ideas, clever hacks, and unbelievable results!\n\n🚀🔥 Stay curious. Stay creative. Stay with Creation Nova!\n\nCreation Nova, DIY, DIY ideas, DIY projects, Creative ideas, Life hacks, Genius hacks, Tips and tricks, How to make, Easy DIY, Simple inventions, Creative inventions, Invention ideas, Useful tools, Crafts ideas, Handmade ideas, Recycling ideas, Upcycling projects, Trash to treasure, Eco-friendly…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 487,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T19:43:51+00:00",
+    "tags": [
+      "趣味科普",
+      "DIY 创意",
+      "西瓜实验",
+      "生活小妙招",
+      "科学实验",
+      "无配音",
+      "可乐实验",
+      "手工 DIY",
+      "居家好物",
+      "Creation Nova"
+    ],
+    "title": "可乐加牙膏倒入西瓜会发生什么？意想不到的实验结果｜I Poured Coca-Cola and Toothpaste into a Watermelon...…",
+    "video_id": "bseedk7PL5Y",
+    "views": 23
+  },
+  "seed_provenance": {
+    "bvid": "BV16yt562Evy",
+    "published_at": "2026/9/2 03:43:51",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV16yt562Evy"
+  },
+  "version": 1
+}

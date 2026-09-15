@@ -1,4 +1,4 @@
-# Discovery Next：审计与设计
+# Discovery Next Phase 2：自学习内容发现架构
 
 ## 修改前审计
 
@@ -49,9 +49,10 @@ returned_count/new_unique_count/eligible_count/ai_high_quality_count/shown_count
 旧调度、缓存和数据库保留供历史代码检查，但不进入 Next 的 import/执行链。
 传统日报独立保留，不把其 core/rotating queries 误作面板发现。未批量迁移历史下载。
 
-首期完成模板组合、学习概念种子、候选频道及事件闭环。后续可增加：人工确认领域建议的界面、
-历史下载的显式批量导入、查询级 AI 改写与更细的绩效报表、更多趋势来源、视觉分析。
-不实现本地推荐模型训练、向量数据库或强化学习。没有真实下载、付费 API 或模型联机测试。
+Phase 2 的运行链路为：画像重建 → 自动领域预算 → Qwen intent/query 规划 → 多路召回 → 统一去重
+与硬过滤 → 多桶候选预选 → Qwen 内容评价 → 独立 Hot/Potential 排序 → 多样性控制 → 展示归因。
+`discovery_strategy.json` 使用 schema_version 2 保存整轮 domain allocation、recall budget、query plan
+和 AI budget；SQLite 以幂等 `schema_meta` 升级到 version 2，旧事件、命中和归因表原地保留。
 
 ## 验证记录（2026-09-15）
 

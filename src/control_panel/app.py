@@ -289,25 +289,87 @@ class ControlPanelApp:
         jobs = self.store.list()
         active_jobs = self.store.list_active()
         tasks = self.scanner.scan()
+        def _queue_reference(value: object) -> str:
+            return str(value or "").replace("\\", "/").strip().strip("/")
+
         active_by_target: dict[str, dict[str, Any]] = {}
+        active_publish_by_target: dict[str, dict[str, Any]] = {}
         for job in active_jobs:
-            active_by_target.setdefault(str(job["target"]), job)
+            target = _queue_reference(job["target"])
+            active_by_target.setdefault(target, job)
+            if job["kind"] == "publish":
+                active_publish_by_target.setdefault(target, job)
+
+        def _find_active(
+            mapping: dict[str, dict[str, Any]],
+            task_reference: str,
+            video_id: str,
+        ) -> dict[str, Any] | None:
+            active = mapping.get(task_reference) or mapping.get(video_id)
+            if active is None and video_id:
+                active = next(
+                    (
+                        job
+                        for target, job in mapping.items()
+                        if video_id in target
+                    ),
+                    None,
+                )
+            return active
+
         for task in tasks:
-            active = active_by_target.get(str(task["task"])) or active_by_target.get(
-                str(task["video_id"])
-            )
+            task_reference = _queue_reference(task.get("task"))
+            video_id = str(task.get("video_id") or "")
+            active = _find_active(active_publish_by_target, task_reference, video_id)
+            active = active or _find_active(active_by_target, task_reference, video_id)
             if active:
                 task["active_job"] = {
                     "id": active["id"],
+                    "kind": active["kind"],
+                    "target": active["target"],
                     "status": active["status"],
                     "step": active["step"],
                     "progress": active["progress"],
+                    "priority": active.get("priority", 0),
                 }
                 task["overall"] = active["step"]
 
+        scheduler = self.worker.snapshot(active_jobs)
+        task_by_reference = {
+            _queue_reference(task.get("task")): task
+            for task in tasks
+            if _queue_reference(task.get("task"))
+        }
+        task_by_video_id = {
+            str(task.get("video_id") or ""): task
+            for task in tasks
+            if str(task.get("video_id") or "")
+        }
+        publish_queue = scheduler.get("publishing", {}).get("queue", [])
+        for queue_item in publish_queue:
+            target = _queue_reference(queue_item.get("target"))
+            task = task_by_reference.get(target)
+            if task is None:
+                task = task_by_video_id.get(target)
+            if task is None:
+                task = next(
+                    (
+                        candidate
+                        for video_id, candidate in task_by_video_id.items()
+                        if video_id and video_id in target
+                    ),
+                    None,
+                )
+            if task is not None:
+                queue_item["title"] = str(
+                    task.get("title") or queue_item.get("title") or ""
+                )
+                queue_item["video_id"] = str(task.get("video_id") or "")
+                queue_item["thumbnail_url"] = str(task.get("thumbnail_url") or "")
+
         return {
             "health": self.health(),
-            "scheduler": self.worker.snapshot(active_jobs),
+            "scheduler": scheduler,
             "tasks": tasks,
             "jobs": jobs,
             "summary": {
@@ -348,6 +410,8 @@ class ControlPanelApp:
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
         ranking_mode: str = "hot",
+        discovery_scope: str = "auto",
+        search_strength: str = "standard",
     ) -> dict[str, Any]:
         existing_tasks = self.scanner.scan()
         known_video_ids = {
@@ -369,6 +433,8 @@ class ControlPanelApp:
                 else None
             ),
             ranking_mode=ranking_mode,
+            discovery_scope=discovery_scope,
+            search_strength=search_strength,
         )
 
     def queue_discovery(
@@ -379,11 +445,13 @@ class ControlPanelApp:
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
         ranking_mode: str = "hot",
+        discovery_scope: str = "auto",
+        search_strength: str = "standard",
     ) -> dict[str, Any]:
         selected_ids = list(dict.fromkeys(str(value) for value in pack_ids))
         catalog_ids = {str(item["id"]) for item in self.discovery_catalog()}
         unknown = [value for value in selected_ids if value not in catalog_ids]
-        if not selected_ids:
+        if discovery_scope == "manual" and not selected_ids:
             raise ValueError("请至少选择一个发现领域")
         if unknown:
             raise ValueError("包含未知的发现领域：" + "、".join(unknown))
@@ -420,6 +488,8 @@ class ControlPanelApp:
             "minimum_duration_seconds": int(minimum_duration_minutes) * 60,
             "maximum_duration_seconds": requested_maximum_duration_minutes * 60,
             "ranking_mode": ranking_mode,
+            "discovery_scope": discovery_scope,
+            "search_strength": search_strength,
             "known_video_ids": [
                 str(task.get("video_id") or "")
                 for task in existing_tasks
@@ -462,6 +532,8 @@ class ControlPanelApp:
             progress=progress,
             cancelled=cancelled,
             ranking_mode=str(payload.get("ranking_mode") or "hot"),
+            discovery_scope=str(payload.get("discovery_scope") or "auto"),
+            search_strength=str(payload.get("search_strength") or "standard"),
         )
 
     def discovery_job_result(self, job_id: str) -> dict[str, Any]:
@@ -1359,18 +1431,68 @@ class ControlPanelApp:
 
     def queue_publish(self, task: str, values: dict[str, Any]) -> dict[str, Any]:
         task_dir = self.scanner.resolve_task(task)
-        if self.store.has_active("publish", task):
-            raise ValueError("这个视频已经在投稿队列中")
+        existing = self.store.active_job("publish", task)
+        if existing is not None:
+            if values.get("priority") is True and existing["status"] == "queued":
+                existing = self.store.promote_publish(str(existing["id"]))
+            return existing | {
+                "reused": True,
+                "queue_message": "这个视频已经在投稿队列中，已保留为当前稿件，不会重复投稿",
+            }
         payload = self.publisher.validate_submission(task_dir, values)
+        payload["auto_next_publish"] = True
+        payload["queue_priority"] = values.get("priority") is True
         job = self.store.enqueue(
             "publish",
             task,
             payload,
             resource_class=self.worker.initial_resource("publish", payload),
             reuse_active_kinds={"publish"},
+            priority=1 if values.get("priority") is True else 0,
         )
         self.worker.wake()
         return job
+
+    def prioritize_publish(self, job_id: str) -> dict[str, Any]:
+        job = self.store.get(job_id)
+        if job["kind"] != "publish":
+            task_dir = self.scanner.resolve_task(str(job["target"]))
+            download = read_json(task_dir / "download_manifest.json")
+            video_id = str(download.get("video_id") or "").strip()
+            publish_job = next(
+                (
+                    candidate
+                    for candidate in self.store.list_active()
+                    if candidate["kind"] == "publish"
+                    and (
+                        str(candidate["target"]) == str(job["target"])
+                        or (video_id and video_id in str(candidate["target"]))
+                    )
+                ),
+                None,
+            )
+            if publish_job is None:
+                raise ValueError("该视频尚未进入投稿队列，暂时没有可调整的投稿任务")
+            job = publish_job
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        manifest = read_json(task_dir / "stage5" / "publish_manifest.json")
+        if str(manifest.get("status") or "") == "PUBLISHED":
+            raise ValueError("该稿件已经投稿成功，不能再次调整顺序")
+        promoted = self.store.promote_publish(job_id)
+        self.worker.wake()
+        return promoted
+
+    def move_publish(self, job_id: str, direction: str) -> dict[str, Any]:
+        job = self.store.get(job_id)
+        if job["kind"] != "publish":
+            raise ValueError("只有投稿任务可以调整投稿顺序")
+        task_dir = self.scanner.resolve_task(str(job["target"]))
+        manifest = read_json(task_dir / "stage5" / "publish_manifest.json")
+        if str(manifest.get("status") or "") == "PUBLISHED":
+            raise ValueError("该稿件已经投稿成功，不能再次调整顺序")
+        moved = self.store.move_publish(job_id, direction)
+        self.worker.wake()
+        return moved
 
     def open_task_folder(self, task: str, *, subfolder: str = "") -> None:
         path = self.scanner.resolve_task(task)

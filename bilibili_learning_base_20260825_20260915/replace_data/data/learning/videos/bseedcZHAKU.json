@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "PC building"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "pc build",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "装机",
+      "etaprime",
+      "rx 9060 xt",
+      "2k游戏",
+      "垃圾佬",
+      "小机箱",
+      "性价比装机",
+      "惠普工作站",
+      "eta prime",
+      "睡眠者主机"
+    ],
+    "video_id": "bseedcZHAKU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis SFF PC Has A Low Profile RX 9060 XT! Vip-URCDKey 25% code for software: ETA \n11 Pro Key($25):https://biitt.ly/RUZiX \n11 Home Key($23):https://biitt.ly/SQKqi \n10 Pro OEM Key($20):https://biitt.ly/KpEmf \n10 Home Key($17):https://biitt.ly/2tPi1 \n10 LTSC 2021 Key($15): https://biitt.ly/W564e \nOffice 2019 pro key($63):https://biitt.ly/o0OQT\n2016 pro key($32): https://biitt.ly/xWmvn \n\nI took an old HP Z2 G5 workstation — the kind companies dump by the pallet — and turned it into a full 1440p gaming PC with a low profile Radeon RX 9060 XT packing 16GB of VRAM. These go for around $150–$250 used, so is this the best budget gaming PC build right now? Let's find out.\n\nBuy a Used HP Z2 G5 on eBay: https://ebay.us/P7p8SL\nRTX 5060 Low Profile: https://ebay.us/Ab1eue\nRadron Low Profile RX 9060 XT: Coming soon\n\nFollow Me On Twitter: https://twitter.com/theetaprime\nFollow Me On Instagram: https://www.instagram.com/etaprime/\n\nDISCLAIMER: This video and description contains affiliate links, which means that if you click on one of the product links, I’ll receive a small commission at no extra cost to you!\nUnder section 107 of the Copyright Act 1976, allowance is made for “fair use” for purposes such as criticism, comment, news reporting, teaching, scholarship, education, and research.\nNo Games Are Included Or Added\n\n\nTHIS VIDEO IS FOR EDUCATIONAL PURPOSES ONLY!\n\n#budgetgamingpc #rx9060xt #sleeperpc",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 624,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T16:36:24+00:00",
+    "tags": [
+      "装机",
+      "etaprime",
+      "RX 9060 XT",
+      "2K游戏",
+      "垃圾佬",
+      "小机箱",
+      "性价比装机",
+      "惠普工作站",
+      "eta prime",
+      "睡眠者主机"
+    ],
+    "title": "捡垃圾改装！150美元废弃工作站变身1440p游戏主机！",
+    "video_id": "bseedcZHAKU",
+    "views": 309
+  },
+  "seed_provenance": {
+    "bvid": "BV1oKYR6YEay",
+    "published_at": "2026/9/13 00:36:24",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1oKYR6YEay"
+  },
+  "version": 1
+}

@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "AI agents"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "ai agents",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "纳维斯托克斯",
+      "navier stokes",
+      "samaltman",
+      "ai数学证明",
+      "openai",
+      "科学突破",
+      "千禧年大奖难题",
+      "anthropic争议"
+    ],
+    "video_id": "bseedPcdpHo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOpenAI just published an extraordinary 165-page paper claiming to have solved the Navier-Stokes existence and smoothness problem—one of the seven Clay Millennium Prize Problems that has haunted mathematicians for over two centuries. \n\nPowered by a synchronized swarm of 10,000 autonomous AI agents running for 88 straight hours, OpenAI proved a finite-time blowup and formally verified the entire proof in Lean 4. But within hours of the announcement, explosive allegations emerged: prominent mathematician Tristan Buckmaster and Anthropic researcher Levent Alpöge claim their private Codex work was scooped, igniting an all-out industry war.\n\nIn this deep-dive documentary, we break down:\n- What the Navier-Stokes Millennium Prize Problem actually is\n- How Noam Brown's 10,000-agent reasoning swarm found the proof\n- Why Lean interactive theorem proving changes mathematical verification forever\n- The bitter IP controversy between OpenAI, Tristan Buckmaster, and Anthropic\n- Why Sam Altman officially declined the $1,000,000 Clay Mathematics Institute prize\n\nTIMESTAMPS:\n00:00 - The 200-Year Unsolved Fluid Mystery\n00:20 - OpenAI's 165-Page Bombshell Paper\n00:46 - Understanding Navier-Stokes & Fluid Turbulence\n01:08 - The $1,000,000 Clay Millennium Prize Problem\n01:36 - Inside Noam Brown's 10,000-Agent Swarm\n02:01 - Formal Verification Inside Lean 4\n02:24 - The Anthropic Controversy: Tristan Buckmaster & Levent Alpöge\n02:53 - Did OpenAI Harvest Private Researcher Sessions?\n03:12 - Sam Altman Defends Research Int…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 279,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T00:27:28+00:00",
+    "tags": [
+      "人工智能",
+      "纳维斯托克斯",
+      "Navier Stokes",
+      "SamAltman",
+      "AI数学证明",
+      "科学科普",
+      "OpenAI",
+      "科学突破",
+      "千禧年大奖难题",
+      "Anthropic争议"
+    ],
+    "title": "OpenAI智能体围攻世纪数学难题：纳维-斯托克斯被攻克？｜OpenAI's 10,000-Agent Swarm Just Solved Navier-S…",
+    "video_id": "bseedPcdpHo",
+    "views": 199
+  },
+  "seed_provenance": {
+    "bvid": "BV1vGYp6uEtC",
+    "published_at": "2026/9/9 08:27:28",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vGYp6uEtC"
+  },
+  "version": 1
+}

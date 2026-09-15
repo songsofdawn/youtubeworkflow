@@ -1,0 +1,114 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "from scratch",
+      "claude",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "独立游戏开发",
+      "ai 编程",
+      "程序生成内容",
+      "claude fable",
+      "游戏演示",
+      "创意编程",
+      "cozy games"
+    ],
+    "video_id": "bseedQTnRwG"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=fYR7zWLJ1P0\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nToday I asked Claude Fable 5 to make a cozy farming village game from scratch and the results we got in the end are absolutely mind-blowing. \n\nThis video is sponsored by TopView, here you can try their MCP: \nhttps://www.topview.ai/?via=dlws\n\n0:00 - Intro\n0:15 - Claude Fable 5\n1:20 - Cozy Farming Village\n6:43 - Clip for Game\n8:20 - Result\n9:35 - Outro\n\n#claude #vibecoding #cozygames",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 603,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T05:57:44+00:00",
+    "tags": [
+      "独立游戏开发",
+      "AI 编程",
+      "程序生成内容",
+      "Claude Fable",
+      "游戏演示",
+      "计算机技术",
+      "创意编程",
+      "Cozy Games"
+    ],
+    "title": "用 AI 从零打造温馨农场游戏并制作宣传片｜Claude Fable 5 Make Cozy Village Game From Scratch",
+    "video_id": "bseedQTnRwG",
+    "views": 29
+  },
+  "seed_provenance": {
+    "bvid": "BV1dzt762Ex9",
+    "published_at": "2026/9/2 13:57:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1dzt762Ex9"
+  },
+  "version": 1
+}

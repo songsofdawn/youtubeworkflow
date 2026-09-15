@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "business_industry",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "industry"
+    ],
+    "formats": [
+      "documentary",
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "食品工业",
+      "椰子加工",
+      "细菌纤维素",
+      "食品工厂",
+      "制造过程",
+      "椰子糖",
+      "工厂纪录片",
+      "coconut factory",
+      "椰果工厂",
+      "how coconuts are pro"
+    ],
+    "video_id": "bseedJrL6Jb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nOne coconut can become two completely different foods.\n\nThe clear liquid inside can become chewy nata de coco, while the white coconut meat can become rich coconut milk and eventually coconut candy.\n\nBut these two products are created through almost opposite manufacturing processes.\n\nInside the factory, mature coconuts are opened and separated into distinct material streams.\n\nCoconut water is filtered and prepared as a fermentation medium. Cellulose-producing bacteria gradually build a thick bacterial-cellulose layer at the liquid-air surface. The resulting nata de coco is washed, conditioned, cut into cubes, sweetened, heat-treated, and packed.\n\nThe coconut meat follows a completely different route.\n\nThe white kernel is cleaned, grated, and mechanically pressed to extract coconut milk or cream. Sugar and malt syrup are added before the mixture is heated and continuously stirred.\n\nAs water evaporates, the liquid becomes increasingly concentrated until it reaches the thick, chewy consistency needed for coconut candy.\n\nThe hot candy mass is formed, cooled, cut into individual pieces, and wrapped for sale.\n\nThis factory process reveals two very different food-science transformations hidden inside a single coconut:\n\nClear coconut water becomes a solid bacterial-cellulose jelly through fermentation.\n\nSolid coconut meat becomes a liquid coconut-milk emulsion before heat and water removal turn it into chewy candy.\n\nThe video also explores why nata de coco forms at the liquid surface, why fermented nata must…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1093,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T07:55:37+00:00",
+    "tags": [
+      "食品工业",
+      "椰子加工",
+      "细菌纤维素",
+      "食品工厂",
+      "制造过程",
+      "椰子糖",
+      "工厂纪录片",
+      "coconut factory",
+      "椰果工厂",
+      "how coconuts are pro"
+    ],
+    "title": "一颗椰子如何变成椰果和椰子糖？全流程揭秘｜How One Coconut Becomes Jelly AND Candy | Full Factory Pro…",
+    "video_id": "bseedJrL6Jb",
+    "views": 100
+  },
+  "seed_provenance": {
+    "bvid": "BV1SNYv6aEiS",
+    "published_at": "2026/9/13 15:55:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1SNYv6aEiS"
+  },
+  "version": 1
+}

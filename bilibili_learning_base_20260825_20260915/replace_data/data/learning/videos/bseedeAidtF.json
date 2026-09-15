@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.64,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "experiment",
+      "simulation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "末影龙",
+      "minecraft",
+      "寻路机制",
+      "minecraft ai",
+      "生物ai",
+      "末影人",
+      "游戏模拟",
+      "模拟实验",
+      "技术minecraft",
+      "minecraft mob pathfi"
+    ],
+    "video_id": "bseedeAidtF"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI built a custom simulation to test whether Minecraft could theoretically beat the Ender Dragon without a player. The idea starts with one absurd chain of mechanics: endermen moving blocks, snow golems provoking creepers, explosions carving paths, and mobs eventually stumbling into the End.\n\nSince this would take an impossible amount of time to happen in real Minecraft, I had to speed up the universe itself. So I simulated billions of years, tracked the rarest chain reactions, and searched for the timeline where Minecraft finally beats itself.\n\nWorld Seed: -535646876083114041\n\nAsk/Help/Share on my Discord Server: https://discord.gg/AXRWF4RKST\n\nSupport me on Patreon: https://www.patreon.com/c/RedLogicP\n\n-------------------------------\n\nMusic courtesy of Mojang Studios",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 685,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T11:44:38+00:00",
+    "tags": [
+      "末影龙",
+      "Minecraft",
+      "寻路机制",
+      "Minecraft AI",
+      "生物AI",
+      "末影人",
+      "游戏模拟",
+      "模拟实验",
+      "技术Minecraft",
+      "Minecraft mob pathfi"
+    ],
+    "title": "模拟数十亿年：Minecraft自己打败了自己｜I Gave Minecraft Infinite Time to Beat Itself",
+    "video_id": "bseedeAidtF",
+    "views": 40
+  },
+  "seed_provenance": {
+    "bvid": "BV1Z6bN6HEgq",
+    "published_at": "2026/9/7 19:44:38",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Z6bN6HEgq"
+  },
+  "version": 1
+}

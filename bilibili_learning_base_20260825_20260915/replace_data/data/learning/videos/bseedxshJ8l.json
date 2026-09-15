@@ -1,0 +1,88 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "Bedrock",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "100_days",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft 100 days",
+      "minecraft bedrock",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "极限生存",
+      "我的世界",
+      "minecraft",
+      "生存挑战",
+      "100天生存",
+      "基岩版",
+      "bedrock"
+    ],
+    "video_id": "bseedxshJ8l"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI Survived 100 Days In Minecraft Bedrock Edition\n\nWatch me as I attempt to survive 100 entire days in Minecraft Bedrock Edition. Building lots of amazing farms, houses & a lot more! This video was super fun to record, and I really hope everyone enjoys it too!\n\nIs Bedrock Edition better than Java?!\n\n🔥 Watch my latest video: https://www.youtube.com/watch?v=T6busD5Q9Ks  \n\n---------------------------------------------------\n\n⭐ FOLLOW ME:\n\n🐤 - Twitter: https://x.com/pumpkwins\n\n📷 - Instagram: https://discord.com/invite/uwVBRSp6gV\n\n💬 - Discord Server: https://discord.com/invite/uwVBRSp6gV\n\nSub Count: 110,944\n\n---------------------------------------------------\n\nBusiness inquiries:\n-Email: pumpkwinsbusiness@gmail.com\n\n#minecraft #bedrock #100days",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1633,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T23:38:27+00:00",
+    "tags": [
+      "极限生存",
+      "单机游戏",
+      "我的世界",
+      "Minecraft",
+      "生存挑战",
+      "100天生存",
+      "基岩版",
+      "bedrock"
+    ],
+    "title": "我在我的世界基岩版极限生存100天！｜I Survived 100 Days In Minecraft BEDROCK Edition",
+    "video_id": "bseedxshJ8l",
+    "views": 109
+  },
+  "seed_provenance": {
+    "bvid": "BV1Une76HE2K",
+    "published_at": "2026/9/15 07:38:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Une76HE2K"
+  },
+  "version": 1
+}

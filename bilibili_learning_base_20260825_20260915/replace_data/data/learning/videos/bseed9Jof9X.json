@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "cheese"
+    ],
+    "formats": [
+      "experiment",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "自制马苏里拉",
+      "生活趣事",
+      "美食实验",
+      "里科塔奶酪",
+      "奶酪科学",
+      "母乳奶酪实验",
+      "human milk cheese",
+      "人类奶酪",
+      "breast milk cheese"
+    ],
+    "video_id": "bseed9Jof9X"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nI realized my graphs in the video weren't super accurate... oops.\n\nMaybe when she's old enough she'll eat the cheese...\n\nSupport the channel!\nhttps://www.patreon.com/c/truongsauce",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 698,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T13:22:36+00:00",
+    "tags": [
+      "美食制作",
+      "自制马苏里拉",
+      "生活趣事",
+      "美食实验",
+      "里科塔奶酪",
+      "奶酪科学",
+      "母乳奶酪实验",
+      "human milk cheese",
+      "人类奶酪",
+      "breast milk cheese"
+    ],
+    "title": "奶水太多喝不完？我决定用它做奶酪｜Human Cheese",
+    "video_id": "bseed9Jof9X",
+    "views": 101
+  },
+  "seed_provenance": {
+    "bvid": "BV1qAYn6qEnC",
+    "published_at": "2026/9/8 21:22:36",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qAYn6qEnC"
+  },
+  "version": 1
+}

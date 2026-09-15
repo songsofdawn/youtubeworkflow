@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.66,
+      "story_strength": 0.52,
+      "visual_payoff": 0.7
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "farm"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "萌宠",
+      "养殖日常",
+      "田园生活",
+      "小鸡",
+      "孵化场",
+      "农场生活",
+      "乡村日常"
+    ],
+    "video_id": "bseedBgmRqm"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThere is SO MUCH happening on the farm right now! Join me on this journey as we buy a BUNCH of little chicks, and stick around for a HUGE ANNOUNCEMENT!! 🐣💖\n\nToday's Adventure Includes - \n0:00 Chick preparation\n5:14 One day till pickup\n7:42 Trip to the hatchery \n9:48 They're home!\n11:36 Getting settled in\n15:24 Total # of chicks\n17:41 Nighttime chick check\n18:41 ANNOUNCEMENT \n20:28 Kitten meets the chicks\n\n\n💖 Follow me on Instagram: https://www.instagram.com/evelyns_farm_diaries/\n💖 Watch my guitar covers:\nhttps://www.youtube.com/@EvelynsFarmDiaries2\n\nSubscriber count: 96,674\nThank you!! 🥹🫶\n\nFor business inquiries - evelynsfarmdiaries@gmail.com",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1336,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T07:44:10+00:00",
+    "tags": [
+      "日常",
+      "萌宠",
+      "养殖日常",
+      "田园生活",
+      "小鸡",
+      "孵化场",
+      "农场生活",
+      "乡村日常"
+    ],
+    "title": "一口气买了几百只小鸡？农场生活大揭秘｜We just Bought WAY TO MANY Chicks! + ANNOUNCEMENT",
+    "video_id": "bseedBgmRqm",
+    "views": 47
+  },
+  "seed_provenance": {
+    "bvid": "BV1xuYv6fEsv",
+    "published_at": "2026/9/13 15:44:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1xuYv6fEsv"
+  },
+  "version": 1
+}

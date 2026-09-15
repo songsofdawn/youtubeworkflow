@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "testing"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "数码",
+      "apple芯片",
+      "本地ai",
+      "dgx spark",
+      "mac mini m6",
+      "性能评测",
+      "m5 pro",
+      "m5 ultra",
+      "ai订阅",
+      "apple m6 chip"
+    ],
+    "video_id": "bseedICnzyN"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 8,
+    "description": "https://www.youtube.com/watch?v=-miLBs7eYU8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🧠 Stop paying per subscription. Every top AI model, one platform →  https://aimaster.me/yt/m6\n🤝 Exclusive brand partnership — https://aimaster.me/collab\n\nApple's new Mac Mini M6 might be the device that quietly ends the \"pay monthly for AI\" era — and I tested it to find out if that's actually true.\n\nI ran real local AI workloads on the M6 to check tokens/sec, memory ceiling, and where it falls short compared to a Strix Halo mini PC and an Nvidia DGX Spark. This isn't a spec-sheet comparison — it's hands-on numbers from my own setup, the same way I test every tool on this channel.\n\nWhat you'll see in this video:\n- Real tokens/sec benchmarks running local LLMs on Mac Mini M6\n- Where the unified memory ceiling actually breaks down under heavier models\n- Mac Mini M6 vs Strix Halo vs Nvidia DGX Spark — honest side-by-side\n- Why \"no more AI subscriptions\" is true for some workflows and false for others\n- Mark Gurman's M7 rumor and what it means if you're deciding whether to buy now or wait\n\nChapters:\n00:00 The Number They Didn't Publish\n00:27 What Apple Actually Shipped\n02:41 The Memory Ceiling\n06:50 Apple's Multiplier Trick\n07:59 Mac Studio Specs & Port Trap\n09:27 What the Competition Puts on the Table\n12:16 Does It Really Kill Your Subscriptions?\n14:43 The Rumors, Rated\n16:15 The Part Apple Would Rather Skip\n17:11 Buy, Wait, or Skip\n\n#AppleMacMini #M6Chip #LocalAI #AISubscriptions #AppleSilicon #AITools2026",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1191,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T07:26:57+00:00",
+    "tags": [
+      "数码",
+      "Apple芯片",
+      "本地AI",
+      "DGX Spark",
+      "Mac Mini M6",
+      "性能评测",
+      "M5 Pro",
+      "M5 Ultra",
+      "AI订阅",
+      "apple m6 chip"
+    ],
+    "title": "【中配】实测Mac Mini M6本地跑AI：能否终结AI订阅？｜Apple Just Killed AI Subscriptions Forever (…",
+    "video_id": "bseedICnzyN",
+    "views": 2117
+  },
+  "seed_provenance": {
+    "bvid": "BV1o7tu6fEtM",
+    "published_at": "2026/9/1 15:26:57",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1o7tu6fEtM"
+  },
+  "version": 1
+}

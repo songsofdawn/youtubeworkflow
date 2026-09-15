@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "restoration_crafts",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "restoration"
+    ],
+    "formats": [
+      "restoration",
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "restoration process"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "山地车",
+      "修复过程",
+      "自行车翻新",
+      "除锈喷漆",
+      "变废为宝",
+      "diy改造",
+      "深度清洁",
+      "旧物修复",
+      "unreal restoration"
+    ],
+    "video_id": "bseedEgpcZf"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 23,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nI found this Schnell mountain bike for only $10 and decided to give it a complete makeover. At first glance, the bike looked old, dirty, neglected, and far from its original condition—but I wanted to see how much could be brought back to life with a full restoration.\n\n\n\nThis project starts with a complete teardown, removing the old components and taking the bicycle down to its individual parts. From there, every part is inspected, cleaned, repaired, restored, or replaced where necessary.\n\n\n🔧 What happens in this restoration:\n\n\nComplete bicycle disassembly\nDeep cleaning of the frame and components\nRemoval of dirt, grime, and rust\nRestoration and cleaning of old parts\nFrame preparation and surface treatment\nFresh primer and new paint\nNew decals and finishing details\nInstallation of replacement components\nCleaning and servicing of drivetrain parts\nBrake and gear setup\nWheel and tyre installation\nFinal assembly and adjustments\nComplete before-and-after transformation\n\n\nThe goal was not simply to make the bike look better, but to bring this forgotten Schnell MTB back into a clean, functional, and ride-ready condition.\n\n\nThe final result is a huge difference from where this bike started. Watching an old $10 bicycle gradually transform piece by piece is what makes restoration so satisfying.\n\n\n\nIf you enjoy bicycle restoration, mountain bikes, MTB builds, DIY repairs, deep cleaning, rust removal, painting, mechanical work, satisfying transformations, and before-and-after projects, you're in the right place.\n\n\n\n🔔 Subscribe for more complete bicycle restorations and transformations.\n\n\nWhich part of the transformation was your favorite—the frame restoration, component cleaning, painting, or fin…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1775,
+    "likes": 72,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T14:06:11+00:00",
+    "tags": [
+      "山地车",
+      "修复过程",
+      "自行车翻新",
+      "除锈喷漆",
+      "无配音",
+      "变废为宝",
+      "DIY改造",
+      "深度清洁",
+      "旧物修复",
+      "Unreal restoration"
+    ],
+    "title": "10美元捡来的废山地车，翻新后焕然一新｜From $9 scrap to incredible | Schnell Bike Restoration",
+    "video_id": "bseedEgpcZf",
+    "views": 4718
+  },
+  "seed_provenance": {
+    "bvid": "BV1PUYM6EE3J",
+    "published_at": "2026/9/10 22:06:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PUYM6EE3J"
+  },
+  "version": 1
+}

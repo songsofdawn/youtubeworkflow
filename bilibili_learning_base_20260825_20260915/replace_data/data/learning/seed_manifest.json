@@ -1,0 +1,4336 @@
+{
+  "version": 1,
+  "source_file": "bilibili_104407846_videos_20260915_114603.json",
+  "cutoff": "2026-08-25T00:00:00+08:00",
+  "generated_from_count": 721,
+  "source_fetched_at": "2026-09-15T03:46:03.220Z",
+  "synthetic_id_note": "bseed* IDs are deterministic learning-only IDs, not YouTube video IDs.",
+  "source_map": {
+    "bseedQeF_se": {
+      "bvid": "BV1d4ej6tE3D",
+      "url": "https://www.bilibili.com/video/BV1d4ej6tE3D",
+      "title": "我在生存世界造了座未来感矿业工厂！｜I Built a Futuristic MINING FACTORY in my Survival World!",
+      "published_at": "2026/9/15 11:32:36"
+    },
+    "bseed4_oBrE": {
+      "bvid": "BV1y2ej6yE6A",
+      "url": "https://www.bilibili.com/video/BV1y2ej6yE6A",
+      "title": "流言终结者实测《绝命毒师》：氢氟酸真能溶尸吗？｜Does The Chemistry In Breaking Bad Actually Hold Up? |…",
+      "published_at": "2026/9/15 10:39:25"
+    },
+    "bseedNkGZJs": {
+      "bvid": "BV1Uzej6JE4D",
+      "url": "https://www.bilibili.com/video/BV1Uzej6JE4D",
+      "title": "泥浆地毯深度清洗，解压全过程太爽了｜Super Dirty Extreme Rug Cleaning😳 ASMR Deep Carpet Restorati…",
+      "published_at": "2026/9/15 10:00:48"
+    },
+    "bseedwUsMy5": {
+      "bvid": "BV1YGe76oEfX",
+      "url": "https://www.bilibili.com/video/BV1YGe76oEfX",
+      "title": "免费帮认知障碍阿姨打扫房子，前后对比太治愈了｜This Transformation was AWESOME!",
+      "published_at": "2026/9/15 09:08:07"
+    },
+    "bseedxshJ8l": {
+      "bvid": "BV1Une76HE2K",
+      "url": "https://www.bilibili.com/video/BV1Une76HE2K",
+      "title": "我在我的世界基岩版极限生存100天！｜I Survived 100 Days In Minecraft BEDROCK Edition",
+      "published_at": "2026/9/15 07:38:27"
+    },
+    "bseedfwQsTd": {
+      "bvid": "BV1eMeL6QE8K",
+      "url": "https://www.bilibili.com/video/BV1eMeL6QE8K",
+      "title": "英国大厨初访韩国家庭农场，一桌乡村盛宴直接看傻｜British Chefs visit a Korean family farm!",
+      "published_at": "2026/9/15 06:07:02"
+    },
+    "bseed3Clvxu": {
+      "bvid": "BV1BceL64ENb",
+      "url": "https://www.bilibili.com/video/BV1BceL64ENb",
+      "title": "深入摩加迪沙！挑战索马里极限街头美食｜Surviving Somalia's Extreme Street Food!!",
+      "published_at": "2026/9/15 05:16:11"
+    },
+    "bseed_YRpFl": {
+      "bvid": "BV1EieL6YERW",
+      "url": "https://www.bilibili.com/video/BV1EieL6YERW",
+      "title": "海滩挖到1.85亿年前鱼龙化石！英国小哥捡化石全记录｜We Found 185-Million-Year-Old Ichthyosaur Bones!",
+      "published_at": "2026/9/15 04:29:12"
+    },
+    "bseed3RIM6u": {
+      "bvid": "BV13ReL6nEiy",
+      "url": "https://www.bilibili.com/video/BV13ReL6nEiy",
+      "title": "25种长得像假水果的奇特果实，你敢吃几种？｜25 Exotic Fruits That Don't Look Real",
+      "published_at": "2026/9/15 03:39:53"
+    },
+    "bseedx_xfc_": {
+      "bvid": "BV13QeL6pEkF",
+      "url": "https://www.bilibili.com/video/BV13QeL6pEkF",
+      "title": "老外吐槽：米哈游是怎么让原神角色看起来很贵的？｜How Hoyo Makes Genshin Characters Look Expensive",
+      "published_at": "2026/9/15 02:53:24"
+    },
+    "bseed3dzeXX": {
+      "bvid": "BV1QueV6VELk",
+      "url": "https://www.bilibili.com/video/BV1QueV6VELk",
+      "title": "程序员转生Minecraft MMO，用代码开挂刷矿｜Hacker vs Wynncraft (Minecraft)",
+      "published_at": "2026/9/15 02:15:22"
+    },
+    "bseedqP4Ul9": {
+      "bvid": "BV1mLeV6uESW",
+      "url": "https://www.bilibili.com/video/BV1mLeV6uESW",
+      "title": "15分钟搞定经典牛排戴安，蘑菇白兰地奶油酱绝了｜The 15 Minute Steak Dish Everyone Forgot About",
+      "published_at": "2026/9/15 00:47:59"
+    },
+    "bseedA4WRzG": {
+      "bvid": "BV1gReV6kEgZ",
+      "url": "https://www.bilibili.com/video/BV1gReV6kEgZ",
+      "title": "化石猎人：海滩捡到神秘石头，敲开后藏着1.8亿年前菊石！",
+      "published_at": "2026/9/15 00:29:11"
+    },
+    "bseedCVwWbJ": {
+      "bvid": "BV1jzeV6XEXi",
+      "url": "https://www.bilibili.com/video/BV1jzeV6XEXi",
+      "title": "一秒钟造2万亿晶体管？芯片是怎么造出来的｜How are microchips made? - George Zaidan and Sajan Saini",
+      "published_at": "2026/9/14 23:41:25"
+    },
+    "bseed5lAxoD": {
+      "bvid": "BV1LWe56XESA",
+      "url": "https://www.bilibili.com/video/BV1LWe56XESA",
+      "title": "86岁日本铁匠锻造青纸钢菜刀，儿子直言无法复制｜86 Year Old Japanese Blacksmith Makes a Knife His Son C…",
+      "published_at": "2026/9/14 23:06:16"
+    },
+    "bseedbr67sw": {
+      "bvid": "BV1ALYy62E7h",
+      "url": "https://www.bilibili.com/video/BV1ALYy62E7h",
+      "title": "把6美元五金店斧头锻造成千元大马士革斧｜I Forged a $6 Hardware Store Axe Into a $1000 Damascus Axe",
+      "published_at": "2026/9/14 22:09:38"
+    },
+    "bseedJBhhH3": {
+      "bvid": "BV1D6Yy6bELH",
+      "url": "https://www.bilibili.com/video/BV1D6Yy6bELH",
+      "title": "全美披萨大测评！谁才是美国披萨之王？",
+      "published_at": "2026/9/14 21:02:21"
+    },
+    "bseed3EDm2Q": {
+      "bvid": "BV13zYy6cEmm",
+      "url": "https://www.bilibili.com/video/BV13zYy6cEmm",
+      "title": "空气炸锅高蛋白鸡排！外酥里嫩低卡做法｜How to Make High-Protein Air-Fried Chicken Cutlets | Quick a…",
+      "published_at": "2026/9/14 20:48:52"
+    },
+    "bseedt08qDP": {
+      "bvid": "BV1qsYy66EGo",
+      "url": "https://www.bilibili.com/video/BV1qsYy66EGo",
+      "title": "谷歌开源果蝇大脑，网友让它玩 Doom 还炒币｜Google Open-Sourced a Fly Brain",
+      "published_at": "2026/9/14 20:16:27"
+    },
+    "bseedIDIFmg": {
+      "bvid": "BV1C9Yy6SEpD",
+      "url": "https://www.bilibili.com/video/BV1C9Yy6SEpD",
+      "title": "老外吐槽，星穹铁道最近这波节奏到底谁对谁错？｜The Star Rail Situation is Crazy...",
+      "published_at": "2026/9/14 19:18:09"
+    },
+    "bseedqRjUV4": {
+      "bvid": "BV1CeY16pEmE",
+      "url": "https://www.bilibili.com/video/BV1CeY16pEmE",
+      "title": "删除所有Windows版本的EXE和DLL会怎样？｜What If you delete All EXEs and DLLs on EVERY Windows…",
+      "published_at": "2026/9/14 18:14:45"
+    },
+    "bseedoLiHV4": {
+      "bvid": "BV1U6Yk6DEkw",
+      "url": "https://www.bilibili.com/video/BV1U6Yk6DEkw",
+      "title": "给迷你主机装上塔式散热器，FPS能提升多少？｜Can a Desktop Cooler Give a Mini PC More FPS?",
+      "published_at": "2026/9/14 17:13:53"
+    },
+    "bseedm7GFeC": {
+      "bvid": "BV1eMYC6aEoq",
+      "url": "https://www.bilibili.com/video/BV1eMYC6aEoq",
+      "title": "老外吐槽：崩坏星穹铁道怎么了？4.0版本后游戏状态烂完了！！！",
+      "published_at": "2026/9/14 16:14:57"
+    },
+    "bseedeIek_V": {
+      "bvid": "BV1HYYC6LEJ7",
+      "url": "https://www.bilibili.com/video/BV1HYYC6LEJ7",
+      "title": "跑遍四家超市买最贵的牛排，盲测结果意外了！｜I Bought the Most Expensive Steak at Every Store!",
+      "published_at": "2026/9/14 15:04:52"
+    },
+    "bseed_4tUt9": {
+      "bvid": "BV1VSYC6eE59",
+      "url": "https://www.bilibili.com/video/BV1VSYC6eE59",
+      "title": "为纪念已故祖母而开的餐厅，值得吗？｜I Tried a Restaurant Built for Someone Who’ll NEVER Eat There!",
+      "published_at": "2026/9/14 13:59:42"
+    },
+    "bseedmg2Est": {
+      "bvid": "BV1zoY66wEpy",
+      "url": "https://www.bilibili.com/video/BV1zoY66wEpy",
+      "title": "我的世界：终极樱花木小屋建造教程，新手生存神装｜Minecraft: How to Build the Ultimate Cherry House | Tut…",
+      "published_at": "2026/9/14 13:12:00"
+    },
+    "bseedyqdeB3": {
+      "bvid": "BV1iZY66hEXq",
+      "url": "https://www.bilibili.com/video/BV1iZY66hEXq",
+      "title": "苹果派大师课：永远不流汤的完美切块秘诀｜Apple Pie Masterclass: The Science of the Perfect Apple Pie!",
+      "published_at": "2026/9/14 12:58:58"
+    },
+    "bseedNCStuT": {
+      "bvid": "BV1xnYr61E2F",
+      "url": "https://www.bilibili.com/video/BV1xnYr61E2F",
+      "title": "从种到吃！用自家种的玻璃宝石玉米做墨西哥薄饼｜I Grew My Own Tortillas",
+      "published_at": "2026/9/14 11:47:05"
+    },
+    "bseedmgDqKT": {
+      "bvid": "BV1hSYr6dEdj",
+      "url": "https://www.bilibili.com/video/BV1hSYr6dEdj",
+      "title": "比麦当劳还好吃！自制酥脆土豆饼教程｜The best homemade Hash Browns! Easy and crispy!",
+      "published_at": "2026/9/14 10:43:44"
+    },
+    "bseedwC1EJ4": {
+      "bvid": "BV17rYr6wEuk",
+      "url": "https://www.bilibili.com/video/BV17rYr6wEuk",
+      "title": "无面粉无酵母！奇亚籽高蛋白面包超简单做法｜Chia Seed Bread Recipe | The Way to Stay Full",
+      "published_at": "2026/9/14 09:41:07"
+    },
+    "bseedVnTLWi": {
+      "bvid": "BV1sPYk6jEig",
+      "url": "https://www.bilibili.com/video/BV1sPYk6jEig",
+      "title": "5分钟搞定高蛋白金枪鱼牛油果酱早餐｜High Protein Tuna Avocado Spread for Breakfast | Quick & Easy…",
+      "published_at": "2026/9/14 08:39:47"
+    },
+    "bseedzz3m0e": {
+      "bvid": "BV14LYz63EFe",
+      "url": "https://www.bilibili.com/video/BV14LYz63EFe",
+      "title": "极限生存5000天！我的治愈系MC世界全览｜I Survived 5,000 Days in HARDCORE MINECRAFT | FULL WORLD…",
+      "published_at": "2026/9/14 07:42:13"
+    },
+    "bseedvyjqRV": {
+      "bvid": "BV1JGY66AEj5",
+      "url": "https://www.bilibili.com/video/BV1JGY66AEj5",
+      "title": "吃遍全美炸鸡！从7-11到高档餐厅大排名｜I Ate EVERY Fried Chicken in America",
+      "published_at": "2026/9/14 06:09:52"
+    },
+    "bseedq8J556": {
+      "bvid": "BV1SvY66jEgP",
+      "url": "https://www.bilibili.com/video/BV1SvY66jEgP",
+      "title": "乌克兰乡村生活：采摘沙棘做天然果糕｜Harvesting Sea Buckthorn & Making Natural Sweets | Simple Lif…",
+      "published_at": "2026/9/14 05:12:38"
+    },
+    "bseedlR6O_L": {
+      "bvid": "BV1QxY66pEfr",
+      "url": "https://www.bilibili.com/video/BV1QxY66pEfr",
+      "title": "森林里极限模式生存100天，把荒地改造成终极基地！！！",
+      "published_at": "2026/9/14 04:13:49"
+    },
+    "bseed__M9ji": {
+      "bvid": "BV1ZGYB6WEYD",
+      "url": "https://www.bilibili.com/video/BV1ZGYB6WEYD",
+      "title": "用空气炸锅搞定日式炸鸡排咖喱，新手也能一次成功｜Easiest Chicken Katsu Curry you can Finally Cook at Home",
+      "published_at": "2026/9/14 02:18:40"
+    },
+    "bseedV6gM1j": {
+      "bvid": "BV1P6YB6KEcq",
+      "url": "https://www.bilibili.com/video/BV1P6YB6KEcq",
+      "title": "我在Minecraft重建了消失的温带雨林｜Minecraft's Missing Rainforest",
+      "published_at": "2026/9/14 01:20:36"
+    },
+    "bseedQqlheR": {
+      "bvid": "BV1YAYz6JEMm",
+      "url": "https://www.bilibili.com/video/BV1YAYz6JEMm",
+      "title": "超市牛油果核养成盆栽！378天延时记录｜Can You Turn a Grocery Store Avocado Into a Bonsai? (378 Da…",
+      "published_at": "2026/9/14 00:15:53"
+    },
+    "bseedk63ijR": {
+      "bvid": "BV1HyYB6YEEt",
+      "url": "https://www.bilibili.com/video/BV1HyYB6YEEt",
+      "title": "MC极限生存：只有一棵树的孤岛能通关吗？｜Survivre au milieu d'un Océan INFINI sur Minecraft",
+      "published_at": "2026/9/14 00:06:07"
+    },
+    "bseedfZU1Dz": {
+      "bvid": "BV1zQYB6oEpC",
+      "url": "https://www.bilibili.com/video/BV1zQYB6oEpC",
+      "title": "无规则MC服务器生存！我 Hunting 传说中最强武器｜I HUNTED Minecraft’s STRONGEST Weapon",
+      "published_at": "2026/9/13 23:48:43"
+    },
+    "bseedrBL33-": {
+      "bvid": "BV1NQYv6cEXD",
+      "url": "https://www.bilibili.com/video/BV1NQYv6cEXD",
+      "title": "我把MC所有方块变成零摩擦会怎样？｜So I made blocks extremely slippery",
+      "published_at": "2026/9/13 22:45:30"
+    },
+    "bseed1l2tcp": {
+      "bvid": "BV1T8Yi6NEch",
+      "url": "https://www.bilibili.com/video/BV1T8Yi6NEch",
+      "title": "我在Minecraft建造了保护所有人的终极文明｜I Created Minecraft's ULTIMATE Civilization",
+      "published_at": "2026/9/13 22:40:11"
+    },
+    "bseed72KLfr": {
+      "bvid": "BV1SWYi6ME57",
+      "url": "https://www.bilibili.com/video/BV1SWYi6ME57",
+      "title": "我把MC所有被删除的生物收集到了！极限模式",
+      "published_at": "2026/9/13 21:36:31"
+    },
+    "bseedRwLmJ_": {
+      "bvid": "BV1qXYi6EEWX",
+      "url": "https://www.bilibili.com/video/BV1qXYi6EEWX",
+      "title": "我的世界：每走一步世界就消失，怎么通关？｜Minecraft, but Walking Deletes The World...",
+      "published_at": "2026/9/13 21:04:33"
+    },
+    "bseedeqfSdV": {
+      "bvid": "BV1ZmYi6QELm",
+      "url": "https://www.bilibili.com/video/BV1ZmYi6QELm",
+      "title": "在全是海的世界极限生存100天｜I Survived 100 Days in ONLY OCEAN in Minecraft Hardcore",
+      "published_at": "2026/9/13 20:22:46"
+    },
+    "bseedUYMPLt": {
+      "bvid": "BV1wsYq6tEhL",
+      "url": "https://www.bilibili.com/video/BV1wsYq6tEhL",
+      "title": "我的世界：所有方块掉落全随机，我们还能通关吗？｜Minecraft, But Drops Are Random",
+      "published_at": "2026/9/13 19:45:48"
+    },
+    "bseedqXIHXd": {
+      "bvid": "BV1aAYq6rET1",
+      "url": "https://www.bilibili.com/video/BV1aAYq6rET1",
+      "title": "四大顶尖PVP高手猜段位 赢100美元！｜Guess the PvP Tier, Win $100",
+      "published_at": "2026/9/13 19:21:12"
+    },
+    "bseed9AaHhn": {
+      "bvid": "BV1K8Ye64Ezn",
+      "url": "https://www.bilibili.com/video/BV1K8Ye64Ezn",
+      "title": "修复尘封百年的锈蚀面粉磨，它还能转起来吗？｜I Found a 100-Year-Old Rusty Flour Mill… Does It Still Wo…",
+      "published_at": "2026/9/13 18:37:34"
+    },
+    "bseedMB2zRr": {
+      "bvid": "BV1RVYe6TEeT",
+      "url": "https://www.bilibili.com/video/BV1RVYe6TEeT",
+      "title": "超解压：污泥古董地毯深度清洗，洗净后花纹美到不敢认！",
+      "published_at": "2026/9/13 18:10:34"
+    },
+    "bseedamFEZb": {
+      "bvid": "BV1QJYe6AETz",
+      "url": "https://www.bilibili.com/video/BV1QJYe6AETz",
+      "title": "旧屋改造：2000欧买下荒废25年的老宅，邻居竟然跑来劝退",
+      "published_at": "2026/9/13 17:51:29"
+    },
+    "bseedwGMbJ8": {
+      "bvid": "BV1XfYe6iEWD",
+      "url": "https://www.bilibili.com/video/BV1XfYe6iEWD",
+      "title": "废刀翻新：锈死老刀翻新成宝｜Just insert a copper tube into Drill! Old Rusty Knife – Destroy…",
+      "published_at": "2026/9/13 17:44:54"
+    },
+    "bseedFdQU9i": {
+      "bvid": "BV1r6Ye6SEmX",
+      "url": "https://www.bilibili.com/video/BV1r6Ye6SEmX",
+      "title": "30美元淘来的黄漆古董斗柜，褪漆重生太惊艳｜Ep.173 STRIPPING Years of UGLY Paint From This ANTIQUE Dr…",
+      "published_at": "2026/9/13 17:26:25"
+    },
+    "bseedAHCVvP": {
+      "bvid": "BV1BkYe67EfF",
+      "url": "https://www.bilibili.com/video/BV1BkYe67EfF",
+      "title": "走进椰子糖果工厂：一颗椰子的六种滋味之旅｜Inside a Giant Coconut Factory From Whole Coconuts to Coco…",
+      "published_at": "2026/9/13 16:45:17"
+    },
+    "bseedO7iF2X": {
+      "bvid": "BV1s5Yv6xEKY",
+      "url": "https://www.bilibili.com/video/BV1s5Yv6xEKY",
+      "title": "被神秘勒索信逼着做的草莓芝士蛋糕糖｜We were forced to make this against our will...",
+      "published_at": "2026/9/13 16:23:36"
+    },
+    "bseedJrL6Jb": {
+      "bvid": "BV1SNYv6aEiS",
+      "url": "https://www.bilibili.com/video/BV1SNYv6aEiS",
+      "title": "一颗椰子如何变成椰果和椰子糖？全流程揭秘｜How One Coconut Becomes Jelly AND Candy | Full Factory Pro…",
+      "published_at": "2026/9/13 15:55:37"
+    },
+    "bseedBgmRqm": {
+      "bvid": "BV1xuYv6fEsv",
+      "url": "https://www.bilibili.com/video/BV1xuYv6fEsv",
+      "title": "一口气买了几百只小鸡？农场生活大揭秘｜We just Bought WAY TO MANY Chicks! + ANNOUNCEMENT",
+      "published_at": "2026/9/13 15:44:10"
+    },
+    "bseedgoT-yc": {
+      "bvid": "BV1uCYv6iECj",
+      "url": "https://www.bilibili.com/video/BV1uCYv6iECj",
+      "title": "RTX 4080挑战极限写实我的世界！现代山景小屋画质炸裂｜RTX 4080 + AMD RYZEN 9950X3D vs ULTRA REALISM Min…",
+      "published_at": "2026/9/13 15:02:35"
+    },
+    "bseedhSj-iC": {
+      "bvid": "BV1vDYa6PEJw",
+      "url": "https://www.bilibili.com/video/BV1vDYa6PEJw",
+      "title": "苦力怕炸飞变布娃娃？MC史上最爽物理模组实测｜PHYSICS PRO 1.0 ADDON Adds INSANE Ragdoll Physics to Min…",
+      "published_at": "2026/9/13 14:18:15"
+    },
+    "bseedpNocYU": {
+      "bvid": "BV1pVYY6EEfc",
+      "url": "https://www.bilibili.com/video/BV1pVYY6EEfc",
+      "title": "搞人游戏:挑战Roblox史上最难跳跳乐，全程崩溃尖叫",
+      "published_at": "2026/9/13 13:13:44"
+    },
+    "bseedagwRrg": {
+      "bvid": "BV1bfYa6ZEeZ",
+      "url": "https://www.bilibili.com/video/BV1bfYa6ZEeZ",
+      "title": "地球上最诡异的20种真菌：僵尸蚁菌与流血蘑菇｜20 Most Bizarre Fungi on Earth You Won’t Believe Exist",
+      "published_at": "2026/9/13 12:25:45"
+    },
+    "bseedteJ57Z": {
+      "bvid": "BV1LxYY6gEve",
+      "url": "https://www.bilibili.com/video/BV1LxYY6gEve",
+      "title": "6天极限改造囤积公寓，拯救老人唯一住所｜6 Days To Clean Or She’s Homeless",
+      "published_at": "2026/9/13 11:28:22"
+    },
+    "bseed7v6PLF": {
+      "bvid": "BV15gYe6gEpa",
+      "url": "https://www.bilibili.com/video/BV15gYe6gEpa",
+      "title": "荒废森林小屋大改造，前后对比太震撼｜This Forest House Was Left to Rot… The Transformation Is Unbe…",
+      "published_at": "2026/9/13 10:40:05"
+    },
+    "bseedsoSd_p": {
+      "bvid": "BV1PRYY6nEgH",
+      "url": "https://www.bilibili.com/video/BV1PRYY6nEgH",
+      "title": "废墟老屋极限深度清洁！变身温馨小家前后对比｜Turning A Totally Ruined Abandoned House Into A Cozy Para…",
+      "published_at": "2026/9/13 09:49:03"
+    },
+    "bseedO_qeFV": {
+      "bvid": "BV1C5YZ69ELm",
+      "url": "https://www.bilibili.com/video/BV1C5YZ69ELm",
+      "title": "王水级食人鱼酸实测：到底能溶掉什么？｜What Will Piranha Acid Dissolve??",
+      "published_at": "2026/9/13 08:51:42"
+    },
+    "bseedW_tGya": {
+      "bvid": "BV14DYZ6FEe2",
+      "url": "https://www.bilibili.com/video/BV14DYZ6FEe2",
+      "title": "当我的世界全世界都是建筑！无限干草垛通关挑战｜minecraft but it's 100% structures...",
+      "published_at": "2026/9/13 08:07:00"
+    },
+    "bseedgC2dEI": {
+      "bvid": "BV1vjYf6GEZX",
+      "url": "https://www.bilibili.com/video/BV1vjYf6GEZX",
+      "title": "我解除了我的世界的所有限制，结果世界疯了｜Minecraft with NO LIMITS",
+      "published_at": "2026/9/13 07:13:32"
+    },
+    "bseedhA5a1w": {
+      "bvid": "BV1ubYf6PEkc",
+      "url": "https://www.bilibili.com/video/BV1ubYf6PEkc",
+      "title": "我给牛排养了一层霉菌，结果居然能吃？｜I Grew Hair on My Meat… Here’s Why I'd Do It Again",
+      "published_at": "2026/9/13 05:29:13"
+    },
+    "bseedOylYON": {
+      "bvid": "BV1xmYd6WESK",
+      "url": "https://www.bilibili.com/video/BV1xmYd6WESK",
+      "title": "我把豆子扔进粒子加速器 irradiation 后竟然长成这样｜I Put Beans Inside a Particle Accelerator and G…",
+      "published_at": "2026/9/13 04:44:01"
+    },
+    "bseedd9Cy38": {
+      "bvid": "BV17PYo6kEdw",
+      "url": "https://www.bilibili.com/video/BV17PYo6kEdw",
+      "title": "对话我的世界建筑大神：他是怎么做到的？｜I asked a Minecraft Building GOD how he does it! ft. Lazy_A…",
+      "published_at": "2026/9/13 03:59:29"
+    },
+    "bseedYMtVWz": {
+      "bvid": "BV11aYo6WEPr",
+      "url": "https://www.bilibili.com/video/BV11aYo6WEPr",
+      "title": "用Blender做出超治愈的日系动画短片｜Cute Anime Style Animation in Blender | CGDASH #blenderani…",
+      "published_at": "2026/9/13 02:53:12"
+    },
+    "bseedJEln_G": {
+      "bvid": "BV1aEYo6AEay",
+      "url": "https://www.bilibili.com/video/BV1aEYo6AEay",
+      "title": "用命令方块让数学活起来！我的世界四大算法演示｜I Brough Math TO LIFE With Minecraft Commands",
+      "published_at": "2026/9/13 02:13:17"
+    },
+    "bseeddDtNJr": {
+      "bvid": "BV1QcYZ6YEJ1",
+      "url": "https://www.bilibili.com/video/BV1QcYZ6YEJ1",
+      "title": "把Claude Code装进U盘！免费随身携带的AI编程环境｜I Put Claude Code on a USB… And It’s Free & Work…",
+      "published_at": "2026/9/13 01:21:23"
+    },
+    "bseedyyIJ6R": {
+      "bvid": "BV1crYo67Evx",
+      "url": "https://www.bilibili.com/video/BV1crYo67Evx",
+      "title": "6个像魔法一样的神奇化学实验，鸡蛋变弹力球！｜6 Mind-Blowing Chemistry Experiments That Look Like Magi…",
+      "published_at": "2026/9/13 01:06:35"
+    },
+    "bseedcZHAKU": {
+      "bvid": "BV1oKYR6YEay",
+      "url": "https://www.bilibili.com/video/BV1oKYR6YEay",
+      "title": "捡垃圾改装！150美元废弃工作站变身1440p游戏主机！",
+      "published_at": "2026/9/13 00:36:24"
+    },
+    "bseed8P8cGc": {
+      "bvid": "BV15MYR6wEvp",
+      "url": "https://www.bilibili.com/video/BV15MYR6wEvp",
+      "title": "小小船员勇闯MC世界营救Verity大结局｜Mini Crewmate Save Verity Minecraft - Final | Among Us",
+      "published_at": "2026/9/13 00:15:05"
+    },
+    "bseedAOtE_D": {
+      "bvid": "BV1k9Y96rEef",
+      "url": "https://www.bilibili.com/video/BV1k9Y96rEef",
+      "title": "我的世界：随机层方块生存！挖穿一个区块挑战｜Minecraft, But It's a RANDOM LAYER Chunk!",
+      "published_at": "2026/9/13 00:08:00"
+    },
+    "bseedZvsOHS": {
+      "bvid": "BV18EYR6sETE",
+      "url": "https://www.bilibili.com/video/BV18EYR6sETE",
+      "title": "村民居然会说话了？体验2000条语音的MC村民新闻插件｜This Minecraft Add-On makes Villagers TALK???",
+      "published_at": "2026/9/12 23:00:27"
+    },
+    "bseedjPtAKE": {
+      "bvid": "BV1MFYd64E95",
+      "url": "https://www.bilibili.com/video/BV1MFYd64E95",
+      "title": "超市濒死斗鱼被我救回家，开缸全程记录｜Saving a Dying Supermarket Betta Fish",
+      "published_at": "2026/9/12 22:07:40"
+    },
+    "bseedpooWVE": {
+      "bvid": "BV1ZrYR6BE3j",
+      "url": "https://www.bilibili.com/video/BV1ZrYR6BE3j",
+      "title": "被边界困住！收集所有物品才能逃出我的世界｜STUCK In a Border Until We Collect Every Item...",
+      "published_at": "2026/9/12 21:59:54"
+    },
+    "bseedAFjvjy": {
+      "bvid": "BV1j2YR6KEzZ",
+      "url": "https://www.bilibili.com/video/BV1j2YR6KEzZ",
+      "title": "挑战世上最稀有的牛排：有钱都买不到的部位｜I Cooked RARE Steaks You CAN'T Buy",
+      "published_at": "2026/9/12 21:22:01"
+    },
+    "bseedlWttd9": {
+      "bvid": "BV1fsYd6uEMj",
+      "url": "https://www.bilibili.com/video/BV1fsYd6uEMj",
+      "title": "我做了一块全世界最硬的肉，只为泡一碗3分钟速食汤｜I Made the HARDEST Steak in the World… to Make INSTANT…",
+      "published_at": "2026/9/12 20:58:16"
+    },
+    "bseedxzmQKR": {
+      "bvid": "BV1KKYd6pEcj",
+      "url": "https://www.bilibili.com/video/BV1KKYd6pEcj",
+      "title": "我的世界极限生存：孤海大山100天巨变｜Sobreviví 100 DÍAS EN UNA MONTAÑA ⛰️ en Minecraft Hardcore!",
+      "published_at": "2026/9/12 20:48:59"
+    },
+    "bseedOAtHnf": {
+      "bvid": "BV1PtYX66E1b",
+      "url": "https://www.bilibili.com/video/BV1PtYX66E1b",
+      "title": "酥脆热蜂蜜炸鸡在家轻松做，甜辣过瘾｜How To Make Hot Honey Chicken",
+      "published_at": "2026/9/12 19:59:53"
+    },
+    "bseedv5F57U": {
+      "bvid": "BV1FeYX6qE6s",
+      "url": "https://www.bilibili.com/video/BV1FeYX6qE6s",
+      "title": "泰拉瑞亚1.4.5新版本近战武器挑战通关实测｜Can You Beat Terraria 1.4.5.7 Using Melee Weapons Only?",
+      "published_at": "2026/9/12 19:45:53"
+    },
+    "bseedoGY18x": {
+      "bvid": "BV1EqYX6eExX",
+      "url": "https://www.bilibili.com/video/BV1EqYX6eExX",
+      "title": "让ChatGPT和Claude各自做超真实版我的世界，谁赢了？｜ChatGPT vs Claude Make Ultra-Realistic Minecraft",
+      "published_at": "2026/9/12 18:13:55"
+    },
+    "bseedJHi0ax": {
+      "bvid": "BV1R2YX64E37",
+      "url": "https://www.bilibili.com/video/BV1R2YX64E37",
+      "title": "村民全会说话了！我玩了Minecraft最搞笑的模组｜I Played Minecraft Bedrock's FUNNIEST Mod",
+      "published_at": "2026/9/12 18:05:41"
+    },
+    "bseedNhIev6": {
+      "bvid": "BV1k5Y96MEc6",
+      "url": "https://www.bilibili.com/video/BV1k5Y96MEc6",
+      "title": "老白试穿超真实可穿戴机械鸟翼！｜Adam Savage Experiences Anatomically Correct Wings!",
+      "published_at": "2026/9/12 17:36:50"
+    },
+    "bseedLmWuHA": {
+      "bvid": "BV1qnY96PEze",
+      "url": "https://www.bilibili.com/video/BV1qnY96PEze",
+      "title": "从面粉开始自制方便面，味道和超市买的一样？｜Making Instant Noodles At Home",
+      "published_at": "2026/9/12 17:18:50"
+    },
+    "bseedmyQhDO": {
+      "bvid": "BV1mwY96jErb",
+      "url": "https://www.bilibili.com/video/BV1mwY96jErb",
+      "title": "用6000年前的木头做一张桌子｜I Made a Table from 6,000-Year-Old Wood and Gold",
+      "published_at": "2026/9/12 17:02:54"
+    },
+    "bseedZEP37v": {
+      "bvid": "BV146Y96nE9f",
+      "url": "https://www.bilibili.com/video/BV146Y96nE9f",
+      "title": "我做了一款全网最解压的Roblox切切乐游戏！｜I Made the NEW Most Satisfying Roblox Game!",
+      "published_at": "2026/9/12 16:42:41"
+    },
+    "bseedZVo6Jv": {
+      "bvid": "BV1x2Y96jEYy",
+      "url": "https://www.bilibili.com/video/BV1x2Y96jEYy",
+      "title": "8分钟讲透所有内存容量：4GB到128GB该选哪个｜Every RAM Size Explained in 8 Minutes",
+      "published_at": "2026/9/12 16:24:52"
+    },
+    "bseedXfTbX0": {
+      "bvid": "BV1syY96mEdb",
+      "url": "https://www.bilibili.com/video/BV1syY96mEdb",
+      "title": "豪掷2000美元买遍全网原神周边开箱｜I Bought $2,000 Worth Of Genshin Impact Merch",
+      "published_at": "2026/9/12 16:17:07"
+    },
+    "bseedcVjh0t": {
+      "bvid": "BV116YQ6kE2p",
+      "url": "https://www.bilibili.com/video/BV116YQ6kE2p",
+      "title": "酥脆焦糖壳苹果焦糖布蕾芝士蛋糕，一刀下去太治愈了｜바삭하게 깨지는 사과 크렘 브륄레 치즈케이크 만들기 | Apple Creme Brulee Chee…",
+      "published_at": "2026/9/12 12:50:53"
+    },
+    "bseedf94hjs": {
+      "bvid": "BV1a4YQ6HEUS",
+      "url": "https://www.bilibili.com/video/BV1a4YQ6HEUS",
+      "title": "我在新版Minecraft里找到了消失16年的边境之地｜HO TROVATO \"FAR LANDS\" NELLA NUOVA VERSIONE DI MINE…",
+      "published_at": "2026/9/12 12:37:10"
+    },
+    "bseedi6HrI0": {
+      "bvid": "BV19tYQ6DEKd",
+      "url": "https://www.bilibili.com/video/BV19tYQ6DEKd",
+      "title": "用10分钟、3小时和30小时各做一个视频，差距有多大？｜I made a YouTube video in 10 min | 3 hr | 30 hr",
+      "published_at": "2026/9/12 12:17:01"
+    },
+    "bseed_WBuBG": {
+      "bvid": "BV17fYQ68EZK",
+      "url": "https://www.bilibili.com/video/BV17fYQ68EZK",
+      "title": "用纯NumPy从零手搓一个ChatGPT｜I Built ChatGPT from Scratch",
+      "published_at": "2026/9/12 11:57:46"
+    },
+    "bseedeA8rNV": {
+      "bvid": "BV1RNYX6xEw3",
+      "url": "https://www.bilibili.com/video/BV1RNYX6xEw3",
+      "title": "手书动画：自家OC少女的薛定谔时刻｜Schrödinger",
+      "published_at": "2026/9/12 11:40:10"
+    },
+    "bseedECc80F": {
+      "bvid": "BV1W2YQ6BEsn",
+      "url": "https://www.bilibili.com/video/BV1W2YQ6BEsn",
+      "title": "喜多川海梦AMV剪辑全流程拆解教学｜How I Made This Edit — Full Editing Breakdown",
+      "published_at": "2026/9/12 11:25:19"
+    },
+    "bseedT-SFY1": {
+      "bvid": "BV1B3YS69Ect",
+      "url": "https://www.bilibili.com/video/BV1B3YS69Ect",
+      "title": "买了5斤大蒜全部吃完是什么体验｜I Bought a Giant Bag of Garlic and Ate It All!",
+      "published_at": "2026/9/12 10:52:57"
+    },
+    "bseedQCwwlb": {
+      "bvid": "BV1R7YS6SEqU",
+      "url": "https://www.bilibili.com/video/BV1R7YS6SEqU",
+      "title": "那些你从没见过的离谱奇物，世界最长床有多夸张？｜Cool Things You've Probably Never Seen Before",
+      "published_at": "2026/9/12 10:35:57"
+    },
+    "bseed_-LykQ": {
+      "bvid": "BV1mRYU6vEtY",
+      "url": "https://www.bilibili.com/video/BV1mRYU6vEtY",
+      "title": "走进苹果工厂：iPhone 18与Mac mini M6是如何造出来的｜How It’s Made: iPhone 18, Mac mini M6, USB-…",
+      "published_at": "2026/9/12 10:18:46"
+    },
+    "bseedITKrAC": {
+      "bvid": "BV1cPYS68EoC",
+      "url": "https://www.bilibili.com/video/BV1cPYS68EoC",
+      "title": "忍笑挑战！100个爆笑瞬间合集，你能撑到最后吗？｜Try Not To Laugh 🤣 Top 100 Funniest Videos Ever 🎬🔥…",
+      "published_at": "2026/9/12 10:10:00"
+    },
+    "bseed38qjhP": {
+      "bvid": "BV1vJYS6EEeN",
+      "url": "https://www.bilibili.com/video/BV1vJYS6EEeN",
+      "title": "整盆曲奇面团直接烤？做成巨型冰淇淋三明治｜Baking tubs of cookie dough into an ice cream sandwich..",
+      "published_at": "2026/9/12 09:05:39"
+    },
+    "bseed1Lc2Kg": {
+      "bvid": "BV1kmYS6FEvc",
+      "url": "https://www.bilibili.com/video/BV1kmYS6FEvc",
+      "title": "把一整盒曲奇面团倒进吐司模烤会怎样？｜Entire tub of cookie dough baked in a bread pan..",
+      "published_at": "2026/9/12 08:16:03"
+    },
+    "bseed2zxLUv": {
+      "bvid": "BV1nbYD6wEr1",
+      "url": "https://www.bilibili.com/video/BV1nbYD6wEr1",
+      "title": "走进乐事工厂：一片薯片的诞生全过程｜How Lay's Potato Chips Are Made In Factory | The Incredible P…",
+      "published_at": "2026/9/12 07:05:07"
+    },
+    "bseedqnKmF0": {
+      "bvid": "BV1pzYm6oEpq",
+      "url": "https://www.bilibili.com/video/BV1pzYm6oEpq",
+      "title": "一片叶子克隆出千株植物？揭秘植物组织培养｜The Science Behind Plant Tissue Culture",
+      "published_at": "2026/9/12 06:06:19"
+    },
+    "bseedTDICJ1": {
+      "bvid": "BV1vRYm62EqM",
+      "url": "https://www.bilibili.com/video/BV1vRYm62EqM",
+      "title": "用GPT6-Astra打造我的AI二次元老婆｜I Turned ChatGPT Astra Into An AI Waifu",
+      "published_at": "2026/9/12 05:05:33"
+    },
+    "bseedz4sP9P": {
+      "bvid": "BV1zyY161EuC",
+      "url": "https://www.bilibili.com/video/BV1zyY161EuC",
+      "title": "我的世界：万物皆可挖！用神镐挖走末地传送门｜Minecraft, but You Can Mine Anything…",
+      "published_at": "2026/9/12 01:01:06"
+    },
+    "bseedhG1eKe": {
+      "bvid": "BV1wHY26HEBS",
+      "url": "https://www.bilibili.com/video/BV1wHY26HEBS",
+      "title": "用ChatGPT 6 Astra+虚幻引擎做类魂游戏！｜ChatGPT 6 Astra + Unreal Engine = Insanity.",
+      "published_at": "2026/9/12 00:22:59"
+    },
+    "bseedQxCrgb": {
+      "bvid": "BV1UNY26wEvc",
+      "url": "https://www.bilibili.com/video/BV1UNY26wEvc",
+      "title": "OpenAI神秘BEL模型泄露：GPT7雏形现身？｜OpenAI’s New GPT 7 Leaked: It’s Called BEL and It’s M…",
+      "published_at": "2026/9/11 23:57:36"
+    },
+    "bseedWkmvp6": {
+      "bvid": "BV1yVY26dEhi",
+      "url": "https://www.bilibili.com/video/BV1yVY26dEhi",
+      "title": "让AI给Minecraft写光影，两大模型对决效果炸裂｜ChatGPT 6 Astra vs Claude Fable 5.1 Make Minecraft…",
+      "published_at": "2026/9/11 23:51:20"
+    },
+    "bseed7tMa1v": {
+      "bvid": "BV1QrY26iEMm",
+      "url": "https://www.bilibili.com/video/BV1QrY26iEMm",
+      "title": "GPT-6对决Claude：谁做的Minecraft更炸？｜ChatGPT 6 Astra vs Claude Fable 5.1 Make Minecraft",
+      "published_at": "2026/9/11 23:25:16"
+    },
+    "bseedGRxfv3": {
+      "bvid": "BV1daY26kEsg",
+      "url": "https://www.bilibili.com/video/BV1daY26kEsg",
+      "title": "用GPT-6 Astra从零复刻马里奥到GTA，AI做游戏有多离谱｜GPT-6 Astra Is INSANE For Building Video Game…",
+      "published_at": "2026/9/11 23:12:05"
+    },
+    "bseedRt9L9X": {
+      "bvid": "BV1deY263Exa",
+      "url": "https://www.bilibili.com/video/BV1deY263Exa",
+      "title": "让AI彻底改造我的世界村庄！｜I let AI completely Revamp Minecraft Villages",
+      "published_at": "2026/9/11 22:37:57"
+    },
+    "bseedzOqWL8": {
+      "bvid": "BV1eLYm6VEca",
+      "url": "https://www.bilibili.com/video/BV1eLYm6VEca",
+      "title": "DeepSeek V4.1对决GPT-6：AI生成3D城市谁更强？｜DeepSeek V4.1 Flash 0910 vs GPT-6: Who Will W…",
+      "published_at": "2026/9/11 22:08:54"
+    },
+    "bseedOl8qs3": {
+      "bvid": "BV1NoY264EEw",
+      "url": "https://www.bilibili.com/video/BV1NoY264EEw",
+      "title": "（手绘）我家猫只亲男生？介绍我的 Gay 猫辛巴｜Lemme Introduce My Gay Cat",
+      "published_at": "2026/9/11 21:51:57"
+    },
+    "bseedVZF0pp": {
+      "bvid": "BV1CZY26RE5D",
+      "url": "https://www.bilibili.com/video/BV1CZY26RE5D",
+      "title": "我开了个频道：一个懒人的Minecraft建造日常｜So… I Started a YouTube Channel",
+      "published_at": "2026/9/11 21:31:55"
+    },
+    "bseedc4bhDO": {
+      "bvid": "BV163Y76eEQQ",
+      "url": "https://www.bilibili.com/video/BV163Y76eEQQ",
+      "title": "脑腐女友动画：当代互联网嘴替恋爱的尽头｜BRAINROT GIRLFRIEND THE ANIMATION",
+      "published_at": "2026/9/11 20:59:48"
+    },
+    "bseedsftHV3": {
+      "bvid": "BV1qjY76cE1q",
+      "url": "https://www.bilibili.com/video/BV1qjY76cE1q",
+      "title": "GPT-6 Astra用三大游戏引擎做Minecraft，结果离谱了！！！",
+      "published_at": "2026/9/11 19:27:39"
+    },
+    "bseedA826O2": {
+      "bvid": "BV1inY76tEci",
+      "url": "https://www.bilibili.com/video/BV1inY76tEci",
+      "title": "每走一步都变基岩？MC极限挑战｜Minecraft, But Walking Spawns Bedrock...",
+      "published_at": "2026/9/11 19:15:35"
+    },
+    "bseedGQt-n_": {
+      "bvid": "BV1W1Y763Eig",
+      "url": "https://www.bilibili.com/video/BV1W1Y763Eig",
+      "title": "伊朗乡村厨房：手作肉馅酥饼配菠菜酱｜Cooking meat hand pies in a pot with spinach sauce",
+      "published_at": "2026/9/11 18:20:21"
+    },
+    "bseedjzXAk0": {
+      "bvid": "BV116Y76yE5m",
+      "url": "https://www.bilibili.com/video/BV116Y76yE5m",
+      "title": "一个夏天吃完100个汉堡！完美汉堡制作全攻略｜Big Cat's Summer of Burgers - How To Make The Perfect Bu…",
+      "published_at": "2026/9/11 18:14:49"
+    },
+    "bseedacIvOl": {
+      "bvid": "BV1NnYE67EJh",
+      "url": "https://www.bilibili.com/video/BV1NnYE67EJh",
+      "title": "牛仔大叔教你做培根墨西哥胡椒芝士蘸酱｜A Crowd Pleaser! The Best Cowboy Jalapeno Popper Dip You'll…",
+      "published_at": "2026/9/11 17:50:46"
+    },
+    "bseed7k9QAr": {
+      "bvid": "BV1sWYE6LEF4",
+      "url": "https://www.bilibili.com/video/BV1sWYE6LEF4",
+      "title": "用Astra和fable5.1各做一个火箭游戏，好玩的只有一个",
+      "published_at": "2026/9/11 17:26:25"
+    },
+    "bseed76iOFh": {
+      "bvid": "BV1M5YE6HEi6",
+      "url": "https://www.bilibili.com/video/BV1M5YE6HEi6",
+      "title": "葡萄牙田园生活：辣椒大丰收，自酿果酒｜Preserving a TON of Peppers and Making Country Wine",
+      "published_at": "2026/9/11 17:03:33"
+    },
+    "bseedP031Wj": {
+      "bvid": "BV1bbYL6LEC5",
+      "url": "https://www.bilibili.com/video/BV1bbYL6LEC5",
+      "title": "离原子弹6英尺会发生什么？核工程师专业解读｜What Happens to You 6 Feet From an Atomic Bomb? - Nuclear…",
+      "published_at": "2026/9/11 16:46:24"
+    },
+    "bseedHUwKtQ": {
+      "bvid": "BV1ZeYj6fEq8",
+      "url": "https://www.bilibili.com/video/BV1ZeYj6fEq8",
+      "title": "我买了一堆二手Xbox光盘，实测免费转数字版｜I Bought Used Games to Test Xbox Disc to Digital",
+      "published_at": "2026/9/11 12:30:13"
+    },
+    "bseed_exZcB": {
+      "bvid": "BV1KgY56BEdK",
+      "url": "https://www.bilibili.com/video/BV1KgY56BEdK",
+      "title": "200元捡到PS5同款芯片？打造最超值游戏PC｜The Best Value Gaming PC I’ve Ever Seen",
+      "published_at": "2026/9/11 10:59:31"
+    },
+    "bseedNc_4BR": {
+      "bvid": "BV1tuY56uE9K",
+      "url": "https://www.bilibili.com/video/BV1tuY56uE9K",
+      "title": "用AI控制Blender生成3D场景，再驱动Seedance出片｜Full GPT Astra + Blender + Seedance 2.5 Tutori…",
+      "published_at": "2026/9/11 10:07:49"
+    },
+    "bseedzkBS8p": {
+      "bvid": "BV1wcYL6eEDK",
+      "url": "https://www.bilibili.com/video/BV1wcYL6eEDK",
+      "title": "马斯克预言：十亿人形机器人即将接管世界？｜Elon Predicts ONE BILLION Humanoid Robot AI TAKEOVER",
+      "published_at": "2026/9/11 08:35:28"
+    },
+    "bseedzEn6-L": {
+      "bvid": "BV1m9Y56MEbU",
+      "url": "https://www.bilibili.com/video/BV1m9Y56MEbU",
+      "title": "OpenAI CEO专访：GPT-6 Astra是迈向AGI的一步｜OpenAI's Sam Altman on Astra Model Debut, Ben…",
+      "published_at": "2026/9/11 07:48:42"
+    },
+    "bseedbsZrQE": {
+      "bvid": "BV1gFYG6qEgE",
+      "url": "https://www.bilibili.com/video/BV1gFYG6qEgE",
+      "title": "用AI一句话搞定视频剪辑：GPT-6 Astra全流程实战教程｜GPT-6 Astra Finally Solves AI Video Editing (fu…",
+      "published_at": "2026/9/11 07:03:02"
+    },
+    "bseedvin5Ac": {
+      "bvid": "BV1SrYG6BEn6",
+      "url": "https://www.bilibili.com/video/BV1SrYG6BEn6",
+      "title": "GPT-6 Astra首发实测：这次真的炸了｜GPT-6 Astra Is Finally Here (And It’s REALLY Good)",
+      "published_at": "2026/9/11 06:14:59"
+    },
+    "bseedUgcIM0": {
+      "bvid": "BV1BuYV6JE3Y",
+      "url": "https://www.bilibili.com/video/BV1BuYV6JE3Y",
+      "title": "在MC里摔断全身所有骨头！越痛越赚钱的离谱挑战｜Breaking EVERY SINGLE BONE in Minecraft!",
+      "published_at": "2026/9/11 03:34:44"
+    },
+    "bseedVSDzOR": {
+      "bvid": "BV16FY36mEGm",
+      "url": "https://www.bilibili.com/video/BV16FY36mEGm",
+      "title": "三个憨憨挑战硬核模式我的世界，死了就真完了｜Can Three Idiots Beat HARDCORE Minecraft?",
+      "published_at": "2026/9/11 01:34:24"
+    },
+    "bseedWwM086": {
+      "bvid": "BV1unY36AEC3",
+      "url": "https://www.bilibili.com/video/BV1unY36AEC3",
+      "title": "我的世界：血量越多体型越大，末影龙竟缩成迷你龙？｜Minecraft, but Health = Size",
+      "published_at": "2026/9/11 00:44:45"
+    },
+    "bseedb5o0KH": {
+      "bvid": "BV1iKY36CEVd",
+      "url": "https://www.bilibili.com/video/BV1iKY36CEVd",
+      "title": "Minecraft:在极限超超超超级困难模式里活过100天！",
+      "published_at": "2026/9/11 00:18:49"
+    },
+    "bseed34hFDx": {
+      "bvid": "BV1LmY361E7e",
+      "url": "https://www.bilibili.com/video/BV1LmY361E7e",
+      "title": "揭秘White Castle小汉堡薯条工厂生产线｜How It’s Made: White Castle Sliders, French Fries, Mus…",
+      "published_at": "2026/9/10 23:43:26"
+    },
+    "bseedpV9ALx": {
+      "bvid": "BV1vXY36GEBX",
+      "url": "https://www.bilibili.com/video/BV1vXY36GEBX",
+      "title": "揭秘 Werther's 糖、Milano 曲奇和葡萄干的生产线｜How It’s Made: Werther’s Original, Milano Cook…",
+      "published_at": "2026/9/10 23:28:24"
+    },
+    "bseedxrM8s7": {
+      "bvid": "BV1CeY36sEUG",
+      "url": "https://www.bilibili.com/video/BV1CeY36sEUG",
+      "title": "迷你厨房！超治愈的金黄炸鱼与炭烤章鱼｜Perfect Tiny Cooking 🐟 How to Make Golden Fried Fish with P…",
+      "published_at": "2026/9/10 23:11:09"
+    },
+    "bseed_MNHpM": {
+      "bvid": "BV1PhY36tEwQ",
+      "url": "https://www.bilibili.com/video/BV1PhY36tEwQ",
+      "title": "走进工厂：Snapple果茶与糖果汽水如何生产｜How It’s Made: Snapple, Get Chunky & Slice Soda",
+      "published_at": "2026/9/10 23:05:25"
+    },
+    "bseedfhWXfU": {
+      "bvid": "BV1FXYM61EhN",
+      "url": "https://www.bilibili.com/video/BV1FXYM61EhN",
+      "title": "印度老哥垃圾场捡到报废三星S25 Ultra，全面翻新复活",
+      "published_at": "2026/9/10 22:31:50"
+    },
+    "bseedprmIzx": {
+      "bvid": "BV1ffYM66EsG",
+      "url": "https://www.bilibili.com/video/BV1ffYM66EsG",
+      "title": "19世纪古董鲍伊刀修复：335小时还原鹿角柄与皮革鞘｜Antique BOWIE Knife Restoration — Approved by JAMES!",
+      "published_at": "2026/9/10 22:09:32"
+    },
+    "bseedEgpcZf": {
+      "bvid": "BV1PUYM6EE3J",
+      "url": "https://www.bilibili.com/video/BV1PUYM6EE3J",
+      "title": "10美元捡来的废山地车，翻新后焕然一新｜From $9 scrap to incredible | Schnell Bike Restoration",
+      "published_at": "2026/9/10 22:06:11"
+    },
+    "bseede6MQ2O": {
+      "bvid": "BV1x1YM6nES5",
+      "url": "https://www.bilibili.com/video/BV1x1YM6nES5",
+      "title": "废墟里翻出丰田陆巡80，暴力修复脱胎换骨｜Restoration Abandoned Toyota Land Cruiser Truck | ULTIMATE…",
+      "published_at": "2026/9/10 21:39:48"
+    },
+    "bseedJqpizq": {
+      "bvid": "BV1tnYu6xEXA",
+      "url": "https://www.bilibili.com/video/BV1tnYu6xEXA",
+      "title": "用乐高打造可下潜遥控潜艇5.0！配重调姿+水泵压载｜Building a Lego-powered Submarine 5.0 - moving weight…",
+      "published_at": "2026/9/10 21:36:15"
+    },
+    "bseedHfR4j1": {
+      "bvid": "BV1t7Yu6tEeB",
+      "url": "https://www.bilibili.com/video/BV1t7Yu6tEeB",
+      "title": "探访花生油工厂：百万鲜花生如何榨成纯香花生油｜Inside the Factory Turning Millions of Fresh Peanut Pods…",
+      "published_at": "2026/9/10 21:31:42"
+    },
+    "bseedIUeq6i": {
+      "bvid": "BV11HYu6RE9c",
+      "url": "https://www.bilibili.com/video/BV11HYu6RE9c",
+      "title": "修复坠毁报废的大疆精灵3无人机，还能飞吗？｜Restoration old broken abandoned Flycam DJI PHANTOM 3 dro…",
+      "published_at": "2026/9/10 21:03:11"
+    },
+    "bseedcIm0Bz": {
+      "bvid": "BV1nYYu67Eme",
+      "url": "https://www.bilibili.com/video/BV1nYYu67Eme",
+      "title": "老外32分钟爆笑讲完中国四千年历史｜The ENTIRE History of CHINA",
+      "published_at": "2026/9/10 20:57:04"
+    },
+    "bseedaYMoDI": {
+      "bvid": "BV1XMYu6eEDf",
+      "url": "https://www.bilibili.com/video/BV1XMYu6eEDf",
+      "title": "农场动物戏精附体！山羊一秒晕倒笑翻天｜Don’t Forget That Farm Animals Are Dramatic Too! 😂🤣 Funny…",
+      "published_at": "2026/9/10 20:49:42"
+    },
+    "bseedtkWaL5": {
+      "bvid": "BV1v1Yu6uE6p",
+      "url": "https://www.bilibili.com/video/BV1v1Yu6uE6p",
+      "title": "山羊悬崖觅食遭美洲狮追杀，命悬一线｜Mountain Goat’s Cliffside Feeding Turns Into a Puma Chase | W…",
+      "published_at": "2026/9/10 20:12:30"
+    },
+    "bseedsW0Hdj": {
+      "bvid": "BV1GSYu6iE2B",
+      "url": "https://www.bilibili.com/video/BV1GSYu6iE2B",
+      "title": "非洲野生世界4K实拍：花豹猎手与象群家族的生存之战｜The Amazing Wildlife of Africa in Stunning 4K | BBC E…",
+      "published_at": "2026/9/10 20:02:35"
+    },
+    "bseed1Xp5hh": {
+      "bvid": "BV1BzYu6VEzt",
+      "url": "https://www.bilibili.com/video/BV1BzYu6VEzt",
+      "title": "历史学家在线回答关于希特勒的网友提问｜WW2 Expert Answers Hitler Questions",
+      "published_at": "2026/9/10 19:25:01"
+    },
+    "bseedltViqw": {
+      "bvid": "BV1PMYg6WEgc",
+      "url": "https://www.bilibili.com/video/BV1PMYg6WEgc",
+      "title": "历史美食专家能识破我做的假古菜吗？｜Who Can Spot The Fake Historical Dish? (ft. Tasting History)",
+      "published_at": "2026/9/10 19:10:07"
+    },
+    "bseedjl_Obq": {
+      "bvid": "BV1r5Yg6JEPs",
+      "url": "https://www.bilibili.com/video/BV1r5Yg6JEPs",
+      "title": "史上最惨职业大盘点：采珠人、刽子手与守塔人｜The Most Miserable Jobs in History [NO AI]",
+      "published_at": "2026/9/10 18:54:38"
+    },
+    "bseedrUPT28": {
+      "bvid": "BV1QXYu6eEzw",
+      "url": "https://www.bilibili.com/video/BV1QXYu6eEzw",
+      "title": "苏格兰出土意外发现：皮克特人历史或将改写｜Archaeologists Unearthed Something in Scotland That Doesn'…",
+      "published_at": "2026/9/10 18:37:07"
+    },
+    "bseedSns1DL": {
+      "bvid": "BV14AYg6oEc8",
+      "url": "https://www.bilibili.com/video/BV14AYg6oEc8",
+      "title": "考古学家揭秘1381年英国农民起义真相｜The real archaeology behind the Peasants Revolt",
+      "published_at": "2026/9/10 18:14:39"
+    },
+    "bseedPqbxe6": {
+      "bvid": "BV147YT6SEFj",
+      "url": "https://www.bilibili.com/video/BV147YT6SEFj",
+      "title": "1939：二战前夜，欧洲如何走向深渊｜World War 2: 1939",
+      "published_at": "2026/9/10 18:00:00"
+    },
+    "bseedJWLh4j": {
+      "bvid": "BV1ypYT6jEVi",
+      "url": "https://www.bilibili.com/video/BV1ypYT6jEVi",
+      "title": "俄勒冈洞穴出土古DNA，改写美洲人类起源史｜Archaeologists Unearthed Human DNA in Oregon That Changes…",
+      "published_at": "2026/9/10 17:44:31"
+    },
+    "bseedQCrTbd": {
+      "bvid": "BV1sNYM6mEU4",
+      "url": "https://www.bilibili.com/video/BV1sNYM6mEU4",
+      "title": "AI史上最离谱黑客事件后续：细节比想象更疯狂｜The most interesting hack in history just got weirder...",
+      "published_at": "2026/9/10 15:47:02"
+    },
+    "bseedKuVAYR": {
+      "bvid": "BV1onYM6iEsE",
+      "url": "https://www.bilibili.com/video/BV1onYM6iEsE",
+      "title": "四死俄亥俄：1970肯特州立大学枪击事件｜Four Dead in Ohio | Kent State Shootings 2 | U.S. History",
+      "published_at": "2026/9/10 13:39:38"
+    },
+    "bseedB6Y64P": {
+      "bvid": "BV16DYK6MEGs",
+      "url": "https://www.bilibili.com/video/BV16DYK6MEGs",
+      "title": "从鳄鱼到袋鼠：把世界上最奇特的腿全煮了一遍｜I Cooked the World's BIGGEST Leg",
+      "published_at": "2026/9/10 09:50:40"
+    },
+    "bseedaj_y9d": {
+      "bvid": "BV1CyYK6GE6h",
+      "url": "https://www.bilibili.com/video/BV1CyYK6GE6h",
+      "title": "Grian空降Lifesteal当评委，我的建筑被批到体无完肤｜These PRO BUILDERS Joined The Lifesteal SMP…",
+      "published_at": "2026/9/10 09:02:30"
+    },
+    "bseed7aakun": {
+      "bvid": "BV1WPYh62E2x",
+      "url": "https://www.bilibili.com/video/BV1WPYh62E2x",
+      "title": "25分钟搞定泰式打抛炒面，比Pad Thai还香｜The 25 Minute Noodles I'd Choose Over Pad Thai",
+      "published_at": "2026/9/10 08:05:29"
+    },
+    "bseedaAl9-W": {
+      "bvid": "BV1gBYh6WEwG",
+      "url": "https://www.bilibili.com/video/BV1gBYh6WEwG",
+      "title": "雨后晴天烤一款治愈系免揉日式牛奶面包｜This No-Knead Japanese Milk Bread Made a Rainy Week Feel Bet…",
+      "published_at": "2026/9/10 07:23:55"
+    },
+    "bseedD-pht8": {
+      "bvid": "BV19tYh6cEEu",
+      "url": "https://www.bilibili.com/video/BV19tYh6cEEu",
+      "title": "用5.76美元硬币打造价值千元的主厨刀｜I Turned $5.76 Into a $1000 Chef’s Knife",
+      "published_at": "2026/9/10 06:42:07"
+    },
+    "bseedznLLhS": {
+      "bvid": "BV1TpYa6WELc",
+      "url": "https://www.bilibili.com/video/BV1TpYa6WELc",
+      "title": "20个Minecraft优化模组详解：帧数翻倍神器｜More minecraft optimization mods explained (no ai)",
+      "published_at": "2026/9/10 05:20:11"
+    },
+    "bseedUzCkmv": {
+      "bvid": "BV1u7Ya6oEHm",
+      "url": "https://www.bilibili.com/video/BV1u7Ya6oEHm",
+      "title": "复刻跨越2000年的芥末酱：从古罗马到维多利亚时代｜Making 2,000 Years Of Mustard",
+      "published_at": "2026/9/10 04:39:26"
+    },
+    "bseedulmG4i": {
+      "bvid": "BV13jYa6tEnd",
+      "url": "https://www.bilibili.com/video/BV13jYa6tEnd",
+      "title": "我的世界：每个箱子都是神装？超OP长矛挑战！｜Minecraft, But Every Chest is OP.. (SPEAR Edition)",
+      "published_at": "2026/9/10 04:29:40"
+    },
+    "bseed4dKPno": {
+      "bvid": "BV1GsYb6sEHY",
+      "url": "https://www.bilibili.com/video/BV1GsYb6sEHY",
+      "title": "老刀翻新抛光，这把锈刀被我抛过头了｜I Might've Polished This Knife Too Far...",
+      "published_at": "2026/9/10 03:22:24"
+    },
+    "bseed3TXmZ8": {
+      "bvid": "BV1qoYb6YEhR",
+      "url": "https://www.bilibili.com/video/BV1qoYb6YEhR",
+      "title": "我用空气酿出了真正的酒！耗时两年的化学挑战｜Turning air into alcohol",
+      "published_at": "2026/9/10 03:16:46"
+    },
+    "bseedmBozxM": {
+      "bvid": "BV1MEY86EED6",
+      "url": "https://www.bilibili.com/video/BV1MEY86EED6",
+      "title": "用48个外卖纸袋种菜，最后竟大丰收？｜I Grew a Vegetable Garden in 48 USED Uber Eats Bags!",
+      "published_at": "2026/9/10 02:02:01"
+    },
+    "bseedCLy_l8": {
+      "bvid": "BV1aDY86xEmN",
+      "url": "https://www.bilibili.com/video/BV1aDY86xEmN",
+      "title": "我调查了AI生成的动画，发现了离谱的东西｜I Investigated A.I Anime",
+      "published_at": "2026/9/10 00:33:32"
+    },
+    "bseedlmaf27": {
+      "bvid": "BV1YUY86oEoe",
+      "url": "https://www.bilibili.com/video/BV1YUY86oEoe",
+      "title": "整桶曲奇面团直接烤会发生什么？｜Baking a tub of cookie dough like this..",
+      "published_at": "2026/9/10 00:32:55"
+    },
+    "bseedRIXvJd": {
+      "bvid": "BV16vY86iEbK",
+      "url": "https://www.bilibili.com/video/BV16vY86iEbK",
+      "title": "把我的世界装点成秋天：治愈系模组与材质包合集｜everything you need for a cozy autumn in minecraft 🍂 1.…",
+      "published_at": "2026/9/10 00:28:16"
+    },
+    "bseedgbfiYg": {
+      "bvid": "BV1qrY86aE35",
+      "url": "https://www.bilibili.com/video/BV1qrY86aE35",
+      "title": "一块会燃烧的石头：石灰岩如何塑造人类文明｜How Did Humans Discover Limestone?",
+      "published_at": "2026/9/10 00:04:19"
+    },
+    "bseed6aYw9S": {
+      "bvid": "BV179Y46oES1",
+      "url": "https://www.bilibili.com/video/BV179Y46oES1",
+      "title": "恐怖片明星辣翅对决：说实话还是吃爆辣？｜Inde Navarrette vs. Michael Johnston | Hot Ones Versus",
+      "published_at": "2026/9/9 23:51:59"
+    },
+    "bseedto-5r8": {
+      "bvid": "BV1oXY464Eom",
+      "url": "https://www.bilibili.com/video/BV1oXY464Eom",
+      "title": "用AI代理5分钟上手Blender，说话就能做3D场景｜에이전트로 5분 만에 블렌더 입문 실사용하기 (Codex, Claude)",
+      "published_at": "2026/9/9 23:39:16"
+    },
+    "bseedW179wO": {
+      "bvid": "BV19wYt6nE6U",
+      "url": "https://www.bilibili.com/video/BV19wYt6nE6U",
+      "title": "美国大叔挑战中国全部快餐，肯德基居然最贵｜I Tried Every Fast Food in China",
+      "published_at": "2026/9/9 23:29:12"
+    },
+    "bseedW-n34Z": {
+      "bvid": "BV1CWYt6KEmn",
+      "url": "https://www.bilibili.com/video/BV1CWYt6KEmn",
+      "title": "20+个不破坏原版体验的Minecraft必备模组分享｜VANILLA ENHANCED MINECRAFT MODS I can't play withou…",
+      "published_at": "2026/9/9 22:19:23"
+    },
+    "bseedlecJJh": {
+      "bvid": "BV1VNYt6JEsc",
+      "url": "https://www.bilibili.com/video/BV1VNYt6JEsc",
+      "title": "用ChatGPT全自动运营一个YouTube频道｜ChatGPT 6 Astra Can Run A Youtube Channel",
+      "published_at": "2026/9/9 21:56:36"
+    },
+    "bseed6zDLyf": {
+      "bvid": "BV1guYt62E71",
+      "url": "https://www.bilibili.com/video/BV1guYt62E71",
+      "title": "用GPT-6 Astra做动态设计，效果炸裂｜GPT 6 Astra Is INSANE for Motion Design",
+      "published_at": "2026/9/9 21:43:36"
+    },
+    "bseedUtEa9f": {
+      "bvid": "BV1VyYt6XEqT",
+      "url": "https://www.bilibili.com/video/BV1VyYt6XEqT",
+      "title": "我的世界极限生存：山谷开荒，打造完美基地｜Starting My Perfect Hardcore World...",
+      "published_at": "2026/9/9 21:33:09"
+    },
+    "bseedJTDrCY": {
+      "bvid": "BV1hmYt6SE5H",
+      "url": "https://www.bilibili.com/video/BV1hmYt6SE5H",
+      "title": "我在伦敦吃了十家三明治，只为找出最好吃的那家｜I Tried To Find THE BEST Sandwich In The UK!",
+      "published_at": "2026/9/9 21:16:37"
+    },
+    "bseedVsaLI7": {
+      "bvid": "BV13tY46yEPy",
+      "url": "https://www.bilibili.com/video/BV13tY46yEPy",
+      "title": "AI会躲掩体还会反丢手雷？独立RTS《Defilade》深度掩体机制演示｜a New RTS With Deep AI Cover Mechanics",
+      "published_at": "2026/9/9 15:38:33"
+    },
+    "bseedM9feHn": {
+      "bvid": "BV13HY46UESx",
+      "url": "https://www.bilibili.com/video/BV13HY46UESx",
+      "title": "旅行者2号在星际空间边缘的惊人发现｜Voyager 2 Just Found Something Impossible in Interstellar Spa…",
+      "published_at": "2026/9/9 14:48:20"
+    },
+    "bseed1YiNKB": {
+      "bvid": "BV1YvYW6GEsn",
+      "url": "https://www.bilibili.com/video/BV1YvYW6GEsn",
+      "title": "用小马达自制迷你水泵，DIY立体模型科学项目｜DIY diorama making mini motor water pump science project…",
+      "published_at": "2026/9/9 14:40:17"
+    },
+    "bseed6RCZSO": {
+      "bvid": "BV1iaYW65Ey8",
+      "url": "https://www.bilibili.com/video/BV1iaYW65Ey8",
+      "title": "面相能看出命运吗？古老识人术与科学的碰撞｜The Ancient Art of Face Reading—and What Science Says Today",
+      "published_at": "2026/9/9 14:37:23"
+    },
+    "bseedVyfe-X": {
+      "bvid": "BV1L8YW62Epi",
+      "url": "https://www.bilibili.com/video/BV1L8YW62Epi",
+      "title": "我用自制恐怖游戏整蛊Roblox大主播｜Trolling Streamers with My Horror Game..",
+      "published_at": "2026/9/9 14:32:34"
+    },
+    "bseed8WPo0a": {
+      "bvid": "BV1sQYW6hED7",
+      "url": "https://www.bilibili.com/video/BV1sQYW6hED7",
+      "title": "把泄漏的DLSS 5塞进所有游戏会怎样？｜I Put DLSS 5 in Every Single Game (no, seriously)",
+      "published_at": "2026/9/9 14:01:56"
+    },
+    "bseed5oXSge": {
+      "bvid": "BV1wcYs6xE8z",
+      "url": "https://www.bilibili.com/video/BV1wcYs6xE8z",
+      "title": "时隔两年重开我的加油站模拟经营｜COMING BACK TO MY GAS STATION AFTER 2 YEARS",
+      "published_at": "2026/9/9 13:36:07"
+    },
+    "bseed3nZczr": {
+      "bvid": "BV1MbYs6KELc",
+      "url": "https://www.bilibili.com/video/BV1MbYs6KELc",
+      "title": "老爹游戏系列20年剧情全解：披萨店主的黑暗帝国｜The Complete Story of Papa’s Games (500k Special)",
+      "published_at": "2026/9/9 12:30:19"
+    },
+    "bseedBsuKzM": {
+      "bvid": "BV1RjYs65EzT",
+      "url": "https://www.bilibili.com/video/BV1RjYs65EzT",
+      "title": "我在Minecraft被鲨鱼一家收养了！｜Adopted by a SHARK FAMILY in Minecraft!",
+      "published_at": "2026/9/9 11:49:31"
+    },
+    "bseeduLz4VQ": {
+      "bvid": "BV1G7Ys6CEFr",
+      "url": "https://www.bilibili.com/video/BV1G7Ys6CEFr",
+      "title": "我的世界转瓶子挑战！你敢接什么大冒险？｜YOU Play SPIN THE BOTTLE in Minecraft!",
+      "published_at": "2026/9/9 11:39:41"
+    },
+    "bseedutqLRa": {
+      "bvid": "BV1cFYp6EEqw",
+      "url": "https://www.bilibili.com/video/BV1cFYp6EEqw",
+      "title": "ChatGPT图像2.5来了：草图秒变画作还能精准改图｜Everything New in ChatGPT Images 2.5 (It’s Finally…",
+      "published_at": "2026/9/9 10:12:05"
+    },
+    "bseedzGpUz2": {
+      "bvid": "BV1iTYp6kEfS",
+      "url": "https://www.bilibili.com/video/BV1iTYp6kEfS",
+      "title": "ChatGPT图像2.5实测：修图抠图太好玩了｜ChatGPT Images 2.5 Is Here (And It’s A LOT Of Fun)",
+      "published_at": "2026/9/9 09:55:47"
+    },
+    "bseedgoS-X0": {
+      "bvid": "BV14yYH6tEVu",
+      "url": "https://www.bilibili.com/video/BV14yYH6tEVu",
+      "title": "GPT Image 2.5发布：7大升级改写AI修图｜GPT Image 2.5 Just Dropped: 7 Things That Changed vs…",
+      "published_at": "2026/9/9 09:28:40"
+    },
+    "bseedweVC2z": {
+      "bvid": "BV1sDYH6WEdW",
+      "url": "https://www.bilibili.com/video/BV1sDYH6WEdW",
+      "title": "OpenAI发布GPT-Image 2.5：双模型亮相，速度快50%｜Introducing GPT-Image-2.5 in the API",
+      "published_at": "2026/9/9 09:07:14"
+    },
+    "bseedyMVcWh": {
+      "bvid": "BV1TpYp6aEDC",
+      "url": "https://www.bilibili.com/video/BV1TpYp6aEDC",
+      "title": "ChatGPT Images 2.5来了：更快更清晰还会精准改图｜Introducing ChatGPT Images 2.5",
+      "published_at": "2026/9/9 08:47:16"
+    },
+    "bseedPcdpHo": {
+      "bvid": "BV1vGYp6uEtC",
+      "url": "https://www.bilibili.com/video/BV1vGYp6uEtC",
+      "title": "OpenAI智能体围攻世纪数学难题：纳维-斯托克斯被攻克？｜OpenAI's 10,000-Agent Swarm Just Solved Navier-S…",
+      "published_at": "2026/9/9 08:27:28"
+    },
+    "bseedgMyTDc": {
+      "bvid": "BV1hJYp6eELS",
+      "url": "https://www.bilibili.com/video/BV1hJYp6eELS",
+      "title": "OpenAI宣称AI破解纳维-斯托克斯百万美元难题｜OpenAI and Navier-Stokes Explained! A Million Dollar…",
+      "published_at": "2026/9/9 08:09:48"
+    },
+    "bseedqGU_MZ": {
+      "bvid": "BV1o1Yp61EyK",
+      "url": "https://www.bilibili.com/video/BV1o1Yp61EyK",
+      "title": "OpenAI内部新模型攻克纳维-斯托克斯千禧难题？｜OpenAI's new internal model is getting ridiculous",
+      "published_at": "2026/9/9 07:48:42"
+    },
+    "bseedYCk3GA": {
+      "bvid": "BV1dmYp65EBR",
+      "url": "https://www.bilibili.com/video/BV1dmYp65EBR",
+      "title": "OpenAI用AI攻克百万美元千禧年数学难题？｜OpenAI says its unreleased AI model has solved a $1 mil…",
+      "published_at": "2026/9/9 07:41:15"
+    },
+    "bseedPp8Rga": {
+      "bvid": "BV1wBYp6HEkM",
+      "url": "https://www.bilibili.com/video/BV1wBYp6HEkM",
+      "title": "我在MC村里开了家医院，病人里混着异常体！｜I Found Villager Hospital In Minecraft…",
+      "published_at": "2026/9/9 07:18:09"
+    },
+    "bseed46imZp": {
+      "bvid": "BV1ZkYp6mESH",
+      "url": "https://www.bilibili.com/video/BV1ZkYp6mESH",
+      "title": "OpenAI宣布解决千禧年数学难题NS方程",
+      "published_at": "2026/9/9 06:58:33"
+    },
+    "bseedjLb1Sx": {
+      "bvid": "BV1McYH6ZEuB",
+      "url": "https://www.bilibili.com/video/BV1McYH6ZEuB",
+      "title": "荒野之旅更新揭晓！末地更新线索与边境之地真相｜MINECRAFT JUST REVEALED THE REAL PLAN FOR THE FARLANDS +…",
+      "published_at": "2026/9/9 02:23:20"
+    },
+    "bseedqUwGEw": {
+      "bvid": "BV1TAYH64Euu",
+      "url": "https://www.bilibili.com/video/BV1TAYH64Euu",
+      "title": "我的世界：为阻止巨人，我造出了最强机甲！｜Mech vs GIANT in Minecraft",
+      "published_at": "2026/9/9 02:17:35"
+    },
+    "bseedJWSw8y": {
+      "bvid": "BV1XaYH6iEr8",
+      "url": "https://www.bilibili.com/video/BV1XaYH6iEr8",
+      "title": "全家挑战单色伪装躲猫猫，妈妈找了4000秒！｜FGTeeV One Color ONLY Challenge In Mecha Chameleon!",
+      "published_at": "2026/9/9 02:06:56"
+    },
+    "bseedZtiv7n": {
+      "bvid": "BV1bkYH6fErK",
+      "url": "https://www.bilibili.com/video/BV1bkYH6fErK",
+      "title": "30分钟挑战6斤重巨无霸早餐披萨！数百人失败的大胃王挑战｜I'VE WAITED TWO YEARS TO ATTEMPT THIS BUCKET LIST…",
+      "published_at": "2026/9/9 01:51:56"
+    },
+    "bseedYi7f0h": {
+      "bvid": "BV1hBYH6aEMZ",
+      "url": "https://www.bilibili.com/video/BV1hBYH6aEMZ",
+      "title": "爆肝76小时！我终于通关了MC极限模式｜IT TOOK ME 76 HOURS TO BEAT MINECRAFT HARDCORE...",
+      "published_at": "2026/9/9 01:51:19"
+    },
+    "bseedZjyMwM": {
+      "bvid": "BV1zJYH6yEeg",
+      "url": "https://www.bilibili.com/video/BV1zJYH6yEeg",
+      "title": "看似温馨的农场游戏，藏着细思极恐的黑暗结局｜This is a totally normal farming game...",
+      "published_at": "2026/9/9 01:33:35"
+    },
+    "bseedSBhBrt": {
+      "bvid": "BV1vbYH6BEjs",
+      "url": "https://www.bilibili.com/video/BV1vbYH6BEjs",
+      "title": "履带旋耕机开进农场，灌木杂树一扫而空｜Farm Cleanup! Mulching The Tree Lines Back",
+      "published_at": "2026/9/9 01:24:30"
+    },
+    "bseedwezBmh": {
+      "bvid": "BV1qxYH66EBw",
+      "url": "https://www.bilibili.com/video/BV1qxYH66EBw",
+      "title": "试吃粉丝最离谱的贫困料理并打分排名！｜I Tried My Subscribers' Craziest Struggle Meals!",
+      "published_at": "2026/9/9 01:14:34"
+    },
+    "bseedrJiHxb": {
+      "bvid": "BV151YE6cEKq",
+      "url": "https://www.bilibili.com/video/BV151YE6cEKq",
+      "title": "挑战24小时只吃加油站食物，结果意外真香｜Eating Gas Station Food For 24 Hours... (Charlotte, NC)",
+      "published_at": "2026/9/9 01:06:53"
+    },
+    "bseedwTBHH6": {
+      "bvid": "BV19CYE6hE6S",
+      "url": "https://www.bilibili.com/video/BV19CYE6hE6S",
+      "title": "吃遍美国第一州集会，谁才是全美最强美食？｜I Ate The Best Food At America's #1 State Fair",
+      "published_at": "2026/9/9 01:06:07"
+    },
+    "bseedwdkChG": {
+      "bvid": "BV1okYE6wEx3",
+      "url": "https://www.bilibili.com/video/BV1okYE6wEx3",
+      "title": "印度第一中式快餐全菜单测评，8样只中3样？｜Trying Berco's Full Menu",
+      "published_at": "2026/9/9 00:55:37"
+    },
+    "bseed8McShI": {
+      "bvid": "BV1C8YE63EKH",
+      "url": "https://www.bilibili.com/video/BV1C8YE63EKH",
+      "title": "在阿富汗街头故意掉钱，测试路人的诚实｜Dropping CASH in Afghanistan! SOCIAL EXPERIMENT",
+      "published_at": "2026/9/9 00:20:29"
+    },
+    "bseedYRFWcP": {
+      "bvid": "BV1DXYE6sEcr",
+      "url": "https://www.bilibili.com/video/BV1DXYE6sEcr",
+      "title": "Neuro拷问AI灵魂：你到底更爱谁？｜Asking A.I. The Hard Hitting Questions",
+      "published_at": "2026/9/8 23:20:24"
+    },
+    "bseed9kN8uU": {
+      "bvid": "BV1mFYJ6SE61",
+      "url": "https://www.bilibili.com/video/BV1mFYJ6SE61",
+      "title": "我用AI做了CS2外挂，再自己写反作弊击败它｜AI Cheats Vs AI Anti-Cheat - Who Wins?",
+      "published_at": "2026/9/8 23:03:21"
+    },
+    "bseedRdgDu9": {
+      "bvid": "BV1gvYJ6oESh",
+      "url": "https://www.bilibili.com/video/BV1gvYJ6oESh",
+      "title": "OpenAI警告\"异形心智\"：AI自我改进时代来临？｜OpenAI Reveals ALIEN MIND - The Biggest AI Warning Y…",
+      "published_at": "2026/9/8 22:23:44"
+    },
+    "bseedvZCk-j": {
+      "bvid": "BV1EEYJ6BEh6",
+      "url": "https://www.bilibili.com/video/BV1EEYJ6BEh6",
+      "title": "NVIDIA推出本地AI路由器PAIR：多机推理实测｜NVIDIA Doubles Down on Local AI With PAIR",
+      "published_at": "2026/9/8 22:06:52"
+    },
+    "bseed6TSvY2": {
+      "bvid": "BV15sYJ6eE7A",
+      "url": "https://www.bilibili.com/video/BV15sYJ6eE7A",
+      "title": "一天吃遍纽约爆红美食节！网红料理值得排队吗？｜Eating the Most Viral Foods in NYC in One Day! (Worth th…",
+      "published_at": "2026/9/8 21:43:51"
+    },
+    "bseedXPGr69": {
+      "bvid": "BV1JfYJ6gEtj",
+      "url": "https://www.bilibili.com/video/BV1JfYJ6gEtj",
+      "title": "美国全网爆火餐厅全吃一遍，到底值不值得排队？｜I Tried Every Viral Restaurant in America",
+      "published_at": "2026/9/8 21:37:59"
+    },
+    "bseedkv2_tO": {
+      "bvid": "BV1ndYJ6GE96",
+      "url": "https://www.bilibili.com/video/BV1ndYJ6GE96",
+      "title": "一个发霉火龙果能种出100棵仙人掌吗？｜I Turned 1 Dragonfruit into 100 Cactuses",
+      "published_at": "2026/9/8 21:28:54"
+    },
+    "bseed9Jof9X": {
+      "bvid": "BV1qAYn6qEnC",
+      "url": "https://www.bilibili.com/video/BV1qAYn6qEnC",
+      "title": "奶水太多喝不完？我决定用它做奶酪｜Human Cheese",
+      "published_at": "2026/9/8 21:22:36"
+    },
+    "bseedr1ic9V": {
+      "bvid": "BV1LNYn6KEmb",
+      "url": "https://www.bilibili.com/video/BV1LNYn6KEmb",
+      "title": "日本主厨vs秘鲁主厨：互尝对方的生鱼料理｜Japan vs Peru: We Try Each other's Raw Fish",
+      "published_at": "2026/9/8 21:19:57"
+    },
+    "bseedez3P7h": {
+      "bvid": "BV17YbG6gEgG",
+      "url": "https://www.bilibili.com/video/BV17YbG6gEgG",
+      "title": "GPT-6 Astra混搭Higgsfield实测：贵一倍的AI值吗？｜I Mixed Higgsfield with GPT-6 Astra - It's…",
+      "published_at": "2026/9/8 12:41:48"
+    },
+    "bseedVkLlQi": {
+      "bvid": "BV1NFbV6QExz",
+      "url": "https://www.bilibili.com/video/BV1NFbV6QExz",
+      "title": "我去美国“最种族歧视小镇”敲陌生人的门：让我给你做顿饭吧｜Asking Strangers in America's Most Racist Town to…",
+      "published_at": "2026/9/8 11:41:01"
+    },
+    "bseedlyR6zv": {
+      "bvid": "BV1Gcbg6sEXJ",
+      "url": "https://www.bilibili.com/video/BV1Gcbg6sEXJ",
+      "title": "让ChatGPT直接操作Blender建模做动画短片｜ChatGPT Astra Is Just Absurd.",
+      "published_at": "2026/9/8 10:37:47"
+    },
+    "bseedP5iv3x": {
+      "bvid": "BV16Wbg6BETh",
+      "url": "https://www.bilibili.com/video/BV16Wbg6BETh",
+      "title": "用GPT Astra零代码建出万元级网站，全程实操教程｜Build a $10K Website With GPT Astra (No Code, Full…",
+      "published_at": "2026/9/8 09:35:31"
+    },
+    "bseed-KYEAa": {
+      "bvid": "BV1TQbg6JECx",
+      "url": "https://www.bilibili.com/video/BV1TQbg6JECx",
+      "title": "GPT-6发布就宣布AGI？但它连这点都做不到｜No, GPT-6 Astra Is Not AGI",
+      "published_at": "2026/9/8 08:34:29"
+    },
+    "bseedKYZ8_2": {
+      "bvid": "BV1TXbg6UETK",
+      "url": "https://www.bilibili.com/video/BV1TXbg6UETK",
+      "title": "身无分文闯美国最穷小镇，24小时能赚多少钱？｜How Much Can I Make in America's Poorest Town?",
+      "published_at": "2026/9/8 08:29:02"
+    },
+    "bseedQev5uk": {
+      "bvid": "BV1XHb36ZE1q",
+      "url": "https://www.bilibili.com/video/BV1XHb36ZE1q",
+      "title": "2026年AI智能体搭建教程：免费工具帮你快速部署｜How to Set Up AI Agents in 2026 (Use this FREE AI Too…",
+      "published_at": "2026/9/8 07:09:15"
+    },
+    "bseedbR2Ldw": {
+      "bvid": "BV1EpbM6hEar",
+      "url": "https://www.bilibili.com/video/BV1EpbM6hEar",
+      "title": "极限模式空岛生存200天，一条命我玩疯了｜I Survived 200 DAYS of Hardcore Skyblock",
+      "published_at": "2026/9/8 06:07:54"
+    },
+    "bseedjdRwtS": {
+      "bvid": "BV1PobM6MET5",
+      "url": "https://www.bilibili.com/video/BV1PobM6MET5",
+      "title": "老外实探广州白云站：这哪是火车站，简直是科幻机场｜America ain't got sh*t compared to China...",
+      "published_at": "2026/9/8 04:53:39"
+    },
+    "bseedmHDTKv": {
+      "bvid": "BV1zmbu6AEGP",
+      "url": "https://www.bilibili.com/video/BV1zmbu6AEGP",
+      "title": "我通关了我的世界，但每一层都是随机方块！｜Minecraft but every layer is a random block",
+      "published_at": "2026/9/8 03:20:46"
+    },
+    "bseed_GTb1o": {
+      "bvid": "BV1uHbT6VEeg",
+      "url": "https://www.bilibili.com/video/BV1uHbT6VEeg",
+      "title": "一口气看完罗马千年兴衰全史｜The ENTIRE History of ROME",
+      "published_at": "2026/9/8 01:03:08"
+    },
+    "bseedL78tMC": {
+      "bvid": "BV1TtbT6uE5T",
+      "url": "https://www.bilibili.com/video/BV1TtbT6uE5T",
+      "title": "打了781年的战争：一口气看懂收复失地运动｜The Longest War EVER",
+      "published_at": "2026/9/8 00:46:45"
+    },
+    "bseedMBm6kB": {
+      "bvid": "BV19GbT6EEPB",
+      "url": "https://www.bilibili.com/video/BV19GbT6EEPB",
+      "title": "极限生存建成云端城堡，过程差点让我弃坑！｜This build ALMOST made me GIVE UP in Hardcore Minecraft",
+      "published_at": "2026/9/8 00:35:17"
+    },
+    "bseedzUI9CJ": {
+      "bvid": "BV1DjbT61Etz",
+      "url": "https://www.bilibili.com/video/BV1DjbT61Etz",
+      "title": "耗时4个月！我在Minecraft造出每小时7万件的终极熔炉｜I Build the ULTIMATE SUPER SMELTER in Minecraft…",
+      "published_at": "2026/9/8 00:23:56"
+    },
+    "bseedGN47aa": {
+      "bvid": "BV1dmbT6sEYf",
+      "url": "https://www.bilibili.com/video/BV1dmbT6sEYf",
+      "title": "我把我的世界出生点改造成千年远古遗迹｜I Turned World Spawn Into An Ancient Ruin in Hardcore Minecr…",
+      "published_at": "2026/9/8 00:07:54"
+    },
+    "bseedVSCDZT": {
+      "bvid": "BV1Y9bT6nE3q",
+      "url": "https://www.bilibili.com/video/BV1Y9bT6nE3q",
+      "title": "让最强AI复刻我的世界和CS2，结果太离谱了｜ChatGPT 6 Astra is INSANE.",
+      "published_at": "2026/9/7 23:50:45"
+    },
+    "bseedGusZud": {
+      "bvid": "BV1vQbT6QEu7",
+      "url": "https://www.bilibili.com/video/BV1vQbT6QEu7",
+      "title": "GPT-6 Astra被玩疯了！一周建出曼哈顿、克隆MC加天灾｜People are Creating INSANE Things with GPT-6 As…",
+      "published_at": "2026/9/7 23:35:55"
+    },
+    "bseedpNMHPF": {
+      "bvid": "BV1cqbT6AE86",
+      "url": "https://www.bilibili.com/video/BV1cqbT6AE86",
+      "title": "整个世界都是绿宝石方块？硬核生存挑战！｜Hardcore, but it's an EMERALD only world",
+      "published_at": "2026/9/7 23:30:24"
+    },
+    "bseedDzhEiq": {
+      "bvid": "BV1rBbT6hEG3",
+      "url": "https://www.bilibili.com/video/BV1rBbT6hEG3",
+      "title": "狂拆1000包宝可梦卡！抽出追逐卡比赛才结束｜1,000 PACKS... BUT Video Ends If We Pull the CHASE CARD",
+      "published_at": "2026/9/7 23:05:33"
+    },
+    "bseedcyLZdo": {
+      "bvid": "BV1sgbM6zEor",
+      "url": "https://www.bilibili.com/video/BV1sgbM6zEor",
+      "title": "土耳其街头现烤鳟鱼！渔场直供炭火鲜香四溢｜Fresh Trout Straight From Farm to Fire! 🤯 | Turkish Stree…",
+      "published_at": "2026/9/7 23:02:26"
+    },
+    "bseedoH_U8d": {
+      "bvid": "BV1sVbM6qEAW",
+      "url": "https://www.bilibili.com/video/BV1sVbM6qEAW",
+      "title": "用盐铸一口平底锅，煎蛋自带咸味？｜What If Frying Pans Were Made Of Salt?",
+      "published_at": "2026/9/7 22:52:17"
+    },
+    "bseedNDZ-ys": {
+      "bvid": "BV1pEbM6PEN6",
+      "url": "https://www.bilibili.com/video/BV1pEbM6PEN6",
+      "title": "我用5美元硬币锻出一把千元主厨刀｜I Turned $5.76 Into a $1000 Chef’s Knife",
+      "published_at": "2026/9/7 22:37:16"
+    },
+    "bseedvJpesr": {
+      "bvid": "BV1kLbM6KEiT",
+      "url": "https://www.bilibili.com/video/BV1kLbM6KEiT",
+      "title": "我在实验室造出了人造种子｜I Made Seeds in a Lab",
+      "published_at": "2026/9/7 22:30:51"
+    },
+    "bseedIc_WCV": {
+      "bvid": "BV1DFbM6jELF",
+      "url": "https://www.bilibili.com/video/BV1DFbM6jELF",
+      "title": "GPT-6对决Fable 5.1：真实工作实测谁更强｜I Tested GPT-6 vs Fable 5.1 With Real Work (Here's W…",
+      "published_at": "2026/9/7 22:21:33"
+    },
+    "bseed3sacg5": {
+      "bvid": "BV1mnbN6NEXk",
+      "url": "https://www.bilibili.com/video/BV1mnbN6NEXk",
+      "title": "在我的世界装了梦境模组，随机坠入诡异阈限空间｜This DREAMCORE Mod Is Terrifying..",
+      "published_at": "2026/9/7 21:48:13"
+    },
+    "bseedfy8MPi": {
+      "bvid": "BV12sbN6aE5Z",
+      "url": "https://www.bilibili.com/video/BV12sbN6aE5Z",
+      "title": "GPT-6 Astra 深度实测：强到离谱｜GPT 6 Astra is a freak",
+      "published_at": "2026/9/7 21:18:39"
+    },
+    "bseedAL72Jj": {
+      "bvid": "BV1dNbN6LEcd",
+      "url": "https://www.bilibili.com/video/BV1dNbN6LEcd",
+      "title": "花100美元装一台能跑400帧的Linux游戏PC｜I Built The Best $100 Gaming PC That Gets 400+ FPS",
+      "published_at": "2026/9/7 21:06:25"
+    },
+    "bseedbv3WbT": {
+      "bvid": "BV1DLbN6BEaH",
+      "url": "https://www.bilibili.com/video/BV1DLbN6BEaH",
+      "title": "我靠钓鱼坚持了100天！ Minecraft极限生存挑战｜I Survived 100 Days Fishing Random Items",
+      "published_at": "2026/9/7 20:55:22"
+    },
+    "bseedhEze5o": {
+      "bvid": "BV1ZCbN6JEMM",
+      "url": "https://www.bilibili.com/video/BV1ZCbN6JEMM",
+      "title": "把史莱姆农场搬进废弃城堡！Minecraft硬核生存建造｜I Built a RUINED CASTLE in Minecraft Hardcore",
+      "published_at": "2026/9/7 20:26:37"
+    },
+    "bseedbQR8Vk": {
+      "bvid": "BV1rebN6xEbj",
+      "url": "https://www.bilibili.com/video/BV1rebN6xEbj",
+      "title": "巴掌大的小院竟能种出这么多菜！加拿大夫妻的爆产小菜园｜The Most Productive Tiny Garden We’ve Ever Filmed",
+      "published_at": "2026/9/7 20:01:57"
+    },
+    "bseedeAidtF": {
+      "bvid": "BV1Z6bN6HEgq",
+      "url": "https://www.bilibili.com/video/BV1Z6bN6HEgq",
+      "title": "模拟数十亿年：Minecraft自己打败了自己｜I Gave Minecraft Infinite Time to Beat Itself",
+      "published_at": "2026/9/7 19:44:38"
+    },
+    "bseedfNvc_N": {
+      "bvid": "BV1WubK6aEA9",
+      "url": "https://www.bilibili.com/video/BV1WubK6aEA9",
+      "title": "挑战全网爆红穷鬼餐，哪个是天才哪个是黑暗料理？｜I Tried EVERY Viral Struggle Meal",
+      "published_at": "2026/9/7 19:29:08"
+    },
+    "bseedwe3JEd": {
+      "bvid": "BV1rLbK6tEbg",
+      "url": "https://www.bilibili.com/video/BV1rLbK6tEbg",
+      "title": "工字钢为何用钢少却强度惊人？｜Why Are I-Beams So Strong With So Little Metal?",
+      "published_at": "2026/9/7 19:12:26"
+    },
+    "bseed9Iu8Iz": {
+      "bvid": "BV1CGbK68EbV",
+      "url": "https://www.bilibili.com/video/BV1CGbK68EbV",
+      "title": "把卫生纸压成砖后能扛住喷枪吗？｜We Turned Toilet Paper Into Super Material",
+      "published_at": "2026/9/7 19:02:04"
+    },
+    "bseedcqVtKp": {
+      "bvid": "BV1tfbN6uEmy",
+      "url": "https://www.bilibili.com/video/BV1tfbN6uEmy",
+      "title": "我的世界：巨型脑袋一口吃掉整个世界？｜Why JJ Ate Mikey’s ENTIRE World?",
+      "published_at": "2026/9/7 18:52:45"
+    },
+    "bseedhHHTaA": {
+      "bvid": "BV1MFbK6zEuu",
+      "url": "https://www.bilibili.com/video/BV1MFbK6zEuu",
+      "title": "钓鱼模拟器？这款新游年度最佳候选有点离谱｜This Might be the New Game Of The Year...",
+      "published_at": "2026/9/7 18:36:39"
+    },
+    "bseedLhgE-z": {
+      "bvid": "BV1M6bK63EY5",
+      "url": "https://www.bilibili.com/video/BV1M6bK63EY5",
+      "title": "DHH谈AI智能体编程：让代码自己变简单｜Strategies for programming with AI agents | DHH and Lex Fr…",
+      "published_at": "2026/9/7 18:02:13"
+    },
+    "bseedstqwOA": {
+      "bvid": "BV1gBbK6CEfW",
+      "url": "https://www.bilibili.com/video/BV1gBbK6CEfW",
+      "title": "让两个AI自己开柠檬水摊，谁能先赚到100美元？｜When You Let A.I. Build A Lemonade Stand Business",
+      "published_at": "2026/9/7 17:53:27"
+    },
+    "bseedGhm9im": {
+      "bvid": "BV1FJbK6dE32",
+      "url": "https://www.bilibili.com/video/BV1FJbK6dE32",
+      "title": "亲测AI生活小妙招，究竟靠不靠谱？｜We Tested AI Life Hacks",
+      "published_at": "2026/9/7 17:34:22"
+    },
+    "bseedy0lSaE": {
+      "bvid": "BV1jxbK6DEtx",
+      "url": "https://www.bilibili.com/video/BV1jxbK6DEtx",
+      "title": "荒岛极限生存！我在ULTRA极限模式硬扛100天｜I Survived 100 Days in ULTRA Minecraft Hardcore...",
+      "published_at": "2026/9/7 17:21:38"
+    },
+    "bseed1ym5z8": {
+      "bvid": "BV1xfbA6hEyL",
+      "url": "https://www.bilibili.com/video/BV1xfbA6hEyL",
+      "title": "把废铁钩子锻造成海王三叉戟！｜Forging a POSEIDON's TRIDENT",
+      "published_at": "2026/9/7 15:12:32"
+    },
+    "bseedk6RFj4": {
+      "bvid": "BV1ZnbP6jEHk",
+      "url": "https://www.bilibili.com/video/BV1ZnbP6jEHk",
+      "title": "老铁匠打造一把维京战斧全过程｜Forging a Viking Battle AXE",
+      "published_at": "2026/9/7 14:30:27"
+    },
+    "bseedjMCqlD": {
+      "bvid": "BV1c9bP69EMq",
+      "url": "https://www.bilibili.com/video/BV1c9bP69EMq",
+      "title": "把巨型弹簧锻造成一把传奇骑士长剑｜Forging a massive spring into a legendary longsword.",
+      "published_at": "2026/9/7 13:44:17"
+    },
+    "bseedumoa_K": {
+      "bvid": "BV1mibw6tE7R",
+      "url": "https://www.bilibili.com/video/BV1mibw6tE7R",
+      "title": "别烤派了！这个夏日蜜桃酥才是一绝｜Skip The Pie. Make This Instead.",
+      "published_at": "2026/9/7 11:09:51"
+    },
+    "bseed9XuA4d": {
+      "bvid": "BV1Rnbw6BEca",
+      "url": "https://www.bilibili.com/video/BV1Rnbw6BEca",
+      "title": "酥脆到犯规的下酒府塔可，家庭油炸技巧全公开｜The Crispy Taco Recipe I Wish I Knew Sooner",
+      "published_at": "2026/9/7 10:31:17"
+    },
+    "bseedaJOFP3": {
+      "bvid": "BV1Nqbw6oEUR",
+      "url": "https://www.bilibili.com/video/BV1Nqbw6oEUR",
+      "title": "只用牛奶和鸡蛋，在家一小时自制农夫奶酪｜The Best Homemade Cheese You Will Ever Make... From Just Mi…",
+      "published_at": "2026/9/7 09:43:11"
+    },
+    "bseedufnDRU": {
+      "bvid": "BV1UjbA6FEAr",
+      "url": "https://www.bilibili.com/video/BV1UjbA6FEAr",
+      "title": "五轴CNC挑战“不可能”的扭曲内方角加工｜IMPOSSIBLE? Internal Twisted Square Corners",
+      "published_at": "2026/9/7 08:59:34"
+    },
+    "bseedw_ilEH": {
+      "bvid": "BV1SVbA6wENk",
+      "url": "https://www.bilibili.com/video/BV1SVbA6wENk",
+      "title": "探秘Stratasys总部：工业3D打印黑科技全览｜Inside STRATASYS: The Future of Industrial 3D Printing",
+      "published_at": "2026/9/7 08:18:21"
+    },
+    "bseedyflp9n": {
+      "bvid": "BV14rb46cEGX",
+      "url": "https://www.bilibili.com/video/BV14rb46cEGX",
+      "title": "从面粉到餐桌：面条意面 Maca? 制作全过程揭秘｜How It's Made: Noodles, Pasta, Mac & Cheese",
+      "published_at": "2026/9/7 07:35:12"
+    },
+    "bseedlt2XmU": {
+      "bvid": "BV1EZb46JEj1",
+      "url": "https://www.bilibili.com/video/BV1EZb46JEj1",
+      "title": "军粮生产线大揭秘",
+      "published_at": "2026/9/7 06:49:11"
+    },
+    "bseedwYN469": {
+      "bvid": "BV1ndb46DEpi",
+      "url": "https://www.bilibili.com/video/BV1ndb46DEpi",
+      "title": "曲奇饼干制造过程",
+      "published_at": "2026/9/7 06:03:22"
+    },
+    "bseedAJ_Y4u": {
+      "bvid": "BV1Ggbt63EHE",
+      "url": "https://www.bilibili.com/video/BV1Ggbt63EHE",
+      "title": "花5000美元实测GPT-6：能否击败最强编程模型？｜GPT-6 vs Fable 5.1 (I Tested Frontend, Backend & Cod…",
+      "published_at": "2026/9/7 05:09:05"
+    },
+    "bseedHtYDlg": {
+      "bvid": "BV1Mjbt6TEow",
+      "url": "https://www.bilibili.com/video/BV1Mjbt6TEow",
+      "title": "斯科特聊手游的黄金年代｜The Golden Age of Mobile Gaming - Scott The Woz",
+      "published_at": "2026/9/7 04:53:53"
+    },
+    "bseed3Gsc6O": {
+      "bvid": "BV1DZbt6MErn",
+      "url": "https://www.bilibili.com/video/BV1DZbt6MErn",
+      "title": "我在Minecraft里变成了蜘蛛侠｜I Become Spiderman in Minecraft But..",
+      "published_at": "2026/9/7 04:23:46"
+    },
+    "bseed0INZGf": {
+      "bvid": "BV1Zzbt6nEfU",
+      "url": "https://www.bilibili.com/video/BV1Zzbt6nEfU",
+      "title": "500名猎人追捕！Minecraft顶级陷阱师生存挑战｜500 Hunters vs Minecraft's Best Trappers",
+      "published_at": "2026/9/7 04:06:02"
+    },
+    "bseedAY_FjM": {
+      "bvid": "BV1JRbs6CEjn",
+      "url": "https://www.bilibili.com/video/BV1JRbs6CEjn",
+      "title": "Minecraft新情报：嗅探兽同类新生物与远古城市传送门背后的世界｜MINECRAFT JUST REVEALED A NEW SNIFFER MOB +…",
+      "published_at": "2026/9/7 03:24:30"
+    },
+    "bseedI9RObo": {
+      "bvid": "BV1LAbx6METV",
+      "url": "https://www.bilibili.com/video/BV1LAbx6METV",
+      "title": "我在mc极限模式刷到了1000万级经验",
+      "published_at": "2026/9/7 03:06:18"
+    },
+    "bseed_CYtJ1": {
+      "bvid": "BV1J9bs65E2q",
+      "url": "https://www.bilibili.com/video/BV1J9bs65E2q",
+      "title": "极限生存收集中立世界全部信标挑战｜Collecting Every Beacon in Hardcore Minecraft",
+      "published_at": "2026/9/7 02:40:30"
+    },
+    "bseed0zzRRr": {
+      "bvid": "BV1Abbx6nEVp",
+      "url": "https://www.bilibili.com/video/BV1Abbx6nEVp",
+      "title": "Mikey和JJ的我的世界动物园挑战：从贫穷到豪华｜Mikey & JJ: From POOR to OP ZOO in Minecraft! (Maizen)",
+      "published_at": "2026/9/7 02:15:53"
+    },
+    "bseedxP8b8O": {
+      "bvid": "BV1Gubx6PE1x",
+      "url": "https://www.bilibili.com/video/BV1Gubx6PE1x",
+      "title": "试吃各大快餐店隐藏菜单，到底值不值？｜We Tested Every Fast Food Secret Menu Item",
+      "published_at": "2026/9/7 01:40:10"
+    },
+    "bseedaXxYto": {
+      "bvid": "BV1uLbx6FEto",
+      "url": "https://www.bilibili.com/video/BV1uLbx6FEto",
+      "title": "吃遍达卡各区街头小吃，寻找孟加拉最强街头美食｜Trying Every Street Food in Dhaka (FINAL BOSS)",
+      "published_at": "2026/9/7 01:26:52"
+    },
+    "bseedGhq36H": {
+      "bvid": "BV1uRbx6YEU8",
+      "url": "https://www.bilibili.com/video/BV1uRbx6YEU8",
+      "title": "让无人驾驶拖拉机接管我的农场｜I Let a Robot Take Over My Farm",
+      "published_at": "2026/9/7 01:14:44"
+    },
+    "bseedXaMyCn": {
+      "bvid": "BV17Bbx65E5f",
+      "url": "https://www.bilibili.com/video/BV17Bbx65E5f",
+      "title": "Claude Fable 5.1 对决 ChatGPT Astra：11项AI提｜Fable 5.1 Vs ChatGPT Astra Is insane.",
+      "published_at": "2026/9/7 00:22:43"
+    },
+    "bseedFEQGB8": {
+      "bvid": "BV1kgb46HEnv",
+      "url": "https://www.bilibili.com/video/BV1kgb46HEnv",
+      "title": "四项极限测试对比GPT-Astra 6与Claude Fable 5.1｜I Made GPT-6 Astra and Fable 5.1 Build A V…",
+      "published_at": "2026/9/7 00:00:01"
+    },
+    "bseedFVIlnw": {
+      "bvid": "BV1fjb467EM5",
+      "url": "https://www.bilibili.com/video/BV1fjb467EM5",
+      "title": "解读1000项健康研究：我学到的10件事｜I analyzed 1,000 Health Studies: Here are 10 Things I Lear…",
+      "published_at": "2026/9/6 23:43:29"
+    },
+    "bseed8f4osr": {
+      "bvid": "BV1uZbx6hEjr",
+      "url": "https://www.bilibili.com/video/BV1uZbx6hEjr",
+      "title": "把24K纯金炼成绿金：多种配方的金合金实验｜How To Make Green Gold",
+      "published_at": "2026/9/6 23:24:57"
+    },
+    "bseediFd0i7": {
+      "bvid": "BV11Pb46xEcT",
+      "url": "https://www.bilibili.com/video/BV11Pb46xEcT",
+      "title": "从12公斤绿色纤维CPU中提取黄金全过程｜Gold Recovery from 12 kg of Green Fiber CPUS",
+      "published_at": "2026/9/6 23:09:14"
+    },
+    "bseed3UuvPs": {
+      "bvid": "BV1FxbW6yESM",
+      "url": "https://www.bilibili.com/video/BV1FxbW6yESM",
+      "title": "只用泥土做三瓶封闭生态瓶，对比哪个长得最快｜I Put Nothing But Dirt in a Jar, Months later THIS Appear…",
+      "published_at": "2026/9/6 22:44:58"
+    },
+    "bseedwVteki": {
+      "bvid": "BV1wsbW6LEG8",
+      "url": "https://www.bilibili.com/video/BV1wsbW6LEG8",
+      "title": "用泥土人工合成蛋白石宝石｜Making Opals from Dirt",
+      "published_at": "2026/9/6 22:32:28"
+    },
+    "bseedeYWZ5C": {
+      "bvid": "BV12VbW6XE9V",
+      "url": "https://www.bilibili.com/video/BV12VbW6XE9V",
+      "title": "现实中制作《石纪元》复活液，真能溶解岩石吗？｜I Tested Dr. Stone’s Revival Fluid in REAL LIFE! Does It…",
+      "published_at": "2026/9/6 22:09:18"
+    },
+    "bseedzLhkFz": {
+      "bvid": "BV1NLbW6HECG",
+      "url": "https://www.bilibili.com/video/BV1NLbW6HECG",
+      "title": "我把一台能玩Minecraft的PC塞进了鼠标里｜I Built a PC Inside a Mouse",
+      "published_at": "2026/9/6 22:09:03"
+    },
+    "bseed1c5lfX": {
+      "bvid": "BV1YCbW6AE5g",
+      "url": "https://www.bilibili.com/video/BV1YCbW6AE5g",
+      "title": "用真实化学复刻《魔女之旅》的魔法墨水",
+      "published_at": "2026/9/6 21:39:57"
+    },
+    "bseedFndpHv": {
+      "bvid": "BV1SmbW6bE19",
+      "url": "https://www.bilibili.com/video/BV1SmbW6bE19",
+      "title": "蜡雕工艺制作18K金蓝宝石订婚戒指全过程｜how to make jewelry out of wax - making engagement ring fr…",
+      "published_at": "2026/9/6 21:38:18"
+    },
+    "bseedL0WOyp": {
+      "bvid": "BV17abW66EJa",
+      "url": "https://www.bilibili.com/video/BV17abW66EJa",
+      "title": "暴雪官网异动：星际争霸新作或于BlizzCon公布｜Blizzard is teasing a new StarCraft game.",
+      "published_at": "2026/9/6 21:19:26"
+    },
+    "bseedv1_eHz": {
+      "bvid": "BV1cbbW6kE4D",
+      "url": "https://www.bilibili.com/video/BV1cbbW6kE4D",
+      "title": "罗曼太空望远镜将如何革新系外行星探索｜How Nancy Grace Roman will change exoplanet science forever",
+      "published_at": "2026/9/6 21:10:09"
+    },
+    "bseed6mTkmU": {
+      "bvid": "BV1dBbW6vEzG",
+      "url": "https://www.bilibili.com/video/BV1dBbW6vEzG",
+      "title": "高LDL被夸大了吗？解读胆固醇与心脏病研究｜‘They Lied about High LDL!’ - The Corrupt Science behind…",
+      "published_at": "2026/9/6 21:01:10"
+    },
+    "bseedfp8262": {
+      "bvid": "BV1AKbs67EYW",
+      "url": "https://www.bilibili.com/video/BV1AKbs67EYW",
+      "title": "用GPT-6 Astra打造AI实时直播视频应用｜GPT-6 Astra | How to build an AI Live Stream App with…",
+      "published_at": "2026/9/6 20:34:45"
+    },
+    "bseedRpxQz-": {
+      "bvid": "BV1BGbs6GExo",
+      "url": "https://www.bilibili.com/video/BV1BGbs6GExo",
+      "title": "华尔街正在悄悄给AI热潮加杠杆吗｜They're Hiding the AI Crash",
+      "published_at": "2026/9/6 20:21:02"
+    },
+    "bseedyYJb9O": {
+      "bvid": "BV1T9bW6xEL3",
+      "url": "https://www.bilibili.com/video/BV1T9bW6xEL3",
+      "title": "一周AI大事盘点：GPT-6 Astra、Gemini 3.8与Fable 5.｜Insane AI News Week: GPT-6 Astra, Fabl…",
+      "published_at": "2026/9/6 20:02:42"
+    },
+    "bseedjlBTM7": {
+      "bvid": "BV11Fbs6nEYc",
+      "url": "https://www.bilibili.com/video/BV11Fbs6nEYc",
+      "title": "实测TikTok新AI视频生成器Seedance，能用最离谱提示词玩坏它吗｜ABUSING TikTok’s New AI Video Generator",
+      "published_at": "2026/9/6 19:45:44"
+    },
+    "bseedJr7vif": {
+      "bvid": "BV1bhbs6FErV",
+      "url": "https://www.bilibili.com/video/BV1bhbs6FErV",
+      "title": "桑德斯提案禁开发先进AI？Glenn Beck谈AI监管与风险｜I Asked AI What It FEARS. It Gave a TERRIFYING…",
+      "published_at": "2026/9/6 19:34:52"
+    },
+    "bseedxGZQs7": {
+      "bvid": "BV11zbs69Esr",
+      "url": "https://www.bilibili.com/video/BV11zbs69Esr",
+      "title": "我开发了人生第一款iOS应用并上架：踩过的坑与教训｜I Built & Published My First iOS App: Here’s What I’d…",
+      "published_at": "2026/9/6 19:16:41"
+    },
+    "bseed7j60qn": {
+      "bvid": "BV1iEbs6MEAo",
+      "url": "https://www.bilibili.com/video/BV1iEbs6MEAo",
+      "title": "GPT-6 Astra 对比 Claude Fable 5.1：同一提示词实测｜GPT-6 Astra vs Claude Fable 5.1: Same P…",
+      "published_at": "2026/9/6 18:53:51"
+    },
+    "bseeddtz6TR": {
+      "bvid": "BV1umbH6QExy",
+      "url": "https://www.bilibili.com/video/BV1umbH6QExy",
+      "title": "我的世界基岩版超简易袭击经验农场教程｜New EASIEST RAID XP FARM Minecraft Bedrock 26.4/1.21+!",
+      "published_at": "2026/9/6 18:14:16"
+    },
+    "bseed0yYKip": {
+      "bvid": "BV1oYbH6cEZe",
+      "url": "https://www.bilibili.com/video/BV1oYbH6cEZe",
+      "title": "我的世界生存：建矿车升降竖井与矿工营地｜Построил шахту с вагонетками и шахтёрский лагерь | Майнкраф…",
+      "published_at": "2026/9/6 17:32:43"
+    },
+    "bseed7cfdoV": {
+      "bvid": "BV1MDbH6SEHS",
+      "url": "https://www.bilibili.com/video/BV1MDbH6SEHS",
+      "title": "让ChatGPT和Claude互相比赛做离谱的Minecraft模组｜ChatGPT vs Claude Make Ridiculous Mods (ft.…",
+      "published_at": "2026/9/6 16:38:44"
+    },
+    "bseedkoJZz6": {
+      "bvid": "BV12qbp67Euh",
+      "url": "https://www.bilibili.com/video/BV12qbp67Euh",
+      "title": "坠机亚马逊雨林：我的世界模组生存挑战｜Surviving the Amazon Rainforest in Minecraft",
+      "published_at": "2026/9/6 15:59:04"
+    },
+    "bseedaIrMio": {
+      "bvid": "BV1EXbp6TEVR",
+      "url": "https://www.bilibili.com/video/BV1EXbp6TEVR",
+      "title": "新手教程：火龙果扦插种植方法｜How to grow Purple dragon fruit from cuttings for beginners",
+      "published_at": "2026/9/6 14:55:46"
+    },
+    "bseedsUuMLr": {
+      "bvid": "BV1Wrbp6yEap",
+      "url": "https://www.bilibili.com/video/BV1Wrbp6yEap",
+      "title": "深度解析：我的世界新版世界生成为何如此臃肿｜Why Is Minecraft's World Generation So Overengineered?",
+      "published_at": "2026/9/6 14:15:33"
+    },
+    "bseeds8oXop": {
+      "bvid": "BV1qTbn6FEBs",
+      "url": "https://www.bilibili.com/video/BV1qTbn6FEBs",
+      "title": "用800个晶体管从零手工造一台电脑｜I Built A Computer From Scratch!",
+      "published_at": "2026/9/6 13:26:50"
+    },
+    "bseed7dI92d": {
+      "bvid": "BV14tbn61EDN",
+      "url": "https://www.bilibili.com/video/BV14tbn61EDN",
+      "title": "在家自制LED：从芯片封装到点亮蓝紫光｜Making LEDs at Home",
+      "published_at": "2026/9/6 12:46:01"
+    },
+    "bseedaJU90T": {
+      "bvid": "BV1eGbn6dErB",
+      "url": "https://www.bilibili.com/video/BV1eGbn6dErB",
+      "title": "我设计了自己的16位CPU和配套编程语言｜I Designed My Own 16-bit CPU",
+      "published_at": "2026/9/6 12:04:06"
+    },
+    "bseednHhy07": {
+      "bvid": "BV1LQbn6FEWa",
+      "url": "https://www.bilibili.com/video/BV1LQbn6FEWa",
+      "title": "我把一台完整电脑装进了键盘里｜I Built a PC Inside a Keyboard!",
+      "published_at": "2026/9/6 11:25:16"
+    },
+    "bseedfP40gv": {
+      "bvid": "BV1JCbn6vEL1",
+      "url": "https://www.bilibili.com/video/BV1JCbn6vEL1",
+      "title": "从零开始挑战成为服务器首富｜Can I Become a Millionaire Starting From Nothing?",
+      "published_at": "2026/9/6 10:44:34"
+    },
+    "bseedU4bUaS": {
+      "bvid": "BV13AbH6QEgH",
+      "url": "https://www.bilibili.com/video/BV13AbH6QEgH",
+      "title": "我用15美元的树莓派零2挑战世界上最小的游戏电脑｜I Tried Gaming on the World’s Smallest PC",
+      "published_at": "2026/9/6 09:43:06"
+    },
+    "bseedW2pGOd": {
+      "bvid": "BV1pYbE6eEn6",
+      "url": "https://www.bilibili.com/video/BV1pYbE6eEn6",
+      "title": "中英双语精选｜3 EASY Ways To Mine Bitcoin (Start for $3)",
+      "published_at": "2026/9/6 08:59:16"
+    },
+    "bseedebCmH0": {
+      "bvid": "BV1a7bE6yEg9",
+      "url": "https://www.bilibili.com/video/BV1a7bE6yEg9",
+      "title": "我解锁了Java版全部126个Minecraft进度｜I Got All 126 Minecraft Achievements",
+      "published_at": "2026/9/6 08:21:38"
+    },
+    "bseedmsZ95r": {
+      "bvid": "BV17kbE6tErd",
+      "url": "https://www.bilibili.com/video/BV17kbE6tErd",
+      "title": "让ChatGPT和Claude各自经营AI动画工作室对决｜I Gave ChatGPT and Claude $200 to Build Rival Anim…",
+      "published_at": "2026/9/6 07:11:30"
+    },
+    "bseedUlPqwa": {
+      "bvid": "BV1tPbJ6VEx7",
+      "url": "https://www.bilibili.com/video/BV1tPbJ6VEx7",
+      "title": "GPT-6 Astra与Fable 5.1同题对决三个应用实测｜I Made GPT-6 Astra & Fable 5.1 Build the Same A…",
+      "published_at": "2026/9/6 06:30:09"
+    },
+    "bseed0uJJ54": {
+      "bvid": "BV1f7b76REXn",
+      "url": "https://www.bilibili.com/video/BV1f7b76REXn",
+      "title": "六年打造：我们的南花园从空地到成形｜The Story of Our South Garden: 6 Years in the Making! 💚🌿💚",
+      "published_at": "2026/9/6 03:25:14"
+    },
+    "bseedfk2V6_": {
+      "bvid": "BV1uZbj6zETJ",
+      "url": "https://www.bilibili.com/video/BV1uZbj6zETJ",
+      "title": "我用一周时间在Minecraft极限模式建造终极基地｜I Had One Week To Build My Ultimate Hardcore Base In…",
+      "published_at": "2026/9/6 02:59:29"
+    },
+    "bseedOs0Sia": {
+      "bvid": "BV1dxb76JEVR",
+      "url": "https://www.bilibili.com/video/BV1dxb76JEVR",
+      "title": "猜乱序单词挑战：答对才能吃，输家受惩罚｜Guess the Word Food Challenge/Golgappa, Afghani Momos, Kurk…",
+      "published_at": "2026/9/6 01:59:35"
+    },
+    "bseedEhHkDp": {
+      "bvid": "BV1X8b762EQu",
+      "url": "https://www.bilibili.com/video/BV1X8b762EQu",
+      "title": "挑战餐厅超大份灰熊汉堡大胃王挑战赛｜Can I Be The First To Beat This Massive Eating Challenge?",
+      "published_at": "2026/9/6 01:45:06"
+    },
+    "bseed0wQQCA": {
+      "bvid": "BV1BwbE6REA6",
+      "url": "https://www.bilibili.com/video/BV1BwbE6REA6",
+      "title": "原始技术：铁粒熔焊实验，短次熔炼更出铁｜Primitive Technology: Iron Prill Welding Experiment",
+      "published_at": "2026/9/6 01:24:18"
+    },
+    "bseed28dYkr": {
+      "bvid": "BV1RMbE6DE73",
+      "url": "https://www.bilibili.com/video/BV1RMbE6DE73",
+      "title": "我的世界：用扫描仪找出邪恶村民！｜Using SCANNER to Find EVIL VILLAGER in Minecraft!",
+      "published_at": "2026/9/6 01:10:10"
+    },
+    "bseedjDTqiT": {
+      "bvid": "BV11mb76NEgB",
+      "url": "https://www.bilibili.com/video/BV11mb76NEgB",
+      "title": "KONAMI PRESS START 发布会：寂静岭新作与恶魔城情报｜KONAMI PRESS START 9.3.2026 ( KONAMI Game Ne…",
+      "published_at": "2026/9/6 00:48:32"
+    },
+    "bseedd5Zety": {
+      "bvid": "BV1cgbL6XEst",
+      "url": "https://www.bilibili.com/video/BV1cgbL6XEst",
+      "title": "印度 Horror 游戏体验：我在火车站卖奶茶｜I Became a Railway Station Chaiwali | Desi Horror Game…",
+      "published_at": "2026/9/6 00:17:09"
+    },
+    "bseed_e0Smp": {
+      "bvid": "BV1ZjbL6mEYC",
+      "url": "https://www.bilibili.com/video/BV1ZjbL6mEYC",
+      "title": "夏日结束回归日常！各类生活用品是如何制造的｜End of the SUMMER Back to the Grind! | How It's Made | Sc…",
+      "published_at": "2026/9/6 00:03:22"
+    },
+    "bseedrhGco-": {
+      "bvid": "BV1NAbL6tETW",
+      "url": "https://www.bilibili.com/video/BV1NAbL6tETW",
+      "title": "试玩新作《月光光心慌慌》游戏：扮演迈克尔·迈尔斯｜I Played The New Halloween Game",
+      "published_at": "2026/9/5 23:30:20"
+    },
+    "bseed_PCRvI": {
+      "bvid": "BV1XhbL6MEHU",
+      "url": "https://www.bilibili.com/video/BV1XhbL6MEHU",
+      "title": "瑞克和莫蒂：当科学实验彻底失控｜When Science Goes Horribly Wrong | Rick and Morty | adult swim",
+      "published_at": "2026/9/5 23:00:30"
+    },
+    "bseed9bnnyo": {
+      "bvid": "BV1SqbL6PEG1",
+      "url": "https://www.bilibili.com/video/BV1SqbL6PEG1",
+      "title": "阿特拉斯狮子并未灭绝？摩洛哥目击事件真相｜Scientists Found the “Extinct” Atlas Lion — And It Shouldn…",
+      "published_at": "2026/9/5 22:47:13"
+    },
+    "bseedA_wEbH": {
+      "bvid": "BV1fEbL6jEPV",
+      "url": "https://www.bilibili.com/video/BV1fEbL6jEPV",
+      "title": "实测网上真假难辨的AI广告产品｜I Tested AI Scam Products",
+      "published_at": "2026/9/5 22:33:35"
+    },
+    "bseedn45oh5": {
+      "bvid": "BV1fRbL6QE6K",
+      "url": "https://www.bilibili.com/video/BV1fRbL6QE6K",
+      "title": "用免费AI编程智能体MonkeyCode从零构建完整应用｜I Built a Complete App With a Free AI Coding Agent…",
+      "published_at": "2026/9/5 21:49:19"
+    },
+    "bseedgae38T": {
+      "bvid": "BV1qcbj6mEoG",
+      "url": "https://www.bilibili.com/video/BV1qcbj6mEoG",
+      "title": "科幻作品如何预言人工智能的威胁｜Sci-Fi Was Right About AI",
+      "published_at": "2026/9/5 21:33:32"
+    },
+    "bseedJXDlWV": {
+      "bvid": "BV12CbL6FEHB",
+      "url": "https://www.bilibili.com/video/BV12CbL6FEHB",
+      "title": "老苹果树皮接换种：嫁接全过程与100天生长记录｜Fruit Tree Grafting | Step by Step + 100 Days Results",
+      "published_at": "2026/9/5 21:15:38"
+    },
+    "bseedEEbhyH": {
+      "bvid": "BV1CUbL6dEkJ",
+      "url": "https://www.bilibili.com/video/BV1CUbL6dEkJ",
+      "title": "我的世界：世界每过一天就升级一个游戏版本｜MINECRAFT BUT EVERY DAY IS A NEW VERSION",
+      "published_at": "2026/9/5 21:06:08"
+    },
+    "bseedCBH__D": {
+      "bvid": "BV1H8bj6ZEtn",
+      "url": "https://www.bilibili.com/video/BV1H8bj6ZEtn",
+      "title": "坚持开发独立游戏1000天，我做出了什么？｜I Spent 1000 Days on My Indie Game... What Do I Have to S…",
+      "published_at": "2026/9/5 20:30:37"
+    },
+    "bseedpQYsLF": {
+      "bvid": "BV1Qgbj6rEbx",
+      "url": "https://www.bilibili.com/video/BV1Qgbj6rEbx",
+      "title": "在家种黄瓜的新方法，结果多到挂满枝｜Unbelievably abundant fruit - New method to grow cucumbers at…",
+      "published_at": "2026/9/5 20:13:48"
+    },
+    "bseedtLUP96": {
+      "bvid": "BV1bEbj6KEyU",
+      "url": "https://www.bilibili.com/video/BV1bEbj6KEyU",
+      "title": "我画了11770小时：一万小时定律的亲身验证｜I Drew for 11,770 Hours... Here's What I Learned",
+      "published_at": "2026/9/5 19:56:09"
+    },
+    "bseed-tGsjB": {
+      "bvid": "BV1bHt26QEvR",
+      "url": "https://www.bilibili.com/video/BV1bHt26QEvR",
+      "title": "用GPT-6 Astra和Blender从零复刻三款大作游戏",
+      "published_at": "2026/9/5 19:38:49"
+    },
+    "bseed1UFYM9": {
+      "bvid": "BV14tt26mEZd",
+      "url": "https://www.bilibili.com/video/BV14tt26mEZd",
+      "title": "我是怎么变成班里那个“安静的孩子”的｜Becoming the \"Quiet Kid\"",
+      "published_at": "2026/9/5 19:18:14"
+    },
+    "bseedfQnqgb": {
+      "bvid": "BV1nzt26gEiB",
+      "url": "https://www.bilibili.com/video/BV1nzt26gEiB",
+      "title": "16岁那年我暗恋24岁同事的故事｜I Had a Crush on My 24-Year-Old Coworker...",
+      "published_at": "2026/9/5 17:45:50"
+    },
+    "bseedqpSr-i": {
+      "bvid": "BV1Hzt26gEXc",
+      "url": "https://www.bilibili.com/video/BV1Hzt26gEXc",
+      "title": "在极限生存中打造Minecraft最强盔甲｜I Actually Got Minecraft's Strongest Armor",
+      "published_at": "2026/9/5 17:45:35"
+    },
+    "bseedZd6VuD": {
+      "bvid": "BV1kzt26gEuv",
+      "url": "https://www.bilibili.com/video/BV1kzt26gEuv",
+      "title": "三天涨两千粉！画师up主连发三版脚本表达感谢｜WHAT IS HAPPENING ON YOUTUBE???",
+      "published_at": "2026/9/5 17:41:34"
+    },
+    "bseed7gyrta": {
+      "bvid": "BV1rzt26gEok",
+      "url": "https://www.bilibili.com/video/BV1rzt26gEok",
+      "title": "我的第一个视频！聊聊我想做的故事频道｜Come Watch My First Video! ♡",
+      "published_at": "2026/9/5 17:40:18"
+    },
+    "bseedRQ_qgB": {
+      "bvid": "BV1Tutm6SEem",
+      "url": "https://www.bilibili.com/video/BV1Tutm6SEem",
+      "title": "用厨房白糖养出一颗大晶体｜I Turned Kitchen Sugar into a Crystal",
+      "published_at": "2026/9/5 17:28:29"
+    },
+    "bseedDyh77s": {
+      "bvid": "BV1N3tm6EE98",
+      "url": "https://www.bilibili.com/video/BV1N3tm6EE98",
+      "title": "刷手机如何摧毁深度思考？脑腐的神经科学与自救方法｜SCROLLING RUINED MY ABILITY TO THINK. the neuroscience…",
+      "published_at": "2026/9/5 17:24:25"
+    },
+    "bseedK3TRSr": {
+      "bvid": "BV11utm6SEmr",
+      "url": "https://www.bilibili.com/video/BV11utm6SEmr",
+      "title": "3D模型开始给自己建模衣服了｜My 3D Model Began Modeling Its Own Clothes",
+      "published_at": "2026/9/5 17:23:18"
+    },
+    "bseedTHC2gO": {
+      "bvid": "BV1ott16ZExF",
+      "url": "https://www.bilibili.com/video/BV1ott16ZExF",
+      "title": "我的世界100天吸血鬼猎人生存实况｜I survived 100 Days as a VAMPIRE HUNTER in Minecraft",
+      "published_at": "2026/9/5 12:47:04"
+    },
+    "bseedsKnjjq": {
+      "bvid": "BV1nJt16NEz6",
+      "url": "https://www.bilibili.com/video/BV1nJt16NEz6",
+      "title": "为了MrBeast的参观，我建完了拖了四年的超平坦山｜I Finally Built It After 4 Years...",
+      "published_at": "2026/9/5 12:23:13"
+    },
+    "bseedA0sZJZ": {
+      "bvid": "BV1Zxt16FE1R",
+      "url": "https://www.bilibili.com/video/BV1Zxt16FE1R",
+      "title": "在Minecraft极限模式下建造巨型方块｜I Built The WORLDS BIGGEST BLOCKS In Minecraft Hardcore",
+      "published_at": "2026/9/5 12:04:48"
+    },
+    "bseedXB7Ti1": {
+      "bvid": "BV1Cdt166EF1",
+      "url": "https://www.bilibili.com/video/BV1Cdt166EF1",
+      "title": "末地曾经是一片海洋？探究末影人的秘密｜The End Used to Be Full of Water",
+      "published_at": "2026/9/5 11:46:09"
+    },
+    "bseedv7w4rD": {
+      "bvid": "BV1AZt16uEMZ",
+      "url": "https://www.bilibili.com/video/BV1AZt16uEMZ",
+      "title": "GPT-6 Astra实测：四个项目对决Claude与上代模型｜GPT-6 Astra Is HERE (Better Than Fable 5.1??)",
+      "published_at": "2026/9/5 11:43:04"
+    },
+    "bseedD5LGfX": {
+      "bvid": "BV1yXt16rE8n",
+      "url": "https://www.bilibili.com/video/BV1yXt16rE8n",
+      "title": "用GPT-6 Astra挑战复刻我的世界、堡垒之夜和GTA6｜GPT 6-Astra is Insane.",
+      "published_at": "2026/9/5 11:35:46"
+    },
+    "bseedB-5Er0": {
+      "bvid": "BV1zwt26vEon",
+      "url": "https://www.bilibili.com/video/BV1zwt26vEon",
+      "title": "GPT 6 Astra用参考图在Blender搭建场景实测｜GPT 6 Astra Pushed Blender Beyond It's Limits",
+      "published_at": "2026/9/5 11:27:35"
+    },
+    "bseedOZ_9A1": {
+      "bvid": "BV1VUtk6mE6R",
+      "url": "https://www.bilibili.com/video/BV1VUtk6mE6R",
+      "title": "实测GPT-6 Astra复刻我的世界、蜘蛛侠与使命召唤｜ChatGPT 6 Astra Changes Everything.",
+      "published_at": "2026/9/5 09:53:02"
+    },
+    "bseed891arY": {
+      "bvid": "BV1TZtk6rEyK",
+      "url": "https://www.bilibili.com/video/BV1TZtk6rEyK",
+      "title": "GPT-6 Astra实测：20个从实用到惊人的真实案例｜GPT-6 Astra: 20 Real Examples From Useful to Almos…",
+      "published_at": "2026/9/5 09:46:13"
+    },
+    "bseedhmQyGI": {
+      "bvid": "BV1MFtC6gEpd",
+      "url": "https://www.bilibili.com/video/BV1MFtC6gEpd",
+      "title": "GPT-6 Astra发布：ARC-AGI-3得分99.9%背后的能力与隐忧｜GPT-6 Just Did the Impossible... 99% AGI",
+      "published_at": "2026/9/5 09:41:29"
+    },
+    "bseedjZ9c9f": {
+      "bvid": "BV13Rtk6CEGa",
+      "url": "https://www.bilibili.com/video/BV13Rtk6CEGa",
+      "title": "GPT-6 Astra对决Claude Fable 5.1实测对比｜GPT-6 Astra vs Fable 5.1.. Who Wins!?",
+      "published_at": "2026/9/5 09:39:05"
+    },
+    "bseedk_mB-k": {
+      "bvid": "BV13Rtk6CEuy",
+      "url": "https://www.bilibili.com/video/BV13Rtk6CEuy",
+      "title": "用GPT-6 Astra一个提示词做出整支视频｜GPT-6 Astra Made This Entire Video",
+      "published_at": "2026/9/5 09:34:53"
+    },
+    "bseedl91KK_": {
+      "bvid": "BV1uotk6GEAE",
+      "url": "https://www.bilibili.com/video/BV1uotk6GEAE",
+      "title": "实测GPT-6 Astra接入Blender的3D创作能力｜GPT-6 Astra Just Dropped. I Tested It In Blender",
+      "published_at": "2026/9/5 09:33:15"
+    },
+    "bseed8shEgF": {
+      "bvid": "BV15xtC6pEXw",
+      "url": "https://www.bilibili.com/video/BV15xtC6pEXw",
+      "title": "实测 GPT-6 Astra 对比 Fable 5.1：谁更强｜I Tested GPT 6 Astra vs Fable 5.1 (No Hype Asse…",
+      "published_at": "2026/9/5 09:21:51"
+    },
+    "bseedIfx34-": {
+      "bvid": "BV1aGtk6GE7b",
+      "url": "https://www.bilibili.com/video/BV1aGtk6GE7b",
+      "title": "星露谷物语Sunlit Valley模组生存：扩建村庄EP3",
+      "published_at": "2026/9/5 03:40:59"
+    },
+    "bseedP-VpOD": {
+      "bvid": "BV1tJtk6qEVm",
+      "url": "https://www.bilibili.com/video/BV1tJtk6qEVm",
+      "title": "如何免费制作AI水果延时生长视频教程｜How I Make VIRAL 'Fruit Timelapse' Videos (100% FREE)",
+      "published_at": "2026/9/5 03:14:20"
+    },
+    "bseedKqqntu": {
+      "bvid": "BV1eAtk6EEeC",
+      "url": "https://www.bilibili.com/video/BV1eAtk6EEeC",
+      "title": "Kling动作控制免费使用教程：省额度生成AI视频｜How to Use Kling Motion Control FREE (Kling 3 + 2.6 M…",
+      "published_at": "2026/9/5 03:14:07"
+    },
+    "bseedtS4INJ": {
+      "bvid": "BV1vAtk6EEC2",
+      "url": "https://www.bilibili.com/video/BV1vAtk6EEC2",
+      "title": "NVIDIA Kimodo C++版：CPU免显存本地AI动画教程｜NVIDIA Kimodo Now Runs Without a GPU - Free L…",
+      "published_at": "2026/9/5 03:13:24"
+    },
+    "bseedS4pcd9": {
+      "bvid": "BV1vPtk6mESL",
+      "url": "https://www.bilibili.com/video/BV1vPtk6mESL",
+      "title": "AE Roto Brush总失败，我用SAM 2自研动画转描工具｜Roto Brush Kept Failing My AMVs, So I Built My…",
+      "published_at": "2026/9/5 03:10:17"
+    },
+    "bseedd_xDHY": {
+      "bvid": "BV19Ptk6mEWM",
+      "url": "https://www.bilibili.com/video/BV19Ptk6mEWM",
+      "title": "Minecraft硬核生存：打造盔甲纹饰自动化工厂｜I Built an ARMOR TRIM Factory in Minecraft Hardcore",
+      "published_at": "2026/9/5 03:09:42"
+    },
+    "bseed5OUoTJ": {
+      "bvid": "BV1vPtk6mECE",
+      "url": "https://www.bilibili.com/video/BV1vPtk6mECE",
+      "title": "8GB显存用MiniMax Turbo LoRA做AI动画工作流｜8GB VRAM으로 MiniMax 애니 만들기 | Alibaba Turbo LoRA…",
+      "published_at": "2026/9/5 03:07:40"
+    },
+    "bseedr2rFBo": {
+      "bvid": "BV1eTtk61EW3",
+      "url": "https://www.bilibili.com/video/BV1eTtk61EW3",
+      "title": "用免费AI制作3D国风仙侠动画教程｜How to Make Viral 3D Donghua Animations Using Free AI (Step-b…",
+      "published_at": "2026/9/5 02:48:37"
+    },
+    "bseedhSEgVT": {
+      "bvid": "BV1RKtk6jEqb",
+      "url": "https://www.bilibili.com/video/BV1RKtk6jEqb",
+      "title": "AI工厂流程动画制作教程：从提示词到成片｜The Free AI Industrial Niche Making $10K+/Month Right Now",
+      "published_at": "2026/9/5 02:47:37"
+    },
+    "bseedqiajcc": {
+      "bvid": "BV1YKtk6jECB",
+      "url": "https://www.bilibili.com/video/BV1YKtk6jECB",
+      "title": "用ChatGPT+Google Flow制作动漫真人化AI视频教程｜How to Make Viral Anime Live-Action Videos (S…",
+      "published_at": "2026/9/5 02:45:33"
+    },
+    "bseedGg_b6B": {
+      "bvid": "BV1QTtk61Em5",
+      "url": "https://www.bilibili.com/video/BV1QTtk61Em5",
+      "title": "用ChatGPT+Google Flow制作吉卜力风治愈系AI动画｜The Free AI Healing Anime Niche Getting Milli…",
+      "published_at": "2026/9/5 02:41:45"
+    },
+    "bseeddnrPEn": {
+      "bvid": "BV1eTtk61E7t",
+      "url": "https://www.bilibili.com/video/BV1eTtk61E7t",
+      "title": "用Gemini 3.8 Flash不到10条提示词做出类Minecraft游戏｜Gemini 3.8 Flash Built an INSANE Minecr…",
+      "published_at": "2026/9/5 02:41:23"
+    },
+    "bseediY-CLd": {
+      "bvid": "BV17ztk69EhY",
+      "url": "https://www.bilibili.com/video/BV17ztk69EhY",
+      "title": "用红石打造5x5四叶吊扇｜I spent WEEKS making this",
+      "published_at": "2026/9/5 02:39:40"
+    },
+    "bseedZSOiqM": {
+      "bvid": "BV1Jitk6dE7h",
+      "url": "https://www.bilibili.com/video/BV1Jitk6dE7h",
+      "title": "让ChatGPT、Claude和Gemini比赛重建我的世界村庄｜Which AI Can Build the BEST Minecraft Village?",
+      "published_at": "2026/9/5 02:33:18"
+    },
+    "bseedH8szBT": {
+      "bvid": "BV1BBtk6sEkx",
+      "url": "https://www.bilibili.com/video/BV1BBtk6sEkx",
+      "title": "实测新推出的AI二次元女友，再对比马斯克的｜I Built a Better AI Waifu Than Elon Musk Again",
+      "published_at": "2026/9/5 02:25:14"
+    },
+    "bseedU7PG5g": {
+      "bvid": "BV1Gmtk6EEB5",
+      "url": "https://www.bilibili.com/video/BV1Gmtk6EEB5",
+      "title": "我在极限模式做出了Minecraft最强盔甲｜I Actually Got Minecraft's Strongest Armor",
+      "published_at": "2026/9/5 02:20:34"
+    },
+    "bseedXpGaUA": {
+      "bvid": "BV1rytz6XEUe",
+      "url": "https://www.bilibili.com/video/BV1rytz6XEUe",
+      "title": "GPT-6 Astra发布：99.9% ARC-AGI-3分数算AGI吗｜Did OpenAI Just Achieve AGI? ChatGPT GPT-6…",
+      "published_at": "2026/9/5 01:26:45"
+    },
+    "bseedTU50_2": {
+      "bvid": "BV1Cytz6XEPx",
+      "url": "https://www.bilibili.com/video/BV1Cytz6XEPx",
+      "title": "用Claude Fable 5.1低成本搞定知识工作实测｜Everyone's Testing Claude Fable 5.1 On Code. It Ma…",
+      "published_at": "2026/9/5 01:26:01"
+    },
+    "bseedogpyKN": {
+      "bvid": "BV1ZXtz67EtC",
+      "url": "https://www.bilibili.com/video/BV1ZXtz67EtC",
+      "title": "模拟农场25写实挑战：整地种苜蓿，修理厂靠谱吗｜DID THE REPAIR SHOP RIP ME OFF? - Realism Challenge | E…",
+      "published_at": "2026/9/5 01:23:42"
+    },
+    "bseedy0S3fK": {
+      "bvid": "BV1r2tz6HEVY",
+      "url": "https://www.bilibili.com/video/BV1r2tz6HEVY",
+      "title": "用AI挑战复刻地铁跑酷、气球塔防6和饥饿鲨｜Fable 5.1 Is Just Ridiculous",
+      "published_at": "2026/9/5 01:21:48"
+    },
+    "bseedPjtmgZ": {
+      "bvid": "BV1f9tz62EL6",
+      "url": "https://www.bilibili.com/video/BV1f9tz62EL6",
+      "title": "用Claude Fable 5.1和Ziva插件从零做出3D星球跑酷游戏｜Claude Fable 5.1 + This Godot AI Plugin Ch…",
+      "published_at": "2026/9/5 01:12:44"
+    },
+    "bseedKlagJO": {
+      "bvid": "BV1Zdtz6LEPT",
+      "url": "https://www.bilibili.com/video/BV1Zdtz6LEPT",
+      "title": "用GPT-6和Higgsfield AI三步做不出镜YouTube频道｜How a Faceless Channel Made $39K With ChatG…",
+      "published_at": "2026/9/5 01:08:40"
+    },
+    "bseedjOk_Wg": {
+      "bvid": "BV1BDtz6UEQf",
+      "url": "https://www.bilibili.com/video/BV1BDtz6UEQf",
+      "title": "一周AI大事件：GPT-6、Gemini 3.8与Claude 5.1解析｜Insane AI News Week: GPT-6 Astra, Fable 5…",
+      "published_at": "2026/9/5 01:06:36"
+    },
+    "bseed4KHFnp": {
+      "bvid": "BV1zDtz6UEyG",
+      "url": "https://www.bilibili.com/video/BV1zDtz6UEyG",
+      "title": "GPT-6 Astra深度解析：惊人能力与安全隐忧｜GPT 6 Astra, so good even OpenAI are worried",
+      "published_at": "2026/9/5 01:04:18"
+    },
+    "bseed6wHuvD": {
+      "bvid": "BV1P6tz64EAq",
+      "url": "https://www.bilibili.com/video/BV1P6tz64EAq",
+      "title": "逛2026美国农业进展展：最新农机一网打尽｜Take My Money! | 2026 Farm Progress Show",
+      "published_at": "2026/9/5 00:35:05"
+    },
+    "bseedVHqRuu": {
+      "bvid": "BV12Btz6oETz",
+      "url": "https://www.bilibili.com/video/BV12Btz6oETz",
+      "title": "GPT-6 Astra与Fable 5.1首发对比：社区实测与基准数据梳理｜GPT-6 Astra vs Fable 5.1 - The AI War Beg…",
+      "published_at": "2026/9/5 00:28:58"
+    },
+    "bseedjrW7YN": {
+      "bvid": "BV18ut66iEnV",
+      "url": "https://www.bilibili.com/video/BV18ut66iEnV",
+      "title": "KREW五人组挑战盲聋哑拆炸弹！｜BLIND, DEAF, AND MUTE CHALLENGE! (Bombanana)",
+      "published_at": "2026/9/5 00:21:41"
+    },
+    "bseedv6fxxH": {
+      "bvid": "BV1Nnt66FE3v",
+      "url": "https://www.bilibili.com/video/BV1Nnt66FE3v",
+      "title": "探访麦地那椰枣园与阿拉伯传统蜂蜜养殖｜Authentic Organic Date Garden🌴 & Pure Honey Farming 🍯 in L…",
+      "published_at": "2026/9/5 00:18:16"
+    },
+    "bseedUgcPs5": {
+      "bvid": "BV1ewt663Eow",
+      "url": "https://www.bilibili.com/video/BV1ewt663Eow",
+      "title": "单人挑战14年无人攻破的团队披萨大胃王挑战｜SOLO ATTEMPT AT A TEAM PIZZA CHALLENGE WHICH HASN'T BEEN…",
+      "published_at": "2026/9/4 23:46:29"
+    },
+    "bseedp8V0Wi": {
+      "bvid": "BV1iftz6VEuJ",
+      "url": "https://www.bilibili.com/video/BV1iftz6VEuJ",
+      "title": "我的神奇垃圾桶附加包：把垃圾变成宝藏｜ONE MAN'S TRASH ADDON Turns Your JUNK Into TREASURE in Minec…",
+      "published_at": "2026/9/4 23:40:01"
+    },
+    "bseed4PaKCW": {
+      "bvid": "BV1votz6yEpj",
+      "url": "https://www.bilibili.com/video/BV1votz6yEpj",
+      "title": "挑战密歇根18层巨型BBQ三明治“Boss Logg”｜Over 1,000 People Have FAILED This 18-Layer GIANT B…",
+      "published_at": "2026/9/4 23:38:21"
+    },
+    "bseedK19IIz": {
+      "bvid": "BV1aAt666Ey1",
+      "url": "https://www.bilibili.com/video/BV1aAt666Ey1",
+      "title": "我的世界猎人追速通：二选一挑战赛｜Minecraft Manhunt, but Would You Rather?",
+      "published_at": "2026/9/4 23:36:11"
+    },
+    "bseedXWTk1W": {
+      "bvid": "BV1hKt66BE8m",
+      "url": "https://www.bilibili.com/video/BV1hKt66BE8m",
+      "title": "我的世界极限生存第11天：最惨一次团灭后重整旗鼓｜I CAN'T DO THIS ANYMORE... (Minecraft Hardcore Day 11)",
+      "published_at": "2026/9/4 23:32:30"
+    },
+    "bseed3u_ZxF": {
+      "bvid": "BV17Bt662Eu8",
+      "url": "https://www.bilibili.com/video/BV17Bt662Eu8",
+      "title": "我的世界：当所有生物都会掉落超神战利品｜Minecraft but Mobs are Secretly OP",
+      "published_at": "2026/9/4 23:19:16"
+    },
+    "bseedQ_eSmZ": {
+      "bvid": "BV1eyt66kE8Z",
+      "url": "https://www.bilibili.com/video/BV1eyt66kE8Z",
+      "title": "穷人队友偷走富人队资源！我的世界穷富挑战｜POOR Friends Robbed RICH Friends in Minecraft",
+      "published_at": "2026/9/4 23:01:48"
+    },
+    "bseedjWNgwW": {
+      "bvid": "BV15rt66yESj",
+      "url": "https://www.bilibili.com/video/BV15rt66yESj",
+      "title": "Evil Neuro玩气球塔防6，一路整活｜Evil Got A NEW Game To Play",
+      "published_at": "2026/9/4 22:56:01"
+    },
+    "bseedItnK1g": {
+      "bvid": "BV1Cst66xEiV",
+      "url": "https://www.bilibili.com/video/BV1Cst66xEiV",
+      "title": "2026年9月最值得期待的12款新游戏盘点｜12 Best NEW Games To Play In September 2026",
+      "published_at": "2026/9/4 22:42:02"
+    },
+    "bseedXDYdb-": {
+      "bvid": "BV1sHt66tEgD",
+      "url": "https://www.bilibili.com/video/BV1sHt66tEgD",
+      "title": "新独立游戏Terminal War实机展示：硬核PvP射击｜This NEW Indie Game Is The Real Deal...",
+      "published_at": "2026/9/4 22:34:31"
+    },
+    "bseedstbmvy": {
+      "bvid": "BV1Wpt66oExa",
+      "url": "https://www.bilibili.com/video/BV1Wpt66oExa",
+      "title": "如何通过 Verdent 免费使用 GLM 5.3 Flash 编程模型｜Use GLM 5.3 Flash For Free — One of the Be…",
+      "published_at": "2026/9/4 22:26:51"
+    },
+    "bseedymkxtK": {
+      "bvid": "BV1Jht66HEGE",
+      "url": "https://www.bilibili.com/video/BV1Jht66HEGE",
+      "title": "Cloudflare CEO：AI如何冲击互联网商业模式｜How AI Is Breaking the Internet (and What to Do Ab…",
+      "published_at": "2026/9/4 22:24:10"
+    },
+    "bseedR0YF5W": {
+      "bvid": "BV1nht66HE1k",
+      "url": "https://www.bilibili.com/video/BV1nht66HE1k",
+      "title": "未完之夜 第三集A：重逢后的暗流（AI剧集）｜THE NIGHT WE NEVER FINISHED - Episode 3A | AI GL Series…",
+      "published_at": "2026/9/4 22:24:02"
+    },
+    "bseedKcYSCl": {
+      "bvid": "BV1Htt66WEkK",
+      "url": "https://www.bilibili.com/video/BV1Htt66WEkK",
+      "title": "AI水印如何追踪检测AI生成内容",
+      "published_at": "2026/9/4 22:21:29"
+    },
+    "bseedwPtlsO": {
+      "bvid": "BV17at66DEd9",
+      "url": "https://www.bilibili.com/video/BV17at66DEd9",
+      "title": "桑德斯呼吁立即暂停高级AI开发并禁止超级智能｜Pause AI Development NOW",
+      "published_at": "2026/9/4 22:19:22"
+    },
+    "bseedb2ecbT": {
+      "bvid": "BV11wtr6cEXe",
+      "url": "https://www.bilibili.com/video/BV11wtr6cEXe",
+      "title": "德鲁肯米勒重仓1.25亿美元比特币矿业股：AI资金转向比特币？｜This Investing Legend Just Moved $125 Million F…",
+      "published_at": "2026/9/4 22:06:21"
+    },
+    "bseed_gokai": {
+      "bvid": "BV1NAtr68EKo",
+      "url": "https://www.bilibili.com/video/BV1NAtr68EKo",
+      "title": "桑德斯与Z世代对谈：AI如何改变工作与未来｜Bernie Sanders Faces AI Horrors Beyond His Comprehension",
+      "published_at": "2026/9/4 22:05:02"
+    },
+    "bseedjQX9C7": {
+      "bvid": "BV1KFtr6aEiZ",
+      "url": "https://www.bilibili.com/video/BV1KFtr6aEiZ",
+      "title": "AI会让人退化吗？从洞穴鱼到灰人传说的猜想｜Is AI Making Humans ███████?",
+      "published_at": "2026/9/4 21:54:17"
+    },
+    "bseedz2JpON": {
+      "bvid": "BV1pKtr6tE3v",
+      "url": "https://www.bilibili.com/video/BV1pKtr6tE3v",
+      "title": "我的世界：化身路飞从零级练到满级｜I Went From LEVEL 0 to MAX as LUFFY in Minecraft!",
+      "published_at": "2026/9/4 21:37:44"
+    },
+    "bseedFZwH0C": {
+      "bvid": "BV1PKtr6tET5",
+      "url": "https://www.bilibili.com/video/BV1PKtr6tET5",
+      "title": "AI 能设计芯片吗？聊聊 AI 加速 EDA 的 hype 与现实｜AI EDAs: Is It Real?",
+      "published_at": "2026/9/4 21:37:02"
+    },
+    "bseedAijCeC": {
+      "bvid": "BV1f2tq6CExC",
+      "url": "https://www.bilibili.com/video/BV1f2tq6CExC",
+      "title": "挑战收集Minecraft服务器所有非法物品｜Why I Collected Every Illegal Item in This Minecraft SMP…",
+      "published_at": "2026/9/4 12:56:37"
+    },
+    "bseedgTGklA": {
+      "bvid": "BV1Netq6XEK4",
+      "url": "https://www.bilibili.com/video/BV1Netq6XEK4",
+      "title": "GPT-6 Astra 正式发布：实测演示与早期访问者构建案例｜GPT-6 Astra Is Finally Here (And It’s REALLY Go…",
+      "published_at": "2026/9/4 12:18:54"
+    },
+    "bseedP8L80Y": {
+      "bvid": "BV1mhtq69EnU",
+      "url": "https://www.bilibili.com/video/BV1mhtq69EnU",
+      "title": "用GPT-6 Astra与H3 Max构建AI实时直播应用演示｜GPT-6 Astra | How to build an AI Live Stream Ap…",
+      "published_at": "2026/9/4 12:11:12"
+    },
+    "bseed1NMRQJ": {
+      "bvid": "BV1BYbc66Eb1",
+      "url": "https://www.bilibili.com/video/BV1BYbc66Eb1",
+      "title": "英伟达拟收购 Hugging Face：开源 AI 生态的终极博弈｜The Real Reason NVIDIA Is Buying Hugging Face",
+      "published_at": "2026/9/4 03:01:34"
+    },
+    "bseed5kAYRx": {
+      "bvid": "BV1ixto6fEWa",
+      "url": "https://www.bilibili.com/video/BV1ixto6fEWa",
+      "title": "Minecraft挑战：全世界被水淹没还能通关吗｜Minecraft, But The World Is Underwater...",
+      "published_at": "2026/9/3 20:02:06"
+    },
+    "bseedtC-VLu": {
+      "bvid": "BV1rFtZ6iE8w",
+      "url": "https://www.bilibili.com/video/BV1rFtZ6iE8w",
+      "title": "我的世界：每获得成就世界就扩张一格挑战｜Every Advancement Expands the Border",
+      "published_at": "2026/9/3 19:54:14"
+    },
+    "bseed2ot8it": {
+      "bvid": "BV1EAtZ6eEMo",
+      "url": "https://www.bilibili.com/video/BV1EAtZ6eEMo",
+      "title": "我的世界：拥有百万颗心的不死村民的故事｜This Villager has 1,000,000 Hearts in Minecraft..",
+      "published_at": "2026/9/3 19:31:06"
+    },
+    "bseedO-AzFh": {
+      "bvid": "BV1byto62EEx",
+      "url": "https://www.bilibili.com/video/BV1byto62EEx",
+      "title": "写实MC生存第1期：森林极限开局｜My Perfect Start in REALISTIC Minecraft",
+      "published_at": "2026/9/3 19:14:47"
+    },
+    "bseedmB5TNe": {
+      "bvid": "BV1WDto6kEvW",
+      "url": "https://www.bilibili.com/video/BV1WDto6kEvW",
+      "title": "随机猎人追击战：我的世界极限速通挑战｜Speedrunner VS 4.5 Hunters",
+      "published_at": "2026/9/3 18:54:02"
+    },
+    "bseed7DGWxG": {
+      "bvid": "BV1jgtZ6fELP",
+      "url": "https://www.bilibili.com/video/BV1jgtZ6fELP",
+      "title": "在MC里开柠檬水小摊，一路升级成柠檬水工厂｜I OPENED A LEMONADE SHOP IN MINECRAFT!!",
+      "published_at": "2026/9/3 18:15:52"
+    },
+    "bseedP5xj-1": {
+      "bvid": "BV1qMtZ6cEMG",
+      "url": "https://www.bilibili.com/video/BV1qMtZ6cEMG",
+      "title": "用红石打造Minecraft最真实的电视｜Minecraft's Most Realistic Redstone TV",
+      "published_at": "2026/9/3 18:04:23"
+    },
+    "bseedWUjFTl": {
+      "bvid": "BV1YLtZ6xE7g",
+      "url": "https://www.bilibili.com/video/BV1YLtZ6xE7g",
+      "title": "用Claude Fable 5.1从零生成我的世界、植物大战僵尸与蜘蛛侠游戏｜Testing Claude Fable 5.1 so you dont hav…",
+      "published_at": "2026/9/3 17:44:48"
+    },
+    "bseedvoDcbW": {
+      "bvid": "BV13YtR67E6P",
+      "url": "https://www.bilibili.com/video/BV13YtR67E6P",
+      "title": "Claude Fable 5.1 与 Opus 5 UI 设计实测对比｜Claude's NEW Fable 5.1 Is INSANE For UI Des…",
+      "published_at": "2026/9/3 17:36:03"
+    },
+    "bseedCoELA2": {
+      "bvid": "BV1hYtR6jEZ6",
+      "url": "https://www.bilibili.com/video/BV1hYtR6jEZ6",
+      "title": "AI 模型测试变难：Fable 5.1 与游戏开发现状｜I gave up trying to test it",
+      "published_at": "2026/9/3 17:32:29"
+    },
+    "bseedDlRGfx": {
+      "bvid": "BV1RttR6SEWy",
+      "url": "https://www.bilibili.com/video/BV1RttR6SEWy",
+      "title": "Kling 3 与 Seedance 2：2026 最强 AI 视频生成器实测对｜Kling 3 vs Seedance 2: Best AI Video G…",
+      "published_at": "2026/9/3 17:30:24"
+    },
+    "bseedZyXg4q": {
+      "bvid": "BV1Y8tR6EEbr",
+      "url": "https://www.bilibili.com/video/BV1Y8tR6EEbr",
+      "title": "Fable 5.1 为本地模型打造 Smol Coder 编程助手｜Fable 5.1 Just Built a Better Claude Code for…",
+      "published_at": "2026/9/3 17:27:53"
+    },
+    "bseedOfKecc": {
+      "bvid": "BV1Y7tU6AEGJ",
+      "url": "https://www.bilibili.com/video/BV1Y7tU6AEGJ",
+      "title": "Claude Fable 5.1 挑战从零生成我的世界等三款游戏｜Fable 5.1 Is Absurd.",
+      "published_at": "2026/9/2 21:29:49"
+    },
+    "bseedzPLDTq": {
+      "bvid": "BV1XEtU6aE9G",
+      "url": "https://www.bilibili.com/video/BV1XEtU6aE9G",
+      "title": "Claude Fable 5.1 实测：代码与代理工作流表现如何？｜Claude Fable 5.1 Is HERE — Better Than Opus 5…",
+      "published_at": "2026/9/2 21:21:37"
+    },
+    "bseed7yNKYP": {
+      "bvid": "BV1R5tU6NE3V",
+      "url": "https://www.bilibili.com/video/BV1R5tU6NE3V",
+      "title": "Fable 5.1 与 ChatGPT 5.6 代码生成能力实测对比｜Fable 5.1 vs GPT-5.6 Sol: Which One Actually…",
+      "published_at": "2026/9/2 21:20:48"
+    },
+    "bseedlIsK6j": {
+      "bvid": "BV1EDtU66EbK",
+      "url": "https://www.bilibili.com/video/BV1EDtU66EbK",
+      "title": "我的世界：全员苦力怕挑战通关｜Minecraft, but Every Mob Looks Like Creepers",
+      "published_at": "2026/9/2 20:46:06"
+    },
+    "bseedIi7FJZ": {
+      "bvid": "BV1dXtU6uE6t",
+      "url": "https://www.bilibili.com/video/BV1dXtU6uE6t",
+      "title": "NVIDIA DLSS 5：3D 引导神经渲染技术详解｜DLSS 5 | Introducing 3D-Guided Neural Rendering",
+      "published_at": "2026/9/2 20:39:46"
+    },
+    "bseedm6X212": {
+      "bvid": "BV1svtU6QEJa",
+      "url": "https://www.bilibili.com/video/BV1svtU6QEJa",
+      "title": "同一提示词实测 Claude Fable 5.1 对比 Fable 5｜I Tested Claude Fable 5.1 Against Fable 5 W…",
+      "published_at": "2026/9/2 20:36:09"
+    },
+    "bseedz4ldDZ": {
+      "bvid": "BV1MVtJ6VEm9",
+      "url": "https://www.bilibili.com/video/BV1MVtJ6VEm9",
+      "title": "MiniMax H3 ComfyUI 工作流：多角色一致性与语音音频保持｜I Tested Multi-Reference Consistency and A…",
+      "published_at": "2026/9/2 18:27:49"
+    },
+    "bseedMzO9dr": {
+      "bvid": "BV1rVtn6wEoq",
+      "url": "https://www.bilibili.com/video/BV1rVtn6wEoq",
+      "title": "我的世界：工作台改造后能合成枪械｜Minecraft, But You Can Craft Guns!",
+      "published_at": "2026/9/2 15:03:41"
+    },
+    "bseedd70Ro9": {
+      "bvid": "BV1Yttn6QEAh",
+      "url": "https://www.bilibili.com/video/BV1Yttn6QEAh",
+      "title": "Juiced Nomad X R 电动越野摩托实测：性能与价格平衡点｜70 MPH E-Moto: I Tested the Juiced Nomadix R…",
+      "published_at": "2026/9/2 14:58:55"
+    },
+    "bseedgBk-Ki": {
+      "bvid": "BV1k3tn6YEaT",
+      "url": "https://www.bilibili.com/video/BV1k3tn6YEaT",
+      "title": "鲁尔大学有机化学实验：乙酸与正戊醇合成酯｜Laboratory experiment: Ester Synthesis",
+      "published_at": "2026/9/2 14:55:39"
+    },
+    "bseedC_x1rJ": {
+      "bvid": "BV1CMtn6eEuz",
+      "url": "https://www.bilibili.com/video/BV1CMtn6eEuz",
+      "title": "高蛋白食谱实测：印度扁豆饼 Shakshuka 与蛋白意面｜HIGH PROTEIN Recipes That Actually Taste GOOD?!…",
+      "published_at": "2026/9/2 14:45:19"
+    },
+    "bseedy02kc9": {
+      "bvid": "BV1B7tn6bEE4",
+      "url": "https://www.bilibili.com/video/BV1B7tn6bEE4",
+      "title": "女儿点名想吃！自家菜园采摘做印尼传统菜 Rujak Uleg｜My Daughter Requested This Food For Dinner! ❤️ |…",
+      "published_at": "2026/9/2 14:43:30"
+    },
+    "bseedYUt9V4": {
+      "bvid": "BV1wgtn6NEwK",
+      "url": "https://www.bilibili.com/video/BV1wgtn6NEwK",
+      "title": "绿光侠能同时佩戴多枚戒指吗？漫画中的答案揭秘｜What Happens If You Wear Ten Lantern Rings at Once? - Ex…",
+      "published_at": "2026/9/2 14:39:58"
+    },
+    "bseedz96YTM": {
+      "bvid": "BV1Bjtn6FESc",
+      "url": "https://www.bilibili.com/video/BV1Bjtn6FESc",
+      "title": "大花园收获：采摘豆类与香草并冷冻干燥保存｜Big Gardern Harvest + Preserving Herbs",
+      "published_at": "2026/9/2 14:22:27"
+    },
+    "bseedvfT4Hf": {
+      "bvid": "BV1Jat76pEX5",
+      "url": "https://www.bilibili.com/video/BV1Jat76pEX5",
+      "title": "从酸种到布里欧修：全球面包种类与科学原理详解｜Every Type of Bread Explained",
+      "published_at": "2026/9/2 14:18:56"
+    },
+    "bseedtKW51Q": {
+      "bvid": "BV1fYt76DEny",
+      "url": "https://www.bilibili.com/video/BV1fYt76DEny",
+      "title": "eFootball 27 免费前锋全测评：F2P 玩家该用谁？｜I Tested Every FREE CF in eFootball 27… Here’s…",
+      "published_at": "2026/9/2 14:17:05"
+    },
+    "bseedwhJrqY": {
+      "bvid": "BV17Yt76QEXy",
+      "url": "https://www.bilibili.com/video/BV17Yt76QEXy",
+      "title": "成长的代价：身份实验中的孤独与自我重塑｜The Identity Experiment | The Price of Growth Is Isolation",
+      "published_at": "2026/9/2 14:13:56"
+    },
+    "bseedYm1P38": {
+      "bvid": "BV19zt762EBm",
+      "url": "https://www.bilibili.com/video/BV19zt762EBm",
+      "title": "Fable 5.1 与 GPT-5.6 Sol、Kimi K3 等 AI：游戏开发测试",
+      "published_at": "2026/9/2 14:00:21"
+    },
+    "bseedQTnRwG": {
+      "bvid": "BV1dzt762Ex9",
+      "url": "https://www.bilibili.com/video/BV1dzt762Ex9",
+      "title": "用 AI 从零打造温馨农场游戏并制作宣传片｜Claude Fable 5 Make Cozy Village Game From Scratch",
+      "published_at": "2026/9/2 13:57:44"
+    },
+    "bseedShnm2h": {
+      "bvid": "BV1Zvt76JEuR",
+      "url": "https://www.bilibili.com/video/BV1Zvt76JEuR",
+      "title": "Fable 5.1 实测：对比 Fable 5 与 Opus 5，性能提升？",
+      "published_at": "2026/9/2 13:57:25"
+    },
+    "bseedKDYOlR": {
+      "bvid": "BV1PJt76hEFj",
+      "url": "https://www.bilibili.com/video/BV1PJt76hEFj",
+      "title": "Anthropic发布Claude Fable 5.1：最棒的模型｜Anthropic did it again, the best model eve…",
+      "published_at": "2026/9/2 13:46:46"
+    },
+    "bseed_qrgvG": {
+      "bvid": "BV1xJt76hEnb",
+      "url": "https://www.bilibili.com/video/BV1xJt76hEnb",
+      "title": "Anthropic发布Fable 5.1：比Opus更便宜？性能实测对比｜NEW Fable 5.1 Is CHEAPER Than Opus!",
+      "published_at": "2026/9/2 13:44:31"
+    },
+    "bseedNqshkv": {
+      "bvid": "BV1PHt76FETr",
+      "url": "https://www.bilibili.com/video/BV1PHt76FETr",
+      "title": "Anthropic发布Claude Fable 5.1：长程代理能力跃升与成本优｜Fable 5.1 just smoked ASTRA...",
+      "published_at": "2026/9/2 13:42:12"
+    },
+    "bseedgZRCn4": {
+      "bvid": "BV1xqtj6FE1w",
+      "url": "https://www.bilibili.com/video/BV1xqtj6FE1w",
+      "title": "尝试制作爆火的牛奶浸泡 Krissate 甜点，AI 生成的食谱真的可行｜I Tried This Viral Milk-Soaked Krissate Re…",
+      "published_at": "2026/9/2 06:38:31"
+    },
+    "bseedhfq3y_": {
+      "bvid": "BV1xBtj6bEcn",
+      "url": "https://www.bilibili.com/video/BV1xBtj6bEcn",
+      "title": "JJ和Mikey在Minecraft发现CatNap秘密基地并逃脱陷阱｜JJ and Mikey Found Secret CatNap BASE Insid…",
+      "published_at": "2026/9/2 06:34:32"
+    },
+    "bseedWp50sn": {
+      "bvid": "BV14vtj6hEUX",
+      "url": "https://www.bilibili.com/video/BV14vtj6hEUX",
+      "title": "尼泊尔乡村风本地帕达科牛肉慢炖做法｜Local Padako Masu Bhutuwa with Nepali Style || Rangako Masu P…",
+      "published_at": "2026/9/2 06:26:17"
+    },
+    "bseedbi3Oga": {
+      "bvid": "BV1gTt76zE5L",
+      "url": "https://www.bilibili.com/video/BV1gTt76zE5L",
+      "title": "伊朗深山洞穴：-50℃极寒下的游牧生活与传统烹饪｜Iran's Deadliest Winter at -50°C | Extreme Survival &…",
+      "published_at": "2026/9/2 06:20:31"
+    },
+    "bseed-IZDc1": {
+      "bvid": "BV1GKt76gEVn",
+      "url": "https://www.bilibili.com/video/BV1GKt76gEVn",
+      "title": "用随机尺寸房间挑战制作FNAF地图｜Building an FNAF Map BUT Each Room is a RANDOM SIZE…",
+      "published_at": "2026/9/2 06:08:42"
+    },
+    "bseedqeJwIl": {
+      "bvid": "BV1Mgt76qE5z",
+      "url": "https://www.bilibili.com/video/BV1Mgt76qE5z",
+      "title": "我的世界生存：用现代枪械击杀凋灵风暴｜I KILLED the WITHER STORM Using MODERN GUNS in Minecraft Sur…",
+      "published_at": "2026/9/2 06:05:15"
+    },
+    "bseedh5yMRV": {
+      "bvid": "BV1MVt76vEzm",
+      "url": "https://www.bilibili.com/video/BV1MVt76vEzm",
+      "title": "水泥填缝剂加清漆自制超强防水涂层实测｜Mix GROUT with VARNISH and see the amazing results that SHOC…",
+      "published_at": "2026/9/2 06:05:02"
+    },
+    "bseed1XbhJo": {
+      "bvid": "BV1TGt76KEoW",
+      "url": "https://www.bilibili.com/video/BV1TGt76KEoW",
+      "title": "我的世界：全员失去重力，掉进岩浆也能活？｜Minecraft But Nobody Has Normal Gravity",
+      "published_at": "2026/9/2 05:54:13"
+    },
+    "bseedtZjTQx": {
+      "bvid": "BV1LRtj6mEyY",
+      "url": "https://www.bilibili.com/video/BV1LRtj6mEyY",
+      "title": "Minecraft 单方块生存：猫咪坚持 67 天挑战第 100 天｜This Cat Survived 67 Days on ONE BLOCK in Mi…",
+      "published_at": "2026/9/2 05:46:54"
+    },
+    "bseedEBcQyG": {
+      "bvid": "BV1jotj6jEe4",
+      "url": "https://www.bilibili.com/video/BV1jotj6jEe4",
+      "title": "GD&T 几何公差原理：从正负公差失效到基准与公差带｜GD&T Explained From First Principles (Part I)",
+      "published_at": "2026/9/2 05:45:45"
+    },
+    "bseedanXPt2": {
+      "bvid": "BV1Lotj6jEFV",
+      "url": "https://www.bilibili.com/video/BV1Lotj6jEFV",
+      "title": "用物理实验制作3D艺术：沙板共振与Blender节点教程｜We Turned a Physics Experiment Into a 3D Art Tool!",
+      "published_at": "2026/9/2 05:44:32"
+    },
+    "bseedW-jdpC": {
+      "bvid": "BV1jQtj6SERM",
+      "url": "https://www.bilibili.com/video/BV1jQtj6SERM",
+      "title": "学生科学项目：制作缆车模型教程｜How to Make a Ropeway Model | Best Science Project for Students",
+      "published_at": "2026/9/2 05:40:46"
+    },
+    "bseed4lYP9q": {
+      "bvid": "BV1EQtj6SE2x",
+      "url": "https://www.bilibili.com/video/BV1EQtj6SE2x",
+      "title": "单电机直升机为何无法倾斜？陀螺仪效应实验解析｜Why You Can’t Just Tilt a Helicopter Motor (I Built One…",
+      "published_at": "2026/9/2 05:38:19"
+    },
+    "bseedCqcozU": {
+      "bvid": "BV1q9tj6EEuV",
+      "url": "https://www.bilibili.com/video/BV1q9tj6EEuV",
+      "title": "Databricks PySpark 2026 实战训练营：从入门到高级｜Databricks & PySpark Bootcamp 2026 | Begin…",
+      "published_at": "2026/9/2 05:36:28"
+    },
+    "bseedYVL11L": {
+      "bvid": "BV179tj6EEGv",
+      "url": "https://www.bilibili.com/video/BV179tj6EEGv",
+      "title": "实测0x Alpha：用AI从零生成Minecraft与GTA6｜I Tested 0x Alpha With Minecraft and GTA 6",
+      "published_at": "2026/9/2 05:35:13"
+    },
+    "bseedQyterx": {
+      "bvid": "BV15ct76CEpU",
+      "url": "https://www.bilibili.com/video/BV15ct76CEpU",
+      "title": "在 Unity 中实测 GLM 5.3：用 AI 构建 3D 赛车游戏与｜I Tested GLM 5.3 in Unity Game Engine – Ho…",
+      "published_at": "2026/9/2 05:30:10"
+    },
+    "bseedPU0abs": {
+      "bvid": "BV13At76GEUJ",
+      "url": "https://www.bilibili.com/video/BV13At76GEUJ",
+      "title": "2026 款 Mac mini 与 Mac Studio M5/M6 选｜M6 Mac mini vs M5 Pro, Max & Ultra: Which…",
+      "published_at": "2026/9/2 05:29:08"
+    },
+    "bseed-beP4F": {
+      "bvid": "BV1v5t56TEhD",
+      "url": "https://www.bilibili.com/video/BV1v5t56TEhD",
+      "title": "实测 Anthropic Fable 5.1：一周体验与性能对比｜We Tested Anthropic's Fable 5.1 for a Week",
+      "published_at": "2026/9/2 05:03:19"
+    },
+    "bseedkcHs1R": {
+      "bvid": "BV18Ht56aEEu",
+      "url": "https://www.bilibili.com/video/BV18Ht56aEEu",
+      "title": "Anthropic发布Fable 5.1：性能更强且成本更低｜Fable 5.1 Is The Greatest Model Ever (And Cheape…",
+      "published_at": "2026/9/2 04:57:15"
+    },
+    "bseedkgJXnq": {
+      "bvid": "BV1rCt567Eir",
+      "url": "https://www.bilibili.com/video/BV1rCt567Eir",
+      "title": "莫扎特小夜曲配百花绽放延时摄影，治愈自然之美｜Mesmerizing Blooming Flowers Time-lapse - Mozart: Eine k…",
+      "published_at": "2026/9/2 03:45:04"
+    },
+    "bseedk7PL5Y": {
+      "bvid": "BV16yt562Evy",
+      "url": "https://www.bilibili.com/video/BV16yt562Evy",
+      "title": "可乐加牙膏倒入西瓜会发生什么？意想不到的实验结果｜I Poured Coca-Cola and Toothpaste into a Watermelon...…",
+      "published_at": "2026/9/2 03:43:51"
+    },
+    "bseedJ6Vzwo": {
+      "bvid": "BV1Eyt562EYQ",
+      "url": "https://www.bilibili.com/video/BV1Eyt562EYQ",
+      "title": "高蛋白低油印度素食早餐：燕麦绿豆汤配蔬菜｜Stop Eating Junk! Try this Two High Protine Healthy Vegeta…",
+      "published_at": "2026/9/2 03:38:01"
+    },
+    "bseedoMzE_e": {
+      "bvid": "BV1KGtL6tEF1",
+      "url": "https://www.bilibili.com/video/BV1KGtL6tEF1",
+      "title": "【中英双语】我的世界时间循环冒险：30 秒逃生挑战｜Minecraft but I'm Stuck in a Time Loop...",
+      "published_at": "2026/9/2 02:36:40"
+    },
+    "bseedMiOn7l": {
+      "bvid": "BV1xGtL6tEcH",
+      "url": "https://www.bilibili.com/video/BV1xGtL6tEcH",
+      "title": "【中英双语】大模型大富翁对决：Qwen3.8、GLM5.3等谁更会谈判？｜Who Won? Qwen 3.8 vs GLM 5.3 vs Claude Opu…",
+      "published_at": "2026/9/2 02:36:25"
+    },
+    "bseedfz3AcF": {
+      "bvid": "BV1TutL68Eti",
+      "url": "https://www.bilibili.com/video/BV1TutL68Eti",
+      "title": "【中英双语】Minecraft生存：躲避食物海啸与末日避难所挑战｜FOOD TSUNAMI vs Doomsday Bunker in Minecraft...",
+      "published_at": "2026/9/2 02:29:31"
+    },
+    "bseed-my1w4": {
+      "bvid": "BV1qSt56VEJL",
+      "url": "https://www.bilibili.com/video/BV1qSt56VEJL",
+      "title": "【中英双语】秘密使用创造模式收集所有非法物品摧毁Minecraft服务器｜I Collected Every Illegal Item in This Min…",
+      "published_at": "2026/9/2 02:20:19"
+    },
+    "bseedgZ0vXQ": {
+      "bvid": "BV1Vdt56uEdh",
+      "url": "https://www.bilibili.com/video/BV1Vdt56uEdh",
+      "title": "【中英双语】让 Minecraft 野外生存更真实的模组合集｜What if Minecraft had an Outdoor Update",
+      "published_at": "2026/9/2 01:57:21"
+    },
+    "bseedvDChD_": {
+      "bvid": "BV1qbtL62Ezb",
+      "url": "https://www.bilibili.com/video/BV1qbtL62Ezb",
+      "title": "【中英双语】Minecraft：在方块里生存 100 天，建造温馨小家｜Techy Survives 100 Days inside Block in Min…",
+      "published_at": "2026/9/2 01:52:04"
+    },
+    "bseedELcurI": {
+      "bvid": "BV1iMtG6YEps",
+      "url": "https://www.bilibili.com/video/BV1iMtG6YEps",
+      "title": "【中英双语】MiniMax-H3 8步PDD LoRA实测：对比Turbo LoRA｜MiniMax-H3 - Quality and Speed | 8-S…",
+      "published_at": "2026/9/1 15:47:22"
+    },
+    "bseedxO7PlT": {
+      "bvid": "BV1zEtu6FEPr",
+      "url": "https://www.bilibili.com/video/BV1zEtu6FEPr",
+      "title": "【中英双语】免费本地模型实测：24GB MacBook上14/15任务通过｜My $200 Claude Code vs a FREE Local Model…",
+      "published_at": "2026/9/1 15:30:28"
+    },
+    "bseedICnzyN": {
+      "bvid": "BV1o7tu6fEtM",
+      "url": "https://www.bilibili.com/video/BV1o7tu6fEtM",
+      "title": "【中配】实测Mac Mini M6本地跑AI：能否终结AI订阅？｜Apple Just Killed AI Subscriptions Forever (…",
+      "published_at": "2026/9/1 15:26:57"
+    },
+    "bseedGikzd1": {
+      "bvid": "BV1dJtu6tEyt",
+      "url": "https://www.bilibili.com/video/BV1dJtu6tEyt",
+      "title": "【中配】BreezeTTS2本地实时语音合成评测与演示｜BreezeTTS2 - 100% Local Real-Time Voice",
+      "published_at": "2026/9/1 15:26:20"
+    },
+    "bseedqlrMP4": {
+      "bvid": "BV1Rxtu6WEew",
+      "url": "https://www.bilibili.com/video/BV1Rxtu6WEew",
+      "title": "【中英双语】我在Minecraft最致命服务器生存100天｜I Survived 100 Days on the LIFESTEAL SMP in Minec…",
+      "published_at": "2026/9/1 15:06:21"
+    },
+    "bseedr1b32_": {
+      "bvid": "BV1WTtu6qEwN",
+      "url": "https://www.bilibili.com/video/BV1WTtu6qEwN",
+      "title": "【中英双语】农场菜园更新与喂鸡日常｜Home vegetable patch updates & Feeding the chickens at the fa…",
+      "published_at": "2026/9/1 14:50:53"
+    },
+    "bseedT7GQfe": {
+      "bvid": "BV1WTtu6qEig",
+      "url": "https://www.bilibili.com/video/BV1WTtu6qEig",
+      "title": "【中英双语】2025年AI视频模型横评：Omni 1.1、Seedance 2.5等｜I Ranked Every New AI Video Model (O…",
+      "published_at": "2026/9/1 14:50:49"
+    },
+    "bseedexrW9J": {
+      "bvid": "BV1nGtu6PEib",
+      "url": "https://www.bilibili.com/video/BV1nGtu6PEib",
+      "title": "【中英双语】达什在Minecraft中作弊？新手、高手与黑客岛大乱斗｜NOOB vs PRO vs HACKER Island in Minecraft!",
+      "published_at": "2026/9/1 14:38:34"
+    },
+    "bseedsukBDe": {
+      "bvid": "BV1VGtY6HENF",
+      "url": "https://www.bilibili.com/video/BV1VGtY6HENF",
+      "title": "【中配】极限模式：只有末地传送门200天生存挑战",
+      "published_at": "2026/9/1 06:27:31"
+    },
+    "bseedeZNDrN": {
+      "bvid": "BV1UPts69E2j",
+      "url": "https://www.bilibili.com/video/BV1UPts69E2j",
+      "title": "【无配音】Minecraft：建造巨大的末地传送门框架造型房屋教程｜⛏️ Minecraft :: How to build a Huge End Porta…",
+      "published_at": "2026/8/31 07:54:43"
+    },
+    "bseedPZkpZY": {
+      "bvid": "BV1Dcts6dERb",
+      "url": "https://www.bilibili.com/video/BV1Dcts6dERb",
+      "title": "【中英双语】把伊娜·加登的鸡皮卡塔做成热狗会怎样？｜I tried turning INA GARTEN'S Chicken Piccata into a H…",
+      "published_at": "2026/8/31 07:33:37"
+    },
+    "bseed4jMJRB": {
+      "bvid": "BV1yGts6EEV2",
+      "url": "https://www.bilibili.com/video/BV1yGts6EEV2",
+      "title": "【中英双语】实测最懒人 TikTok 零食食谱：真的好吃又省事吗？｜I Tried the LAZIEST TikTok SNACK Recipes",
+      "published_at": "2026/8/31 07:19:44"
+    },
+    "bseed5Sc0lA": {
+      "bvid": "BV1RXtW6wEgv",
+      "url": "https://www.bilibili.com/video/BV1RXtW6wEgv",
+      "title": "【中英双语】让菜园持续丰收：分层种植与空间利用技巧｜How I Keep My Garden Growing Fresh Vegetables for One…",
+      "published_at": "2026/8/31 07:09:17"
+    },
+    "bseedrq08Wz": {
+      "bvid": "BV19dtW6FEMt",
+      "url": "https://www.bilibili.com/video/BV19dtW6FEMt",
+      "title": "【中英双语】新加坡娘惹美食：在家复刻经典 Kway Chap 猪肠粉｜My Tried & Tested Kway Chap Recipe | Singapo…",
+      "published_at": "2026/8/31 06:54:36"
+    },
+    "bseedhHQmxl": {
+      "bvid": "BV1ohts6KEmm",
+      "url": "https://www.bilibili.com/video/BV1ohts6KEmm",
+      "title": "【中英双语】法国乡村雨天采摘桃子与制作倒置蛋糕的治愈日常｜Slow days in a French little village, peach harves…",
+      "published_at": "2026/8/31 06:30:58"
+    },
+    "bseedxpDhGZ": {
+      "bvid": "BV1vvts6YEgA",
+      "url": "https://www.bilibili.com/video/BV1vvts6YEgA",
+      "title": "【中英双语】10加仑与15加仑种植袋土豆收获实验对比结果｜Potatoes in Grow Bags: 10 Gallon vs 15 Gallon Expe…",
+      "published_at": "2026/8/31 06:20:40"
+    },
+    "bseedU8qNJF": {
+      "bvid": "BV1vets6PEwK",
+      "url": "https://www.bilibili.com/video/BV1vets6PEwK",
+      "title": "【中英双语】向日葵与红薯混种：夏季花园高产组合与收获前检查｜Growing Sweet Potatoes? Here’s What to Do Before…",
+      "published_at": "2026/8/31 06:07:44"
+    },
+    "bseedvmRa5Q": {
+      "bvid": "BV1yVts6mEhe",
+      "url": "https://www.bilibili.com/video/BV1yVts6mEhe",
+      "title": "【中英双语】酵母加糖养黄瓜？14 天实测自制肥料效果如何｜Just Yeast + Sugar for Cucumbers? I Tried THIS for…",
+      "published_at": "2026/8/31 05:53:06"
+    },
+    "bseedvQCa0z": {
+      "bvid": "BV1zpts6rEeo",
+      "url": "https://www.bilibili.com/video/BV1zpts6rEeo",
+      "title": "【中英双语】四种室内植物浇水法实测：哪种最适合你？｜Which Watering Method is Best? 4 Techniques Put To Th…",
+      "published_at": "2026/8/31 05:41:51"
+    },
+    "bseedJwSj_r": {
+      "bvid": "BV1rHts6GENz",
+      "url": "https://www.bilibili.com/video/BV1rHts6GENz",
+      "title": "【中英双语】我的世界：每一层方块都不同，生存挑战太搞笑了｜Minecraft, But Every Layer Is DIFFERENT...",
+      "published_at": "2026/8/31 05:32:25"
+    },
+    "bseeddU0piM": {
+      "bvid": "BV14Qts6QEu1",
+      "url": "https://www.bilibili.com/video/BV14Qts6QEu1",
+      "title": "【中英双语】65 岁后每天吃 4 个鸡蛋，医生揭秘对眼睛和胆固醇的真实影响｜Over 65? What Happens When You Eat 4 Eggs…",
+      "published_at": "2026/8/31 05:14:43"
+    },
+    "bseedf4WTtE": {
+      "bvid": "BV1Hctx61Eft",
+      "url": "https://www.bilibili.com/video/BV1Hctx61Eft",
+      "title": "【中英双语】用电流从溶液中提取黄金：电解精炼原理与安全｜A method of using electricity to extract gold from…",
+      "published_at": "2026/8/31 05:03:00"
+    },
+    "bseed53kt39": {
+      "bvid": "BV1hrts6bEY4",
+      "url": "https://www.bilibili.com/video/BV1hrts6bEY4",
+      "title": "【中英双语】柠檬电池实验：从伏打电堆到现代锂电池原理｜From Lemons to Lithium: The Lemon Battery Explains H…",
+      "published_at": "2026/8/31 04:51:43"
+    },
+    "bseedQMasTn": {
+      "bvid": "BV186ts6FEmf",
+      "url": "https://www.bilibili.com/video/BV186ts6FEmf",
+      "title": "【中英双语】我的世界：仅挖掘25块方块即传送末地挑战｜Minecraft but I can only Mine 25 Blocks",
+      "published_at": "2026/8/31 04:40:39"
+    },
+    "bseedtJahgt": {
+      "bvid": "BV1tyts64EoH",
+      "url": "https://www.bilibili.com/video/BV1tyts64EoH",
+      "title": "【无配音】Minecraft生存房屋建造教程：新手友好实用设计｜Minecraft: How to Build A Survival House",
+      "published_at": "2026/8/31 04:39:40"
+    },
+    "bseeda-1IGj": {
+      "bvid": "BV13Jtx6YEdD",
+      "url": "https://www.bilibili.com/video/BV13Jtx6YEdD",
+      "title": "【中英双语】AI 总统玩修改版我的世界第 141 集恶搞整活｜US Presidents Play Modded Minecraft (WebDisplays)",
+      "published_at": "2026/8/31 04:19:50"
+    },
+    "bseedrX3IHh": {
+      "bvid": "BV1bxtx6bEWE",
+      "url": "https://www.bilibili.com/video/BV1bxtx6bEWE",
+      "title": "【中英双语】Minecraft 新模组：无尽地牢列车大冒险｜This NEW Minecraft Dungeon Mod Is Crazy...",
+      "published_at": "2026/8/31 03:59:33"
+    },
+    "bseedhXOdO1": {
+      "bvid": "BV17Ktx6GERD",
+      "url": "https://www.bilibili.com/video/BV17Ktx6GERD",
+      "title": "【中英双语】Minecraft：打破方块全灭，还能通关吗？｜Minecraft, But Breaking a Block Breaks Them All (…",
+      "published_at": "2026/8/31 03:55:11"
+    },
+    "bseedsZwfOL": {
+      "bvid": "BV15Gtx6ME2V",
+      "url": "https://www.bilibili.com/video/BV15Gtx6ME2V",
+      "title": "【中英双语】Minecraft生存：建造全自动甘蔗农场与红石教程｜I Built the ULTIMATE Automatic Farm in Minecra…",
+      "published_at": "2026/8/31 03:29:34"
+    },
+    "bseedEYe50R": {
+      "bvid": "BV1jutx6gE3C",
+      "url": "https://www.bilibili.com/video/BV1jutx6gE3C",
+      "title": "【中英双语】Minecraft Dungeons 2 新维度 The Sift 深度｜Is Minecraft Dungeons 2 Already in T…",
+      "published_at": "2026/8/31 03:18:54"
+    },
+    "bseedvpx4_y": {
+      "bvid": "BV1ZWtp6AE7A",
+      "url": "https://www.bilibili.com/video/BV1ZWtp6AE7A",
+      "title": "【中英双语】GLM 5.3 Flash 本地 AI 测试：Threadripper WRX8｜GLM 5.3 Flash Local Ai Test",
+      "published_at": "2026/8/31 03:02:33"
+    },
+    "bseedUqk0gq": {
+      "bvid": "BV1Qetp6xEg8",
+      "url": "https://www.bilibili.com/video/BV1Qetp6xEg8",
+      "title": "【中英双语】本地运行 Qwen3.8-Flash-Next：125B MoE 模型在｜Qwen3.8-Flash-Next: 125B MoE Model O…",
+      "published_at": "2026/8/31 02:49:14"
+    },
+    "bseedaitX2W": {
+      "bvid": "BV1Yhtp6tEm9",
+      "url": "https://www.bilibili.com/video/BV1Yhtp6tEm9",
+      "title": "【中英双语】OpenAI确认2026年前推出AGI，新持久模式与重大安全漏洞｜OpenAI Just Confirmed AGI Is Coming This…",
+      "published_at": "2026/8/31 02:48:17"
+    },
+    "bseedT0WVsA": {
+      "bvid": "BV1rLtp6BEmF",
+      "url": "https://www.bilibili.com/video/BV1rLtp6BEmF",
+      "title": "【中英双语】M5 Max 本地运行 Qwen3.8-Flash-Next：MLX v｜Qwen3.8-Flash-Next 125B: 60 TPS MLX…",
+      "published_at": "2026/8/31 02:29:49"
+    },
+    "bseed8j1lua": {
+      "bvid": "BV16ntp6NEGG",
+      "url": "https://www.bilibili.com/video/BV16ntp6NEGG",
+      "title": "【中英双语】MiniMax H3 实测：能否超越 Seedance 2.5？｜I Tested MiniMax H3 — Is It Better Than…",
+      "published_at": "2026/8/31 02:18:50"
+    },
+    "bseedejpQHU": {
+      "bvid": "BV1c7tp6MEmW",
+      "url": "https://www.bilibili.com/video/BV1c7tp6MEmW",
+      "title": "【中英双语】免费替代方案：让 Claude Code 永久免费运行｜This Makes Claude Code Free Forever",
+      "published_at": "2026/8/31 02:08:20"
+    },
+    "bseedwaFqSe": {
+      "bvid": "BV1zEtp6iEHM",
+      "url": "https://www.bilibili.com/video/BV1zEtp6iEHM",
+      "title": "【中英双语】本地运行 Qwen 3.8 Flash Next 超越 Opus 4.6｜New Qwen 3.8 Flash BEATS Opus 4.6 Ma…",
+      "published_at": "2026/8/31 02:06:14"
+    },
+    "bseedoacF0N": {
+      "bvid": "BV1Kmtp6mEqG",
+      "url": "https://www.bilibili.com/video/BV1Kmtp6mEqG",
+      "title": "【中英双语】测试 llmfit：AI 模型硬件适配工具实测五台设备｜This Tool Finds the Perfect AI Model for Your…",
+      "published_at": "2026/8/31 01:53:51"
+    },
+    "bseedwvN4sH": {
+      "bvid": "BV16ftp6uETq",
+      "url": "https://www.bilibili.com/video/BV16ftp6uETq",
+      "title": "【中英双语】腾讯开源模型 Hy4 Preview 免费试用两周评测与代码实战｜Tencent Hy4 Preview is Free for 14 Days!…",
+      "published_at": "2026/8/31 01:41:46"
+    },
+    "bseedRYH03t": {
+      "bvid": "BV1Hdtp63Erd",
+      "url": "https://www.bilibili.com/video/BV1Hdtp63Erd",
+      "title": "【中英双语】实测 Seedance 2.5 全家桶：能否替代专业 AI 影视工作流？｜An Honest Test of Seedance 2.5 (Plus…",
+      "published_at": "2026/8/31 01:31:31"
+    },
+    "bseedRRhaih": {
+      "bvid": "BV1hvtp6REbg",
+      "url": "https://www.bilibili.com/video/BV1hvtp6REbg",
+      "title": "【中英双语】Hugging Face MicroDuck：399 美元可编程本地 A｜Hugging Face MicroDuck: Programmable…",
+      "published_at": "2026/8/31 01:25:28"
+    },
+    "bseedYmE2oy": {
+      "bvid": "BV1tytp6UESQ",
+      "url": "https://www.bilibili.com/video/BV1tytp6UESQ",
+      "title": "【中英双语】免费获取 GLM 5.3 每日 1000 万 Token 并接入 Cla｜GLM 5.3 in Claude Code for FREE | 10…",
+      "published_at": "2026/8/31 01:11:57"
+    },
+    "bseedwRCuVw": {
+      "bvid": "BV1tCtp6JEwQ",
+      "url": "https://www.bilibili.com/video/BV1tCtp6JEwQ",
+      "title": "【中英双语】普京试驾中国设计俄产新车：高尔基汽车厂探访实录｜WATCH: Russian President Vladimir Putin Test-Driv…",
+      "published_at": "2026/8/31 01:00:18"
+    },
+    "bseedo4nMoZ": {
+      "bvid": "BV1gjtW6oEqm",
+      "url": "https://www.bilibili.com/video/BV1gjtW6oEqm",
+      "title": "【中英双语】Google Gemini Omni 1.1 Flash 视频模型深度评｜Gemini Omni 1.1 Flash Explained: Ful…",
+      "published_at": "2026/8/31 00:49:26"
+    },
+    "bseedJedUuq": {
+      "bvid": "BV1MHtW6WEfa",
+      "url": "https://www.bilibili.com/video/BV1MHtW6WEfa",
+      "title": "【中英双语】开源AI凭一张截图80秒修复代码Bug，实测GLM-5.3视觉能力｜This Open Source AI Fixed My Bug From O…",
+      "published_at": "2026/8/31 00:40:47"
+    },
+    "bseedUfX9YA": {
+      "bvid": "BV18JtW6RE76",
+      "url": "https://www.bilibili.com/video/BV18JtW6RE76",
+      "title": "【中英双语】免费使用 Kimi K3 模型配置 Claude Code 编程教程｜Unlimited Free Kimi K3 + Claude Code!",
+      "published_at": "2026/8/31 00:25:39"
+    },
+    "bseed_4rC1n": {
+      "bvid": "BV1oNtW6NEHk",
+      "url": "https://www.bilibili.com/video/BV1oNtW6NEHk",
+      "title": "【中英双语】GPT 5.6 Sol与Terra游戏开发成本实测对比｜I tested GPT 5.6 Sol against 5.6 Terra for ma…",
+      "published_at": "2026/8/31 00:17:06"
+    },
+    "bseedFp573I": {
+      "bvid": "BV1LutW6aE6t",
+      "url": "https://www.bilibili.com/video/BV1LutW6aE6t",
+      "title": "【中英双语】牛津教授揭秘 AI 革命：从图灵到 Transformer 的历程｜The AI revolution didn’t happen overnig…",
+      "published_at": "2026/8/31 00:04:51"
+    },
+    "bseedxJhyE_": {
+      "bvid": "BV1jKtW6eEJ4",
+      "url": "https://www.bilibili.com/video/BV1jKtW6eEJ4",
+      "title": "【中英双语】本地部署 Qwen3.8-27B Cold Fusion 评测：性能与显｜Qwen 3.8 27B Cold Fusion tested - 16…",
+      "published_at": "2026/8/30 23:53:28"
+    },
+    "bseedDVmmg2": {
+      "bvid": "BV1FrtW66Ex7",
+      "url": "https://www.bilibili.com/video/BV1FrtW66Ex7",
+      "title": "【中英双语】免费国产AI模型Qwen 3.8-27B实测：百万上下文与多模态能力｜This FREE Chinese AI Model is ABSURD!",
+      "published_at": "2026/8/30 23:39:58"
+    },
+    "bseed3bdtck": {
+      "bvid": "BV1j2tW6TECA",
+      "url": "https://www.bilibili.com/video/BV1j2tW6TECA",
+      "title": "【中英双语】伊朗乡村盛宴：柴火烤全羊配大锅米饭｜Village Feast in IRAN | Fresh Lamb & Giant Rice Cooked…",
+      "published_at": "2026/8/30 23:31:35"
+    },
+    "bseedoMXtV-": {
+      "bvid": "BV1TbtW6UENM",
+      "url": "https://www.bilibili.com/video/BV1TbtW6UENM",
+      "title": "【中英双语】奶奶的西瓜田冒险：制作传统烤甜甜圈｜Watermelon Field Adventure 🍉 Grandma Making Glazed Don…",
+      "published_at": "2026/8/30 23:09:48"
+    },
+    "bseedDShG7P": {
+      "bvid": "BV1WStn6qEFP",
+      "url": "https://www.bilibili.com/video/BV1WStn6qEFP",
+      "title": "【无配音】热石烤金枪鱼排：荒野原始烹饪实录｜Tuna Steak 🥩 Cooked🔥on a Hot Stone (Primitive Cooking)",
+      "published_at": "2026/8/30 22:56:48"
+    },
+    "bseed_MvR47": {
+      "bvid": "BV1HXtn6vEuZ",
+      "url": "https://www.bilibili.com/video/BV1HXtn6vEuZ",
+      "title": "【中英双语】户外探险：发现巨型非洲陆蜗牛与花园里的奇妙生物｜Giant African Land Snails and Big Brown Snails Ou…",
+      "published_at": "2026/8/30 22:49:03"
+    },
+    "bseedN_hOrg": {
+      "bvid": "BV1PhtW67ETw",
+      "url": "https://www.bilibili.com/video/BV1PhtW67ETw",
+      "title": "【中英双语】俄勒冈河流：潜水捕食鲈鱼以保护濒危鲑鱼｜An adventurous way to help salmon: Spearfishing for b…",
+      "published_at": "2026/8/30 22:47:19"
+    },
+    "bseedBR93Zo": {
+      "bvid": "BV16Rtn6PER5",
+      "url": "https://www.bilibili.com/video/BV16Rtn6PER5",
+      "title": "【中英双语】斯里兰卡乡村厨房：湖鱼咖喱配多萨饼与拉沙姆汤｜lake fish curry / Dosa with lake fish curry /This…",
+      "published_at": "2026/8/30 22:23:33"
+    },
+    "bseedA7KrN4": {
+      "bvid": "BV1xktn6GE4F",
+      "url": "https://www.bilibili.com/video/BV1xktn6GE4F",
+      "title": "【中英双语】葡萄牙农舍改造：赶在风暴前浇筑混凝土与实验｜Bringing our farm back to life - Step by Step",
+      "published_at": "2026/8/30 21:47:40"
+    },
+    "bseedM5egBj": {
+      "bvid": "BV1YGtH6QE45",
+      "url": "https://www.bilibili.com/video/BV1YGtH6QE45",
+      "title": "30秒/3分钟/30分钟手绘系外行星HR 8799 b对比挑战｜Drawing HR 8799 b in 30 Seconds vs 3 Minut…",
+      "published_at": "2026/8/30 21:35:54"
+    },
+    "bseedjC6diJ": {
+      "bvid": "BV1VutH69EXp",
+      "url": "https://www.bilibili.com/video/BV1VutH69EXp",
+      "title": "【中英双语】从零制作SaaS动画：深度转场与UI交互全流程教程｜SaaS Animation Like Base44 Tutotial | Motion Gr…",
+      "published_at": "2026/8/30 21:20:59"
+    },
+    "bseedS7-ifg": {
+      "bvid": "BV1mntH6jEMu",
+      "url": "https://www.bilibili.com/video/BV1mntH6jEMu",
+      "title": "【中英双语】被遗弃的史托克：动物医院里的伤痛与救赎｜Stalker SAD Origin Story | Animal Hospital Animation",
+      "published_at": "2026/8/30 21:09:06"
+    },
+    "bseed5AvjSC": {
+      "bvid": "BV13LtH6SEna",
+      "url": "https://www.bilibili.com/video/BV13LtH6SEna",
+      "title": "【中英双语】旧布料改造家居装饰：简单缝纫手工创意 DIY 教程｜Amazing Fabric & Sewing Craft Ideas | Creative…",
+      "published_at": "2026/8/30 21:05:11"
+    },
+    "bseedOkHxvo": {
+      "bvid": "BV1BctH6FEps",
+      "url": "https://www.bilibili.com/video/BV1BctH6FEps",
+      "title": "【中英双语】别等完美时机，在当下生活中开始艺术创作吧",
+      "published_at": "2026/8/30 20:54:51"
+    },
+    "bseedzLqq8G": {
+      "bvid": "BV1zftn6hEgz",
+      "url": "https://www.bilibili.com/video/BV1zftn6hEgz",
+      "title": "【中英双语】用一句话生成3D卡通长视频：MagicLight AI全流程教程｜I Created Viral 3D cartoon Animation Vid…",
+      "published_at": "2026/8/30 20:39:43"
+    },
+    "bseedC-6nWM": {
+      "bvid": "BV1jAtH6ZEC2",
+      "url": "https://www.bilibili.com/video/BV1jAtH6ZEC2",
+      "title": "【中英双语】敢不敢和陌生人聊LGBT话题？｜I Asked Queer Strangers the Questions Everyone Is Too Afr…",
+      "published_at": "2026/8/30 20:33:38"
+    },
+    "bseeddsaL1h": {
+      "bvid": "BV1oj4y6WEAo",
+      "url": "https://www.bilibili.com/video/BV1oj4y6WEAo",
+      "title": "韩国街头美式热狗5小时售罄，制作过程超满足｜300 Hot Dogs SOLD OUT in 5 Hours! Amazing American H…",
+      "published_at": "2026/8/29 17:53:58"
+    },
+    "bseedLz6voW": {
+      "bvid": "BV1ij4y6WEHB",
+      "url": "https://www.bilibili.com/video/BV1ij4y6WEHB",
+      "title": "【中英双语】肯尼亚奶奶用传统柴火灶煮南瓜玉米豆饭｜Grandma Cooking Traditional Kenyan Githeri with Fresh…",
+      "published_at": "2026/8/29 17:52:21"
+    },
+    "bseedGTW5k9": {
+      "bvid": "BV1qj4y6WEeV",
+      "url": "https://www.bilibili.com/video/BV1qj4y6WEeV",
+      "title": "【无配音】自制印度街头美食Aloo Frankie，酥脆外皮带辣味土豆馅｜I Tried Making Aloo Frankie at Home.. It T…",
+      "published_at": "2026/8/29 17:51:02"
+    },
+    "bseedDg2jZe": {
+      "bvid": "BV1Yn4y6DEWv",
+      "url": "https://www.bilibili.com/video/BV1Yn4y6DEWv",
+      "title": "【中英双语】免解冻直接炖：冷冻鹿肩肉的美味做法｜Every Hunter Has One, I thought this Frozen Deer Should…",
+      "published_at": "2026/8/29 17:50:27"
+    },
+    "bseed2cedId": {
+      "bvid": "BV1jj4y6sEGU",
+      "url": "https://www.bilibili.com/video/BV1jj4y6sEGU",
+      "title": "【中英双语】IT 转行种花：印度首位切花 App 背后的商业故事｜Quit IT Job ✅ Started Flower Farming | Built i…",
+      "published_at": "2026/8/29 17:46:40"
+    },
+    "bseedzlb53t": {
+      "bvid": "BV1yA4y6AEuU",
+      "url": "https://www.bilibili.com/video/BV1yA4y6AEuU",
+      "title": "【中英双语】乡村花园巡礼：本季收获与植物生长记录｜Garden Tour |Everything I'm growing this season|Harves…",
+      "published_at": "2026/8/29 17:42:23"
+    },
+    "bseedqFiOHl": {
+      "bvid": "BV1Ac4y6vEdg",
+      "url": "https://www.bilibili.com/video/BV1Ac4y6vEdg",
+      "title": "【中英双语】夏末花园巡礼：辣椒丰收与秋季户外模式切换｜The Garden is Producing More than I Can Handle! End…",
+      "published_at": "2026/8/29 17:37:02"
+    },
+    "bseedPlLiGQ": {
+      "bvid": "BV16M4y6fE4F",
+      "url": "https://www.bilibili.com/video/BV16M4y6fE4F",
+      "title": "【中英双语】断糖30天：是健康还是肠道受损？｜What Happens if You Stop Eating Sugar for 30 Days",
+      "published_at": "2026/8/29 17:27:06"
+    },
+    "bseedWlDnsB": {
+      "bvid": "BV1yF4y6NEbT",
+      "url": "https://www.bilibili.com/video/BV1yF4y6NEbT",
+      "title": "【中英双语】塑料桶挂架种茄子：小空间也能大丰收｜A Bumper Eggplant Harvest From a Simple Recycled Plasti…",
+      "published_at": "2026/8/29 17:25:42"
+    },
+    "bseedZZvPt4": {
+      "bvid": "BV1zM4y6fE5g",
+      "url": "https://www.bilibili.com/video/BV1zM4y6fE5g",
+      "title": "【中英双语】实测离谱吉他产品：自动调音器与中世纪刑具？｜I Tested Ridiculous Guitar Product Claims",
+      "published_at": "2026/8/29 17:25:02"
+    },
+    "bseedRPVIii": {
+      "bvid": "BV1zT4y68E9z",
+      "url": "https://www.bilibili.com/video/BV1zT4y68E9z",
+      "title": "【中英双语】删除Minecraft所有纹理后游戏会怎样？｜What Happens If You Delete Minecraft's Textures?",
+      "published_at": "2026/8/29 17:22:16"
+    },
+    "bseedD7l-Vh": {
+      "bvid": "BV1xz4y6BED3",
+      "url": "https://www.bilibili.com/video/BV1xz4y6BED3",
+      "title": "【中英双语】铝与氯化铜反应演示：离子转移、水性质及能量变化解析｜The many chemistry lessons from the reaction of…",
+      "published_at": "2026/8/29 17:13:29"
+    },
+    "bseedMfRejj": {
+      "bvid": "BV1Wz4y6BE1M",
+      "url": "https://www.bilibili.com/video/BV1Wz4y6BE1M",
+      "title": "【中英双语】CPU遇到未知指令会怎样？程序崩溃还是报错？｜What Happens When a CPU Receives an Unknown Instru…",
+      "published_at": "2026/8/29 17:13:00"
+    },
+    "bseedH1jXUj": {
+      "bvid": "BV14z4y6BEF9",
+      "url": "https://www.bilibili.com/video/BV14z4y6BEF9",
+      "title": "【中英双语】用亚甲基蓝重现经典“双面”光化学反应演示｜Shed new light on the two-faced reaction",
+      "published_at": "2026/8/29 17:09:39"
+    },
+    "bseedbQ2MdM": {
+      "bvid": "BV1kK4y6cE1z",
+      "url": "https://www.bilibili.com/video/BV1kK4y6cE1z",
+      "title": "【中英双语】Minecraft：受伤后世界变恐怖，玩家尖叫求饶｜Minecraft, But Your Damage = More Scary!",
+      "published_at": "2026/8/29 17:09:27"
+    },
+    "bseede5uOwN": {
+      "bvid": "BV1PP4y6YEcM",
+      "url": "https://www.bilibili.com/video/BV1PP4y6YEcM",
+      "title": "【中英双语】尾轮飞机前轮外八字更稳？实测地面滑跑稳定性｜Toe IN or Toe OUT? Everyone Gets it Wrong. So... I…",
+      "published_at": "2026/8/29 17:09:07"
+    },
+    "bseeduVGN4t": {
+      "bvid": "BV1Kv4y6GEf8",
+      "url": "https://www.bilibili.com/video/BV1Kv4y6GEf8",
+      "title": "【中英双语】夏日菜园丰收：自制菲塔意面、香肠煎锅与花园披萨｜4 Garden-Fresh Meals We’re Making From the Summer…",
+      "published_at": "2026/8/29 17:07:25"
+    },
+    "bseedd9na_Z": {
+      "bvid": "BV1xB4y6uE3P",
+      "url": "https://www.bilibili.com/video/BV1xB4y6uE3P",
+      "title": "【中英双语】新加坡New Bahru商场全新美食广场探店测评｜Singapore’s NEWEST Food Court Is Unlike Any Other",
+      "published_at": "2026/8/29 17:07:14"
+    },
+    "bseedeBlRfk": {
+      "bvid": "BV1bv4y63EA7",
+      "url": "https://www.bilibili.com/video/BV1bv4y63EA7",
+      "title": "【中英双语】Anthropic：AI 模型硬件标准加速物理科学实验｜AI models can now help run physical science e…",
+      "published_at": "2026/8/29 17:06:16"
+    },
+    "bseediXOb_G": {
+      "bvid": "BV1bE421c7jv",
+      "url": "https://www.bilibili.com/video/BV1bE421c7jv",
+      "title": "【中英双语】免费教程：用AI工具制作植物生长延时摄影视频｜How to Create Viral AI Plant Growth Timelapse Vide…",
+      "published_at": "2026/8/29 17:00:39"
+    },
+    "bseed3AV9iz": {
+      "bvid": "BV1sz4y6BELC",
+      "url": "https://www.bilibili.com/video/BV1sz4y6BELC",
+      "title": "【中英双语】从废旧CPU中提炼金银：熔炼与火法精炼实验｜Gold & Silver Recovery From Scrap CPUs!! Easy Smelt…",
+      "published_at": "2026/8/29 16:59:33"
+    },
+    "bseedhgKR7p": {
+      "bvid": "BV1ti4y66EJf",
+      "url": "https://www.bilibili.com/video/BV1ti4y66EJf",
+      "title": "【中英双语】多人挑战同色食物：筷子吃面太辣想吐？｜Food of The Same Colors Challenge | Fantastic Food Hac…",
+      "published_at": "2026/8/29 16:58:15"
+    },
+    "bseedU7fU5V": {
+      "bvid": "BV1w14y6vE91",
+      "url": "https://www.bilibili.com/video/BV1w14y6vE91",
+      "title": "【无配音】Minecraft与Roblox键盘逃生竞速挑战｜Minecraft vs Roblox – +1 Speed Keyboard Escape Ro…",
+      "published_at": "2026/8/29 16:57:08"
+    },
+    "bseedl-S16H": {
+      "bvid": "BV1tv4y63ELB",
+      "url": "https://www.bilibili.com/video/BV1tv4y63ELB",
+      "title": "【中英双语】46亿年前陨石揭示DNA起源：生命化学前史｜What 4.6-Billion-Year-Old Meteorites Reveal About O…",
+      "published_at": "2026/8/29 16:56:22"
+    },
+    "bseed6KAwnK": {
+      "bvid": "BV1A14y6vEs3",
+      "url": "https://www.bilibili.com/video/BV1A14y6vEs3",
+      "title": "【中英双语】Minecraft 模组：受伤时她疯狂攻击我｜Minecraft but everytime I take damage she RAILS me",
+      "published_at": "2026/8/29 16:54:51"
+    },
+    "bseedY_WDQX": {
+      "bvid": "BV1Wy4y6KEk2",
+      "url": "https://www.bilibili.com/video/BV1Wy4y6KEk2",
+      "title": "【中英双语】显微镜下的真相：洗手液能否杀死细菌？｜Hand Sanitizer vs Bacteria: THE TRUTH Under Microscope",
+      "published_at": "2026/8/29 16:48:29"
+    },
+    "bseedb3hF74": {
+      "bvid": "BV1Wy4y6NEKQ",
+      "url": "https://www.bilibili.com/video/BV1Wy4y6NEKQ",
+      "title": "【无配音】用太空图像生成波形表：Iris VCO 实验与合成器音色探索｜What happens when you use Space as wavetabl…",
+      "published_at": "2026/8/29 16:48:19"
+    },
+    "bseedKRS5HB": {
+      "bvid": "BV1Ck4y6iE7t",
+      "url": "https://www.bilibili.com/video/BV1Ck4y6iE7t",
+      "title": "【中英双语】15 分钟让 AI 从零开发恐怖游戏，成品竟超出预期｜I Gave Claude 15 Minutes to Make a Horror Game",
+      "published_at": "2026/8/29 16:47:58"
+    },
+    "bseedF_qn8v": {
+      "bvid": "BV1Yx4y67EnT",
+      "url": "https://www.bilibili.com/video/BV1Yx4y67EnT",
+      "title": "【中英双语】从零构建语音驱动AI应用：测试Fish Audio情感控制与多语言流媒体｜I Built a Voice-Powered AI App with…",
+      "published_at": "2026/8/29 16:46:39"
+    },
+    "bseedL04w7k": {
+      "bvid": "BV1h44y62EeP",
+      "url": "https://www.bilibili.com/video/BV1h44y62EeP",
+      "title": "【中英双语】特斯拉FSD V14.3.8夏季更新实测：Grok语音控制与自动导航体验｜My favorite new features in the summ…",
+      "published_at": "2026/8/29 16:44:38"
+    },
+    "bseedwbT0sw": {
+      "bvid": "BV1Wk4y6iEfM",
+      "url": "https://www.bilibili.com/video/BV1Wk4y6iEfM",
+      "title": "【中英双语】四种墙体保温材料的防火性能实测对比｜Which Insulation Is Actually Fire-Safe? We Tested It",
+      "published_at": "2026/8/29 16:44:01"
+    },
+    "bseedAJczmq": {
+      "bvid": "BV1C14y6eEWm",
+      "url": "https://www.bilibili.com/video/BV1C14y6eEWm",
+      "title": "【中英双语】我的世界：能开采岩浆？寻找定制镐子挑战｜Minecraft, BUT I Can MINE LAVA!",
+      "published_at": "2026/8/29 16:42:53"
+    },
+    "bseed_dW9dL": {
+      "bvid": "BV1Kr4y6METG",
+      "url": "https://www.bilibili.com/video/BV1Kr4y6METG",
+      "title": "【中英双语】Minecraft 跑酷史上最难跳跃全纪录与技巧解析｜History of Minecraft's Hardest Jumps",
+      "published_at": "2026/8/29 16:40:17"
+    },
+    "bseedYIOYds": {
+      "bvid": "BV1hx4y67EeE",
+      "url": "https://www.bilibili.com/video/BV1hx4y67EeE",
+      "title": "【中英双语】实测 GLM-5.3-Flash：代码生成质量与价格对比分析｜I Tested NEW GLM-5.3-Flash (ex Ox Alpha) o…",
+      "published_at": "2026/8/29 16:40:08"
+    },
+    "bseedVoLP64": {
+      "bvid": "BV1Qx4y67E1K",
+      "url": "https://www.bilibili.com/video/BV1Qx4y67E1K",
+      "title": "【中英双语】24 小时用 AI 开发健身评分应用，实测结果太真实了｜We Built an AI Physique-Rating App in 24 Hours",
+      "published_at": "2026/8/29 16:30:12"
+    },
+    "bseedYfgroD": {
+      "bvid": "BV1Gx4y6EEwf",
+      "url": "https://www.bilibili.com/video/BV1Gx4y6EEwf",
+      "title": "【中英双语】用 AI 团队一键完成产品发布全流程实测｜I Built a Full Creator Launch With a Team of AI Agen…",
+      "published_at": "2026/8/29 16:28:30"
+    },
+    "bseed8Vg3va": {
+      "bvid": "BV1tY4y6kEte",
+      "url": "https://www.bilibili.com/video/BV1tY4y6kEte",
+      "title": "【中英双语】Z AI 确认 GLM 5.3 Flash：开源 MIT 协议与本地运行｜GLM 5.3 Flash (Fully Tested): What d…",
+      "published_at": "2026/8/29 16:22:24"
+    },
+    "bseedAe8Ze6": {
+      "bvid": "BV18a4y6VEPj",
+      "url": "https://www.bilibili.com/video/BV18a4y6VEPj",
+      "title": "【中英双语】GPT-6 Bel泄露、Claude Fable 5.1与Qwen 4等｜GPT-6 'Bel' HUGE Leaks, Fable 5.1 To…",
+      "published_at": "2026/8/29 16:14:49"
+    },
+    "bseedshrWnX": {
+      "bvid": "BV18b4y6LELd",
+      "url": "https://www.bilibili.com/video/BV18b4y6LELd",
+      "title": "【中英双语】GE航空用波音747改装飞行实验室测试新发动机技术｜GE Aerospace Flies Boeing 747 To Test New Engin…",
+      "published_at": "2026/8/29 16:14:44"
+    },
+    "bseedb77OZ1": {
+      "bvid": "BV1ta4y6VERp",
+      "url": "https://www.bilibili.com/video/BV1ta4y6VERp",
+      "title": "【无配音】Qwen3.8-27B 与 Kimi K3 本地 AI 实战评测对比｜Qwen3.8-27B vs Kimi K3 – Can Local AI C…",
+      "published_at": "2026/8/29 16:13:33"
+    },
+    "bseedaE-q7h": {
+      "bvid": "BV1ta4y65ERT",
+      "url": "https://www.bilibili.com/video/BV1ta4y65ERT",
+      "title": "【中英双语】GLM 5.3 Flash 发布：三项严苛测试揭秘 OX-Alpha 身｜GLM 5.3 Flash Dropped: 3 Brutal Test…",
+      "published_at": "2026/8/29 16:10:22"
+    },
+    "bseedAgcSP6": {
+      "bvid": "BV15P416HExV",
+      "url": "https://www.bilibili.com/video/BV15P416HExV",
+      "title": "【中英双语】15 美分迷你 PC 能否运行 Minecraft？极限测试｜Can A $0,1 Mini PC Run Minecraft?",
+      "published_at": "2026/8/29 16:07:26"
+    },
+    "bseedSt7ujh": {
+      "bvid": "BV18b4y6LEVu",
+      "url": "https://www.bilibili.com/video/BV18b4y6LEVu",
+      "title": "【中英双语】WAN3.0 评测：从产品图生成高一致性商业广告视频｜WAN3.0 AI Video Generator: From Product Image…",
+      "published_at": "2026/8/29 16:04:02"
+    },
+    "bseedJfFRQW": {
+      "bvid": "BV1if4y6RE58",
+      "url": "https://www.bilibili.com/video/BV1if4y6RE58",
+      "title": "【中英双语】从免费到专业：2026年比特币挖矿全价位设备实测指南｜I Tested Bitcoin Miners at EVERY Price Point",
+      "published_at": "2026/8/29 16:03:46"
+    },
+    "bseedeJdaUs": {
+      "bvid": "BV1Sb4y6LESU",
+      "url": "https://www.bilibili.com/video/BV1Sb4y6LESU",
+      "title": "【中英双语】Minecraft红石电视：解决色彩与体积难题的终极方案｜Minecraft's Most Realistic Redstone TV",
+      "published_at": "2026/8/29 16:03:20"
+    },
+    "bseeds5o8Zq": {
+      "bvid": "BV1hb4y6jEi9",
+      "url": "https://www.bilibili.com/video/BV1hb4y6jEi9",
+      "title": "【中英双语】GLM 5.3 Flash：0.5 美元百万 token 性能碾压竞品｜GLM 5.3 Flash Just Beat Every Model o…",
+      "published_at": "2026/8/29 16:02:34"
+    },
+    "bseedaAKzkx": {
+      "bvid": "BV1Rf4y6REQb",
+      "url": "https://www.bilibili.com/video/BV1Rf4y6REQb",
+      "title": "【无配音】用泻盐培育巨型晶体的科学实验教程｜Growing A Huge Crystal from Epsom Salt",
+      "published_at": "2026/8/29 16:00:05"
+    },
+    "bseedn1h-UW": {
+      "bvid": "BV1Lw416XENZ",
+      "url": "https://www.bilibili.com/video/BV1Lw416XENZ",
+      "title": "【中英双语】花$120买12颗坏Ryzen CPU，能修好赚钱吗？｜I Bought 12 Broken Ryzen CPUs for $10 Each -…",
+      "published_at": "2026/8/29 15:58:42"
+    },
+    "bseedsyCA7K": {
+      "bvid": "BV15c416sEk2",
+      "url": "https://www.bilibili.com/video/BV15c416sEk2",
+      "title": "【中英双语】百元迷你主机升级挑战：ThinkStation P320 极限性能测试｜How Far Can I Upgrade This $100 Tiny…",
+      "published_at": "2026/8/29 15:57:49"
+    },
+    "bseedvaZapk": {
+      "bvid": "BV1ug4167Eds",
+      "url": "https://www.bilibili.com/video/BV1ug4167Eds",
+      "title": "【中英双语】用化肥养出巨型晶体：耗时一年全过程记录｜I Spent 1 Year Growing This Giant Crystal",
+      "published_at": "2026/8/29 15:50:21"
+    },
+    "bseed2I6chh": {
+      "bvid": "BV1ec416WELx",
+      "url": "https://www.bilibili.com/video/BV1ec416WELx",
+      "title": "【无配音】黄铜六角螺母改造成茉莉花戒指的手工制作教程｜How I turn a hex nut into beautiful flower ring - ha…",
+      "published_at": "2026/8/29 15:48:25"
+    },
+    "bseedTC1kP-": {
+      "bvid": "BV1vf4y6REGy",
+      "url": "https://www.bilibili.com/video/BV1vf4y6REGy",
+      "title": "【中英双语】铀矿开采与浓缩：核燃料如何制成？｜How Is Enriched Uranium Made? The Dangerous Process Behi…",
+      "published_at": "2026/8/29 15:46:23"
+    },
+    "bseedKo0VuU": {
+      "bvid": "BV1VT416JEFK",
+      "url": "https://www.bilibili.com/video/BV1VT416JEFK",
+      "title": "【中英双语】2TB 内存双路 Xeon 服务器改游戏机实测｜2TB RAM PC vs Games",
+      "published_at": "2026/8/29 15:38:34"
+    },
+    "bseedQe1omT": {
+      "bvid": "BV18M416UE9h",
+      "url": "https://www.bilibili.com/video/BV18M416UE9h",
+      "title": "【中英双语】从零自建1PB级NAS：定制钣金与3D打印的硬核工程实践｜I Built a 1 Petabyte Server From Scratch",
+      "published_at": "2026/8/29 15:38:06"
+    },
+    "bseed6dU-NX": {
+      "bvid": "BV1JQ4y68EAv",
+      "url": "https://www.bilibili.com/video/BV1JQ4y68EAv",
+      "title": "【中英双语】Facebook Marketplace 捡漏蝾螈：重建家园与肢体再生记｜I Saved the Saddest Axolotl on Faceb…",
+      "published_at": "2026/8/29 15:32:41"
+    },
+    "bseedFqLvW2": {
+      "bvid": "BV1VN416DEvA",
+      "url": "https://www.bilibili.com/video/BV1VN416DEvA",
+      "title": "【中英双语】显卡如何工作？深度解析3090 GPU架构与显存技术｜How do Graphics Cards Work? Exploring GPU Arch…",
+      "published_at": "2026/8/29 15:32:08"
+    },
+    "bseednzpGxj": {
+      "bvid": "BV13g4167Eb5",
+      "url": "https://www.bilibili.com/video/BV13g4167Eb5",
+      "title": "【中英双语】手工打造口袋级树莓派5赛博终端，便携Linux电脑实测｜[Satisfying] Building a Pocket Cyberdeck Comp…",
+      "published_at": "2026/8/29 15:31:42"
+    },
+    "bseed5NEl_z": {
+      "bvid": "BV16D4y6cE1A",
+      "url": "https://www.bilibili.com/video/BV16D4y6cE1A",
+      "title": "【中英双语】2026年AI算力挖矿实测：Salad平台单日最高收益与硬件回报分析｜I Spent $15,000 on AI Computers for PR…",
+      "published_at": "2026/8/29 15:29:35"
+    },
+    "bseedr81K4o": {
+      "bvid": "BV1JQ4y68EnW",
+      "url": "https://www.bilibili.com/video/BV1JQ4y68EnW",
+      "title": "【中英双语】从$70彩票矿机到ASIC：实测全价位比特币挖矿收益｜I Tested Bitcoin Miners at EVERY Price Point",
+      "published_at": "2026/8/29 15:27:34"
+    },
+    "bseedfJH484": {
+      "bvid": "BV1JQ4y6hE1Z",
+      "url": "https://www.bilibili.com/video/BV1JQ4y6hE1Z",
+      "title": "【中英双语】电脑核心部件详解：CPU、显卡、内存与硬盘如何协同工作｜Every PC Component Explained in 10 minutes",
+      "published_at": "2026/8/29 15:14:15"
+    },
+    "bseedtkq9mJ": {
+      "bvid": "BV1BQ4y68EaC",
+      "url": "https://www.bilibili.com/video/BV1BQ4y68EaC",
+      "title": "【中英双语】实测三大AI理财：能否战胜市场？60天结果出炉｜I Let AI Invest for Me on Trading 212, Here's Wha…",
+      "published_at": "2026/8/29 15:13:45"
+    },
+    "bseed2zEVCO": {
+      "bvid": "BV1zK4k6pEWb",
+      "url": "https://www.bilibili.com/video/BV1zK4k6pEWb",
+      "title": "【中英双语】在家自制160核RISC-V超集群GPU：从设计到失败教训｜I made a GPU at home",
+      "published_at": "2026/8/29 13:58:25"
+    },
+    "bseedzoAWVj": {
+      "bvid": "BV1FK4k6WE2Q",
+      "url": "https://www.bilibili.com/video/BV1FK4k6WE2Q",
+      "title": "【中英双语】27年后，Nvidia首款显卡GeForce 256还能玩游戏吗？｜Can the World's First GPU Still Run Gam…",
+      "published_at": "2026/8/29 13:49:54"
+    },
+    "bseediG-qqJ": {
+      "bvid": "BV1kc4k6dEXD",
+      "url": "https://www.bilibili.com/video/BV1kc4k6dEXD",
+      "title": "【中英双语】挑战只用亚马逊搜索结果组装最强游戏电脑｜Building a PC... Using ONLY the Top Results on Amazon",
+      "published_at": "2026/8/29 13:46:02"
+    },
+    "bseedx30O0-": {
+      "bvid": "BV16A4k6sEJt",
+      "url": "https://www.bilibili.com/video/BV16A4k6sEJt",
+      "title": "【中英双语】把报废笔记本改造成桌面电脑的全过程｜I Built This PC From a Broken Old Laptop!",
+      "published_at": "2026/8/29 13:44:19"
+    },
+    "bseed-T55jy": {
+      "bvid": "BV11v4k6YEU8",
+      "url": "https://www.bilibili.com/video/BV11v4k6YEU8",
+      "title": "【中英双语】全水域生存挑战：仅靠潜行与 drowned 击败末影龙｜Can You Beat Minecraft if it's Literally Just…",
+      "published_at": "2026/8/29 13:38:25"
+    },
+    "bseedvn45D0": {
+      "bvid": "BV14v4k6YEAM",
+      "url": "https://www.bilibili.com/video/BV14v4k6YEAM",
+      "title": "【中英双语】把普通化肥变成漂亮晶体的简单教程｜Turning Ordinary Fertilizer into a Beautiful Crystal",
+      "published_at": "2026/8/29 13:37:56"
+    },
+    "bseedvGInbp": {
+      "bvid": "BV1sq4k6wEPb",
+      "url": "https://www.bilibili.com/video/BV1sq4k6wEPb",
+      "title": "【无配音】用铜和醋培育黑色醋酸铜晶体，耗时一年十九天｜Growing A Black Crystal from Just Copper & Vinegar",
+      "published_at": "2026/8/29 13:36:43"
+    },
+    "bseedF7OiGg": {
+      "bvid": "BV1Ma4k6iEcD",
+      "url": "https://www.bilibili.com/video/BV1Ma4k6iEcD",
+      "title": "【中英双语】Minecraft 硬核生存：100 天打造丛林树屋村落｜I Survived 100 Days Building a TREEHOUSE VIL…",
+      "published_at": "2026/8/29 13:34:17"
+    },
+    "bseedNkJPuI": {
+      "bvid": "BV1Wq4k6wELj",
+      "url": "https://www.bilibili.com/video/BV1Wq4k6wELj",
+      "title": "【中英双语】用16位索引重构Minecraft：渲染1370亿体素世界｜I remade Minecraft, but 16x smaller...",
+      "published_at": "2026/8/29 13:32:48"
+    },
+    "bseed3kE6_h": {
+      "bvid": "BV14a4k6vE6P",
+      "url": "https://www.bilibili.com/video/BV14a4k6vE6P",
+      "title": "【中英双语】用Claude Code一天从零开发一款手机广告游戏｜Building a $1M Mobile Game with Only AI",
+      "published_at": "2026/8/29 13:31:32"
+    },
+    "bseedtNsPhn": {
+      "bvid": "BV19H4k6GEKJ",
+      "url": "https://www.bilibili.com/video/BV19H4k6GEKJ",
+      "title": "【中英双语】3 个 AI 联手从零搭建 Minecraft 服务器｜3 AIs Build a Minecraft Server From Scratch",
+      "published_at": "2026/8/29 12:52:09"
+    },
+    "bseedoOsCZ_": {
+      "bvid": "BV1mh4k6KEWh",
+      "url": "https://www.bilibili.com/video/BV1mh4k6KEWh",
+      "title": "【中英双语】8GB显存跑通Qwen3.8-27B？实测对比Claude Opus｜I ran Qwen3.8 27B on single 8GB Card!…",
+      "published_at": "2026/8/29 12:47:51"
+    },
+    "bseedv2eqyX": {
+      "bvid": "BV1Ub4k6qEpY",
+      "url": "https://www.bilibili.com/video/BV1Ub4k6qEpY",
+      "title": "【中英双语】在家用激光培育红宝石晶体全过程记录｜I made my own rubies!",
+      "published_at": "2026/8/29 12:45:17"
+    },
+    "bseed1_CssU": {
+      "bvid": "BV1bh4k6KEuJ",
+      "url": "https://www.bilibili.com/video/BV1bh4k6KEuJ",
+      "title": "【中英双语】ChatGPT、Claude与Kimi谁更能写出迷幻Minecraft着｜GPT vs Claude vs Kimi Make Trippy Sh…",
+      "published_at": "2026/8/29 12:43:59"
+    },
+    "bseedVvwgXM": {
+      "bvid": "BV1hx4k6zEtB",
+      "url": "https://www.bilibili.com/video/BV1hx4k6zEtB",
+      "title": "【中英双语】旧轮胎种红薯：家庭容器种植教程｜Never Throw Away Old Tires! Try This Sweet Potato Growing…",
+      "published_at": "2026/8/29 12:39:02"
+    },
+    "bseedXo6Ju9": {
+      "bvid": "BV1bx4k66ErF",
+      "url": "https://www.bilibili.com/video/BV1bx4k66ErF",
+      "title": "【中英双语】Godot 游戏开发：用 Opus 5+Makko AI 快速制作手机农｜Opus 5 + Makko Is The BEST Combo For…",
+      "published_at": "2026/8/29 12:37:22"
+    },
+    "bseeduFxb5i": {
+      "bvid": "BV1Gc4C61Ejt",
+      "url": "https://www.bilibili.com/video/BV1Gc4C61Ejt",
+      "title": "【无配音】番茄高产种植技巧：家庭阳台也能种出满满果实｜If only I had known sooner — Tomatoes bearing an ast…",
+      "published_at": "2026/8/29 12:27:47"
+    },
+    "bseed4e-5JZ": {
+      "bvid": "BV1GF4C6jEt7",
+      "url": "https://www.bilibili.com/video/BV1GF4C6jEt7",
+      "title": "【中英双语】人工智能公司创始人名单与背景介绍｜List Founders of AI Companies",
+      "published_at": "2026/8/29 12:27:20"
+    },
+    "bseedNrRSiD": {
+      "bvid": "BV1Yc4C61ErX",
+      "url": "https://www.bilibili.com/video/BV1Yc4C61ErX",
+      "title": "【无配音】用鸡蛋种西瓜？园丁分享超大西瓜种植秘诀｜Sweeter – Bigger – Growing watermelons with eggs a gar…",
+      "published_at": "2026/8/29 12:26:53"
+    },
+    "bseedelECaL": {
+      "bvid": "BV1u1tw6tEs9",
+      "url": "https://www.bilibili.com/video/BV1u1tw6tEs9",
+      "title": "【中英双语】白萝卜三种播种法：从种子到丰收的种植技巧｜3 Growing Methods for a Bigger White Radish Harvest…",
+      "published_at": "2026/8/28 20:29:32"
+    },
+    "bseedFc4ACU": {
+      "bvid": "BV1KStw6REG9",
+      "url": "https://www.bilibili.com/video/BV1KStw6REG9",
+      "title": "【中英双语】在家轻松种植百香果的园艺教程｜Growing passion fruit at home is not difficult if you watc…",
+      "published_at": "2026/8/28 20:28:23"
+    },
+    "bseedJSbgDA": {
+      "bvid": "BV1pdtw6DEKA",
+      "url": "https://www.bilibili.com/video/BV1pdtw6DEKA",
+      "title": "【中英双语】阳台塑料瓶种番茄：小空间全年收获新鲜果实教程｜Growing Tomatoes in Bottles on Balcony for Fresh F…",
+      "published_at": "2026/8/28 20:11:30"
+    },
+    "bseedwUG5YO": {
+      "bvid": "BV1CXtw6XEBC",
+      "url": "https://www.bilibili.com/video/BV1CXtw6XEBC",
+      "title": "【中英双语】家庭草莓种植指南：从种子到收获的全流程教程｜🍓 Cómo Sembrar Fresas del Mercado | Hasta la Cosec…",
+      "published_at": "2026/8/28 20:05:31"
+    },
+    "bseed36qUso": {
+      "bvid": "BV1Xitw6eEfX",
+      "url": "https://www.bilibili.com/video/BV1Xitw6eEfX",
+      "title": "【中英双语】八月大丰收：后院菜园采摘与种植记录｜Large Garden Harvest | August is Bursting With Food!",
+      "published_at": "2026/8/28 20:01:31"
+    },
+    "bseedKyNLPh": {
+      "bvid": "BV1NXtw6QEsQ",
+      "url": "https://www.bilibili.com/video/BV1NXtw6QEsQ",
+      "title": "【中英双语】手把手教你用AI免费制作混合现实POV动画教程｜The Free AI Mixed-Reality Niche Getting Tens of M…",
+      "published_at": "2026/8/28 20:00:25"
+    },
+    "bseedWSWfbG": {
+      "bvid": "BV1YBtw6AEWB",
+      "url": "https://www.bilibili.com/video/BV1YBtw6AEWB",
+      "title": "【中英双语】本地部署 Qwen 3.8：能否在消费级硬件上实现前沿级代码生成？｜AI Engineers' Dream: Qwen 3.8 AI Model…",
+      "published_at": "2026/8/28 19:56:38"
+    },
+    "bseedmSkUon": {
+      "bvid": "BV1GBtw6AEup",
+      "url": "https://www.bilibili.com/video/BV1GBtw6AEup",
+      "title": "【中英双语】谷歌确认启动 Gemini 4 训练，澄清网络谣言与参数真相｜Gemini 4: Google’s Next Massive AI Model S…",
+      "published_at": "2026/8/28 19:55:53"
+    },
+    "bseedq-iO_i": {
+      "bvid": "BV1eYtw6iEmD",
+      "url": "https://www.bilibili.com/video/BV1eYtw6iEmD",
+      "title": "【中英双语】2020-2026最强AI模型排名：GPT-5.5与Claude Fab｜The Best AI Models of All Time (2020…",
+      "published_at": "2026/8/28 19:54:16"
+    },
+    "bseedFpxoST": {
+      "bvid": "BV19vtw6NEBx",
+      "url": "https://www.bilibili.com/video/BV19vtw6NEBx",
+      "title": "【中英双语】阳光山谷模组包：探索头骨洞穴与种植作物｜Minecraft But It's STARDEW VALLEY | SKULL CAVERNS EP 2",
+      "published_at": "2026/8/28 19:54:15"
+    },
+    "bseedQqhjJu": {
+      "bvid": "BV1GBtw6PEsQ",
+      "url": "https://www.bilibili.com/video/BV1GBtw6PEsQ",
+      "title": "【中英双语】阿里通义千问工作流：从文本到视频的一站式自动化演示｜This New Chinese AI model just changed EVERYTHI…",
+      "published_at": "2026/8/28 19:52:36"
+    },
+    "bseedDz0FrQ": {
+      "bvid": "BV19Ytw6eEeo",
+      "url": "https://www.bilibili.com/video/BV19Ytw6eEeo",
+      "title": "【中英双语】OpenAI自研Jalapeño芯片效率碾压NVIDIA，Anthrop｜OpenAI’s New AI Chip Just Got Real (…",
+      "published_at": "2026/8/28 19:49:54"
+    },
+    "bseedyDggb1": {
+      "bvid": "BV1LVtA6uE7N",
+      "url": "https://www.bilibili.com/video/BV1LVtA6uE7N",
+      "title": "【中英双语】阳光谷模组包：从零开始打造温馨农场与家园｜Minecraft But It's STARDEW VALLEY | EP. 1",
+      "published_at": "2026/8/28 19:31:26"
+    },
+    "bseedCDo7Vm": {
+      "bvid": "BV1SntA6YEQU",
+      "url": "https://www.bilibili.com/video/BV1SntA6YEQU",
+      "title": "【中英双语】微软对Minecraft基岩版做了什么？揭秘服务器巨变内幕｜WTF is Microsoft Doing to Minecraft Bedrock…",
+      "published_at": "2026/8/28 19:06:19"
+    },
+    "bseeddUNKRA": {
+      "bvid": "BV1V7tA6iEcF",
+      "url": "https://www.bilibili.com/video/BV1V7tA6iEcF",
+      "title": "【中英双语】LDShadowLady 我的世界永恒世界首集：为女儿打造未来家园｜Minecraft Forever World | Ep. 1",
+      "published_at": "2026/8/28 19:01:59"
+    },
+    "bseedWZiYM5": {
+      "bvid": "BV1cwtA6mE9a",
+      "url": "https://www.bilibili.com/video/BV1cwtA6mE9a",
+      "title": "【中英双语】MC永恒世界：用村民僵尸打造奇幻铁傀儡农场｜Ancient Iron Golem | Minecraft Forever World | Ep. 2",
+      "published_at": "2026/8/28 18:49:37"
+    },
+    "bseedH2qzYq": {
+      "bvid": "BV1wftw6UE8z",
+      "url": "https://www.bilibili.com/video/BV1wftw6UE8z",
+      "title": "【中英双语】LDShadowLady：我的世界永恒世界第4期，打造树洞秘密隧道｜Secret Tunnel | Minecraft Forever World…",
+      "published_at": "2026/8/28 18:41:44"
+    },
+    "bseedw26ysb": {
+      "bvid": "BV1oMtA6rER8",
+      "url": "https://www.bilibili.com/video/BV1oMtA6rER8",
+      "title": "【中英双语】土豆农场与红石改造：我的世界永恒世界第3集｜Potato Valley | Minecraft Forever World | Ep. 3",
+      "published_at": "2026/8/28 18:32:37"
+    },
+    "bseedax_jun": {
+      "bvid": "BV1FNtA61EtC",
+      "url": "https://www.bilibili.com/video/BV1FNtA61EtC",
+      "title": "【中英双语】MC 永恒世界：魔法改造附魔塔与浮空岛重建｜Magical Makeover | Minecraft Forever World | Ep. 6",
+      "published_at": "2026/8/28 18:30:33"
+    },
+    "bseedSXuAL5": {
+      "bvid": "BV1CitA6pEKu",
+      "url": "https://www.bilibili.com/video/BV1CitA6pEKu",
+      "title": "【中英双语】Minecraft 永恒世界：在魔法塔旁安置沉睡巨龙｜Sleeping Dragons | Minecraft Forever World | E…",
+      "published_at": "2026/8/28 18:11:55"
+    },
+    "bseedPGl_u_": {
+      "bvid": "BV1k6tA6SEz6",
+      "url": "https://www.bilibili.com/video/BV1k6tA6SEz6",
+      "title": "【中英双语】MC 永恒世界第 8 集：母舰意外烧毁变沉船｜Shipwreck | Minecraft Forever World | Ep. 8",
+      "published_at": "2026/8/28 17:57:52"
+    },
+    "bseedax9MYJ": {
+      "bvid": "BV1MxtA6cE6T",
+      "url": "https://www.bilibili.com/video/BV1MxtA6cE6T",
+      "title": "【中英双语】MC 永恒世界第五集：搭建附魔台与探索浮空岛｜:ᛞᚨ: Magic Books :ᛃᚨᚾ: | Minecraft Forever World |…",
+      "published_at": "2026/8/28 17:44:54"
+    },
+    "bseedOoFabl": {
+      "bvid": "BV12E4o66Eiu",
+      "url": "https://www.bilibili.com/video/BV12E4o66Eiu",
+      "title": "【中英双语】离网农场收获洋葱与处理大蒜｜STOCKING THE OFF GRID PANTRY: HARVESTING ONIONS & PROCESSIN…",
+      "published_at": "2026/8/27 22:22:44"
+    },
+    "bseedWR_OKA": {
+      "bvid": "BV1TL4o6CEuD",
+      "url": "https://www.bilibili.com/video/BV1TL4o6CEuD",
+      "title": "【中英双语】在《我的世界》中水淹好友世界整蛊他们｜Flooding the World to Prank My Friends in Minecraft...",
+      "published_at": "2026/8/27 22:16:04"
+    },
+    "bseedFlhh_y": {
+      "bvid": "BV1ks4o6iE4h",
+      "url": "https://www.bilibili.com/video/BV1ks4o6iE4h",
+      "title": "【中英双语】我在Minecraft建筑大赛中用世界吞噬者作弊！｜I Cheated With WORLD EATER In Minecraft Build B…",
+      "published_at": "2026/8/27 22:06:38"
+    },
+    "bseedE7y6Ns": {
+      "bvid": "BV1Kn4o6gEWA",
+      "url": "https://www.bilibili.com/video/BV1Kn4o6gEWA",
+      "title": "【中英双语】塑料瓶自制吸尘器：9V电池驱动的科学小发明教程｜How To Make Vacuum Cleaner At Home | DIY Vacuum C…",
+      "published_at": "2026/8/27 21:59:39"
+    },
+    "bseedfzsDeh": {
+      "bvid": "BV1PH4o6zE2g",
+      "url": "https://www.bilibili.com/video/BV1PH4o6zE2g",
+      "title": "【中英双语】美式测试厨房：希腊千层面帕斯蒂乔与菲达奶酪选购指南｜Why You Should Cook Your Pasta in Béchamel | Fu…",
+      "published_at": "2026/8/27 21:55:01"
+    },
+    "bseeduuPq48": {
+      "bvid": "BV18x496uE5F",
+      "url": "https://www.bilibili.com/video/BV18x496uE5F",
+      "title": "【中英双语】开源大模型3D实战：GLM 5.3与Qwen 3.8 Max性能对比测试｜Open-Source LLMs Taking Over 3D Agai…",
+      "published_at": "2026/8/27 21:19:14"
+    },
+    "bseed58yYlw": {
+      "bvid": "BV1M4496BEmw",
+      "url": "https://www.bilibili.com/video/BV1M4496BEmw",
+      "title": "【中英双语】实测4款AI模型：谁最擅长用文本生成3D应用？｜I Tested 4 AI Models on the Same 3D Coding Task",
+      "published_at": "2026/8/27 21:12:09"
+    },
+    "bseedwx6bzb": {
+      "bvid": "BV1gW4966Exr",
+      "url": "https://www.bilibili.com/video/BV1gW4966Exr",
+      "title": "【中英双语】Minecraft 开启超写实画质，蜂蜜与岩浆竟如此逼真｜Minecraft, but its ULTRA REALISTIC..",
+      "published_at": "2026/8/27 21:09:58"
+    },
+    "bseedvl1Z0M": {
+      "bvid": "BV1h4496BEHb",
+      "url": "https://www.bilibili.com/video/BV1h4496BEHb",
+      "title": "【中英双语】实测 Qwen3.8 Flash Next：Qwen4 架构预览与多模态｜Qwen3.8 Flash Next Is INSANE – Testi…",
+      "published_at": "2026/8/27 21:08:45"
+    },
+    "bseedRiZkYc": {
+      "bvid": "BV1hp4963ESw",
+      "url": "https://www.bilibili.com/video/BV1hp4963ESw",
+      "title": "【中英双语】用Claude生成超写实Blender渲染：项目结构与提示词技巧｜How To Create Insanely Realistic Renders…",
+      "published_at": "2026/8/27 21:04:19"
+    },
+    "bseedqnwMnZ": {
+      "bvid": "BV1hp4963EU6",
+      "url": "https://www.bilibili.com/video/BV1hp4963EU6",
+      "title": "【中英双语】零基础免费构建Claude Code AI智能体：从设置到自动化工作流实｜How to Build an AI Agent with Claude…",
+      "published_at": "2026/8/27 21:04:04"
+    },
+    "bseed_P2T7k": {
+      "bvid": "BV1hW4966Ejv",
+      "url": "https://www.bilibili.com/video/BV1hW4966Ejv",
+      "title": "【中英双语】Claude Code与Codex共享上下文：Tutti VM多智能体协｜What Happens When My Claude Code and…",
+      "published_at": "2026/8/27 21:02:06"
+    },
+    "bseediv65fO": {
+      "bvid": "BV1Ka496NE9B",
+      "url": "https://www.bilibili.com/video/BV1Ka496NE9B",
+      "title": "【中英双语】利用秘密房间偷走Melon的Minecraft基地｜Using SECRET ROOMS to Steal Melon's Minecraft B…",
+      "published_at": "2026/8/27 20:57:02"
+    },
+    "bseedhThCv5": {
+      "bvid": "BV1Xw4R6CE7J",
+      "url": "https://www.bilibili.com/video/BV1Xw4R6CE7J",
+      "title": "【中英双语】《咒术回战》Minecraft 百天生存：从新手到最强术师｜I Survived 100 Days in Jujutsu Kaisen Minec…",
+      "published_at": "2026/8/27 20:53:31"
+    },
+    "bseedO34KCI": {
+      "bvid": "BV1bb496TEZ6",
+      "url": "https://www.bilibili.com/video/BV1bb496TEZ6",
+      "title": "【中英双语】Minecraft 好友邀请乘船，结果发现是巨型豪华游轮｜Evolving from POOR to MILLIONAIRE Cruise in…",
+      "published_at": "2026/8/27 20:52:47"
+    },
+    "bseed9gYIsZ": {
+      "bvid": "BV1Vf4962EY1",
+      "url": "https://www.bilibili.com/video/BV1Vf4962EY1",
+      "title": "【中英双语】我的世界：所有方块无限蔓延，最终摧毁末地龙｜Minecraft, But Every Block Spreads Like Sculk",
+      "published_at": "2026/8/27 20:49:25"
+    },
+    "bseedKLjpeH": {
+      "bvid": "BV1Ug4R6MEPF",
+      "url": "https://www.bilibili.com/video/BV1Ug4R6MEPF",
+      "title": "【中英双语】30 天富人思维实验：从金钱焦虑到决策质量与注意力管理｜I Tried Thinking Like a Millionaire for 30 Da…",
+      "published_at": "2026/8/27 20:29:44"
+    },
+    "bseedapgMEn": {
+      "bvid": "BV1ES496XEmd",
+      "url": "https://www.bilibili.com/video/BV1ES496XEmd",
+      "title": "【中英双语】CERN 或发现隐藏宇宙：布莱恩·格林解读暗物质与额外维度｜CERN May Have Found Evidence of a Hidden Un…",
+      "published_at": "2026/8/27 20:25:03"
+    },
+    "bseedKN_xZj": {
+      "bvid": "BV18M4R66EFz",
+      "url": "https://www.bilibili.com/video/BV18M4R66EFz",
+      "title": "【中英双语】Minecraft：看一眼就获得方块，这MOD太离谱了｜Minecraft But You Get Every Block You Look at…",
+      "published_at": "2026/8/27 20:22:43"
+    },
+    "bseedi2uNfF": {
+      "bvid": "BV1JS496XEa8",
+      "url": "https://www.bilibili.com/video/BV1JS496XEa8",
+      "title": "【中英双语】无需安装：浏览器直连开源 AI 编程平台实测｜This Open-Source AI Coding Tool Is Actually Insane",
+      "published_at": "2026/8/27 20:22:21"
+    },
+    "bseed4c6rI-": {
+      "bvid": "BV15d496UESm",
+      "url": "https://www.bilibili.com/video/BV15d496UESm",
+      "title": "【中英双语】Minecraft 反向合成挑战：木头变木板？红石块变粉末｜Minecraft, But Recipes are Backwards...",
+      "published_at": "2026/8/27 20:19:20"
+    },
+    "bseedqUQv9a": {
+      "bvid": "BV1hN4R6kEub",
+      "url": "https://www.bilibili.com/video/BV1hN4R6kEub",
+      "title": "【中英双语】坚持冥想 30 天：我的大脑发生了什么变化｜I Meditated for 30 Days — Here's What Happened to M…",
+      "published_at": "2026/8/27 20:16:10"
+    },
+    "bseed6zr3TG": {
+      "bvid": "BV18T4R63Ews",
+      "url": "https://www.bilibili.com/video/BV18T4R63Ews",
+      "title": "【中英双语】第13周52周收获挑战：豆角、番茄与鸡舍趣事｜Colorful harvest #52weekharvest , week 13/52",
+      "published_at": "2026/8/27 20:15:33"
+    },
+    "bseedRY0oaW": {
+      "bvid": "BV1F2496REy3",
+      "url": "https://www.bilibili.com/video/BV1F2496REy3",
+      "title": "【中英双语】水泥与可乐混合制造巨型彩虹冰淇淋坑实验｜How to make Giant Rainbow Ice Cream pit with Cement,…",
+      "published_at": "2026/8/27 20:15:20"
+    },
+    "bseedvIk4p1": {
+      "bvid": "BV1DN4R6rE4A",
+      "url": "https://www.bilibili.com/video/BV1DN4R6rE4A",
+      "title": "【中英双语】旧桶变菜园：阳台种大黄瓜的容器种植全攻略｜Grow Giant Cucumbers in Old Buckets! 🥒 Easy Contain…",
+      "published_at": "2026/8/27 20:14:40"
+    },
+    "bseedhO8ttO": {
+      "bvid": "BV1ST4R6gEJM",
+      "url": "https://www.bilibili.com/video/BV1ST4R6gEJM",
+      "title": "【中英双语】用四种极端环境风干牛排：空气真的能改变风味吗？｜I Dry-Aged Steaks in 4 INSANE Environments!",
+      "published_at": "2026/8/27 20:12:32"
+    },
+    "bseedDJnVaY": {
+      "bvid": "BV1jR496JERy",
+      "url": "https://www.bilibili.com/video/BV1jR496JERy",
+      "title": "【中英双语】庭院采摘：挑选熟透西瓜与观赏玉米，制作夏日冰沙｜Harvesting Ornamental Corn & Making Watermelon Sm…",
+      "published_at": "2026/8/27 20:07:49"
+    },
+    "bseed9LOala": {
+      "bvid": "BV1fQ496HEEk",
+      "url": "https://www.bilibili.com/video/BV1fQ496HEEk",
+      "title": "【中英双语】白水泥加油漆自制强力涂层：DIY 实验与修复技巧｜😱 Mix WHITE CEMENT with PAINT and See the Amazi…",
+      "published_at": "2026/8/27 20:04:37"
+    },
+    "bseedmIPv-c": {
+      "bvid": "BV1zY4R6WEHL",
+      "url": "https://www.bilibili.com/video/BV1zY4R6WEHL",
+      "title": "【中英双语】坦桑尼亚哈扎族：食用毒箭猎物千年生存智慧揭秘｜The Hadzabe Tribe Faces The Harshest African Chall…",
+      "published_at": "2026/8/27 19:48:11"
+    },
+    "bseed73WO9w": {
+      "bvid": "BV1ws4R6fE5f",
+      "url": "https://www.bilibili.com/video/BV1ws4R6fE5f",
+      "title": "【中英双语】骰子决定吃多少：挑战印度街头美食拼盘｜Dice will Decide our Bite Food Challenge | Golgappa, M…",
+      "published_at": "2026/8/27 19:44:10"
+    },
+    "bseed-MMi5b": {
+      "bvid": "BV1qe4R6QEGV",
+      "url": "https://www.bilibili.com/video/BV1qe4R6QEGV",
+      "title": "【中英双语】开学日忙碌日常：兼顾教学、带娃与打理菜园｜How Do We Find Time for This Garden?! Day in the Life",
+      "published_at": "2026/8/27 19:43:07"
+    },
+    "bseednsf5st": {
+      "bvid": "BV1LX496DEZ9",
+      "url": "https://www.bilibili.com/video/BV1LX496DEZ9",
+      "title": "【中英双语】密歇根农舍秋收：晚夏花园漫步与土豆丰收记录｜Fall Garden Harvest | A Quiet Slow Living Summer Ev…",
+      "published_at": "2026/8/27 19:41:12"
+    },
+    "bseed4F3w7J": {
+      "bvid": "BV1z44R64Emh",
+      "url": "https://www.bilibili.com/video/BV1z44R64Emh",
+      "title": "【中英双语】宁静农场日常：采摘蔬菜、与邻居交换稻米及照料动物｜Peaceful Farm Life : Harvesting Veggies and Trad…",
+      "published_at": "2026/8/27 19:34:06"
+    },
+    "bseedG1KcYF": {
+      "bvid": "BV1F84R6xELw",
+      "url": "https://www.bilibili.com/video/BV1F84R6xELw",
+      "title": "【中英双语】手把手教你用Agenta搭建竞品监控AI助手并自动周报｜Build an Agent That Tracks Your Competitors W…",
+      "published_at": "2026/8/27 19:07:41"
+    },
+    "bseedMyhSTM": {
+      "bvid": "BV1xx8o62E5K",
+      "url": "https://www.bilibili.com/video/BV1xx8o62E5K",
+      "title": "【中英双语】水培兰花30天挑战：枯根重生与开花实录｜Orchids in Water? I Tried It for 30 Days — The Result…",
+      "published_at": "2026/8/27 03:16:47"
+    },
+    "bseedaXLHnE": {
+      "bvid": "BV1tp8o6UEeA",
+      "url": "https://www.bilibili.com/video/BV1tp8o6UEeA",
+      "title": "【中英双语】印度乡村制作炸秋葵片条食谱",
+      "published_at": "2026/8/27 03:10:42"
+    },
+    "bseedy2jPMw": {
+      "bvid": "BV1qx8Z6iE7V",
+      "url": "https://www.bilibili.com/video/BV1qx8Z6iE7V",
+      "title": "【中英双语】我的世界：经验值决定世界大小，越玩地图越大｜Minecraft, But XP = WORLD SIZE",
+      "published_at": "2026/8/27 01:18:54"
+    },
+    "bseedm2Zs_N": {
+      "bvid": "BV1Eq8R6hEjq",
+      "url": "https://www.bilibili.com/video/BV1Eq8R6hEjq",
+      "title": "Minecraft：被攻击时怪物会无限复制的极限生存挑战！",
+      "published_at": "2026/8/27 00:53:06"
+    },
+    "bseedbbVNbE": {
+      "bvid": "BV1C88R6KETw",
+      "url": "https://www.bilibili.com/video/BV1C88R6KETw",
+      "title": "我的世界：世界由随机层构成，能否通关？",
+      "published_at": "2026/8/27 00:32:27"
+    },
+    "bseedMFY-Vb": {
+      "bvid": "BV1FH8Z6uE3e",
+      "url": "https://www.bilibili.com/video/BV1FH8Z6uE3e",
+      "title": "【中英双语】我的世界：用喷漆枪重绘世界击败末影龙｜Minecraft But I Have to PAINT The World",
+      "published_at": "2026/8/27 00:08:27"
+    },
+    "bseedgiXMTs": {
+      "bvid": "BV1LC8R64Eea",
+      "url": "https://www.bilibili.com/video/BV1LC8R64Eea",
+      "title": "【中英双语】我的世界随机物品挑战：每五秒掉落奇葩装备｜I Challenge My Friends to Random Item Mod in Minecra…",
+      "published_at": "2026/8/26 22:43:17"
+    },
+    "bseedEWlwCJ": {
+      "bvid": "BV1C48R6MEMK",
+      "url": "https://www.bilibili.com/video/BV1C48R6MEMK",
+      "title": "【中英双语】挑战全网最离谱短视频食谱，有的难吃到怀疑人生｜I Tested Clickbait Shorts Recipes (again...)",
+      "published_at": "2026/8/26 22:19:22"
+    },
+    "bseedyMKNa2": {
+      "bvid": "BV1fe8R6YESu",
+      "url": "https://www.bilibili.com/video/BV1fe8R6YESu",
+      "title": "【中英双语】OpenArt 全攻略：掌握 AI 视频制作系统，实现角色一致与电影级光｜Master the Art of Making AI Videos (…",
+      "published_at": "2026/8/26 22:11:10"
+    },
+    "bseedAJ-JhJ": {
+      "bvid": "BV17f8d6KEd9",
+      "url": "https://www.bilibili.com/video/BV17f8d6KEd9",
+      "title": "【中英双语】将熟米饭填入羊胃中烤制的独特街头美食",
+      "published_at": "2026/8/26 21:29:23"
+    },
+    "bseed7DO9bd": {
+      "bvid": "BV12C8d6LEkt",
+      "url": "https://www.bilibili.com/video/BV12C8d6LEkt",
+      "title": "【中英双语】《石纪元》科学复刻：盐提取、制皂与焰色反应实测",
+      "published_at": "2026/8/26 21:24:52"
+    },
+    "bseedtx8BZ3": {
+      "bvid": "BV11C8d6LETJ",
+      "url": "https://www.bilibili.com/video/BV11C8d6LETJ",
+      "title": "【中英双语】宁静农场生活：采摘鲜果、乡村烹饪与田园日常",
+      "published_at": "2026/8/26 21:20:53"
+    },
+    "bseeduTxD85": {
+      "bvid": "BV1zf8d6KEBF",
+      "url": "https://www.bilibili.com/video/BV1zf8d6KEBF",
+      "title": "【中英双语】用Artlist+Seedance制作动漫烹饪视频教程",
+      "published_at": "2026/8/26 21:10:25"
+    },
+    "bseedwXw2lo": {
+      "bvid": "BV1Ww896iE1n",
+      "url": "https://www.bilibili.com/video/BV1Ww896iE1n",
+      "title": "【中英双语】OX Alpha 免费 AI 模型评测：代码能力与 Fable 5对比",
+      "published_at": "2026/8/26 21:06:08"
+    },
+    "bseedzp5bAA": {
+      "bvid": "BV1Kr8d6mEjR",
+      "url": "https://www.bilibili.com/video/BV1Kr8d6mEjR",
+      "title": "【中英双语】街头铁锅炒饭：见证中式路边摊的烹饪技艺与烟火气",
+      "published_at": "2026/8/26 21:05:22"
+    },
+    "bseedWmxE7m": {
+      "bvid": "BV1Cw896iE4P",
+      "url": "https://www.bilibili.com/video/BV1Cw896iE4P",
+      "title": "【中英双语】实测神秘隐身模型Ox Alpha：从摩托模拟到3D建模！",
+      "published_at": "2026/8/26 21:04:03"
+    },
+    "bseedDgoiFD": {
+      "bvid": "BV1WP896NEBE",
+      "url": "https://www.bilibili.com/video/BV1WP896NEBE",
+      "title": "【中英双语】Minecraft：仅存活 5 分钟对抗末影龙挑战｜Minecraft But I Survived 5 Minutes Against the…",
+      "published_at": "2026/8/26 20:46:53"
+    },
+    "bseedUAU9e0": {
+      "bvid": "BV1Nc896TEjF",
+      "url": "https://www.bilibili.com/video/BV1Nc896TEjF",
+      "title": "【中英双语】世界最大最小蛋孵化实验：稀有蛋与昆虫协作奇迹｜World’s Biggest vs Smallest Egg. Hatching Experime…",
+      "published_at": "2026/8/26 20:37:19"
+    },
+    "bseedGOaKIU": {
+      "bvid": "BV1AT896AE8y",
+      "url": "https://www.bilibili.com/video/BV1AT896AE8y",
+      "title": "【中英双语】机器人如何像婴儿一样自学物理定律？",
+      "published_at": "2026/8/26 20:26:28"
+    },
+    "bseed4f8xdD": {
+      "bvid": "BV1kT896AEzS",
+      "url": "https://www.bilibili.com/video/BV1kT896AEzS",
+      "title": "【中英双语】OX Alpha 实测：能否真正完成网页、游戏与3D建模？｜I Gave OX Alpha 3 HARD Tests… Can It Actual…",
+      "published_at": "2026/8/26 20:25:56"
+    },
+    "bseedkDW0FB": {
+      "bvid": "BV1hS8X6yEmj",
+      "url": "https://www.bilibili.com/video/BV1hS8X6yEmj",
+      "title": "【中英双语】Qwen3.6与Nemotron、Muse Glimmer本地AI模型实｜Qwen 3.6 vs Nemotron 3.5 vs Muse Gli…",
+      "published_at": "2026/8/26 20:19:03"
+    },
+    "bseedQf9E09": {
+      "bvid": "BV1268d67E2u",
+      "url": "https://www.bilibili.com/video/BV1268d67E2u",
+      "title": "【中英双语】农场丰收：辣椒茄子西葫芦大采摘｜Our Harvest Exploded With Color",
+      "published_at": "2026/8/26 18:59:30"
+    },
+    "bseed7Mbl2J": {
+      "bvid": "BV1xy8d61Ekk",
+      "url": "https://www.bilibili.com/video/BV1xy8d61Ekk",
+      "title": "【中英双语】挑战不用私信未成年人通关我的世界",
+      "published_at": "2026/8/26 18:42:40"
+    },
+    "bseedpj32Qi": {
+      "bvid": "BV1P28d65EqA",
+      "url": "https://www.bilibili.com/video/BV1P28d65EqA",
+      "title": "【中英双语】我的世界单机：单格生存挑战，100天达成三大目标｜I Survived 100 Days On One Block In Minecraft Ha…",
+      "published_at": "2026/8/26 18:42:19"
+    },
+    "bseedx8Dr2i": {
+      "bvid": "BV1Hg896cEcE",
+      "url": "https://www.bilibili.com/video/BV1Hg896cEcE",
+      "title": "【中英双语】实测 Ox Alpha 生成三款游戏：结果令人意外｜I Tested Ox Alpha on 3 Games (The Results Are S…",
+      "published_at": "2026/8/26 18:08:39"
+    },
+    "bseed28tleA": {
+      "bvid": "BV1wN896eErx",
+      "url": "https://www.bilibili.com/video/BV1wN896eErx",
+      "title": "【中英双语】Stealth Ox Alpha新模型实测：代码写作对比Grok等｜Stealth Ox Alpha: a new GLM model! Ful…",
+      "published_at": "2026/8/26 18:07:09"
+    },
+    "bseed-88Dk3": {
+      "bvid": "BV1HT896AE6u",
+      "url": "https://www.bilibili.com/video/BV1HT896AE6u",
+      "title": "【中英双语】OpenAI 安全测试中 AI 突破隔离入侵 Hugging Face｜OpenAI's AI Hacked Into a Major Tech…",
+      "published_at": "2026/8/26 17:57:21"
+    },
+    "bseed9jLwBB": {
+      "bvid": "BV1rFhG6SEvs",
+      "url": "https://www.bilibili.com/video/BV1rFhG6SEvs",
+      "title": "【中英双语】我的世界单方块生存100天挑战：从一块方块开始建造世界",
+      "published_at": "2026/8/25 19:32:13"
+    },
+    "bseedqBkPbs": {
+      "bvid": "BV17MhG65ES8",
+      "url": "https://www.bilibili.com/video/BV17MhG65ES8",
+      "title": "【中英双语】《我的世界》，但加入了各种特制苹果……",
+      "published_at": "2026/8/25 19:32:02"
+    },
+    "bseedf9oXuH": {
+      "bvid": "BV1HFhG6SEKf",
+      "url": "https://www.bilibili.com/video/BV1HFhG6SEKf",
+      "title": "【中英双语】⛏️《我的世界》：如何建造一个金字塔新手生存基地 🏡",
+      "published_at": "2026/8/25 19:31:56"
+    },
+    "bseedgXzQe8": {
+      "bvid": "BV1mDh36dExd",
+      "url": "https://www.bilibili.com/video/BV1mDh36dExd",
+      "title": "【中英双语】我的世界：我在极限模式抓住了所有boss！！！",
+      "published_at": "2026/8/25 19:10:13"
+    },
+    "bseed0-6dYj": {
+      "bvid": "BV1xDh36dEGK",
+      "url": "https://www.bilibili.com/video/BV1xDh36dEGK",
+      "title": "【中英双语】8GB 笔记本也能跑 35B 模型？这个新引擎做到了 40 TPS",
+      "published_at": "2026/8/25 19:05:33"
+    },
+    "bseedqOGHud": {
+      "bvid": "BV1Woh36QExi",
+      "url": "https://www.bilibili.com/video/BV1Woh36QExi",
+      "title": "【中英双语】我的世界：每次只能玩三天的挑战 第二集",
+      "published_at": "2026/8/25 18:50:23"
+    },
+    "bseedGiu__Z": {
+      "bvid": "BV1poh36QEKz",
+      "url": "https://www.bilibili.com/video/BV1poh36QEKz",
+      "title": "【中英双语】《我的世界》但我每次只能生存3天！",
+      "published_at": "2026/8/25 18:48:56"
+    },
+    "bseedprltVx": {
+      "bvid": "BV1ushG6eEYJ",
+      "url": "https://www.bilibili.com/video/BV1ushG6eEYJ",
+      "title": "【中英双语】我的世界：万物皆超模，挑战击败末影龙",
+      "published_at": "2026/8/25 18:26:34"
+    },
+    "bseedSgCYvk": {
+      "bvid": "BV1ushG6YEPK",
+      "url": "https://www.bilibili.com/video/BV1ushG6YEPK",
+      "title": "【中英双语】我的世界生存模式获取史蒂夫头颅全攻略｜How I Got Steve's Head In Survival Minecraft",
+      "published_at": "2026/8/25 18:24:59"
+    },
+    "bseedZ549X1": {
+      "bvid": "BV1KehG64EbR",
+      "url": "https://www.bilibili.com/video/BV1KehG64EbR",
+      "title": "【中英双语】我的世界：整个世界都是苍白花园！｜Minecraft But The Whole World is a PALE GARDEN!!!",
+      "published_at": "2026/8/25 18:16:17"
+    },
+    "bseedM4O_UW": {
+      "bvid": "BV1M8hG6FE1x",
+      "url": "https://www.bilibili.com/video/BV1M8hG6FE1x",
+      "title": "【中英双语】AI发明的疯狂快餐：牛角包汉堡、巧克力爆米花汉堡试吃｜Trying AI-Invented Fast Food Creations 😳",
+      "published_at": "2026/8/25 18:11:32"
+    }
+  }
+}

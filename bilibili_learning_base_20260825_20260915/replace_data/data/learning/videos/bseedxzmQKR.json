@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "100 days"
+    ],
+    "formats": [
+      "extreme_survival",
+      "challenge",
+      "100_days"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft 100 days",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "孤岛生存",
+      "生存挑战",
+      "硬核模式",
+      "100天生存",
+      "基地建造",
+      "curiosidades minecra",
+      "como jugar minecraft"
+    ],
+    "video_id": "bseedxzmQKR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nDescarga Genshin Impact: https://hoyo.link/iWzNIQmes\nUsa Y1INABQB6DEX para obtener 60 Protogemas y 5 EXP de Aventurero.\n\nDiscord x Genshin Impact: https://canary.discord.com/quests/1533983564327030865\nCompleta la Quest para conseguir recompensas exclusivas dentro del juego.\n\nCrunchyroll x Genshin Impact: https://got.cr/4hpxo1B\nLos miembros Premium pueden conseguir recompensas exclusivas del 9 de agosto al 22 de septiembre.\n\nSamsung Galaxy Store x Genshin Impact:\nDisfruta de un 30% de descuento dentro del juego con nuestros cupones:\nArgentina: GENSHINAR30 | Chile: GENSHINCL30 | Perú: GENSHINPE30\nMéxico: https://gmp.samsungapps.com/promotion/20260723052345/index.html?t=prm&product=galaxystore\n\nColaboraciones:\nOBIROMO@MCR-AGENCY.COM \nObiromocontact@gmail.com\n\n👾Encuéntrame en todas las redes sociales como Obiromo.\n\n👻 Instagram https://www.instagram.com/obiromoelreal/\n\n🤖 Twitter https://x.com/obiromo\n\n👽 Twitch https://www.twitch.tv/obiromo\n\n🌎 Discord https://discord.gg/xk4jgGWgEx\n\nGRACIAS POR VER EL VIDEO ESPERO TE HAYA GUSTADO NO OLVIDES DEJAR TU ME GUSTA QUE ESO ME AYUDA BASTANTE, ESPERO TE GUSTE EL VIDEO :D \n\nShaders que uso: https://www.complementary.dev/shaders/\n\n\n\n#GenshinImpact #NowSnezhnaya #minecraft #minecrafthardcore",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 3634,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T12:48:59+00:00",
+    "tags": [
+      "单机游戏",
+      "我的世界",
+      "Minecraft",
+      "孤岛生存",
+      "生存挑战",
+      "硬核模式",
+      "100天生存",
+      "基地建造",
+      "curiosidades minecra",
+      "como jugar minecraft"
+    ],
+    "title": "我的世界极限生存：孤海大山100天巨变｜Sobreviví 100 DÍAS EN UNA MONTAÑA ⛰️ en Minecraft Hardcore!",
+    "video_id": "bseedxzmQKR",
+    "views": 36
+  },
+  "seed_provenance": {
+    "bvid": "BV1KKYd6pEcj",
+    "published_at": "2026/9/12 20:48:59",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1KKYd6pEcj"
+  },
+  "version": 1
+}

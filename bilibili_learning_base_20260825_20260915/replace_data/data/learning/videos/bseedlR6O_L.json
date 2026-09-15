@@ -1,0 +1,91 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore",
+      "building",
+      "100 days"
+    ],
+    "formats": [
+      "extreme_survival",
+      "100_days",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft 100 days",
+      "minecraft build",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "极限生存",
+      "我的世界",
+      "minecraft",
+      "建筑改造",
+      "硬核模式",
+      "hardcore",
+      "100天生存",
+      "生存基地",
+      "森林群系"
+    ],
+    "video_id": "bseedlR6O_L"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThe minecraft forest, a biome thought of and unused. Today I not only transform this forgotten place but also survive 100 days here. Tiering up my armor, taking on bosses, and building the best starter base known to man!!! Like the vid if you enjoy, and subscribe for more!\n──────────────────────────────────\n👍 30,000 Likes and I'll try and even harder 100 Days!!👍\n#hardcoreminecraft #100days #minecraft \n──────────────────────────────────\nJoin my Patreon to get access to Maps, Modpacks, Schematics, and my Discord!!\nhttps://www.patreon.com/cw/welcomintv\n──────────────────────────────────\nThese videos are now streamed over on my twitch: https://www.twitch.tv/welcominyt\nVODS Channel: https://www.youtube.com/@WelcominVODS\n──────────────────────────────────\nYou can also stream my vids on Spotify:\nhttps://open.spotify.com/show/0z4ahGyJ6w38yr1q0u6zyi\n──────────────────────────────────\n➜ Thanks for Reading the Description!",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 5479,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T20:13:49+00:00",
+    "tags": [
+      "极限生存",
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "建筑改造",
+      "硬核模式",
+      "Hardcore",
+      "100天生存",
+      "生存基地",
+      "森林群系"
+    ],
+    "title": "森林里极限模式生存100天，把荒地改造成终极基地！！！",
+    "video_id": "bseedlR6O_L",
+    "views": 293
+  },
+  "seed_provenance": {
+    "bvid": "BV1QxY66pEfr",
+    "published_at": "2026/9/14 04:13:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QxY66pEfr"
+  },
+  "version": 1
+}

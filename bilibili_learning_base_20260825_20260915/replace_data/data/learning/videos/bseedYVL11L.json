@@ -1,0 +1,116 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i tested",
+      "product test",
+      "glm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "minecraft",
+      "开源工具",
+      "glm模型",
+      "gta6",
+      "代码生成",
+      "技术测评"
+    ],
+    "video_id": "bseedYVL11L"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=kv0dyg3m1jY\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, I put 0x Alpha to the test by making it recreate Minecraft and GTA 6 from scratch. 🎮🤖\n\nPlay the games 🎮\n\nMinecraft Clone: https://minecraft-0x-alpha.netlify.app/\n\nGTA 6 Clone: https://gta6-0x-alpha.netlify.app/\n\nChapters ⏱️\n\n00:00 Intro\n00:17 Prompting 0x Alpha\n00:33 Minecraft Clone Playtest\n06:34 Prompting 0x Alpha\n06:44 GTA 6 Clone Playtest\n09:14 Outro\n\n0x Alpha is a mysterious new AI coding model that has been getting a lot of attention, so I wanted to see how good it actually is at building full games. I tested what it could create, how well the games worked, and whether the model is actually worth the hype. 🔥\n\nDisclaimer: No copyrighted game assets from Minecraft/Mojang or GTA 6/Rockstar Games were used in these projects. All game assets were procedurally generated.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 585,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:35:13+00:00",
+    "tags": [
+      "人工智能",
+      "游戏开发",
+      "Minecraft",
+      "开源工具",
+      "GLM模型",
+      "GTA6",
+      "计算机技术",
+      "代码生成",
+      "技术测评"
+    ],
+    "title": "实测0x Alpha：用AI从零生成Minecraft与GTA6｜I Tested 0x Alpha With Minecraft and GTA 6",
+    "video_id": "bseedYVL11L",
+    "views": 13
+  },
+  "seed_provenance": {
+    "bvid": "BV179tj6EEGv",
+    "published_at": "2026/9/2 05:35:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV179tj6EEGv"
+  },
+  "version": 1
+}

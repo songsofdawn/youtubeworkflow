@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "gardening",
+      "harvest"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening",
+      "harvest and preserve"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "庭院花园",
+      "伴生种植",
+      "有机种植",
+      "家庭园艺",
+      "蔬菜种植",
+      "可持续生活",
+      "种植技巧",
+      "organic gardening",
+      "丰收指南",
+      "backyard gardening"
+    ],
+    "video_id": "bseedU8qNJF"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=_V2U97OcNwE\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis might be one of the prettiest summer garden plots we’ve ever grown! We planted rows of sweet potatoes with sunflowers in between, and now the sweet potato vines have completely covered the ground while the sunflowers tower above them full of blooms.\n\nIn this video, we’ll show you how we planted this combination and talk about why we think these two crops work so well together. The sweet potatoes provide a dense, living ground cover while the sunflowers fill the vertical space above them — giving us a productive garden plot that also happens to look pretty good!\n\nAnd sweet potatoes aren't the only crop you could use for a planting like this. We’ll talk about some other sprawling summer crops that could work underneath sunflowers, including Seminole pumpkins, watermelons, and even cowpeas.\n\nOur sweet potatoes are also getting closer to harvest, so we’ll take a look underneath all those vines to see what’s happening. We’ll talk about when to harvest sweet potatoes, what we're looking for as harvest approaches, and what we're doing during these final weeks of growth to hopefully get a great crop underground.\n\nSometimes the best garden combinations aren't complicated. Put a tall crop above, a sprawling crop below, and let each one fill a different part of the garden!\n\nIn this video:\n\n• Growing sunflowers and sweet potatoes together\n• Using sweet potatoes as living ground cover\n• Other crops to grow with sunflowers\n• Late-season sweet potato tips\n• How to know when sweet po…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 593,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T22:07:44+00:00",
+    "tags": [
+      "庭院花园",
+      "伴生种植",
+      "有机种植",
+      "家庭园艺",
+      "蔬菜种植",
+      "可持续生活",
+      "种植技巧",
+      "organic gardening",
+      "丰收指南",
+      "backyard gardening"
+    ],
+    "title": "【中英双语】向日葵与红薯混种：夏季花园高产组合与收获前检查｜Growing Sweet Potatoes? Here’s What to Do Before…",
+    "video_id": "bseedU8qNJF",
+    "views": 48
+  },
+  "seed_provenance": {
+    "bvid": "BV1vets6PEwK",
+    "published_at": "2026/8/31 06:07:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1vets6PEwK"
+  },
+  "version": 1
+}

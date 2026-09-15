@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video editing"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "后期制作",
+      "视频剪辑",
+      "动画剪辑",
+      "amv教程",
+      "剪辑教学",
+      "特效转场",
+      "更衣人偶坠入爱河",
+      "喜多川海梦",
+      "alight motion tutori"
+    ],
+    "video_id": "bseedECc80F"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nIn this video, I’ll be breaking down one of my edits and showing you exactly how I made it — from the clips and effects to the transitions and overall editing process.\n\nIf you want to understand how I approach my edits and recreate some of the techniques I use, this breakdown should help you out!\n\nThe Actual Loop Edit: https://youtu.be/ohTaHXnVco0?si=t7rYNHagcPAsEgVh\nThe Full MEP: https://youtu.be/_fL8ozmWc5c?si=ylW5DRwXDGH2JRvr\n━━━━━━━━━━━━━━━━━━━━━━\n\n📌 RELATED TUTORIALS\n\n⚡ How to remove Background from clips: https://youtu.be/xi6MGK44nQI?si=oX6PV5uiONqIfWv1\n\n🤔 Understanding every Blending Mode: https://youtu.be/xH7SN8-WaqU?si=CsCCIgNXLlEbVEeP\n\n💥 Easiest way to make Depth Maps:\nhttps://youtu.be/IKy1HNzbjMw?si=9agflF1Vj17M3e_y\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n🌐 JOIN THE COMMUNITY\n\n💬 Discord:\nhttps://discord.gg/MpyRQmfSnR\n\n📱 WhatsApp:\nhttps://chat.whatsapp.com/D1PRfVZEgOSJqygnGEVvCj\n\n📸 Instagram:\nhttps://www.instagram.com/@noelle_psd\n\n🎵 TikTok:\nhttps://www.tiktok.com/@noelle_psd\n\n🎬 AMV Channel:\nhttps://youtube.com/@Noelleamv\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n#Aftereffects #EditingBreakdown #AnimeEdit #VideoEditing #AlightMotionTutorial #AMV #EditingTutorial #MotionGraphics\n\n\nCopyright Notice:\nAll music used in this video is royalty-free or used under fair use for tutorial purposes. No copyright infringement intended.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 79,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T03:25:19+00:00",
+    "tags": [
+      "后期制作",
+      "视频剪辑",
+      "动画剪辑",
+      "AMV教程",
+      "无配音",
+      "剪辑教学",
+      "特效转场",
+      "更衣人偶坠入爱河",
+      "喜多川海梦",
+      "alight motion tutori"
+    ],
+    "title": "喜多川海梦AMV剪辑全流程拆解教学｜How I Made This Edit — Full Editing Breakdown",
+    "video_id": "bseedECc80F",
+    "views": 27
+  },
+  "seed_provenance": {
+    "bvid": "BV1W2YQ6BEsn",
+    "published_at": "2026/9/12 11:25:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1W2YQ6BEsn"
+  },
+  "version": 1
+}

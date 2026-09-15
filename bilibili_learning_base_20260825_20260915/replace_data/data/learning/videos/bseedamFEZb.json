@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.82,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "cleaning_transformation",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "house cleaning",
+      "deep cleaning"
+    ],
+    "formats": [
+      "transformation",
+      "restoration"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "extreme house cleaning",
+      "deep cleaning"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "clean house",
+      "改造前后对比",
+      "荒废老宅",
+      "杂草清理",
+      "解压清洁",
+      "庭院清理",
+      "邻居",
+      "房屋翻新",
+      "旧屋改造",
+      "clean up"
+    ],
+    "video_id": "bseedamFEZb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nShe spent 2,000 euros to buy a 25-year-old house—and her neighbor immediately came over to warn her\n   A young woman spent 2,000 euros to purchase a house that had been abandoned for 25 years. As soon as she decided to buy it, a neighbor rushed over to warn her against proceeding. Yet, despite the warnings, she decided to keep the property and began planning its renovation.\n\nShe contacted us, asking our cleanup crew to help clear the entire garden and surrounding grounds. Upon arrival, we were truly shocked by the scene before us. After 25 years of neglect, thick, tall weeds choked the yard, vines blanketed large areas, and overgrown bushes had all but swallowed the pathways. Piles of trash, dried leaves, broken branches, and all manner of discarded items lay scattered about.\n\nOur first task was to clear away the dense overgrowth to uncover the original paths. We split up, using lawnmowers, shears, machetes, and specialized tools to remove the wild vegetation that had taken over the grounds over the years. Large bags of waste were collected, sorted, and hauled away.\n\nAfter hours of continuous work, the garden began to undergo a remarkable transformation. Areas once hidden by weeds emerged, pathways opened up, and the massive piles of debris were cleared. Although the work was grueling, it was incredibly rewarding to see a seemingly forgotten property coming back to life.\n\nBut this is just the beginning. There is still much work to be done to turn this long-abandoned house into a clean, livable home…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1821,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T09:51:29+00:00",
+    "tags": [
+      "clean house",
+      "改造前后对比",
+      "荒废老宅",
+      "杂草清理",
+      "解压清洁",
+      "庭院清理",
+      "邻居",
+      "房屋翻新",
+      "旧屋改造",
+      "clean up"
+    ],
+    "title": "旧屋改造：2000欧买下荒废25年的老宅，邻居竟然跑来劝退",
+    "video_id": "bseedamFEZb",
+    "views": 137
+  },
+  "seed_provenance": {
+    "bvid": "BV1QJYe6AETz",
+    "published_at": "2026/9/13 17:51:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QJYe6AETz"
+  },
+  "version": 1
+}

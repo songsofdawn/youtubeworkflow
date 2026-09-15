@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "建筑",
+      "minecraft",
+      "mogswamp",
+      "超平坦生存",
+      "mrbeast"
+    ],
+    "video_id": "bseedsKnjjq"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMogswamp - I Built a Minecraft Mountain for Mr Beast\n(Episode 125 of my Flatworld Series)\n\nhttps://buy.minecraft.net/Mogswamp\n\nPurchase my Flatworld posters while supplies last!\nhttps://creatormerch.com/products/mogswamp-poster\n\nPatreon: https://www.patreon.com/Mogswamp\n\nThanks to @MrBeastGaming for coming to see my world!\nShout out:\n@_W1ZZY \n@RobellaRose \n@barce8008 \n@Shoeler \n@fWhip \n\n======================\n\nBecome a channel member!\nhttps://www.youtube.com/Mogswamp/join\n\nPLAY WITH ME ON THE MOGSWAMP SUPERFLAT SERVER:\nServer IP: play.flatnet.gg\nBedrock IP: 45.59.171.40\nBedrock port: 25565\n\nOFFICIAL MOGSWAMP DISCORD:\ndiscord.gg/mogswamp\n\n========LINKS=========\n\nPatreon: https://www.patreon.com/Mogswamp\nTwitter: https://twitter.com/Mogswamp\nInstagram: https://www.instagram.com/mogswamp/\nTwitch: https://www.twitch.tv/mogswamp\nDiscord: https://discord.gg/mogswamp\n\n#minecraft #minecraftsuperflat #flatworld",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2339,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T04:23:13+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "建筑",
+      "Minecraft",
+      "Mogswamp",
+      "超平坦生存",
+      "MrBeast"
+    ],
+    "title": "为了MrBeast的参观，我建完了拖了四年的超平坦山｜I Finally Built It After 4 Years...",
+    "video_id": "bseedsKnjjq",
+    "views": 114
+  },
+  "seed_provenance": {
+    "bvid": "BV1nJt16NEz6",
+    "published_at": "2026/9/5 12:23:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1nJt16NEz6"
+  },
+  "version": 1
+}

@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "experiments"
+    ],
+    "formats": [
+      "experiment",
+      "investigation",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "微生物科普",
+      "科学教育",
+      "显微镜实验",
+      "细菌生存机制",
+      "消毒原理",
+      "under microscope",
+      "原生动物观察",
+      "bacteria under micro"
+    ],
+    "video_id": "bseedY_WDQX"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=u1U0rfgqvuQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔬 Recommended Digital Microscope (Alternative to mine): https://amzn.to/4f33Bsv\n\nCan a pocket sanitizer really save you from millions of invisible monsters? 🧐 Or is it just clever marketing? Today on Under Microscope, we’re putting hand sanitizers to the ultimate test!\n\nWe’re comparing a 75% alcohol mix with a \"molecular drill\" (Benzalkonium chloride) against a brutal 96% alcohol and peroxide cocktail. 🧪 Watch as we uncover the secrets of bacterial \"superhero mode\" — the cysts — and see if any microbe can survive this chemical bath.\n\nPlus, a rare, heart-breaking moment caught on camera: a Vorticella protozoa dividing... and a microscopic tragedy involving a \"hydraulic press\" effect. 🔬💔\n\nDon't forget to LIKE, COMMENT, and SUBSCRIBE for more incredible journeys into the micro-world! 🔔\n\nIn this video:\n00:00 — Can sanitizers really protect you?\n01:27 — Meet the \"Heavyweights\": Testing 2 different formulas\n02:36 — Experiment 1: The \"Molecular Drill\" in action\n03:18 — What are Cysts? The secret survival mode\n05:47 — Experiment 2: 96% Alcohol vs Microbes\n06:14 — What is Brownian motion?\n06:51 — Rare Footage: Vorticella dividing (and a tragedy)\n09:54 — Testing Alcohol Wipes: Do they actually work?\n11:43 — The Final Verdict: Why dosage matters\n\n#microscope #science #experiment #bacteria #biology #sanitizer #microworld #undermicroscope",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 804,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:48:29+00:00",
+    "tags": [
+      "微生物科普",
+      "中文翻译",
+      "中英双语",
+      "科学教育",
+      "显微镜实验",
+      "细菌生存机制",
+      "消毒原理",
+      "under microscope",
+      "原生动物观察",
+      "bacteria under micro"
+    ],
+    "title": "【中英双语】显微镜下的真相：洗手液能否杀死细菌？｜Hand Sanitizer vs Bacteria: THE TRUTH Under Microscope",
+    "video_id": "bseedY_WDQX",
+    "views": 22
+  },
+  "seed_provenance": {
+    "bvid": "BV1Wy4y6KEk2",
+    "published_at": "2026/8/29 16:48:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Wy4y6KEk2"
+  },
+  "version": 1
+}

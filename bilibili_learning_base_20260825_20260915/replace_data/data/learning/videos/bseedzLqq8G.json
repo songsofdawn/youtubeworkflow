@@ -1,0 +1,86 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Seedance",
+      "AI video generation"
+    ],
+    "formats": [
+      "build",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "seedance",
+      "ai video generation",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ai 视频生成",
+      "3d 动画制作",
+      "ai 工具评测",
+      "seedance 2.5",
+      "教程演示",
+      "tutorial",
+      "短视频创作",
+      "magiclight ai",
+      "3d cartoon animation"
+    ],
+    "video_id": "bseedzLqq8G"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=TKFTCCti0GI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#magiclightai #3danimationai \nTry MagicLight For Free:\nhttps://magiclight.ai/?code=143kuikt0\n\nYou can now create a fully animated 3D cartoon video up to 60 minutes long — generated in just a few minutes using a single tool. That is exactly what MagicLight AI with Seedance 2.5 makes possible right now and in this video I walk you through the complete process from start to finish.\n\nThe process itself is surprisingly straightforward. You pick your story topic, set your style to 3D Cartoon, choose your ratio and set your video duration — anywhere from 30 seconds all the way up to a full 60 minute video in one go. MagicLight then detects your characters automatically to keep consistency locked across every scene, generates your full storyboard and animates everything using Seedance 2.5. You can swap voices, add background music, adjust subtitles and download your finished video all inside the same platform.\n\n🎁 GIVEAWAY — I am giving away 2 one month MagicLight Pro memberships. Like this video and drop a comment below for a chance to win. I will be picking 2 lucky winners randomly from the comments!\n\n#cartoonvideo #tutorial #magiclight #3danimation #viralai",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 429,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T12:39:43+00:00",
+    "tags": [
+      "AI 视频生成",
+      "3D 动画制作",
+      "AI 工具评测",
+      "Seedance 2.5",
+      "教程演示",
+      "软件应用",
+      "tutorial",
+      "短视频创作",
+      "MagicLight AI",
+      "3d cartoon animation"
+    ],
+    "title": "【中英双语】用一句话生成3D卡通长视频：MagicLight AI全流程教程｜I Created Viral 3D cartoon Animation Vid…",
+    "video_id": "bseedzLqq8G",
+    "views": 22
+  },
+  "seed_provenance": {
+    "bvid": "BV1zftn6hEgz",
+    "published_at": "2026/8/30 20:39:43",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zftn6hEgz"
+  },
+  "version": 1
+}

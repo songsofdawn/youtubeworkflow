@@ -1,0 +1,103 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GPT-6",
+      "Astra",
+      "AI video generation"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "gpt-6",
+      "astra",
+      "ai video generation",
+      "prompt engineering",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai自动化",
+      "ai视频生成",
+      "elevenlabs",
+      "gpt-6",
+      "heygen",
+      "astra",
+      "提示词"
+    ],
+    "video_id": "bseedk_mB-k"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMy playbook for growing a $1M AI agency: https://app.aiautomationsociety.ai/opaa-ads-optin\nMy FREE resources: https://www.skool.com/ai-automation-society/about?el=astra-made-this&hcategory=youtube-videos&utm_campaign=free-group\n\nMy Tools💻\nFREE MONTH voice to text: https://get.glaido.com/nate\nCode NATEHERK for 10% off VPS (annual plan): https://www.hostinger.com/vps/claude-code-hosting\n\nI gave GPT-6 Astra one open-ended prompt and asked it to take me from an idea to a finished YouTube video. It researched real Astra demos, captured the source posts, used my HeyGen avatar and ElevenLabs voice clone, and built the edit in HyperFrames. I break down the exact prompt, the 50-minute build, and the roughly $60 API-equivalent cost.\n\nSponsorship Inquiries:\n📧 nate@smoothmedia.co\n\nConnect with me:\nhttps://www.linkedin.com/in/nateherkelman/\nhttps://x.com/nateherk\nhttps://www.instagram.com/nateherk/\n\nTIMESTAMPS \n0:00 Astra Built This Video\n0:21 What People Are Building\n1:48 How Astra Made the Video\n2:48 The Finished Result\n3:12 My Exact Prompt\n4:03 Cost & Final Thoughts",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 279,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T01:34:53+00:00",
+    "tags": [
+      "人工智能",
+      "AI自动化",
+      "AI视频生成",
+      "ElevenLabs",
+      "GPT-6",
+      "HeyGen",
+      "计算机技术",
+      "Astra",
+      "提示词"
+    ],
+    "title": "用GPT-6 Astra一个提示词做出整支视频｜GPT-6 Astra Made This Entire Video",
+    "video_id": "bseedk_mB-k",
+    "views": 53
+  },
+  "seed_provenance": {
+    "bvid": "BV13Rtk6CEuy",
+    "published_at": "2026/9/5 09:34:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV13Rtk6CEuy"
+  },
+  "version": 1
+}

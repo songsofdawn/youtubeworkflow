@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food taste test",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "加油站美食",
+      "美食挑战",
+      "吃货日常",
+      "美国美食",
+      "brennen taylor",
+      "brennentaylor"
+    ],
+    "video_id": "bseedrJiHxb"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nsubscribe to our new FARM Channel!! ► https://www.youtube.com/@ThirteenRanch/\n\nWanna support the channel? Get some MERCH ► http://www.BrennenTaylor.com/\n\nCheck out Last Video ► https://www.youtube.com/watch?v=09zmRS8jjFw\n\nTikTok ► http://www.tiktok.com/@BrennenTaylor\n\nFacebook ► http://www.Facebook.com/BrennenTaylor\n\nInstagram ► http://www.instagram.com/Brennen\n\nSnapchat ►  http://www.snapchat.com/add/BrennenTaylor\n\nFOLLOW JAKE:\n► http://www.instagram.com/JakeTaylor\n► http://www.tiktok.com/@jaketaylorx\n\n\nHi I'm Brennen and I love food advenures with my brother Jake !\n\nBusiness email ONLY: MGMT@BrennenTaylor.com\n\nBrennen Taylor best/worst reviewed videos of 1 star yelp restaurants and businesses series and his newly beloved viral tikok life hack tik tok lifehack series.Family friendly pg clean sketchy restaurants",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1963,
+    "likes": 4,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T17:06:53+00:00",
+    "tags": [
+      "加油站美食",
+      "美食记录",
+      "美食挑战",
+      "吃货日常",
+      "美国美食",
+      "美食测评",
+      "Brennen Taylor",
+      "brennentaylor"
+    ],
+    "title": "挑战24小时只吃加油站食物，结果意外真香｜Eating Gas Station Food For 24 Hours... (Charlotte, NC)",
+    "video_id": "bseedrJiHxb",
+    "views": 396
+  },
+  "seed_provenance": {
+    "bvid": "BV151YE6cEKq",
+    "published_at": "2026/9/9 01:06:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV151YE6cEKq"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "product test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手工制作",
+      "可穿戴装置",
+      "adam savage",
+      "cosplay道具",
+      "仿生机械",
+      "tested",
+      "机械翅膀",
+      "极客diy",
+      "鸟类解剖"
+    ],
+    "video_id": "bseedNhIev6"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nArtist and puppet maker Laura Mathews ( @LauraMathewsArt  ) is back in Adam's shop to show her latest build: sets of life-size articulated wings inspired by real-life bird anatomy and biological mechanics! Adam marvels at the elegant movement of these wings and puts on a set himself to experience their articulation firsthand. \n\nFind more of Laura's puppets and projects here: https://www.lauramathewsart.com/ and https://www.youtube.com/LauraMathewsArt\nLaura's articulated creature kits: https://www.lauramathewsart.com/shop-1\n\nShot and edited by Joey Fameli\nMusic by Jinglepunks\n\nSubscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom\n\nJoin this channel to support Tested and get access to perks:\nhttps://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join\nTested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/\nAbout Tested: https://www.tested.com/about\nMeet Adam in Person: https://www.tested.com/events\nInstagram: https://www.instagram.com/testedcom/\nFacebook: http://www.facebook.com/testedcom\nTikTok: https://www.tiktok.com/@testedcom\nDiscord: https://www.discord.gg/tested\nAmazon Storefront: http://www.amazon.com/shop/adamsavagestested\nAudio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR\n\n0:00 – Scaling Up Wings\n2:17 – Anatomy & Feather Reference\n2:47 – Feather Materials & Construction\n3:18 – Alula (Bird Thumbs)\n4:24 – Bamboo vs. Ba…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 666,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-12T09:36:50+00:00",
+    "tags": [
+      "手工制作",
+      "可穿戴装置",
+      "Adam Savage",
+      "cosplay道具",
+      "仿生机械",
+      "tested",
+      "机械翅膀",
+      "极客DIY",
+      "鸟类解剖"
+    ],
+    "title": "老白试穿超真实可穿戴机械鸟翼！｜Adam Savage Experiences Anatomically Correct Wings!",
+    "video_id": "bseedNhIev6",
+    "views": 19
+  },
+  "seed_provenance": {
+    "bvid": "BV1k5Y96MEc6",
+    "published_at": "2026/9/12 17:36:50",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1k5Y96MEc6"
+  },
+  "version": 1
+}

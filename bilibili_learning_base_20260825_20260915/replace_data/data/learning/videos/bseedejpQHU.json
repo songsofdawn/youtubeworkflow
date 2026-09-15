@@ -1,0 +1,118 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "claude code",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      },
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "本地部署",
+      "开发者指南",
+      "ai 编程工具",
+      "claude code",
+      "模型路由",
+      "free-claude-code",
+      "开源项目",
+      "省钱技巧",
+      "free claude code"
+    ],
+    "video_id": "bseedejpQHU"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=vxrZWbZ2fZA\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFree Claude Code lets developers keep the Claude Code, Codex, Pi, or OpenCode workflow while routing coding-agent requests to free, cheaper, or fully local AI models instead of relying on Anthropic for every task. \n\nIn this video, I install free-claude-code, set up the local proxy, connect a free model provider, launch Claude Code through it, and test it on real work to see how well file editing, tool calls, refactoring, and agentic coding actually hold up.\n\n🔗 Relevant Links\nFree Claude Code Repo - https://github.com/alishahryar1/free-claude-code\n\n❤️ More about us\nRadically better observability stack: https://betterstack.com/\nWritten tutorials: https://betterstack.com/community/\nExample projects: https://github.com/BetterStackHQ\n\n📱 Socials\nTwitter: https://twitter.com/betterstackhq\nInstagram: https://www.instagram.com/betterstackhq/\nTikTok: https://www.tiktok.com/@betterstack\nLinkedIn: https://www.linkedin.com/company/betterstack\n\n📌 Chapters:\n0:00 Free Claude Code Explained\n0:28 What Is free-claude-code?\n1:15 Installing free-claude-code\n1:32 Connecting a Free AI Model\n2:08 Running Claude Code With Free Models\n2:57 Real Claude Code Refactoring Test\n3:45 Saving Money on AI Coding\n4:30 Model Routing, Codex, Pi & OpenCode\n4:55 free-claude-code vs OpenRouter\n4:30 Why Keep the Claude Code Interface?\n5:29 Model Tiers, Fallbacks & Cheaper Routing\n5:55 Is Free Claude Code Worth It?\n6:24 When You Should Still Pay for Claude",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 427,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T18:08:20+00:00",
+    "tags": [
+      "本地部署",
+      "开发者指南",
+      "AI 编程工具",
+      "Claude Code",
+      "模型路由",
+      "free-claude-code",
+      "计算机技术",
+      "开源项目",
+      "省钱技巧",
+      "free claude code"
+    ],
+    "title": "【中英双语】免费替代方案：让 Claude Code 永久免费运行｜This Makes Claude Code Free Forever",
+    "video_id": "bseedejpQHU",
+    "views": 35
+  },
+  "seed_provenance": {
+    "bvid": "BV1c7tp6MEmW",
+    "published_at": "2026/8/31 02:08:20",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1c7tp6MEmW"
+  },
+  "version": 1
+}

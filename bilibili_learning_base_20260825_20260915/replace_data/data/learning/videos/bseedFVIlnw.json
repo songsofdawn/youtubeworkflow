@@ -1,0 +1,78 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "everyday_science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "health science"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "everyday science explained"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "omega-3",
+      "维生素k2",
+      "健康科普",
+      "肠道菌群",
+      "肌酸",
+      "营养学",
+      "研究解读"
+    ],
+    "video_id": "bseedFVIlnw"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n*JOIN THE PHYSIONIC INSIDERS [PREMIUM CONTENT]*\nJoin the Physionic Insiders: https://bit.ly/PhysionicInsiders2 \n\n*HEALTH AUTONOMY [COURSE]*\nLearn to Analyze & Apply Studies for Yourself: https://bit.ly/healthautonomy\n\n*JOIN THE COMMUNITY*\nJoin my Community [It’s Free!]: https://bit.ly/PhysionicCommunity2\n\n*EMAIL LIST*\n1-2 Weekly Email of Value [It’s Free!]: http://bit.ly/2AXIzK6\n\n*HIRE ME FOR CONSULTING:* \nConsulting: https://bit.ly/3dmUl2H \n\nCreated with Biorender\n\n0:00 - Introduction\n0:51 - Visceral Fat\n2:45 - Peptides\n5:40 - Omega-3s and Muscle\n6:47 - Protein Sensing\n7:43 - Creatine and Depression\n10:16 - Vitamin K2\n12:55 - Microbiome\n15:33 - Coffee and Dementia\n17:39 - Cheese\n19:15 - Plaque Reversal\n\nIndividual Analyses:\nResistant Starches: https://www.youtube.com/watch?v=0Er08-E2HnU&t=1s\nVisceral Fat Peptides: https://www.youtube.com/watch?v=m5BcB5_dWic&t=19s\nPeptides on Osteoarthritis: https://www.youtube.com/watch?v=72rzR4Qo3zo&t=1s\nPeptides on Liver: https://www.youtube.com/watch?v=uVhoK-qwK1E&t=229s\nRetatrutide: https://www.youtube.com/watch?v=T9KJ8HGRmwM&t=2s\nOmega-3 on Muscle: https://www.youtube.com/watch?v=NRfbpT8QWzU&t=416s\nProtein Sensing: https://www.youtube.com/watch?v=Mz2pmsvwlt0&t=2s\nCreatine on Depression: https://www.youtube.com/watch?v=tlAo2Ob_1qc&t=228s\nVitamin K on Liver Cancer: https://www.youtube.com/watch?v=NBblpaIfeS0&t=1s\nIMT on Cancer: https://www.youtube.com/watch?v=wCw-lgMvRXM\nCoffee and Dementia: https://www.youtube.com/watch?v=Y5-Gjg1U58U&t=414s\nCheese and Dement…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1324,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T15:43:29+00:00",
+    "tags": [
+      "Omega-3",
+      "维生素K2",
+      "健康科普",
+      "科学科普",
+      "肠道菌群",
+      "肌酸",
+      "营养学",
+      "研究解读"
+    ],
+    "title": "解读1000项健康研究：我学到的10件事｜I analyzed 1,000 Health Studies: Here are 10 Things I Lear…",
+    "video_id": "bseedFVIlnw",
+    "views": 15
+  },
+  "seed_provenance": {
+    "bvid": "BV1fjb467EM5",
+    "published_at": "2026/9/6 23:43:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1fjb467EM5"
+  },
+  "version": 1
+}

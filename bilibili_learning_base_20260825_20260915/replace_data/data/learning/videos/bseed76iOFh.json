@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "self-sufficient farming"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "self sufficient farm",
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "家庭种植",
+      "辣椒保存",
+      "水浴罐装",
+      "自给自足",
+      "田园生活",
+      "自酿酒",
+      "乡村美食",
+      "田园美食",
+      "homesteading for beg",
+      "roasted peppers"
+    ],
+    "video_id": "bseed76iOFh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBecome a channel member https://www.youtube.com/makedogrow/join\nBecome a club member https://www.makedogrow.com/club\nDownload plans of the house and land https://www.makedogrow.com/super-fan-pack\n\nIt's early September and things are starting to wind down in the garden after the hot summer. But we've still got tons of produce to harvest, process and preserve. In this episode we're focusing on peppers and will show you how we make pasta sauce, roast pepper pesto and other culinary delights. \n\nWe'll also show you one of our favourite ways to preserve fruit – by turning it into booze! We'll start two batches of fruit wine (also known as country wine) as well as highlight some of our past successes and not so successes in the hobby of home brewing.\n\nWine tasting with my sister https://youtu.be/rz25kCXGASw\nMaking courgette wine https://youtu.be/2bDrwyqLqEs\nWhy do we grow so much food https://youtu.be/LW3uVxk3CXE",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2020,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T09:03:33+00:00",
+    "tags": [
+      "家庭种植",
+      "辣椒保存",
+      "水浴罐装",
+      "自给自足",
+      "田园生活",
+      "自酿酒",
+      "乡村美食",
+      "田园美食",
+      "homesteading for beg",
+      "roasted peppers"
+    ],
+    "title": "葡萄牙田园生活：辣椒大丰收，自酿果酒｜Preserving a TON of Peppers and Making Country Wine",
+    "video_id": "bseed76iOFh",
+    "views": 70
+  },
+  "seed_provenance": {
+    "bvid": "BV1M5YE6HEi6",
+    "published_at": "2026/9/11 17:03:33",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1M5YE6HEi6"
+  },
+  "version": 1
+}

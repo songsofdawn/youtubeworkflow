@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.52,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "science",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "science"
+    ],
+    "formats": [
+      "investigation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "science experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "组培苗",
+      "无菌培养",
+      "植物学",
+      "家庭园艺",
+      "植物组织培养",
+      "植物克隆"
+    ],
+    "video_id": "bseedqnKmF0"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGet started cloning plants today 🌱🧪👩‍🔬: https://plantsinjars.shop/collections/media/products/starter-kit\n\nCheck out my website! https://plantsinjars.shop/\n\nMerch (ships worldwide): https://plantsinjars.shop/collections/merch/products/dr-tc-shirt\n\nhttps://www.instagram.com/plantsinjars_tc/?hl=en\n\nJoin the Plants in Jars Community (AKA my free discord server full of nerdy plant people): https://discord.gg/p6yp2Ckv5g\n\n____________________________________________\n\n0:00 hello!\n1:06 totipotency\n1:56 the media\n2:53 types of tissue culture\n3:02 callus culture\n4:03 shoot culture\n5:09 can you do tissue culture at home?\n____________________________________________\n\nTrack: ILY Baby - Dyalla | No Copyright Musi...  \nMusic provided by GameNCM.\nChannel:  / @gamencm  \nFree Download / Stream: https://bit.ly/3BknoRx",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 394,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-11T22:06:19+00:00",
+    "tags": [
+      "组培苗",
+      "无菌培养",
+      "植物学",
+      "科学科普",
+      "家庭园艺",
+      "植物组织培养",
+      "植物克隆"
+    ],
+    "title": "一片叶子克隆出千株植物？揭秘植物组织培养｜The Science Behind Plant Tissue Culture",
+    "video_id": "bseedqnKmF0",
+    "views": 118
+  },
+  "seed_provenance": {
+    "bvid": "BV1pzYm6oEpq",
+    "published_at": "2026/9/12 06:06:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1pzYm6oEpq"
+  },
+  "version": 1
+}

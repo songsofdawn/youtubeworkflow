@@ -1,0 +1,99 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model benchmark",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "极客技术",
+      "长上下文窗口",
+      "推理模型",
+      "免费 ai 工具",
+      "fable 对比",
+      "代码生成",
+      "ai 模型评测",
+      "ox alpha"
+    ],
+    "video_id": "bseedwXw2lo"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=_5HFXQyOKbQ\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this review, I test Ox Alpha, the mysterious new AI model with a 1M-token context window, image and video input, and a free preview against Fable on real coding and reasoning tasks.\n\nEarly benchmarks have put Ox Alpha ahead of Fable on a small coding sample, but benchmarks are only part of the story. I look at how it performs in practice in terms of code quality, problem-solving, speed, long-context tasks, and where the hype may not match reality.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1482,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-26T13:06:08+00:00",
+    "tags": [
+      "极客技术",
+      "长上下文窗口",
+      "推理模型",
+      "免费 AI 工具",
+      "Fable 对比",
+      "中英双语",
+      "中文翻译",
+      "代码生成",
+      "AI 模型评测",
+      "OX Alpha"
+    ],
+    "title": "【中英双语】OX Alpha 免费 AI 模型评测：代码能力与 Fable 5对比",
+    "video_id": "bseedwXw2lo",
+    "views": 268
+  },
+  "seed_provenance": {
+    "bvid": "BV1Ww896iE1n",
+    "published_at": "2026/8/26 21:06:08",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Ww896iE1n"
+  },
+  "version": 1
+}

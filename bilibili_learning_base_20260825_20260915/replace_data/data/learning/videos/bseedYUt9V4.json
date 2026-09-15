@@ -1,0 +1,95 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "comics"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "what happens if"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Entertainment & Pop Culture",
+        "name": "entertainment_pop_culture",
+        "suggested_entities": [
+          "comics",
+          "comedy",
+          "fandom",
+          "creator stories"
+        ],
+        "suggested_formats": [
+          "documentary",
+          "comparison",
+          "challenge"
+        ]
+      }
+    ],
+    "topics": [
+      "绿灯侠",
+      "超级英雄",
+      "欧美电影",
+      "情感光谱",
+      "多元宇宙",
+      "哈尔乔丹",
+      "凯尔雷纳",
+      "漫画解析"
+    ],
+    "video_id": "bseedYUt9V4"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=uL7ph7Iv5oo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBeing a Green Lantern is tricky business as it is. With a responsibility to act against all forms of evil, the ring bearer must use the insane power at his disposal, and the temptations are far too many. This is why I have always wondered what would be the effect of wearing multiple Lantern rings at once? I mean the first thing that comes to mind is a massive power surge, but things don’t necessarily work that way, and luckily, I have found the answers in the comics because this has actually happened a few times. Yes, it is possible to wield multiple Lantern rings at once, and one can possibly wear multiple Green Lantern rings, and also mix different colors together, and the effects will leave you surprised. \n#GreenLantern #LanternRings #PowerRing #HalJordan #SinestroCorps",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 772,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T06:39:58+00:00",
+    "tags": [
+      "绿灯侠",
+      "超级英雄",
+      "欧美电影",
+      "情感光谱",
+      "多元宇宙",
+      "哈尔乔丹",
+      "凯尔雷纳",
+      "漫画解析"
+    ],
+    "title": "绿光侠能同时佩戴多枚戒指吗？漫画中的答案揭秘｜What Happens If You Wear Ten Lantern Rings at Once? - Ex…",
+    "video_id": "bseedYUt9V4",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV1wgtn6NEwK",
+    "published_at": "2026/9/2 14:39:58",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1wgtn6NEwK"
+  },
+  "version": 1
+}

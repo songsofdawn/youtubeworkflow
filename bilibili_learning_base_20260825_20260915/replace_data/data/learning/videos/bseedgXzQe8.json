@@ -1,0 +1,70 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "minecraft",
+      "mc",
+      "minecraftmod"
+    ],
+    "video_id": "bseedgXzQe8"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=9E1tVQBxoDU\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔥 Play War Thunder for FREE and get awesome bonuses! PC & Consoles —    https://wtplay.link/chaza and WT Mobile — https://wtm.game/chaza\n\nI Caught Every Boss in Hardcore Minecraft\n\n➖➖➖➖➖➖➖➖➖➖\n\n✅ FOLLOW ME:\n\n🔥 Discord: https://discord.gg/YaR5KpFSBv\n🐤 Twitter: https://twitter.com/ImChazaa\n🔴 Twitch: https://www.twitch.tv/imchazaa\n🟣 TikTok: https://www.tiktok.com/@imchazaa\n\n⭐ Current subscriber count: 445,000\n\n➖➖➖➖➖➖➖➖➖➖\n\nThis Hardcore Minecraft series is inspired by aCookieGod, Sandiction and Ezy. Instead of being aCookieGod, Sandiction and Ezy, it's just Chaza. This series is similar to a Minecraft challenge video but it is Minecraft Hardcore. You could call this Minecraft, But Hardcore.\n\nShoutout to @ItzMythOfficial for helping me out with all things Ender Dragon related 🔥\nInspired by the goat @sandiction 🤝\n\n➖➖➖➖➖➖➖➖➖➖\n\n#minecraft #but #hardcore",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1633,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-25T11:10:13+00:00",
+    "tags": [
+      "日常",
+      "minecraft",
+      "中文翻译",
+      "中英双语",
+      "mc",
+      "minecraftmod"
+    ],
+    "title": "【中英双语】我的世界：我在极限模式抓住了所有boss！！！",
+    "video_id": "bseedgXzQe8",
+    "views": 219
+  },
+  "seed_provenance": {
+    "bvid": "BV1mDh36dExd",
+    "published_at": "2026/8/25 19:10:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1mDh36dExd"
+  },
+  "version": 1
+}

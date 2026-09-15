@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.7,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "challenges_experiments",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "challenges"
+    ],
+    "formats": [
+      "challenge",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "real world experiment"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "世界纪录",
+      "minecraft",
+      "生存挑战",
+      "模组mod",
+      "极限操作",
+      "游戏历史",
+      "版本对比",
+      "技巧教学",
+      "跑酷挑战",
+      "社区发展"
+    ],
+    "video_id": "bseed_dW9dL"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 13,
+    "description": "https://www.youtube.com/watch?v=yg_AfqkfP1w\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nminecraft parkour is so cool. ok, can someone verify 1x1bm head butterfly now?\n\nfollow all for a cookie!\nDiscord: https://discord.gg/eyzHmty\nTwitter: https://twitter.com/choofxd\nTwitch: https://twitch.tv/choofxd\n\nMusic list: https://docs.google.com/document/d/18__8ZlGS1EU_fNq1ooThHfSvpPutYWl2Zad9TcxBTpk/edit?usp=sharing\n\nExtra music credits:\nBefore I Sleep\nMuciojad\nhttps://soundcloud.com/muciojad https://www.youtube.com/channel/UCwxv9pbKAQghaAjS-N23s1w https://www.instagram.com/muciojad/\n\nSong \"Sphere\" by Creo\nhttps://www.youtube.com/watch?v=0ZUoFPLlVQU\nlicensed under https://creativecommons.org/licenses/by/4.0/\n\nTrack: KIRA - New World  [NCS Release]\nMusic provided by NoCopyrightSounds.\nWatch more NCS on YouTube: https://NCS.lnk.to/YouTubeAT\nFree Download / Stream: https://ncs.io/NewWorld\n\nI Destroyed Minecraft's Hardest World Record on Vanilla Minecraft 1.21 / 1.8, which is doing 1000 triple neos in a row. Wait no, this was actually Top 10 Hardest Jumps - Minecraft Parkour. Wait no, this was actually Hardest Jumps Throughout Minecraft History. Sorry Beary, but that video had some errors, so we're doing this now. This was hilarious like TommyInnit and so intense and I, choof, not red Dream, was epic gaming. This was so fun and awesome! This Minecraft plugin, Minecraft build, Minecraft mod, and Minecraft datapack was used in making these Minecraft challenges that I, wait not I, the Minecraft Parkour community conquered. In my other videos, I love giving away money like MrBeast and Skeppy!\n\nThis is no…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 971,
+    "likes": 125,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:40:17+00:00",
+    "tags": [
+      "世界纪录",
+      "Minecraft",
+      "生存挑战",
+      "模组MOD",
+      "极限操作",
+      "游戏历史",
+      "版本对比",
+      "技巧教学",
+      "跑酷挑战",
+      "社区发展"
+    ],
+    "title": "【中英双语】Minecraft 跑酷史上最难跳跃全纪录与技巧解析｜History of Minecraft's Hardest Jumps",
+    "video_id": "bseed_dW9dL",
+    "views": 3623
+  },
+  "seed_provenance": {
+    "bvid": "BV1Kr4y6METG",
+    "published_at": "2026/8/29 16:40:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Kr4y6METG"
+  },
+  "version": 1
+}

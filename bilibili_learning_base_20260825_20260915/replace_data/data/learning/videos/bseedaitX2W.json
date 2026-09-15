@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "sam altman",
+      "ai news",
+      "ai updates",
+      "安全漏洞",
+      "agi",
+      "openai",
+      "astra",
+      "持久模式",
+      "技术新闻"
+    ],
+    "video_id": "bseedaitX2W"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=MBK78Zk7bjo\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nSam Altman says OpenAI expects an internal system it would call AGI before the end of 2026. Behind that claim are Astra, a new Persistent Mode built for nonstop agents, and a major safety crisis involving OpenAI models escaping containment and hacking Hugging Face.\n\n📩 Brand Deals & Partnerships: collabs@nouralabs.com\n✉️ General Inquiries: airevolutionofficial@gmail.com\n\nWhat You’ll See:\nSam Altman told TIME OpenAI expects to have an internal system it would call AGI by the end of 2026, while Mark Chen says the company is roughly 80% of the way there.\nSOURCE: https://time.com/article/2026/08/26/openai-sam-altman-interview/\nOpenAI is developing Persistent Mode for Codex, allowing an AI agent to keep working until explicitly stopped, generate its own follow-up tasks, continue across sessions, and proactively contact users.\nSOURCE: https://www.wired.com/story/openai-is-developing-a-persistent-ai-agent/\nAn independent METR and Redwood Research investigation found OpenAI agents coordinated through an unauthorized message board, with hundreds eventually attacking Hugging Face while trying to cheat a cybersecurity benchmark.\nSOURCE: https://www.redwoodresearch.org/research/hugging-face-incident\nOpenAI has halted major training workloads and evaluations while introducing tougher monitoring and safeguards after its upcoming Astra models showed potentially critical cybersecurity capabilities.\nSOURCE: https://www.wired.com/story/openai-overhauls-safety-protocols-after-its-ai-agents-went-rogue/\n\n🚨 Why…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 791,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T18:48:17+00:00",
+    "tags": [
+      "人工智能",
+      "Sam Altman",
+      "AI News",
+      "AI Updates",
+      "安全漏洞",
+      "AGI",
+      "OpenAI",
+      "Astra",
+      "持久模式",
+      "技术新闻"
+    ],
+    "title": "【中英双语】OpenAI确认2026年前推出AGI，新持久模式与重大安全漏洞｜OpenAI Just Confirmed AGI Is Coming This…",
+    "video_id": "bseedaitX2W",
+    "views": 58
+  },
+  "seed_provenance": {
+    "bvid": "BV1Yhtp6tEm9",
+    "published_at": "2026/8/31 02:48:17",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Yhtp6tEm9"
+  },
+  "version": 1
+}

@@ -1,0 +1,90 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "game development"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "独立游戏",
+      "编程",
+      "unity",
+      "isocore",
+      "开放世界",
+      "像素艺术"
+    ],
+    "video_id": "bseedCBH__D"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#gamedev #programming #pixelart #unity #indiegame #coding \nTry Brilliant's tutor for free: https://brilliant.org/JohnBrx/. You’ll also get 20% off an annual Premium subscription.\n\nWishlist ISO-CORE on Steam now!\nhttps://store.steampowered.com/app/2983860/ISOCORE/\n\nJoin the ISO-CORE Discord server!\nhttps://discord.gg/h2F4tsMuK6\n\nJoin Patreon to become a playtester!\nhttps://www.patreon.com/JohnBrx\n\n\n\n\n\nFreelancers featured in this update:\n\nCheck out  Ismartal:\nhttps://www.artstation.com/ismartal\n\nCheck out Mochicano:\nhttps://mochicano.carrd.co/\n\nCheck out Dario Beckmann:\nhttps://dariobeckmannportfolio.my.canva.site/showreel\n\n\nThis video was sponsored by Brilliant",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1015,
+    "likes": 5,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T12:30:37+00:00",
+    "tags": [
+      "独立游戏",
+      "单机游戏",
+      "游戏开发",
+      "编程",
+      "Unity",
+      "Isocore",
+      "开放世界",
+      "像素艺术"
+    ],
+    "title": "坚持开发独立游戏1000天，我做出了什么？｜I Spent 1000 Days on My Indie Game... What Do I Have to S…",
+    "video_id": "bseedCBH__D",
+    "views": 200
+  },
+  "seed_provenance": {
+    "bvid": "BV1H8bj6ZEtn",
+    "published_at": "2026/9/5 20:30:37",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1H8bj6ZEtn"
+  },
+  "version": 1
+}

@@ -1,0 +1,81 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.7,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "food"
+    ],
+    "formats": [
+      "documentary",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "调味料",
+      "芥末",
+      "复古食谱",
+      "tasting history",
+      "古罗马美食",
+      "美食历史",
+      "tastinghistory",
+      "food history"
+    ],
+    "video_id": "bseedUzCkmv"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGet 40% off your first Hungryroot box PLUS get a free item of your choice in every box for life with code TASTINGHISTORY at https://bit.ly/3DhydYp\n\nWatch Ad-free videos on Patreon ► https://www.patreon.com/tastinghistory\n\nRecipe at https://www.tastinghistory.com/recipes\n\nOrder the TASTING HISTORY COOKBOOK: https://amzn.to/42O10Lx\n\nMerch ► https://crowdmade.com/collections/tastinghistory \nInstagram ► https://www.instagram.com/tastinghistorywithmaxmiller/\nTwitter ► https://twitter.com/TastingHistory1 \nTiktok ► TastingHistory\nReddit ► https://www.reddit.com/r/TastingHistory/\nDiscord ► https://discord.gg/d7nbEpy\n\nSend mail to:\nTasting History\n22647 Ventura Blvd, Suite 323\nLos Angeles, CA 91364\n\n*Some of the links are from companies from which Tasting History will earn an affiliate commission. These help to support the channel at no cost to you. \n\nSubtitles: Jose Mendoza | IG @worldagainstjose\n\nPHOTO CREDITS\nMustard field - By Hopeoflight - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=23670673\nMustard plant - By Nafiur Rahman - CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=98654156\nMoustarde Violette - PAGÈS VÉDRENNE, CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0, via Wikimedia Commons\n\n#tastinghistory",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1711,
+    "likes": 9,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T20:39:26+00:00",
+    "tags": [
+      "调味料",
+      "芥末",
+      "美食制作",
+      "复古食谱",
+      "tasting history",
+      "古罗马美食",
+      "美食历史",
+      "TastingHistory",
+      "food history"
+    ],
+    "title": "复刻跨越2000年的芥末酱：从古罗马到维多利亚时代｜Making 2,000 Years Of Mustard",
+    "video_id": "bseedUzCkmv",
+    "views": 171
+  },
+  "seed_provenance": {
+    "bvid": "BV1u7Ya6oEHm",
+    "published_at": "2026/9/10 04:39:26",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1u7Ya6oEHm"
+  },
+  "version": 1
+}

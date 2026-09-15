@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "agriculture_gardening",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "farm"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "home gardening"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "花卉产业",
+      "印度农业",
+      "切花种植",
+      "现代农业",
+      "商业案例",
+      "农业创业",
+      "农场经营",
+      "菊花栽培"
+    ],
+    "video_id": "bseed2cedId"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=BTuKoUNxOdM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🌺 Cut Flower Farming & Profit | IT Professional Turns Farmer | Hybrid Chrysanthemum Farming\n\n Farm: Growteq Agri Farms\n📱App : Floriq Android & App Store💐\n👨‍🌾 Farmer: Rakesh\n🌺 Focus: Cut Flower & Hybrid Chrysanthemum Farming\n\n☎️Phone: 9900005116\n📧 Email: growteqagrifarms@gmail.com\n🌐 Website: growteqagrifarms.com\n\nReach us at AgroTill 👨‍🌾\nBrand Collaborations & Business Enquiries:\n💌 agrotill.business@gmail.com\n☎️ +91 85009 07339 (Watsapp Only)\n\nCan leaving a successful IT career and becoming a farmer actually be profitable? 🌱💰\n\nIn this AgroTill Exclusive, we bring you the inspiring story of Rakesh, an IT professional who decided to leave the corporate world and build his journey in agriculture.\n\nToday, his focus is on commercial cut flower farming, particularly hybrid chrysanthemum cultivation 🌺 — a flower crop with strong demand in the market and opportunities for farmers looking to build a profitable floriculture business.\n\nIn this video, we take you inside Growteq Agri Farms to understand how modern flower farming works, from cultivation to harvesting and marketing.\n\n🌺 What you will learn in this video:\n\n🌱 Rakesh’s journey from IT professional to farmer\n🌺 Why he chose hybrid chrysanthemum farming\n🏡 How cut flowers are cultivated commercially\n💰 Investment required for flower farming\n📈 Production, income & profit potential\n🌱 Crop management and cultivation practices\n🌸 Harvesting of chrysanthemum flowers\n📦 How flowers…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1101,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T09:46:40+00:00",
+    "tags": [
+      "花卉产业",
+      "印度农业",
+      "切花种植",
+      "中文翻译",
+      "中英双语",
+      "现代农业",
+      "商业案例",
+      "农业创业",
+      "农场经营",
+      "菊花栽培"
+    ],
+    "title": "【中英双语】IT 转行种花：印度首位切花 App 背后的商业故事｜Quit IT Job ✅ Started Flower Farming | Built i…",
+    "video_id": "bseed2cedId",
+    "views": 2
+  },
+  "seed_provenance": {
+    "bvid": "BV1jj4y6sEGU",
+    "published_at": "2026/8/29 17:46:40",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1jj4y6sEGU"
+  },
+  "version": 1
+}

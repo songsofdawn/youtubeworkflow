@@ -1,0 +1,77 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "art_creativity",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "creative process"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "延时摄影",
+      "牛油果",
+      "种植记录",
+      "盆栽",
+      "植物生长",
+      "种子发芽",
+      "家居绿植",
+      "avocado bonsai"
+    ],
+    "video_id": "bseedQqlheR"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nGrowing an avocado bonsai from seed – this timelapse shows the entire process over 378 days. The seed came out of a regular grocery store avocado and went through germination, the first leaves, root pruning, repotting into a shallow pot and cutting back the trunk to force branching. The result is a small avocado bonsai tree that still shows what a year of growth looks like when you compress it into a few minutes.\n\nTimelapse plant growth videos like this one are shot with a camera taking a photo every few minutes, day and night, for the full duration of the project. All of my timelapses start from seeds you can buy in any supermarket – avocado, mango, pomegranate, lemon and more – and follow the plant from seed to tree, seed to fruit or, in this case, seed to bonsai.\n\n#timelapse #avocado #bonsai #plantgrowth #growingfromseed",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 186,
+    "likes": 7,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T16:15:53+00:00",
+    "tags": [
+      "手工",
+      "延时摄影",
+      "牛油果",
+      "种植记录",
+      "盆栽",
+      "植物生长",
+      "无配音",
+      "种子发芽",
+      "家居绿植",
+      "avocado bonsai"
+    ],
+    "title": "超市牛油果核养成盆栽！378天延时记录｜Can You Turn a Grocery Store Avocado Into a Bonsai? (378 Da…",
+    "video_id": "bseedQqlheR",
+    "views": 416
+  },
+  "seed_provenance": {
+    "bvid": "BV1YAYz6JEMm",
+    "published_at": "2026/9/14 00:15:53",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1YAYz6JEMm"
+  },
+  "version": 1
+}

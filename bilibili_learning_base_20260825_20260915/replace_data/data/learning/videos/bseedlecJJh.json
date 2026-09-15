@@ -1,0 +1,100 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "ChatGPT",
+      "GPT-6",
+      "Astra"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "chatgpt",
+      "gpt-6",
+      "astra",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "ai自动化",
+      "chatgpt",
+      "自动化",
+      "自媒体运营",
+      "youtube",
+      "ai工具"
+    ],
+    "video_id": "bseedlecJJh"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHi everyone! In this video, I build a whole YouTube channel that runs itself on AI!\n\nI used ChatGPT, ElevenLabs, Blender and Claude to name the channel, make the logo, write the scripts, record the voiceovers, render the shorts and then upload them for me.\n\nThanks for watching! I love you :)\n\nChapters :\n0:00 Intro\n0:18 Making the Channel\n2:21 Writing the Scripts\n4:01 Uploading the First Shorts\n5:01 The First Results\n6:07 Testing ElevenLabs Voices\n7:44 ChatGPT Posts It By Itself\n10:00 Ending",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 626,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-09T13:56:36+00:00",
+    "tags": [
+      "人工智能",
+      "AI自动化",
+      "ChatGPT",
+      "自动化",
+      "计算机技术",
+      "自媒体运营",
+      "YouTube",
+      "AI工具"
+    ],
+    "title": "用ChatGPT全自动运营一个YouTube频道｜ChatGPT 6 Astra Can Run A Youtube Channel",
+    "video_id": "bseedlecJJh",
+    "views": 11
+  },
+  "seed_provenance": {
+    "bvid": "BV1VNYt6JEsc",
+    "published_at": "2026/9/9 21:56:36",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1VNYt6JEsc"
+  },
+  "version": 1
+}

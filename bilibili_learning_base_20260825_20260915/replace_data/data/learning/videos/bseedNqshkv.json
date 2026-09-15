@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "OpenAI",
+      "Astra",
+      "Claude",
+      "Fable 5.1",
+      "LLM"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "openai",
+      "astra",
+      "claude",
+      "fable 5.1",
+      "llm",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "anthropic",
+      "claude fable",
+      "长程代理",
+      "大模型",
+      "openai astra",
+      "stanford llm village"
+    ],
+    "video_id": "bseedNqshkv"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=GdArAq7WMSM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nAnthropic just dropped Claude Fable 5.1 and Mythos 5.1 — a big jump in long-horizon agentic work, with prompt-cache reads now 4x cheaper and the model burning far fewer tokens to do the same job. The timing is the story: it landed right as OpenAI announced its plans for Astra, the first model it says crosses \"Critical\" cybersecurity capability. I put Fable 5.1 to work immediately — a fully-voiced Tarkov-style extraction game with an auto mode, and a replica of Stanford's generative-agents \"LLM Village\" — each built in roughly 10–15 minutes.\n\n______________________________________________\nMy Links 🔗\n➡️ Twitter: https://x.com/WesRothMoney\n➡️ AI Newsletter: https://natural20.beehiiv.com/subscribe\n\nWant to work with me?\nBrand, sponsorship & business inquiries: wesroth@smoothmedia.co\n______________________________________________\n\nCheck out my video on OpenAI's rogue agent and the Hugging Face hack:\nhttps://www.youtube.com/watch?v=9lSIHaXT1rU\n\nSOURCES:\n\nAnthropic — Introducing Claude Fable 5.1 and Claude Mythos 5.1:\nhttps://www.anthropic.com/claude-fable-and-mythos-5-1\n\nAnthropic docs — What's new in Claude Fable 5.1 (effort settings & tips):\nhttps://platform.claude.com/docs/en/models/fable-5-1/whats-new-fable-5-1\n\nOpenAI — Path to Astra: critical capabilities and frontier safeguards:\nhttps://openai.com/index/path-to-astra/\n\nCNBC — OpenAI says Astra is its first model to cross \"Critical\" cybersecurity capability:\nhttps://www.cnbc.com/2026/09/01/open-ai-astra-cyber-model.html\n\nSt…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 501,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-02T05:42:12+00:00",
+    "tags": [
+      "人工智能",
+      "游戏开发",
+      "Anthropic",
+      "Claude Fable",
+      "长程代理",
+      "计算机技术",
+      "大模型",
+      "OpenAI Astra",
+      "Stanford LLM Village"
+    ],
+    "title": "Anthropic发布Claude Fable 5.1：长程代理能力跃升与成本优｜Fable 5.1 just smoked ASTRA...",
+    "video_id": "bseedNqshkv",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1PHt76FETr",
+    "published_at": "2026/9/2 13:42:12",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1PHt76FETr"
+  },
+  "version": 1
+}

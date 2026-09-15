@@ -1,0 +1,94 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "build",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "声音设计",
+      "模块化合成器",
+      "太空摄影",
+      "电子音乐制作",
+      "eurorack",
+      "vcv rack",
+      "波形表合成"
+    ],
+    "video_id": "bseedb3hF74"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=CKEZ_NXrpNw\n【免责声明】\n本视频为无配音或背景音乐内容；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nThis is an experiment with the Iris VCO that can load images and turn them to wavetables. I wanted to see what images from space will look (and sound) like. \n\nIf you're interested in these patches (and many more) and supporting the channel, consider joining our community on Patreon and Discord - https://www.patreon.com/omricohen\n\nOnline courses about Modular Synthesis - https://bit.ly/learnmodular\n\nCheck out my Modular books:\nUS: https://bit.ly/40armbo\nUK: https://bit.ly/4rX6NeO\nEU: https://bit.ly/4srcTUt\n\nHungry for more videos? Have a look here - https://bit.ly/patreonexclusivevideos\nBuy me a coffee? - https://www.buymeacoffee.com/omricohen\nPayPal - https://bit.ly/ppomricohen\n\nAndromeda Galaxy - 00:00\nStellar Forge - 00:55\nCrab Nebula - 02:30\nWhirlpool Galaxy - 04:50\nMystic Mountain - 06:28\n\nI'm using DistroKid to distribute my music to Spotify, iTunes, Apple Music, and more. By signing up through this link you will get 7% off and will support this channel  - http://distrokid.com/vip/omri\n\nConsider subscribing - https://bit.ly/2OljOPN\n\nYou can get VCV Rack here - https://vcvrack.com/\nYou can find all of my stuff here - https://linktr.ee/omri.musicohen\n\n#vcvrack #modularsynth #eurorack #synthesis",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 492,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:48:19+00:00",
+    "tags": [
+      "声音设计",
+      "无配音",
+      "计算机技术",
+      "模块化合成器",
+      "太空摄影",
+      "电子音乐制作",
+      "Eurorack",
+      "VCV Rack",
+      "波形表合成"
+    ],
+    "title": "【无配音】用太空图像生成波形表：Iris VCO 实验与合成器音色探索｜What happens when you use Space as wavetabl…",
+    "video_id": "bseedb3hF74",
+    "views": 6
+  },
+  "seed_provenance": {
+    "bvid": "BV1Wy4y6NEKQ",
+    "published_at": "2026/8/29 16:48:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Wy4y6NEKQ"
+  },
+  "version": 1
+}

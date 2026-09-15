@@ -1,0 +1,105 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Ollama",
+      "AI agents",
+      "local AI"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai agents",
+      "local ai",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "nvidia",
+      "本地部署",
+      "ai推理",
+      "ollama",
+      "开源",
+      "gpu",
+      "大模型",
+      "ai智能体",
+      "nvidia pair",
+      "nvidia personal ai r"
+    ],
+    "video_id": "bseedvZCk-j"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video, I cover a number of new announcements from NVIDIA, including the launch of NVIDIA Pair, a new form of local router. \n\n#nvidia  #nvidia-pair\n\n📖 Blog: https://www.nvidia.com/en-us/ai-on-rtx/personal-ai-router/\nGithub: https://github.com/NVIDIA/Personal-AI-Router\n\nTwitter: https://x.com/Sam_Witteveen \n\n🕵️ Interested in building LLM Agents? Fill out the form below\nBuilding LLM Agents Form: https://drp.li/dIMes\n\n👨‍💻Github:\nhttps://github.com/samwit/llm-tutorials\n\n⏱️Time Stamps:\n00:00 Intro\n00:56 NVIDIA Topping HF Repos\n02:44 NVIDIA's Acquiring Hugging Face\n04:47 2026 Year of Open Source Models\n05:40 Frontier Intelligence\n05:59 Frontier Video\n06:27 NVIDIA PAIR\n10:53 Personal AI Router Github\n13:20 Demo",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1041,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T14:06:52+00:00",
+    "tags": [
+      "NVIDIA",
+      "本地部署",
+      "AI推理",
+      "Ollama",
+      "开源",
+      "GPU",
+      "大模型",
+      "AI智能体",
+      "NVIDIA PAIR",
+      "NVIDIA Personal AI R"
+    ],
+    "title": "NVIDIA推出本地AI路由器PAIR：多机推理实测｜NVIDIA Doubles Down on Local AI With PAIR",
+    "video_id": "bseedvZCk-j",
+    "views": 41
+  },
+  "seed_provenance": {
+    "bvid": "BV1EEYJ6BEh6",
+    "published_at": "2026/9/8 22:06:52",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1EEYJ6BEh6"
+  },
+  "version": 1
+}

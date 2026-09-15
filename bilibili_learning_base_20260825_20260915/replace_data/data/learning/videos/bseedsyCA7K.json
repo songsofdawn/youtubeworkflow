@@ -1,0 +1,101 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "RAM",
+      "PC hardware"
+    ],
+    "formats": [
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "pc memory",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "散热改造",
+      "内存扩容",
+      "极客 diy",
+      "游戏性能优化",
+      "ssd 固态硬盘",
+      "二手电脑翻新",
+      "迷你主机升级",
+      "pc 硬件改造"
+    ],
+    "video_id": "bseedsyCA7K"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=wMyY6_EANK8\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHow Far Can I Upgrade This $100 Tiny PC?\nStarting with a $100 tiny system might not sound impressive, but it’s the perfect challenge to see how far you can Upgrade Mini PC performance. These compact machines are designed for basic tasks, yet with the right approach, you can Upgrade Mini PC hardware far beyond its original limits. At first, this system struggled with multitasking and light gaming, but the goal was to completely transform it step by step.\n\nThe first move to Upgrade Mini PC capability was upgrading the storage. Replacing the slow drive with a fast SSD instantly improved boot times and responsiveness. Next, I decided to Upgrade Mini PC memory, increasing the RAM to handle more demanding applications. Even a small RAM upgrade can significantly change how smooth the system feels when you Upgrade Mini PC setups.\n\nHowever, the biggest challenge when you Upgrade Mini PC hardware is dealing with space and power limitations. These systems often have restricted cooling and limited expansion options. To Upgrade Mini PC graphics performance, I had to rely on integrated graphics optimization and lightweight settings instead of adding a full GPU. Tweaking BIOS settings and optimizing software helped push performance even further.\n\nCooling also plays a key role. When you Upgrade Mini PC builds, improving airflow and reducing thermal throttling can unlock extra performance. Cleaning dust and applying new thermal paste made a noticeable difference.\n\nIn the end, this experiment proves that you can Upg…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 579,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T07:57:49+00:00",
+    "tags": [
+      "中英双语",
+      "中文翻译",
+      "散热改造",
+      "内存扩容",
+      "极客 DIY",
+      "游戏性能优化",
+      "SSD 固态硬盘",
+      "二手电脑翻新",
+      "迷你主机升级",
+      "PC 硬件改造"
+    ],
+    "title": "【中英双语】百元迷你主机升级挑战：ThinkStation P320 极限性能测试｜How Far Can I Upgrade This $100 Tiny…",
+    "video_id": "bseedsyCA7K",
+    "views": 17
+  },
+  "seed_provenance": {
+    "bvid": "BV15c416sEk2",
+    "published_at": "2026/8/29 15:57:49",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV15c416sEk2"
+  },
+  "version": 1
+}

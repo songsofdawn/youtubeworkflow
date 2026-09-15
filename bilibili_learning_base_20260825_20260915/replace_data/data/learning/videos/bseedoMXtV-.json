@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "traditional food"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "traditional food",
+      "farm to table cooking",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "家庭日常",
+      "阿塞拜疆",
+      "传统美食",
+      "乡村生活",
+      "农家生活",
+      "田园美食",
+      "户外烹饪",
+      "西瓜采摘",
+      "sweet grandma",
+      "azerbaijan cooking"
+    ],
+    "video_id": "bseedoMXtV-"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "https://www.youtube.com/watch?v=8JWN4n95Aws\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n#Grandma #donut #waternelon \nJoin grandma and grandpa as they head to the watermelon field in the heart of the Azerbaijani village. They pick fresh, ripe watermelons, then return to bake delicious homemade donuts on the saj. After cooking, they sit down to enjoy hot tea and sweet watermelon in a peaceful countryside setting.\n\nThis relaxing village life video is full of authentic rural moments, traditional outdoor cooking, summer harvest beauty, and the simple joy of homemade food. If you love grandma cooking, grandpa village work, countryside traditions, and natural slow living, this video is for you.\n\nIn this video:\n\nWatermelon harvesting in the village\nTraditional saj donuts cooking\nTea time in nature\nFresh watermelon tasting\nAuthentic Azerbaijani rural life\n\nWatch till the end to enjoy the calm atmosphere of village life, traditional cooking, and the warm daily routine of grandma and grandpa.\n\n#villagelife #grandmacooking #watermelonharvest #rurallife #azerbaijan",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 975,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T15:09:48+00:00",
+    "tags": [
+      "家庭日常",
+      "阿塞拜疆",
+      "传统美食",
+      "乡村生活",
+      "农家生活",
+      "田园美食",
+      "户外烹饪",
+      "西瓜采摘",
+      "sweet grandma",
+      "azerbaijan cooking"
+    ],
+    "title": "【中英双语】奶奶的西瓜田冒险：制作传统烤甜甜圈｜Watermelon Field Adventure 🍉 Grandma Making Glazed Don…",
+    "video_id": "bseedoMXtV-",
+    "views": 37
+  },
+  "seed_provenance": {
+    "bvid": "BV1TbtW6UENM",
+    "published_at": "2026/8/30 23:09:48",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1TbtW6UENM"
+  },
+  "version": 1
+}

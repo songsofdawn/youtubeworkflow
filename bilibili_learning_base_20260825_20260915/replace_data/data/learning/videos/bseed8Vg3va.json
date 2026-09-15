@@ -1,0 +1,104 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "GLM"
+    ],
+    "formats": [
+      "experiment",
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "product test",
+      "glm",
+      "ai model benchmark",
+      "ai model comparison",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Computer Hardware",
+        "name": "computer_hardware",
+        "suggested_entities": [
+          "PC hardware",
+          "CPU",
+          "GPU",
+          "servers",
+          "Windows"
+        ],
+        "suggested_formats": [
+          "comparison",
+          "experiment",
+          "build"
+        ]
+      }
+    ],
+    "topics": [
+      "本地部署",
+      "大模型评测",
+      "智谱清言",
+      "开源 ai",
+      "ai 芯片",
+      "glm 5.3 flash",
+      "mit 协议",
+      "kingbench 测试"
+    ],
+    "video_id": "bseed8Vg3va"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=CpMCYO2oWBI\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nVisit AISeeKing (second channel with more cool local ai stuff): https://www.youtube.com/@AISeeKing\n\nIn this video, I'll be telling you about the Ox Alpha reveal, which Z AI has now officially confirmed as GLM 5.3 Flash. The model is open-weight under an MIT license, extremely cheap through the API, and may be one of the best options yet for running a frontier-adjacent AI model locally.\n\n--\nKey Takeaways:\n\n🚀 Z AI has officially revealed that the Ox Alpha stealth model was GLM 5.3 Flash.\n🔓 GLM 5.3 Flash has been released on Hugging Face with full weights under an MIT license.\n🧠 The model is a 320B parameter mixture-of-experts model with only 18B active parameters per token.\n💸 API pricing is extremely cheap at 15 cents per million input tokens and 50 cents per million output tokens.\n📊 On KingBench, GLM 5.3 Flash scored 63 out of 80, slightly below its stealth Ox Alpha score.\n🛠️ It performed especially well on reasoning, math, agentic coding, and local fine-tuning tasks.\n💻 The model looks like a strong candidate for local inference on high-memory machines like new Macs and AI boxes.\n🇨🇳 Z AI confirmed the entire stealth preview was served on Chinese AI chips using a custom SGLang-based inference stack.\n👍 Overall, GLM 5.3 Flash is an impressive open model for cheap API use, local AI, and agentic workflows.",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 682,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-29T08:22:24+00:00",
+    "tags": [
+      "本地部署",
+      "大模型评测",
+      "智谱清言",
+      "开源 AI",
+      "中英双语",
+      "中文翻译",
+      "AI 芯片",
+      "GLM 5.3 Flash",
+      "MIT 协议",
+      "KingBench 测试"
+    ],
+    "title": "【中英双语】Z AI 确认 GLM 5.3 Flash：开源 MIT 协议与本地运行｜GLM 5.3 Flash (Fully Tested): What d…",
+    "video_id": "bseed8Vg3va",
+    "views": 29
+  },
+  "seed_provenance": {
+    "bvid": "BV1tY4y6kEte",
+    "published_at": "2026/8/29 16:22:24",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1tY4y6kEte"
+  },
+  "version": 1
+}

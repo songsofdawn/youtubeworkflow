@@ -1,0 +1,79 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "tutorials_skills",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "DIY"
+    ],
+    "formats": [
+      "full_process",
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "失蜡铸造",
+      "蓝宝石",
+      "首饰制作",
+      "手工定制",
+      "蜡雕",
+      "订婚戒指",
+      "手工金戒指",
+      "making engagement ri",
+      "how to make jewelry"
+    ],
+    "video_id": "bseedFndpHv"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nhow to make jewelry out of wax - making engagement ring from wax\n\nIn this video I will show you how I made an 18k gold engagement ring with natural blue sapphire and diamond gems, I used the sculpting technique using wax, this is my first video using this technique, this technique is quite commonly used in jewelry workshops, the advantage of this technique is that wax has a soft texture so we can shape anything easily, and the process is relatively fast compared to conventional techniques, but this technique also has disadvantages, if we make a slight mistake in casting, the wax will be lost in vain and have to repeat the process from the beginning, in this video I will show you the complete process of making it from start to finish, this project is an order from Dina Wllden from the US, if you want to make unique jewelry please contact us through our official website or our etsy shop, thank you for watching this video\n\n#jewelrymaker \n#howtomakejewelry \n#carvingwaxforjewelry\n#customjewelry \n#handcraftedjewelry",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1043,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-06T13:38:18+00:00",
+    "tags": [
+      "失蜡铸造",
+      "无配音",
+      "蓝宝石",
+      "首饰制作",
+      "手工定制",
+      "蜡雕",
+      "订婚戒指",
+      "手工金戒指",
+      "making engagement ri",
+      "how to make jewelry"
+    ],
+    "title": "蜡雕工艺制作18K金蓝宝石订婚戒指全过程｜how to make jewelry out of wax - making engagement ring fr…",
+    "video_id": "bseedFndpHv",
+    "views": 31
+  },
+  "seed_provenance": {
+    "bvid": "BV1SmbW6bE19",
+    "published_at": "2026/9/6 21:38:18",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1SmbW6bE19"
+  },
+  "version": 1
+}

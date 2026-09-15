@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "mods"
+    ],
+    "formats": [
+      "challenge",
+      "comparison",
+      "mod_showcase"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "every x comparison",
+      "minecraft",
+      "minecraft mods"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "搞笑游戏",
+      "dash",
+      "mc挑战",
+      "摔断骨头",
+      "baby dash",
+      "游戏 mods"
+    ],
+    "video_id": "bseedUgcIM0"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nBreaking EVERY SINGLE BONE in Minecraft!\n\nThis video Dash, Baby Dash, and Anne have to jump off cliffs to break bones in Minecraft! Will they be able to break as many bones as possible and unlock some crazy upgrades? Watch the full video to find out!\n\n#Dash #minecraft #minecraftmod",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1421,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T19:34:44+00:00",
+    "tags": [
+      "我的世界",
+      "单机游戏",
+      "Minecraft",
+      "搞笑游戏",
+      "Dash",
+      "MC挑战",
+      "摔断骨头",
+      "baby dash",
+      "游戏 mods"
+    ],
+    "title": "在MC里摔断全身所有骨头！越痛越赚钱的离谱挑战｜Breaking EVERY SINGLE BONE in Minecraft!",
+    "video_id": "bseedUgcIM0",
+    "views": 144
+  },
+  "seed_provenance": {
+    "bvid": "BV1BuYV6JE3Y",
+    "published_at": "2026/9/11 03:34:44",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1BuYV6JE3Y"
+  },
+  "version": 1
+}

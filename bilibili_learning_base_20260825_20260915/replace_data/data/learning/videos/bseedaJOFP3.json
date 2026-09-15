@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "cheese"
+    ],
+    "formats": [
+      "comparison",
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "手工奶酪",
+      "传统厨房",
+      "自制奶酪",
+      "家庭食谱",
+      "农夫奶酪",
+      "从零开始做饭",
+      "阿米什料理",
+      "homemade cheese",
+      "farmers cheese"
+    ],
+    "video_id": "bseedaJOFP3"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔗 Save $6,000 A Year with My Complete Amish Home-Saving Method I teach:\nhttps://eliasyoder.com\n\nCheese seems like one of those things that must come from a factory. It sits there in the cold case at the store, wrapped in plastic, and most folks have no notion at all how it is made, or that it could be made, by their own hands, in their own kitchen, out of nothing but a pot of milk. They believe cheese is a mystery, a thing made by machines in some far-off plant, beyond the reach of an ordinary person. And I am going to show you how wrong that is.\nBecause you can make a fine, firm, delicious cheese at home, in about an hour of actual work, out of nothing but a pot of milk, a couple of eggs, and a spoonful of sour cream. No special cultures, no rennet, no cheesemaking kit, no machine. Just milk and a couple of things you already have, and a sieve, and a little patience.\nNow let me be straight with you, as I always am, about what this is. This is a fresh cheese, a young cheese, the kind the old farm wives made fresh and ate fresh, firm and mild and lovely. It is not an aged sharp cheddar or a cheese cured for months in a cave, those are their own long art. But this fresh farmer's cheese is one of the most useful cheeses there is, wonderful sliced on bread, crumbled into cooking, fried, or eaten just as it is, and you can make it any day you please for a fraction of what the store charges.\nHere is what you will learn:\n✔ Why all cheese is simply milk parted into curds and whey\n✔ The kind of milk to…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1112,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-07T01:43:11+00:00",
+    "tags": [
+      "美食制作",
+      "手工奶酪",
+      "传统厨房",
+      "自制奶酪",
+      "家庭食谱",
+      "农夫奶酪",
+      "从零开始做饭",
+      "阿米什料理",
+      "homemade cheese",
+      "farmers cheese"
+    ],
+    "title": "只用牛奶和鸡蛋，在家一小时自制农夫奶酪｜The Best Homemade Cheese You Will Ever Make... From Just Mi…",
+    "video_id": "bseedaJOFP3",
+    "views": 53
+  },
+  "seed_provenance": {
+    "bvid": "BV1Nqbw6oEUR",
+    "published_at": "2026/9/7 09:43:11",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Nqbw6oEUR"
+  },
+  "version": 1
+}

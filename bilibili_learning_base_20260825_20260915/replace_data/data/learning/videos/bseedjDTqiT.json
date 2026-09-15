@@ -1,0 +1,72 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "video games"
+    ],
+    "formats": [
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "寂静岭",
+      "恶魔城",
+      "efootball",
+      "游戏发布会",
+      "游戏情报",
+      "科乐美"
+    ],
+    "video_id": "bseedjDTqiT"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n- KONAMI PRESS START Survey\nhttps://www.konami.com/games/konami-press-start/survey/\n---------------\nTune in to “KONAMI PRESS START,” our exclusive web showcase featuring the latest news and updates on our upcoming and currently available titles, including *SILENT HILL: Townfall*, *Castlevania: Belmont’s Curse*, and *Rev. NOiR*.\n\nDon’t miss out!\nOfficial Website: https://www.konami.com/games/konami-press-start/\n\n*This stream will feature titles intended for mature audiences.\n\n#SILENTHILL #Townfall #Castlevania #CastlevaniaBC #RevNOiR\n©Konami Digital Entertainment",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1852,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T16:48:32+00:00",
+    "tags": [
+      "单机游戏",
+      "寂静岭",
+      "恶魔城",
+      "eFootball",
+      "游戏发布会",
+      "游戏情报",
+      "科乐美"
+    ],
+    "title": "KONAMI PRESS START 发布会：寂静岭新作与恶魔城情报｜KONAMI PRESS START 9.3.2026 ( KONAMI Game Ne…",
+    "video_id": "bseedjDTqiT",
+    "views": 85
+  },
+  "seed_provenance": {
+    "bvid": "BV11mb76NEgB",
+    "published_at": "2026/9/6 00:48:32",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV11mb76NEgB"
+  },
+  "version": 1
+}

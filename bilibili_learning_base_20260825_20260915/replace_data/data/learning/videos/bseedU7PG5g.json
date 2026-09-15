@@ -1,0 +1,84 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.58,
+      "story_strength": 0.82,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "hardcore"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft hardcore",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "下界合金",
+      "minecraft hardcore",
+      "极限模式",
+      "附魔",
+      "盔甲",
+      "游戏机制",
+      "硬核挑战",
+      "minecraft challenge"
+    ],
+    "video_id": "bseedU7PG5g"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nIn this video I collect the Strongest Armor in Minecraft... Not even joking this set is so overpowered, you're basically invincible. \nStay tuned for future videos and please subscribe :))\n\n------------------------------------------------------------------------------------------------------------------\nBecome a channel member :D https://www.youtube.com/channel/UCj0Je1OziDy0xR5fEiuFPnw/join \n\nFeel free to join my discord server https://discord.com/invite/fy85eSfsQr\n------------------------------------------------------------------------------------------------------------------\n\nBUSINESS INQUERIES - Divvy@organisedtalent.com\n\n#minecraft #but #hardcore #armor #trapped\n\nsub count when uploaded: 280,562",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1175,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T18:20:34+00:00",
+    "tags": [
+      "单机游戏",
+      "我的世界",
+      "下界合金",
+      "minecraft hardcore",
+      "极限模式",
+      "附魔",
+      "盔甲",
+      "游戏机制",
+      "硬核挑战",
+      "minecraft challenge"
+    ],
+    "title": "我在极限模式做出了Minecraft最强盔甲｜I Actually Got Minecraft's Strongest Armor",
+    "video_id": "bseedU7PG5g",
+    "views": 12
+  },
+  "seed_provenance": {
+    "bvid": "BV1Gmtk6EEB5",
+    "published_at": "2026/9/5 02:20:34",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Gmtk6EEB5"
+  },
+  "version": 1
+}

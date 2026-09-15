@@ -705,6 +705,8 @@ class BiliupIntegration:
             values["is_only_self"] = bool(is_only_self)
         payload = self.validate_submission(task_dir, values)
         payload["automatic"] = True
+        payload["auto_next_publish"] = True
+        payload["queue_priority"] = False
         return payload
 
     @staticmethod

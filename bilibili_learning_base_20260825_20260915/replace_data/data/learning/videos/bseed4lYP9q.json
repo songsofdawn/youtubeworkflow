@@ -1,0 +1,87 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "engineering_manufacturing",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "3D printing"
+    ],
+    "formats": [
+      "build",
+      "investigation",
+      "experiment"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i built",
+      "3d printing",
+      "engineering build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "工程实验",
+      "esp32无人机",
+      "陀螺进动",
+      "遥控直升机",
+      "机械结构",
+      "3d打印模型",
+      "diy制作",
+      "物理原理",
+      "helicopter without s",
+      "thrust vectoring hel"
+    ],
+    "video_id": "bseed4lYP9q"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=zPneuh-k2z4\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nTraditional RC helicopters rely on complex swashplates with lots of linkages, bearings, and moving parts. It makes you wonder: why make it so complicated? Why not just mount the entire main motor on a 2-axis pivot and use two high-torque servos to tilt the thrust vector directly? \n\nIn this video, I built a custom 3D-printed test helicopter powered by an ESP32-S3 to test this exact concept. On the bench, the mechanism moves cleanly—but once the rotor spins up to speed, gyroscopic forces take over. Here is the complete build breakdown, the field flight test, and the physics behind why this setup flips over.\n\n📥 3D Models (STL Files) & ESP32-S3 Source Code:\n👉 https://www.patreon.com/c/EngineeringRobotic\n\n--------------------------------------------------\n🔗 Referenced Videos & Demonstrations:\n• Veritasium Gyroscopic Precession Demonstration: https://youtu.be/ty9QSiVC2g0?si=4qKFhZFxenYbmR3r\n• Working Single-Motor Drone (Airflow Control Fins): https://youtu.be/BYTEedF-RXE?si=hCvCHixJEA5HK7BY\n\n--------------------------------------------------\n🛠️ Build Hardware & Specifications:\n• Flight Controller: Custom ESP32-S3 Board\n• Motion Sensor (IMU): MPU-9250\n• Tilting Servos: 2x TowerPro MG996R All-Metal Gear (180°, 11 kg·cm stall torque @ 6V)\n• Receiver Protocol: TBS Crossfire (CRSF)\n• Power System: 3S LiPo Battery\n• Voltage Regulator: 5A Step-Down Buck Converter (12V to 6V)\n• Tail System: Direct-drive brushless motor & ESC for yaw\n\n---------------------------------------------…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 353,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-01T21:38:19+00:00",
+    "tags": [
+      "工程实验",
+      "ESP32无人机",
+      "陀螺进动",
+      "遥控直升机",
+      "机械结构",
+      "3D打印模型",
+      "DIY制作",
+      "物理原理",
+      "helicopter without s",
+      "thrust vectoring hel"
+    ],
+    "title": "单电机直升机为何无法倾斜？陀螺仪效应实验解析｜Why You Can’t Just Tilt a Helicopter Motor (I Built One…",
+    "video_id": "bseed4lYP9q",
+    "views": 80
+  },
+  "seed_provenance": {
+    "bvid": "BV1EQtj6SE2x",
+    "published_at": "2026/9/2 05:38:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1EQtj6SE2x"
+  },
+  "version": 1
+}

@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "ted演讲",
+      "tedtalks",
+      "财经商业",
+      "科技趋势",
+      "互联网",
+      "商业模式",
+      "内容创作",
+      "cloudflare",
+      "tedtalk"
+    ],
+    "video_id": "bseedymkxtK"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nFor the past 30 years, surviving as an internet business meant getting people to click on your website. But AI is now making that thousands of times harder, says Matthew Prince, CEO of Cloudflare, one of the world’s largest internet networks. He makes the provocative case for a different deal — whereby tech companies actually pay people for creating content that feeds their AI models. (Recorded at TED2026 on April 16, 2026)\n\nJoin us in person at a TED conference: https://tedtalks.social/events\nBecome a TED Member to support our mission: https://ted.com/membership\nSubscribe to a TED newsletter: https://ted.com/newsletters\n\nFollow TED! \nInstagram: https://www.instagram.com/ted\nLinkedIn: https://www.linkedin.com/company/ted-conferences\nTikTok: https://www.tiktok.com/@tedtoks\nFacebook: https://facebook.com/TED\nX: https://www.twitter.com/TEDTalks\n\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less) — plus originals, podcasts and exclusive content. Look for videos on Technology, Entertainment and Design as well as science, business, global issues, the arts and more. Visit https://TED.com for our entire library, transcripts, translations and personalized recommendations.\n\nWatch more: https://go.ted.com/matthewprince\n\nhttps://youtu.be/YCldrsmxi_s\n\nTED videos may be used for non-commercial purposes under a Creative Commons License, Attribution–Non Commercial–No Deriva…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 762,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-04T14:24:10+00:00",
+    "tags": [
+      "TED演讲",
+      "人工智能",
+      "TEDTalks",
+      "财经商业",
+      "科技趋势",
+      "互联网",
+      "商业模式",
+      "内容创作",
+      "Cloudflare",
+      "TEDTalk"
+    ],
+    "title": "Cloudflare CEO：AI如何冲击互联网商业模式｜How AI Is Breaking the Internet (and What to Do Ab…",
+    "video_id": "bseedymkxtK",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1Jht66HEGE",
+    "published_at": "2026/9/4 22:24:10",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1Jht66HEGE"
+  },
+  "version": 1
+}

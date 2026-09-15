@@ -1,0 +1,102 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Claude"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "claude",
+      "claude code",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "ai 编程",
+      "claude ai",
+      "开源 ai",
+      "claude code",
+      "vibe coding",
+      "api 调用",
+      "开发者工具",
+      "代码生成",
+      "大模型应用",
+      "kimi k3"
+    ],
+    "video_id": "bseedUfX9YA"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 2,
+    "description": "https://www.youtube.com/watch?v=qCo04YrQCPM\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nWant to use Kimi K3 with Claude Code and try one of the newest AI coding models?\n\n☕ Support Me:\nhttps://www.buymeacoffee.com/codewithyousaf\n\nIn this video, I'll show you how to connect Kimi K3 to Claude Code and use it for AI-powered coding. We'll go through the complete setup process step by step and then test Kimi K3 on real coding tasks to see how well it performs.\n\nIf you're looking for a powerful AI coding model to use with Claude Code without paying for an expensive monthly subscription, this tutorial is for you.\n\nWhat you'll learn:\n✅ What is Kimi K3?\n✅ How to get the API key\n✅ Configure Claude Code with Kimi K3\n✅ Complete setup guide\n✅ Test Kimi K3 on real coding tasks\n✅ See how well Kimi K3 performs for coding\n✅ Tips and limitations\n\nWhether you're a beginner or an experienced developer, this guide will help you get started with Kimi K3 and Claude Code.\n\nIf you enjoy videos about AI coding tools, Claude Code, Cursor, OpenCode, and the latest AI models, make sure to subscribe for more tutorials.\n\n👍 Like the video if it helps.\n💬 Comment which AI coding model you want me to test next.\n🔔 Subscribe so you don't miss future AI tutorials.\n\n#KimiK3 #ClaudeCode #AI #Coding #AICoding #OpenSourceAI #GenerativeAI #Programming #Developer #AIModels #CodeWithYousaf",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 631,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-30T16:25:39+00:00",
+    "tags": [
+      "AI 编程",
+      "claude ai",
+      "开源 AI",
+      "Claude Code",
+      "vibe coding",
+      "API 调用",
+      "开发者工具",
+      "代码生成",
+      "大模型应用",
+      "Kimi K3"
+    ],
+    "title": "【中英双语】免费使用 Kimi K3 模型配置 Claude Code 编程教程｜Unlimited Free Kimi K3 + Claude Code!",
+    "video_id": "bseedUfX9YA",
+    "views": 88
+  },
+  "seed_provenance": {
+    "bvid": "BV18JtW6RE76",
+    "published_at": "2026/8/31 00:25:39",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV18JtW6RE76"
+  },
+  "version": 1
+}

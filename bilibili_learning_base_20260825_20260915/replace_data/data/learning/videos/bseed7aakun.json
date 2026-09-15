@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "food_cooking",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "noodles"
+    ],
+    "formats": [
+      "full_process"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "noodle recipe",
+      "food and cooking"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "快手菜",
+      "辣炒面",
+      "罗勒炒鸡",
+      "醉面",
+      "泰国菜",
+      "泰式炒河粉",
+      "炒面做法",
+      "pad kee mao",
+      "drunken noodles"
+    ],
+    "video_id": "bseed7aakun"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThese Pad Kee Mao drunken noodles are SO satisfying, ready in 25 minutes, and IMO are better than Pad Thai. Increase muscle mass and decrease fat with David. Head to https://davidprotein.yt.link/ILWX3s5 to get a free carton with an order of four or more.\n\n▶️WATCH NEXT: \nWEEKNIGHT PAD WOON SEN: https://youtu.be/5VkJ3jo00nA?si=WjeHPIV8EKFGfXcc\nDAN DAN NOODLES: https://youtu.be/qANt7-pM_IM?si=91QGJr-X0ZAcym7g\n\n\n📝 DETAILED RECIPES ON MY BLOG: https://brianlagerstrom.com/recipe-index/\n\n🔪MY GEAR:\nWOK: https://amzn.to/4gEhO1q\nWOODEN SPOON: https://amzn.to/4iGTddy\nFINE MESH STRAINER: https://amzn.to/4dkBZix\nXL WIDE RICE NOODLES: https://amzn.to/3UscOEr\nPORTABLE BUTANE BURNER: https://amzn.to/468zCvm\nCUTTING BOARD: https://amzn.to/341OgnD\nDIGITAL SCALE: https://amzn.to/30bNZO3 \nFAVORITE STAINLESS BOWL: https://amzn.to/49kGBTU \nAMAZON STORE: https://www.amazon.com/shop/brianlagerstrom\n**As an Amazon Associate I earn from qualifying purchases**\n\n\nDRUNKEN NOODLES RECIPE: \n175g (1/2lb) wide, dried rice noodles\n3qt water\n225g (½ lb) chicken thigh, halved longways and sliced ¼ ” thin perpendicular to the original cut \n2g (½ t) salt\n175g (1/2lb)  gai lan or broccolini, thick stems removed, halved and cut on a bias\n20g (1 1/2T) neutral oil, divided into 2 10g batches\n30g (6 cloves) garlic, large minced\n75g (about 2 med-lrg) shallot, thinly sliced\n5-8g (1tsp) thai chile, roughly chopped\n15g (handful) scallion, green tops only cut to 1-1 ½ “ pieces\n10g (½ c)  thai basil, picked, left whole\n75g (5T) o…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1047,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T00:05:29+00:00",
+    "tags": [
+      "美食教程",
+      "快手菜",
+      "辣炒面",
+      "罗勒炒鸡",
+      "醉面",
+      "泰国菜",
+      "泰式炒河粉",
+      "炒面做法",
+      "pad kee mao",
+      "drunken noodles"
+    ],
+    "title": "25分钟搞定泰式打抛炒面，比Pad Thai还香｜The 25 Minute Noodles I'd Choose Over Pad Thai",
+    "video_id": "bseed7aakun",
+    "views": 72
+  },
+  "seed_provenance": {
+    "bvid": "BV1WPYh62E2x",
+    "published_at": "2026/9/10 08:05:29",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1WPYh62E2x"
+  },
+  "version": 1
+}

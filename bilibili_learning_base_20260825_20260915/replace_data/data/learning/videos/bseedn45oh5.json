@@ -1,0 +1,103 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI coding",
+      "AI agents"
+    ],
+    "formats": [
+      "build"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "i built",
+      "ai coding",
+      "ai agents",
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [
+      {
+        "confidence": 0.82,
+        "label": "Software & Programming",
+        "name": "software_programming",
+        "suggested_entities": [
+          "programming",
+          "software development",
+          "developer tools",
+          "operating systems"
+        ],
+        "suggested_formats": [
+          "build",
+          "experiment",
+          "full_process"
+        ]
+      }
+    ],
+    "topics": [
+      "编程智能体",
+      "monkeycode",
+      "开源项目",
+      "ai",
+      "web开发",
+      "ai工具",
+      "ai编程",
+      "artificial intellige",
+      "vibecoding"
+    ],
+    "video_id": "bseedn45oh5"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nMonkeyCode link: https://ly.cyberserval.tech/NA8xAXf\n\nMonkeyCode-AI.Gallery project link: https://efunxmgi.monkeycode-ai.gallery/\n\nGitHub: https://github.com/chaitin/MonkeyCode/\n\nDiscord: https://discord.gg/2pPmuyr4pP\n\n\nIn this video, I build a complete sponsorship and brand-deal management app from scratch using **MonkeyCode**, a free and open-source AI coding platform that runs directly in your browser.\n\nInstead of setting up a local development environment, installing dependencies manually, or configuring API keys, MonkeyCode gives each development task its own cloud environment where the AI agent can actually write code, install dependencies, run the project, test it, fix errors, and generate a live preview.\n\nFor this tutorial, we build **CreatorFlow** — a complete dashboard for creators that includes:\n\n• Sponsorship and campaign management\n• Revenue tracking\n• Payment status\n• Campaign deadlines\n• Search and filtering\n• Deadline Command Center\n• Automatic dashboard updates\n• Desktop and mobile responsive design\n• Real working interactions\n\nI also show how I iterate on the first version using follow-up prompts, switch between supported AI models, test the project inside MonkeyCode's cloud environment, and finally submit the finished application to the **MonkeyCode AI Gallery**.\n\nAccording to the campaign information, MonkeyCode currently offers:\n\n🔥 Free — **30M tokens/day**\n⚡ Pro — **100M tokens/day**\n🚀 Ultra — **300M tokens/day**\n\nThe free tier does not require…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 366,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-05T13:49:19+00:00",
+    "tags": [
+      "教程",
+      "编程智能体",
+      "MonkeyCode",
+      "开源项目",
+      "ai",
+      "Web开发",
+      "AI工具",
+      "AI编程",
+      "artificial intellige",
+      "VibeCoding"
+    ],
+    "title": "用免费AI编程智能体MonkeyCode从零构建完整应用｜I Built a Complete App With a Free AI Coding Agent…",
+    "video_id": "bseedn45oh5",
+    "views": 40
+  },
+  "seed_provenance": {
+    "bvid": "BV1fRbL6QE6K",
+    "published_at": "2026/9/5 21:49:19",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1fRbL6QE6K"
+  },
+  "version": 1
+}

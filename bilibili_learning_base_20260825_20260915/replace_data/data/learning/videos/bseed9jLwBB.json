@@ -1,0 +1,85 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "100 days"
+    ],
+    "formats": [
+      "challenge",
+      "extreme_survival",
+      "100_days"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "100 days",
+      "minecraft",
+      "minecraft 100 days",
+      "minecraft survival challenge"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "minecraft",
+      "生存挑战",
+      "硬核生存",
+      "100天挑战",
+      "单方块生存"
+    ],
+    "video_id": "bseed9jLwBB"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "https://www.youtube.com/watch?v=Ke54TmuJmoc\n【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\n🔥 Welcome to Minecraft One Block 100 Days – Part 1! 🔥\nआज से शुरू हुआ मेरा सबसे crazy Minecraft Survival Challenge! 😱\nमैं सिर्फ ONE BLOCK से शुरुआत कर रहा हूँ और मेरा goal है 100 Days तक survive करना! 💪\nक्या मैं इस छोटे से एक ब्लॉक को एक शानदार Minecraft world में बदल पाऊँगा? 🌎\nक्या मैं dangerous mobs, limited resources और मुश्किल challenges को survive कर पाऊँगा? 👀\nइस Part 1 में आपको मिलेगा: ⛏️ One Block Survival\n🏠 First Base & Building\n💎 Resources & Loot\n👾 Mobs & Challenges\n🔥 100 Days Survival Journey\nअगर वीडियो पसंद आए तो LIKE 👍 | SUBSCRIBE 🔔 | COMMENT 💬 जरूर करें!\n❤️ Thanks for watching!\n#Minecraft #MinecraftOneBlock #OneBlock100Days #Minecraft100Days #MinecraftSurvival #OneBlockChallenge #MinecraftHindi #MinecraftGameplay #Gaming #Part1",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1472,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-08-25T11:32:13+00:00",
+    "tags": [
+      "游戏实况",
+      "单机游戏",
+      "我的世界",
+      "Minecraft",
+      "中英双语",
+      "生存挑战",
+      "中文翻译",
+      "硬核生存",
+      "100天挑战",
+      "单方块生存"
+    ],
+    "title": "【中英双语】我的世界单方块生存100天挑战：从一块方块开始建造世界",
+    "video_id": "bseed9jLwBB",
+    "views": 18
+  },
+  "seed_provenance": {
+    "bvid": "BV1rFhG6SEvs",
+    "published_at": "2026/8/25 19:32:13",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1rFhG6SEvs"
+  },
+  "version": 1
+}

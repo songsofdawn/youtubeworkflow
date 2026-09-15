@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.74,
+      "result_payoff": 0.84,
+      "story_strength": 0.52,
+      "visual_payoff": 0.88
+    },
+    "domains": [
+      {
+        "name": "cleaning_transformation",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "house cleaning",
+      "deep cleaning"
+    ],
+    "formats": [
+      "transformation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "extreme house cleaning",
+      "deep cleaning"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "老人公寓",
+      "家居房产",
+      "清洁挑战",
+      "房屋改造",
+      "解压视频",
+      "囤积症",
+      "深度清洁",
+      "免费清洁"
+    ],
+    "video_id": "bseedteJ57Z"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nThis was our most challenging free clean yet!\n\nThe elderly resident had just six days before the council returned to carry out essential safety checks, and if the property wasn’t made safe and accessible in time, she would lose her home. The flat was heavily hoarded, there was an active mice infestation, most of the furniture had been destroyed, and years of grief and declining mental health had left the resident struggling to cope.\n\nIn this video, we clear and deep clean the entire flat, remove damaged furniture, tackle years of nicotine, grease and grime, and refurnish the home before the deadline.\n\nThis free clean cost £4,578, but most importantly, the resident was able to keep her home and is now receiving ongoing support.\n\nPlease do not attempt to identify, contact or harass the resident or her family.\n\n❤️ Thank you for watching and supporting the free clean programme.\n\n#CleanWithBea #FreeClean #DeepClean #CleaningTransformation #MentalHealth #Hoarding #ExtremeCleaning #UKCleaning #cleantok \n\n00:00 Intro : 6 Days To Save Her Home\n01:30 Tackling The Hoarded Flat\n03:50 Inside Fiona’s Bedroom\n06:00 The Mice Infestation\n12:32 Day Two: The Deep Clean Begins\n13:07 How This Emergency Free Clean Happened\n16:34 Fiona’s Story\n22:03 Day Three: Cleaning Years Of Nicotine\n23:26 The Pressure Is On\n26:29 Day Five: One Day Left\n30:30 How Fiona’s Family Found Out\n33:30 Refurnishing Fiona’s Home\n34:56 How Fiona Is Doing Now\n35:57 What This Free Clean Cost\n36:39 The Final Transformation",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2645,
+    "likes": 3,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-13T03:28:22+00:00",
+    "tags": [
+      "老人公寓",
+      "家居房产",
+      "清洁挑战",
+      "房屋改造",
+      "解压视频",
+      "囤积症",
+      "深度清洁",
+      "免费清洁"
+    ],
+    "title": "6天极限改造囤积公寓，拯救老人唯一住所｜6 Days To Clean Or She’s Homeless",
+    "video_id": "bseedteJ57Z",
+    "views": 106
+  },
+  "seed_provenance": {
+    "bvid": "BV1LxYY6gEve",
+    "published_at": "2026/9/13 11:28:22",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1LxYY6gEve"
+  },
+  "version": 1
+}

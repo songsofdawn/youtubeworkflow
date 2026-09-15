@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.52,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "ai_technology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "AI technology"
+    ],
+    "formats": [
+      "comparison"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "high knowledge value",
+      "clear result payoff",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "ai model test"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "谷歌",
+      "果蝇大脑",
+      "脑科学",
+      "神经科学",
+      "开源",
+      "doom",
+      "连接组",
+      "connectome",
+      "fruit fly brain"
+    ],
+    "video_id": "bseedt08qDP"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nGoogle and Janelia open-sourced MaleCNS, the complete wiring diagram of a male fruit fly's brain: 166,000 neurons and 125 million synapses. The internet immediately put it in Minecraft, Beat Saber and Doom, gave it $100 to trade Bitcoin, and launched a memecoin with it...\n\n🔗 Relevant Links\nGoogle Research blog: https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/\nGoogle announcement tweet: https://x.com/NewsFromGoogle/status/2095553014715093022\n\nMinecraft: https://x.com/evnsnclr/status/2095975490708291948\nBeat Saber fly: https://x.com/_lyraaaa_/status/2097527368919470162\nDoom fly: https://x.com/nftechie_/status/2096409780961059119\n\n❤️ More about us\nRadically better observability stack: https://betterstack.com/\nWritten tutorials: https://betterstack.com/community/\nExample projects: https://github.com/BetterStackHQ\n\n📱 Socials\nTwitter: https://twitter.com/betterstackhq\nInstagram: https://www.instagram.com/betterstackhq/\nTikTok: https://www.tiktok.com/@betterstack\nLinkedIn: https://www.linkedin.com/company/betterstack\n\n📌 Chapters:\n0:00 - Intro\n0:31 - The Internet's Fly Demos\n1:36 - Fly Slop\n2:11 - My Fly Subscribes\n2:34 - What MaleCNS Actually Is\n3:00 - How its Made\n4:14 - The Catch\n5:24 - Real Science",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 386,
+    "likes": 1,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T12:16:27+00:00",
+    "tags": [
+      "谷歌",
+      "人工智能",
+      "果蝇大脑",
+      "脑科学",
+      "神经科学",
+      "开源",
+      "Doom",
+      "连接组",
+      "connectome",
+      "fruit fly brain"
+    ],
+    "title": "谷歌开源果蝇大脑，网友让它玩 Doom 还炒币｜Google Open-Sourced a Fly Brain",
+    "video_id": "bseedt08qDP",
+    "views": 48
+  },
+  "seed_provenance": {
+    "bvid": "BV1qsYy66EGo",
+    "published_at": "2026/9/14 20:16:27",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1qsYy66EGo"
+  },
+  "version": 1
+}

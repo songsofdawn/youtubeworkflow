@@ -1,0 +1,80 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.76,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.7,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "history_archaeology",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "archaeology",
+      "ancient technology",
+      "history"
+    ],
+    "formats": [
+      "documentary"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "high knowledge value",
+      "clear narrative or challenge",
+      "strong localization fit"
+    ],
+    "search_concepts": [
+      "history documentary"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "考古",
+      "人文历史",
+      "苏格兰",
+      "古代历史",
+      "人类学",
+      "未解之谜",
+      "历史谜团",
+      "皮克特人"
+    ],
+    "video_id": "bseedrUPT28"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nArchaeologists in Scotland have uncovered a discovery that may challenge what we thought we knew about the Picts — one of the most mysterious peoples of ancient Scotland.\n\nIn this video, we explore the remarkable archaeological find, what researchers discovered, and why it doesn’t seem to fit neatly into the traditional picture of Pictish history and culture. From ancient settlements and mysterious symbols to unusual artifacts and clues buried beneath Scotland’s landscape, this discovery raises fascinating questions about who the Picts really were and how they lived.\n\nWho were the Picts? How advanced was Pictish society? What do archaeological discoveries reveal about ancient Scotland? And could this new evidence force historians and archaeologists to reconsider parts of the Pictish story?\n\nJoin us as we examine the evidence, explore the history behind the discovery, and uncover the mysteries surrounding Pictish Scotland.\n\n🔎 In this video, we explore:\n\nThe latest archaeological discovery in Scotland\nThe mysterious history of the Picts\nAncient Pictish settlements and artifacts\nPictish symbols and their possible meanings\nWhat archaeology reveals about ancient Scotland\nWhy this discovery challenges conventional ideas\nTheories about Pictish society, culture, and origins\nUnanswered questions surrounding Scotland’s ancient past\n\nIf you enjoy archaeology, ancient history, Scottish history, lost civilizations, mysterious discoveries, and historical mysteries, make sure to subscribe for more fascin…",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 2007,
+    "likes": 0,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-10T10:37:07+00:00",
+    "tags": [
+      "考古",
+      "人文历史",
+      "苏格兰",
+      "古代历史",
+      "人类学",
+      "未解之谜",
+      "历史谜团",
+      "皮克特人"
+    ],
+    "title": "苏格兰出土意外发现：皮克特人历史或将改写｜Archaeologists Unearthed Something in Scotland That Doesn'…",
+    "video_id": "bseedrUPT28",
+    "views": 44
+  },
+  "seed_provenance": {
+    "bvid": "BV1QXYu6eEzw",
+    "published_at": "2026/9/10 18:37:07",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1QXYu6eEzw"
+  },
+  "version": 1
+}

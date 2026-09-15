@@ -1,0 +1,83 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.79,
+      "novelty": 0.62,
+      "result_payoff": 0.76,
+      "story_strength": 0.82,
+      "visual_payoff": 0.78
+    },
+    "domains": [
+      {
+        "name": "minecraft",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "Minecraft",
+      "building"
+    ],
+    "formats": [
+      "build",
+      "challenge"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong visual payoff",
+      "clear narrative or challenge",
+      "clear result payoff"
+    ],
+    "search_concepts": [
+      "minecraft",
+      "minecraft build"
+    ],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "我的世界",
+      "建筑设计",
+      "建筑教程",
+      "minecraft",
+      "minecraft build",
+      "生存小屋",
+      "樱花木",
+      "建造教程"
+    ],
+    "video_id": "bseedmg2Est"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 0,
+    "description": "【免责声明】\n本视频未替换为中文配音；标题、简介、标签和分区已进行中文本地化，视频画面及音轨保持原样。\n\n【原视频简介】\nThis Minecraft Tutorial video will show you how to build the Ultimate Cherry House, with everything you need to have the perfect start in Minecraft!\n\nGet the ULTIMATE CHERRY HOUSE interior and material list: https://blockical.com\n\nMusic:\nSong: Fredji - Happy Life (Vlog No Copyright Music)\n  Music provided by Vlog No Copyright Music.\n  Video Link: https://youtu.be/KzQiRABVARk\nSong: Fredji - Blue Sky (Vlog No Copyright Music)\n  Music provided by Vlog No Copyright Music.\n  Video Link: https://youtu.be/Hf6vHY0lQTI\nSong: Fredji -  Flying High (Vlog No Copyright Music)\n  Music provided by Vlog No Copyright Music.\n  Video Link: https://youtu.be/ueOi5slIU2E\nSong: Fredji - Welcome Sunshine (Vlog No Copyright Music)\n  Music promoted by Vlog No Copyright Music.\n  Video Link: https://youtu.be/cKoTJl4srrM\nSong: Fredji & Tobsky - Flow (Vlog No Copyright Music)\n  Music promoted by Vlog No Copyright Music.\n  Video Link: https://youtu.be/6EBy3JmrKXg\nSong: Fredji ft. Arcade - Ocean (Vlog No Copyright Music)\n  Music promoted by Vlog No Copyright Music.\n  Video Link: https://youtu.be/5JpC2-8ZqUg\nSong: Peyruis - Swing (Vlog No Copyright Music)\n  Music promoted by Vlog No Copyright Music.\n  Video Link: https://youtu.be/O99tfCqek3M\nMusic : Roa - Night is Young\nWatch : https://youtu.be/q6gdbXCxugM\nStream / Download : https://hypeddit.com/roamusic/nightisyoung\nLicense : https://roa-music.com\n\n#minecraft #minecraftbuilds #minecrafttutorial",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1574,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-14T05:12:00+00:00",
+    "tags": [
+      "我的世界",
+      "建筑设计",
+      "单机游戏",
+      "建筑教程",
+      "Minecraft",
+      "minecraft build",
+      "无配音",
+      "生存小屋",
+      "樱花木",
+      "建造教程"
+    ],
+    "title": "我的世界：终极樱花木小屋建造教程，新手生存神装｜Minecraft: How to Build the Ultimate Cherry House | Tut…",
+    "video_id": "bseedmg2Est",
+    "views": 16
+  },
+  "seed_provenance": {
+    "bvid": "BV1zoY66wEpy",
+    "published_at": "2026/9/14 13:12:00",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zoY66wEpy"
+  },
+  "version": 1
+}

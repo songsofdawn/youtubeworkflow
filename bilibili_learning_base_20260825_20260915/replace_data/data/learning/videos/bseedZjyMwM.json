@@ -1,0 +1,74 @@
+{
+  "analysis": {
+    "content_traits": {
+      "knowledge_value": 0.52,
+      "localization_value": 0.87,
+      "novelty": 0.62,
+      "result_payoff": 0.58,
+      "story_strength": 0.64,
+      "visual_payoff": 0.6
+    },
+    "domains": [
+      {
+        "name": "gaming",
+        "score": 1.0
+      }
+    ],
+    "entities": [
+      "horror games"
+    ],
+    "formats": [
+      "simulation"
+    ],
+    "negative_signals": [],
+    "positive_signals": [
+      "strong localization fit"
+    ],
+    "search_concepts": [],
+    "taxonomy_suggestions": [],
+    "topics": [
+      "恐怖游戏",
+      "游戏解说",
+      "独立游戏",
+      "hidden ending",
+      "农场模拟",
+      "rce",
+      "real civil engineer"
+    ],
+    "video_id": "bseedZjyMwM"
+  },
+  "analyzed_at": "2026-09-15T03:46:03.220Z",
+  "metadata": {
+    "category": "",
+    "channel": "",
+    "channel_id": "",
+    "comments": 1,
+    "description": "【免责声明】\n本视频使用已获授权或许可的原始素材制作中英双语本地化版本，原始画面与内容版权归原作者及相关权利人所有。\n翻译、字幕和标题由 AI 辅助生成并经过自动检查，仍可能存在疏漏，请以原视频内容为准。如有版权或授权相关问题，请联系处理。\n\n【原视频简介】\nHappy Little Farm is a farming game with a dark twist...\n\nWant to get your Civil Draft (and any other TCG) cards slabbed and graded? Use code RCE for 5% off (affiliate): https://acegrading.com/\n\nStock up on Gamer Supps with 10% off (affiliate):\nhttps://gamersupps.gg/BOOSH\n\nLINKS!\nPATREON: https://www.patreon.com/Realcivilengineer\nMERCH: https://realcivilengineer.com\nMEMBERSHIP: https://www.youtube.com/channel/UCeP4Yv3s4RvS0-6d9OInRMw/join\nDISCORD: https://discord.gg/realcivilengineer\nREDDIT: https://www.reddit.com/r/realcivilengineer/\nTWITCH: https://www.twitch.tv/realcivilengineer\nPADDY (MY DOG): https://www.youtube.com/channel/UCcGn_Cyb-0-jI1xI_nrq7iA\nSTREAM ARCHIVE: https://www.youtube.com/channel/UClktduM8LupB3Jep7l0nlLA\nSPOTIFY: https://open.spotify.com/artist/5b48KgsbugPtMt4afp1omm?si=Ltj0JFSYRfqMFA2Ms6pHSg\n\n\nEpic Game Store Support-A-Creator Code: RCE\n\n(In connection with Epic Games’ Support-A-Creator Program, I may receive a commission from certain in-game purchases)\n\n#realcivilengineer #happylittlefarm",
+    "discovered_via": "bilibili_history_seed",
+    "duration": 1899,
+    "likes": 2,
+    "public_subtitle_summary": null,
+    "publish_time": "2026-09-08T17:33:35+00:00",
+    "tags": [
+      "游戏实况",
+      "恐怖游戏",
+      "单机游戏",
+      "游戏解说",
+      "独立游戏",
+      "Hidden Ending",
+      "农场模拟",
+      "RCE",
+      "real civil engineer"
+    ],
+    "title": "看似温馨的农场游戏，藏着细思极恐的黑暗结局｜This is a totally normal farming game...",
+    "video_id": "bseedZjyMwM",
+    "views": 14
+  },
+  "seed_provenance": {
+    "bvid": "BV1zJYH6yEeg",
+    "published_at": "2026/9/9 01:33:35",
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1zJYH6yEeg"
+  },
+  "version": 1
+}
