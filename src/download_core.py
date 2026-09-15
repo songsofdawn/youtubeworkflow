@@ -11,6 +11,7 @@ import time
 import unicodedata
 import urllib.error
 import urllib.request
+from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -29,7 +30,8 @@ MANIFEST_FIELDS = (
     "rights_status", "selected", "title", "channel", "started_at", "finished_at",
     "video_status", "subtitle_status", "subtitle_source", "subtitle_tracks", "subtitle_clean_status", "subtitle_clean_stats", "vtt_status", "srt_status",
     "thumbnail_status", "metadata_status", "audio_status", "probe_status",
-    "overall_status", "output_files", "commands_executed", "errors",
+    "overall_status", "streams", "mux", "subtitle", "core_media_ready",
+    "attempt_history", "warnings", "output_files", "commands_executed", "errors",
 )
 
 
@@ -387,6 +389,163 @@ def _alternate_googlevideo_urls(url: str) -> list[str]:
     return urls
 
 
+@dataclass
+class StreamSpec:
+    role: str
+    format_id: str
+    ext: str
+    vcodec: str
+    acodec: str
+    width: int | None
+    height: int | None
+    abr: float | None
+    filesize: int | None
+    filesize_approx: int | None
+    url: str
+    http_headers: dict[str, str]
+
+    @property
+    def expected_size(self) -> int:
+        return int(self.filesize or self.filesize_approx or 0)
+
+    def as_manifest_dict(self) -> dict[str, Any]:
+        return {
+            "format_id": self.format_id,
+            "ext": self.ext,
+            "vcodec": self.vcodec,
+            "acodec": self.acodec,
+            "width": self.width,
+            "height": self.height,
+            "abr": self.abr,
+            "expected_size": self.expected_size,
+        }
+
+
+@dataclass
+class MediaPlan:
+    video: StreamSpec | None
+    audio: StreamSpec | None
+    source_format_selector: str
+
+    def stream(self, role: str) -> StreamSpec | None:
+        return self.video if role == "video" else self.audio
+
+
+@dataclass
+class StreamArtifact:
+    role: str
+    original_format_id: str
+    final_format_id: str
+    status: str
+    validated: bool
+    reusable: bool
+    attempts: int
+    fallback_used: bool
+    backend: str
+    path: Path | None
+    expected_size: int
+    actual_size: int
+    attempt_history: list[dict[str, Any]] = field(default_factory=list)
+
+    def as_manifest_dict(self) -> dict[str, Any]:
+        relative_path = ""
+        if self.path is not None:
+            try:
+                relative_path = str(self.path)
+            except (OSError, ValueError):
+                relative_path = str(self.path)
+        return {
+            "original_format_id": self.original_format_id,
+            "final_format_id": self.final_format_id,
+            "status": self.status,
+            "validated": self.validated,
+            "reusable": self.reusable,
+            "attempts": self.attempts,
+            "fallback_used": self.fallback_used,
+            "backend": self.backend,
+            "path": relative_path,
+            "expected_size": self.expected_size,
+            "actual_size": self.actual_size,
+            "attempt_history": self.attempt_history,
+        }
+
+
+def _format_from_payload(payload: dict[str, Any], role: str) -> dict[str, Any] | None:
+    selected = list(payload.get("requested_formats") or [])
+    if not selected:
+        selected = list(payload.get("requested_downloads") or [])
+    for item in selected:
+        if not isinstance(item, dict):
+            continue
+        if role == "video" and str(item.get("vcodec", "none")) != "none":
+            return item
+        if role == "audio" and str(item.get("acodec", "none")) != "none":
+            return item
+    return None
+
+
+def _spec_from_format(item: dict[str, Any], role: str) -> StreamSpec:
+    def to_int(value: Any) -> int | None:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return None
+
+    def to_float(value: Any) -> float | None:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    headers = {
+        str(key): str(value)
+        for key, value in dict(item.get("http_headers") or {}).items()
+        if str(key).casefold() not in {"host", "range", "accept-encoding"}
+    }
+    return StreamSpec(
+        role=role,
+        format_id=str(item.get("format_id") or ""),
+        ext=re.sub(r"[^A-Za-z0-9]", "", str(item.get("ext") or "bin")) or "bin",
+        vcodec=str(item.get("vcodec") or "none"),
+        acodec=str(item.get("acodec") or "none"),
+        width=to_int(item.get("width")),
+        height=to_int(item.get("height")),
+        abr=to_float(item.get("abr")),
+        filesize=to_int(item.get("filesize")),
+        filesize_approx=to_int(item.get("filesize_approx")),
+        url=str(item.get("url") or ""),
+        http_headers=headers,
+    )
+
+
+def _parse_content_range(value: str | None) -> tuple[int | None, int | None, int | None]:
+    if not value:
+        return None, None, None
+    match = re.match(r"bytes\s+(\d*)-(\d*)/(\d*)", value.strip())
+    if not match:
+        return None, None, None
+
+    def parse_number(text: str) -> int | None:
+        if not text:
+            return None
+        try:
+            return int(text)
+        except ValueError:
+            return None
+
+    return parse_number(match.group(1)), parse_number(match.group(2)), parse_number(match.group(3))
+
+
+def _response_content_length(response: Any) -> int | None:
+    value = response.headers.get("Content-Length") if hasattr(response, "headers") else None
+    if value:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return None
+    return None
+
+
 def _format_expected_size(format_info: dict[str, Any]) -> int:
     for key in ("filesize", "filesize_approx"):
         try:
@@ -430,49 +589,78 @@ def _stream_cdn_download(
         headers = dict(source_headers)
         if current_size:
             headers["Range"] = f"bytes={current_size}-"
-        request = urllib.request.Request(urls[attempt % len(urls)], headers=headers)
+        url = urls[attempt % len(urls)]
+        request = urllib.request.Request(url, headers=headers)
+        request_started = time.monotonic()
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 status = int(getattr(response, "status", 200) or 200)
-                if current_size and status != 206:
+                ttfb = time.monotonic() - request_started
+                content_range = str(response.headers.get("Content-Range") or "")
+                range_start, range_end, _ = _parse_content_range(content_range)
+                content_length = _response_content_length(response)
+                if content_length is None and range_start is not None and range_end is not None:
+                    content_length = range_end - range_start + 1
+                if current_size and status == 416:
+                    if not expected_size or current_size < expected_size:
+                        raise OSError("服务器返回 416，但本地文件大小未知或不完整")
+                    return True, ""
+                mode = "wb"
+                offset = 0
+                if current_size and status == 206:
+                    if range_start is None or range_start != current_size:
+                        destination.unlink(missing_ok=True)
+                        current_size = 0
+                    else:
+                        mode = "ab"
+                        offset = current_size
+                elif current_size:
                     destination.unlink(missing_ok=True)
                     current_size = 0
-                mode = "ab" if current_size and status == 206 else "wb"
-                downloaded = current_size if mode == "ab" else 0
-                last_reported_percent = -1
+                response_remaining = content_length
+                received = offset
+                target_received = offset + response_remaining if response_remaining is not None else None
                 with destination.open(mode) as handle:
                     while True:
-                        block = response.read(read_size)
+                        if target_received is not None and received >= target_received:
+                            break
+                        want = read_size if target_received is None else min(read_size, target_received - received)
+                        block = response.read(want)
                         if not block:
                             break
                         handle.write(block)
-                        downloaded += len(block)
-                        if expected_size:
-                            percent = min(100, int(downloaded * 100 / expected_size))
-                            if percent != last_reported_percent:
-                                LOGGER.info(
-                                    "[备用 CDN] %s %s%%（%.1f / %.1f MiB）",
-                                    label,
-                                    percent,
-                                    downloaded / 1024 / 1024,
-                                    expected_size / 1024 / 1024,
-                                )
-                                last_reported_percent = percent
-            actual_size = destination.stat().st_size if destination.is_file() else 0
-            if expected_size and actual_size < expected_size:
-                raise http.client.IncompleteRead(b"", expected_size - actual_size)
-            if actual_size <= 0:
-                raise OSError("下载结果为空")
-            LOGGER.info("[备用 CDN] %s 下载完成（%.1f MiB）", label, actual_size / 1024 / 1024)
-            return True, ""
+                        received += len(block)
+                actual_size = destination.stat().st_size if destination.is_file() else 0
+                elapsed = max(0.001, time.monotonic() - request_started)
+                LOGGER.info(
+                    "[备用 CDN][%s] format=%s host=%s range=%s status=%s content-range=%s ttfb=%.2fs received=%.1fMiB elapsed=%.1fs throughput=%.2fMiB/s",
+                    label,
+                    str(format_info.get("format_id") or format_info.get("format") or "?"),
+                    urlsplit(url).netloc,
+                    headers.get("Range", ""),
+                    status,
+                    content_range or "-",
+                    ttfb,
+                    actual_size / 1024 / 1024,
+                    elapsed,
+                    (actual_size / 1024 / 1024) / elapsed,
+                )
+                if target_received is not None and received < target_received:
+                    raise http.client.IncompleteRead(b"", target_received - received)
+                if expected_size and actual_size < expected_size:
+                    raise http.client.IncompleteRead(b"", expected_size - actual_size)
+                if actual_size <= 0:
+                    raise OSError("下载结果为空")
+                return True, ""
         except (OSError, TimeoutError, urllib.error.URLError, http.client.HTTPException) as exc:
             last_error = str(exc)
             LOGGER.warning(
-                "[备用 CDN] %s 连接中断，将从 %.1f MiB 处续传（%s/%s）：%s",
+                "[备用 CDN][%s] %s 第 %d/%d 次失败，将从 %.1f MiB 处续传：%s",
                 label,
-                (destination.stat().st_size if destination.is_file() else 0) / 1024 / 1024,
+                urlsplit(url).netloc,
                 attempt + 1,
                 retries,
+                (destination.stat().st_size if destination.is_file() else 0) / 1024 / 1024,
                 exc,
             )
             if attempt + 1 < retries:
@@ -480,17 +668,152 @@ def _stream_cdn_download(
     return False, last_error or "备用 CDN 下载失败"
 
 
-def _download_via_no_token_client(
+def _ytdlp_simulate_command(
     url: str,
-    video_dir: Path,
     tools: dict[str, Path],
     paths: dict[str, Path],
     config: dict[str, Any],
+    format_selector: str,
+    *,
+    no_cookies: bool = False,
+    client: str | None = None,
+) -> list[str | Path]:
+    command: list[str | Path] = [
+        tools["yt-dlp"],
+        url,
+        "--no-playlist",
+        "--simulate",
+        "--dump-single-json",
+        "--no-warnings",
+        "--format",
+        format_selector,
+        "--ffmpeg-location",
+        paths["tools_bin"],
+    ]
+    if no_cookies:
+        command.append("--no-cookies")
+        if client:
+            command.extend(["--extractor-args", f"youtube:player_client={client}"])
+    else:
+        cookies, _ = _cookie_argument(config, paths)
+        command.extend(cookies)
+    return command
+
+
+def _resolve_media_plan(
+    url: str,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+    format_selector: str | None = None,
+    *,
+    no_cookies: bool = False,
+    client: str | None = None,
 ) -> dict[str, Any]:
-    """Retry public embeddable media through a client that does not require a GVS POT."""
-    client = str(config.get("po_token_fallback_client", "web_embedded")).strip()
-    if not client:
-        client = "web_embedded"
+    selector = str(format_selector or config["format_selector"])
+    command = _ytdlp_simulate_command(
+        url, tools, paths, config, selector, no_cookies=no_cookies, client=client
+    )
+    result = run_command(command, paths["project_root"])
+    if not result["success"]:
+        return {"success": False, "error": _short_error(result), "command_result": result}
+    try:
+        payload = json.loads(result["stdout"])
+    except (json.JSONDecodeError, TypeError) as exc:
+        return {"success": False, "error": f"媒体计划元数据无法解析: {exc}", "command_result": result}
+    video_format = _format_from_payload(payload, "video")
+    audio_format = _format_from_payload(payload, "audio")
+    if video_format is None:
+        return {"success": False, "error": "没有解析出视频流", "command_result": result}
+    video_spec = _spec_from_format(video_format, "video")
+    audio_spec = None
+    if (
+        audio_format is not None
+        and audio_format is not video_format
+        and str(audio_format.get("format_id") or "") != str(video_format.get("format_id") or "")
+    ):
+        audio_spec = _spec_from_format(audio_format, "audio")
+    return {
+        "success": True,
+        "plan": MediaPlan(video=video_spec, audio=audio_spec, source_format_selector=selector),
+        "command_result": result,
+    }
+
+
+def _resolve_role(
+    url: str,
+    role: str,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+    preferred_format_id: str | None = None,
+) -> StreamSpec | None:
+    selector = (
+        preferred_format_id
+        if preferred_format_id
+        else ("bv*[height<=1080]/b" if role == "video" else "ba/b")
+    )
+    resolved = _resolve_media_plan(url, tools, paths, config, format_selector=selector)
+    if not resolved["success"]:
+        return None
+    return resolved["plan"].stream(role)
+
+
+def _stream_target_path(streams_dir: Path, spec: StreamSpec) -> Path:
+    safe_format = re.sub(r"[^A-Za-z0-9_-]", "_", spec.format_id) or "unknown"
+    return streams_dir / f"{spec.role}_{safe_format}.{spec.ext}"
+
+
+def _probe_stream_file(path: Path, role: str, tools: dict[str, Path], paths: dict[str, Path]) -> dict[str, Any]:
+    if not path.is_file() or path.stat().st_size <= 0:
+        return {"success": False, "status": "failed", "error": "文件不存在或为空", "data": {}}
+    result = run_command(
+        [tools["ffprobe"], "-v", "error", "-show_streams", "-show_format", "-of", "json", path],
+        paths["project_root"],
+    )
+    if not result["success"]:
+        return {"success": False, "status": "failed", "error": _short_error(result), "data": {}, "command_result": result}
+    try:
+        data = json.loads(result["stdout"])
+    except (json.JSONDecodeError, TypeError) as exc:
+        return {"success": False, "status": "failed", "error": f"ffprobe JSON 无法解析: {exc}", "data": {}, "command_result": result}
+    streams = data.get("streams", [])
+    matching = [stream for stream in streams if stream.get("codec_type") == role]
+    durations = [data.get("format", {}).get("duration")] + [stream.get("duration") for stream in streams]
+    duration = 0.0
+    for value in durations:
+        try:
+            duration = max(duration, float(value or 0))
+        except (TypeError, ValueError):
+            pass
+    errors: list[str] = []
+    if not matching:
+        errors.append(f"缺少{role}流")
+    if duration <= 0:
+        errors.append("时长无效")
+    return {
+        "success": not errors,
+        "status": "success" if not errors else "failed",
+        "error": "; ".join(errors),
+        "data": data,
+        "command_result": result,
+    }
+
+
+def _ytdlp_stream_command(
+    url: str,
+    spec: StreamSpec,
+    target: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+    format_selector: str,
+    *,
+    no_cookies: bool = False,
+    client: str | None = None,
+    archive_path: Path | str | None = None,
+    use_archive: bool = True,
+) -> list[str | Path]:
     command: list[str | Path] = [
         tools["yt-dlp"],
         url,
@@ -500,204 +823,377 @@ def _download_via_no_token_client(
         str(config["retries"]),
         "--fragment-retries",
         str(config["fragment_retries"]),
+        "--retry-sleep",
+        str(config["retry_sleep_seconds"]),
         "--ffmpeg-location",
         paths["tools_bin"],
-        "--extractor-args",
-        f"youtube:player_client={client}",
-        "--no-cookies",
         "--format",
-        str(config["format_selector"]),
-        "--merge-output-format",
-        str(config.get("video_container", "mp4")),
-        "--remux-video",
-        str(config.get("video_container", "mp4")),
+        format_selector,
         "--output",
-        video_dir / "source.%(ext)s",
+        str(target),
         "--no-write-playlist-metafiles",
         *_download_network_options(config),
     ]
+    if no_cookies:
+        command.extend(["--no-cookies"])
+        if client:
+            command.extend(["--extractor-args", f"youtube:player_client={client}"])
+    else:
+        cookies, _ = _cookie_argument(config, paths)
+        command.extend(cookies)
+    if archive_path and use_archive:
+        archive = Path(archive_path)
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        command.extend(["--download-archive", archive])
     deno = paths["tools_bin"] / "deno.exe"
     if deno.is_file():
         command.extend(["--js-runtimes", f"deno:{deno}"])
-    result = run_command(command, paths["project_root"], stream_output=True)
-    return {
-        "success": bool(result["success"]),
-        "error": "" if result["success"] else _short_error(result),
-        "command_result": result,
-        "command_results": [result],
-    }
+    return command
 
 
-def _download_via_alternate_cdn(
+def _download_stream_ytdlp(
     url: str,
-    video_dir: Path,
+    spec: StreamSpec,
+    target: Path,
     tools: dict[str, Path],
     paths: dict[str, Path],
     config: dict[str, Any],
+    format_selector: str,
+    *,
+    no_cookies: bool = False,
+    client: str | None = None,
+    archive_path: Path | str | None = None,
+    use_archive: bool = True,
 ) -> dict[str, Any]:
-    cookies, _ = _cookie_argument(config, paths)
-    selection_command: list[str | Path] = [
-        tools["yt-dlp"],
-        url,
-        "--no-playlist",
-        "--simulate",
-        "--dump-single-json",
-        "--no-warnings",
-        "--format",
-        str(config["format_selector"]),
-        "--ffmpeg-location",
-        paths["tools_bin"],
-        *cookies,
-    ]
-    selection = run_command(selection_command, paths["project_root"])
-    command_results = [selection]
-    if not selection["success"]:
-        return {
-            "success": False,
-            "error": f"无法刷新备用 CDN 地址：{_short_error(selection)}",
-            "command_results": command_results,
-        }
-    try:
-        payload = json.loads(selection["stdout"])
-    except (json.JSONDecodeError, TypeError) as exc:
-        return {"success": False, "error": f"备用 CDN 元数据无法解析：{exc}", "command_results": command_results}
-    selected_formats = list(payload.get("requested_formats") or [])
-    if not selected_formats:
-        selected_formats = list(payload.get("requested_downloads") or [])
-    video_format = next(
-        (item for item in selected_formats if str(item.get("vcodec", "none")) != "none"),
-        None,
+    command = _ytdlp_stream_command(
+        url, spec, target, tools, paths, config, format_selector,
+        no_cookies=no_cookies, client=client, archive_path=archive_path, use_archive=use_archive,
     )
-    audio_format = next(
-        (item for item in selected_formats if str(item.get("acodec", "none")) != "none"),
-        None,
-    )
-    if video_format is None:
-        return {"success": False, "error": "备用 CDN 没有选出视频流", "command_results": command_results}
-
-    downloaded: dict[str, Path] = {}
-    streams = [("视频", "video", video_format)]
-    if audio_format is not None and audio_format is not video_format:
-        streams.append(("音频", "audio", audio_format))
-    for label, role, format_info in streams:
-        media_url = str(format_info.get("url") or "")
-        alternatives = _alternate_googlevideo_urls(media_url)
-        extension = re.sub(r"[^A-Za-z0-9]", "", str(format_info.get("ext") or "bin")) or "bin"
-        part = video_dir / f".cdn-{role}.{extension}.part"
-        ok, error = _stream_cdn_download(alternatives, part, format_info, label, config)
-        if not ok:
-            return {
-                "success": False,
-                "error": f"{label}备用 CDN 下载失败：{error}",
-                "command_results": command_results,
-            }
-        downloaded[role] = part
-
-    final = video_dir / "source.mp4"
-    temporary = video_dir / ".source.cdn.tmp.mp4"
-    temporary.unlink(missing_ok=True)
-    merge_command: list[str | Path] = [tools["ffmpeg"], "-hide_banner", "-y", "-i", downloaded["video"]]
-    if "audio" in downloaded:
-        merge_command.extend(["-i", downloaded["audio"], "-map", "0:v:0", "-map", "1:a:0"])
-    else:
-        merge_command.extend(["-map", "0:v:0", "-map", "0:a?"])
-    merge_command.extend(["-c", "copy", "-movflags", "+faststart", temporary])
-    merge = run_command(merge_command, paths["project_root"], stream_output=True)
-    command_results.append(merge)
-    if not merge["success"] or not temporary.is_file() or temporary.stat().st_size <= 0:
-        return {
-            "success": False,
-            "error": f"备用 CDN 音视频合并失败：{_short_error(merge)}",
-            "command_results": command_results,
-        }
-    final.unlink(missing_ok=True)
-    temporary.replace(final)
-    for part in downloaded.values():
-        part.unlink(missing_ok=True)
-    LOGGER.info("[备用 CDN] 已生成视频：%s", final)
-    return {"success": True, "error": "", "command_results": command_results}
-
-
-def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] | None = None, config: dict[str, Any] | None = None, paths: dict[str, Path] | None = None, archive_path: Path | str | None = None, use_archive: bool = True) -> dict[str, Any]:
-    paths = paths or get_project_paths(); tools = tools or find_local_tools(paths); config = config or load_download_config()
-    task_dir = Path(task_dir); video_dir = task_dir / "video"; video_dir.mkdir(parents=True, exist_ok=True)
-    base, warning = _base_ytdlp_command(url, tools, paths, config)
-    cookies, _ = _cookie_argument(config, paths)
-    command: list[str | Path] = [
-        *base, "--continue", "--retries", str(config["retries"]), "--fragment-retries", str(config["fragment_retries"]),
-        "--retry-sleep", str(config["retry_sleep_seconds"]), "--ffmpeg-location", paths["tools_bin"],
-        "--format", str(config["format_selector"]), "--merge-output-format", str(config.get("video_container", "mp4")),
-        "--remux-video", str(config.get("video_container", "mp4")), "--output", video_dir / "source.%(ext)s",
-        "--no-write-playlist-metafiles", *_download_network_options(config), *cookies,
-    ]
-    if archive_path and use_archive:
-        archive = Path(archive_path); archive.parent.mkdir(parents=True, exist_ok=True)
-        command.extend(["--download-archive", archive])
     result = run_command(command, paths["project_root"], stream_output=True)
-    command_results: list[dict[str, Any]] = [result]
-    fallback_errors: list[str] = []
-    if (
-        not result["success"]
-        and _is_po_token_download_error(result)
-        and config.get("po_token_fallback_enabled", True)
-    ):
-        LOGGER.warning(
-            "视频流被 YouTube 以 403 拒绝，正在改用无需 GVS PO Token 的嵌入式客户端续传"
+    return result
+
+
+def _fallback_http_stream(
+    spec: StreamSpec,
+    target: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+) -> tuple[bool, str]:
+    if not spec.url:
+        return False, "没有可用的签名 URL"
+    part = target.with_name(target.name + ".part")
+    format_info = {
+        "format_id": spec.format_id,
+        "url": spec.url,
+        "http_headers": spec.http_headers,
+        "filesize": spec.filesize,
+        "filesize_approx": spec.filesize_approx,
+    }
+    alternatives = _alternate_googlevideo_urls(spec.url) or [spec.url]
+    ok, error = _stream_cdn_download(alternatives, part, format_info, spec.role, config)
+    if not ok:
+        return False, error
+    probe = _probe_stream_file(part, spec.role, tools, paths)
+    if not probe["success"]:
+        part.unlink(missing_ok=True)
+        return False, probe["error"]
+    target.unlink(missing_ok=True)
+    part.replace(target)
+    return True, ""
+
+
+def _make_artifact(
+    role: str,
+    original_format_id: str,
+    final_format_id: str,
+    status: str,
+    validated: bool,
+    fallback_used: bool,
+    backend: str,
+    path: Path | None,
+    expected_size: int,
+    attempt_history: list[dict[str, Any]],
+) -> StreamArtifact:
+    actual_size = path.stat().st_size if path and path.is_file() else 0
+    return StreamArtifact(
+        role=role,
+        original_format_id=original_format_id,
+        final_format_id=final_format_id,
+        status=status,
+        validated=validated,
+        reusable=validated,
+        attempts=len(attempt_history),
+        fallback_used=fallback_used,
+        backend=backend,
+        path=path,
+        expected_size=expected_size,
+        actual_size=actual_size,
+        attempt_history=attempt_history,
+    )
+
+
+def _ensure_stream_artifact(
+    url: str,
+    spec: StreamSpec,
+    streams_dir: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+    config: dict[str, Any],
+    *,
+    force: bool = False,
+    archive_path: Path | str | None = None,
+    use_archive: bool = True,
+) -> tuple[StreamArtifact, list[dict[str, Any]], list[str], list[str], StreamSpec]:
+    target = _stream_target_path(streams_dir, spec)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    original_format_id = spec.format_id
+    current_spec = spec
+    command_results: list[dict[str, Any]] = []
+    warnings: list[str] = []
+    errors: list[str] = []
+    attempts: list[dict[str, Any]] = []
+
+    existing_probe = _probe_stream_file(target, spec.role, tools, paths)
+    if existing_probe["success"] and not force:
+        if existing_probe.get("command_result"):
+            command_results.append(existing_probe["command_result"])
+        artifact = _make_artifact(
+            spec.role, original_format_id, current_spec.format_id, "success", True, False,
+            "artifact_reuse", target, current_spec.expected_size, [],
         )
-        pot_fallback = _download_via_no_token_client(
-            url, video_dir, tools, paths, config
+        return artifact, command_results, warnings, errors, current_spec
+    if force and target.exists():
+        target.unlink(missing_ok=True)
+        target.with_name(target.name + ".part").unlink(missing_ok=True)
+
+    def record(backend: str, result: str, detail: str) -> None:
+        attempts.append({
+            "stream": spec.role,
+            "attempt": len(attempts) + 1,
+            "backend": backend,
+            "result": result,
+            "detail": detail[:500],
+        })
+
+    def try_ytdlp(selector: str, backend: str, *, no_cookies: bool = False, client: str | None = None) -> dict[str, Any]:
+        result = _download_stream_ytdlp(
+            url, current_spec, target, tools, paths, config, selector,
+            no_cookies=no_cookies, client=client, archive_path=archive_path, use_archive=use_archive,
         )
-        command_results.extend(pot_fallback.get("command_results") or [])
-        if pot_fallback["success"]:
-            result = pot_fallback["command_result"]
-        else:
-            fallback_errors.append(
-                "嵌入式客户端回退失败：" + str(pot_fallback.get("error") or "未知错误")
-            )
-    if (
-        not result["success"]
-        and _is_transient_download_error(result)
-        and config.get("cdn_fallback_enabled", True)
-    ):
-        LOGGER.warning("主视频 CDN 无法连接，正在自动切换到签名内的备用 CDN")
-        fallback = _download_via_alternate_cdn(url, video_dir, tools, paths, config)
-        command_results.extend(fallback.get("command_results") or [])
-        fallback_error = str(fallback.get("error") or "")
-        if fallback_error:
-            fallback_errors.append(fallback_error)
+        command_results.append(result)
+        probe = _probe_stream_file(target, spec.role, tools, paths)
+        if probe.get("command_result"):
+            command_results.append(probe["command_result"])
+        if probe["success"]:
+            return {"success": True, "result": result, "probe": probe}
+        error_kind = "ssl_eof" if _is_transient_download_error(result) else (
+            "http_403" if _is_po_token_download_error(result) else "failed"
+        )
+        record(backend, error_kind, _short_error(result) or probe["error"])
+        return {"success": False, "result": result, "probe": probe, "error_kind": error_kind}
+
+    outcome = try_ytdlp(current_spec.format_id, "yt-dlp")
+    if outcome["success"]:
+        return _make_artifact(spec.role, original_format_id, current_spec.format_id, "success", True, False, "yt-dlp", target, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+
+    if outcome.get("error_kind") == "http_403" and config.get("po_token_fallback_enabled", True):
+        client = str(config.get("po_token_fallback_client", "web_embedded")).strip() or "web_embedded"
+        fallback = try_ytdlp(current_spec.format_id, "yt-dlp-web_embedded", no_cookies=True, client=client)
         if fallback["success"]:
-            result = {
-                "success": True,
-                "returncode": 0,
-                "stdout": "备用 CDN 下载成功",
-                "stderr": "",
-                "command": ["internal:alternate-googlevideo-cdn"],
-            }
+            warnings.append(f"{spec.role} 主客户端 403，已通过 web_embedded 客户端恢复")
+            return _make_artifact(spec.role, original_format_id, current_spec.format_id, "success", True, False, "yt-dlp-web_embedded", target, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+
+    refreshed = _resolve_role(url, spec.role, tools, paths, config, preferred_format_id=original_format_id)
+    if refreshed is not None:
+        current_spec = refreshed
+        retry = try_ytdlp(current_spec.format_id, "yt-dlp-re_resolved")
+        if retry["success"]:
+            return _make_artifact(spec.role, original_format_id, current_spec.format_id, "success", True, False, "yt-dlp-re_resolved", target, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+
+    fallback_spec = _resolve_role(url, spec.role, tools, paths, config)
+    if fallback_spec is not None and fallback_spec.format_id != current_spec.format_id:
+        current_spec = fallback_spec
+        fallback = try_ytdlp(current_spec.format_id, "yt-dlp-format-fallback")
+        if fallback["success"]:
+            warnings.append(f"{spec.role} 原 format {original_format_id} 不可用，已回退到 {current_spec.format_id}")
+            return _make_artifact(spec.role, original_format_id, current_spec.format_id, "success", True, True, "yt-dlp-format-fallback", target, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+
+    if config.get("cdn_fallback_enabled", True):
+        ok, error = _fallback_http_stream(current_spec, target, tools, paths, config)
+        if ok:
+            record("backup_cdn", "success", "")
+            warnings.append(f"{spec.role} 主下载失败，已通过备用 CDN 恢复")
+            return _make_artifact(spec.role, original_format_id, current_spec.format_id, "success", True, True, "backup_cdn", target, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+        record("backup_cdn", "failed", error)
+        errors.append(f"{spec.role} 备用 CDN 下载失败：{error}")
+
+    return _make_artifact(spec.role, original_format_id, current_spec.format_id, "failed", False, True, current_spec.url and "backup_cdn" or "yt-dlp", None, current_spec.expected_size, attempts), command_results, warnings, errors, current_spec
+
+
+def _mux_streams(
+    video_path: Path,
+    audio_path: Path | None,
+    output_path: Path,
+    tools: dict[str, Path],
+    paths: dict[str, Path],
+) -> dict[str, Any]:
+    temporary = output_path.with_name(f".{output_path.name}.mux.mp4")
+    temporary.unlink(missing_ok=True)
+    command: list[str | Path] = [tools["ffmpeg"], "-hide_banner", "-y", "-i", video_path]
+    if audio_path is not None:
+        command.extend(["-i", audio_path, "-map", "0:v:0", "-map", "1:a:0"])
+    else:
+        command.extend(["-map", "0:v:0", "-map", "0:a?"])
+    command.extend(["-c", "copy", "-movflags", "+faststart", temporary])
+    result = run_command(command, paths["project_root"], stream_output=True)
+    if not result["success"] or not temporary.is_file() or temporary.stat().st_size <= 0:
+        temporary.unlink(missing_ok=True)
+        return {"success": False, "error": _short_error(result), "command_result": result}
+    output_path.unlink(missing_ok=True)
+    temporary.replace(output_path)
+    return {"success": True, "error": "", "command_result": result}
+
+
+def download_video_media(url: str, task_dir: Path | str, tools: dict[str, Path] | None = None, config: dict[str, Any] | None = None, paths: dict[str, Path] | None = None, archive_path: Path | str | None = None, use_archive: bool = True, *, force: bool = False) -> dict[str, Any]:
+    paths = paths or get_project_paths(); tools = tools or find_local_tools(paths); config = config or load_download_config()
+    task_dir = Path(task_dir); video_dir = task_dir / "video"; streams_dir = task_dir / "streams"
+    video_dir.mkdir(parents=True, exist_ok=True); streams_dir.mkdir(parents=True, exist_ok=True)
     final = video_dir / "source.mp4"
-    mp4_files = sorted((item for item in video_dir.glob("*.mp4") if item.is_file() and item.stat().st_size > 0), key=lambda item: item.stat().st_mtime, reverse=True)
-    if mp4_files and mp4_files[0] != final:
-        if final.exists():
-            final.unlink()
-        mp4_files[0].replace(final)
-    success = result["success"] and final.is_file() and final.stat().st_size > 0
-    error = "" if success else _short_error(result)
-    if fallback_errors and not success:
-        error = f"{error}\n" + "\n".join(fallback_errors)
-        error = error.strip()
-    network_hint = _download_network_hint(result)
-    if network_hint:
-        error = f"{error}\n{network_hint}".strip()
-    hint = _auth_hint(error)
-    if hint:
-        error += f" {hint}"
+    _, cookie_warning = _cookie_argument(config, paths)
+    command_results: list[dict[str, Any]] = []
+    warnings: list[str] = []
+    errors: list[str] = []
+    attempt_history: list[dict[str, Any]] = []
+    streams_manifest: dict[str, Any] = {}
+    mux_manifest: dict[str, Any] = {"status": "not_started", "validated": False}
+
+    existing_probe = probe_media(final, tools["ffprobe"], expected="video")
+    if existing_probe.get("command_result"):
+        command_results.append(existing_probe["command_result"])
+    if not force and final.is_file() and final.stat().st_size > 0 and existing_probe["success"]:
+        return {
+            "success": True,
+            "status": "success",
+            "file": final,
+            "command_result": existing_probe.get("command_result") or {"success": True, "returncode": 0, "stdout": "已复用 source.mp4", "stderr": "", "command": ["internal:artifact_reuse"]},
+            "command_results": command_results,
+            "warning": cookie_warning,
+            "error": "",
+            "streams": streams_manifest,
+            "mux": {"status": "success", "validated": True},
+            "video_status": "success",
+            "audio_status": "success",
+            "probe_status": "success",
+            "core_media_ready": True,
+            "attempt_history": attempt_history,
+            "warnings": warnings,
+            "errors": errors,
+        }
+
+    resolved = _resolve_media_plan(url, tools, paths, config)
+    command_results.append(resolved.get("command_result"))
+    if not resolved["success"]:
+        errors.append(resolved["error"])
+        return {
+            "success": False,
+            "status": "failed",
+            "file": None,
+            "command_result": resolved.get("command_result"),
+            "command_results": command_results,
+            "warning": cookie_warning,
+            "error": resolved["error"],
+            "streams": streams_manifest,
+            "mux": mux_manifest,
+            "video_status": "failed",
+            "audio_status": "not_started",
+            "probe_status": "failed",
+            "core_media_ready": False,
+            "attempt_history": attempt_history,
+            "warnings": warnings,
+            "errors": errors,
+        }
+    plan: MediaPlan = resolved["plan"]
+    if plan.video is None:
+        errors.append("没有解析出视频流")
+        return {
+            "success": False,
+            "status": "failed",
+            "file": None,
+            "command_result": resolved.get("command_result"),
+            "command_results": command_results,
+            "warning": cookie_warning,
+            "error": "没有解析出视频流",
+            "streams": streams_manifest,
+            "mux": mux_manifest,
+            "video_status": "failed",
+            "audio_status": "not_started",
+            "probe_status": "failed",
+            "core_media_ready": False,
+            "attempt_history": attempt_history,
+            "warnings": warnings,
+            "errors": errors,
+        }
+
+    video_artifact, v_cmds, v_warnings, v_errors, video_spec = _ensure_stream_artifact(
+        url, plan.video, streams_dir, tools, paths, config, force=force,
+        archive_path=archive_path, use_archive=use_archive,
+    )
+    command_results.extend(v_cmds); warnings.extend(v_warnings); errors.extend(v_errors)
+    attempt_history.extend(video_artifact.attempt_history)
+    streams_manifest["video"] = video_artifact.as_manifest_dict()
+
+    audio_artifact: StreamArtifact | None = None
+    if plan.audio is not None:
+        audio_artifact, a_cmds, a_warnings, a_errors, _ = _ensure_stream_artifact(
+            url, plan.audio, streams_dir, tools, paths, config, force=force,
+            archive_path=archive_path, use_archive=use_archive,
+        )
+        command_results.extend(a_cmds); warnings.extend(a_warnings); errors.extend(a_errors)
+        attempt_history.extend(audio_artifact.attempt_history)
+        streams_manifest["audio"] = audio_artifact.as_manifest_dict()
+
+    video_path = video_artifact.path if video_artifact.validated else None
+    audio_path = audio_artifact.path if audio_artifact and audio_artifact.validated else None
+    if video_path is not None and (audio_path is not None or plan.audio is None):
+        mux = _mux_streams(video_path, audio_path, final, tools, paths)
+        command_results.append(mux["command_result"])
+        if not mux["success"]:
+            errors.append(f"mux 失败：{mux['error']}")
+            mux_manifest = {"status": "failed", "validated": False, "error": mux["error"]}
+        else:
+            mux_manifest = {"status": "success", "validated": True}
+    else:
+        mux_manifest = {"status": "skipped", "validated": False}
+
+    final_probe = probe_media(final, tools["ffprobe"], expected="video")
+    if final_probe.get("command_result"):
+        command_results.append(final_probe["command_result"])
+    success = final.is_file() and final.stat().st_size > 0 and final_probe["success"]
+    if not success and final_probe["error"]:
+        errors.append(f"最终媒体校验失败：{final_probe['error']}")
+    video_status = "success" if video_artifact.validated else "failed"
+    audio_status = "success" if (audio_artifact and audio_artifact.validated) else ("failed" if plan.audio is not None else "not_requested")
+    error = "" if success else _short_error(final_probe.get("command_result") or resolved.get("command_result") or {})
+    if errors:
+        error = (error + "\n" if error else "") + "\n".join(dict.fromkeys(errors))
     return {
         "success": success,
         "status": "success" if success else "failed",
         "file": final if success else None,
-        "command_result": result,
+        "command_result": final_probe.get("command_result") or resolved.get("command_result") or {"success": success, "returncode": 0 if success else 1, "stdout": "", "stderr": "", "command": ["internal:stream-engine"]},
         "command_results": command_results,
-        "warning": warning,
+        "warning": cookie_warning,
         "error": error,
+        "streams": streams_manifest,
+        "mux": mux_manifest,
+        "video_status": video_status,
+        "audio_status": audio_status,
+        "probe_status": final_probe["status"],
+        "core_media_ready": success,
+        "attempt_history": attempt_history,
+        "warnings": warnings,
+        "errors": errors,
     }
 
 
@@ -953,12 +1449,12 @@ def write_manifest(task_dir: Path | str, manifest: dict[str, Any]) -> Path:
     directory = Path(task_dir); directory.mkdir(parents=True, exist_ok=True)
     for field in MANIFEST_FIELDS:
         if field not in manifest:
-            if field in {"output_files", "commands_executed", "errors"}:
+            if field in {"output_files", "commands_executed", "errors", "attempt_history", "warnings"}:
                 manifest[field] = []
-            elif field == "subtitle_tracks":
+            elif field in {"subtitle_tracks", "subtitle_clean_stats", "streams", "mux", "subtitle"}:
                 manifest[field] = {}
-            elif field == "subtitle_clean_stats":
-                manifest[field] = {}
+            elif field == "core_media_ready":
+                manifest[field] = False
             else:
                 manifest[field] = ""
     path = directory / "download_manifest.json"
@@ -1065,12 +1561,13 @@ def download_one_video(
     metadata = local_metadata if local_metadata and not force else {}
     commands: list[list[str]] = []
     errors: list[str] = []
+    warnings: list[str] = []
     started_at = utc_now()
     if not metadata:
         metadata_result = fetch_video_metadata(url, tools, config, paths)
         commands.append(metadata_result["command_result"]["command"])
         if metadata_result.get("warning"):
-            errors.append(str(metadata_result["warning"]))
+            warnings.append(str(metadata_result["warning"]))
         if not metadata_result["success"]:
             fallback_metadata = {"id": video_id_hint or "unknown", "title": candidate.get("title") or video_id_hint or "unknown"}
             task_dir = _task_directory(root, source_mode, fallback_metadata, candidate_file, candidate_rank)
@@ -1084,6 +1581,7 @@ def download_one_video(
                 "thumbnail_status": "not_started", "metadata_status": "failed", "audio_status": "not_started",
                 "probe_status": "not_started", "overall_status": "failed", "output_files": [],
                 "commands_executed": commands, "errors": errors + [metadata_result["error"]],
+                "warnings": warnings,
             }
             path = write_manifest(task_dir, manifest)
             return {"overall_status": "failed", "already_complete": False, "task_dir": task_dir, "manifest": manifest, "manifest_path": path}
@@ -1117,7 +1615,7 @@ def download_one_video(
     metadata_status = "success"
     if metadata_result:
         commands = [metadata_result["command_result"]["command"]]
-        if metadata_result.get("warning"): errors.append(str(metadata_result["warning"]))
+        if metadata_result.get("warning"): warnings.append(str(metadata_result["warning"]))
 
     manifest: dict[str, Any] = {
         "video_id": metadata.get("id", video_id_hint), "url": metadata.get("webpage_url") or url,
@@ -1132,6 +1630,7 @@ def download_one_video(
         "thumbnail_status": "pending", "metadata_status": metadata_status,
         "audio_status": "not_requested" if metadata_only or subtitles_only or not require_audio else "pending",
         "probe_status": "not_requested", "overall_status": "failed", "output_files": [], "commands_executed": commands, "errors": errors,
+        "streams": {}, "mux": {}, "subtitle": {}, "core_media_ready": False, "attempt_history": [], "warnings": warnings,
     }
     write_manifest(task_dir, manifest)
 
@@ -1147,7 +1646,7 @@ def download_one_video(
         )
         if thumb.get("command_result"): commands.append(thumb["command_result"]["command"])
         manifest["thumbnail_status"] = thumb["status"]
-        if thumb.get("error"): errors.append(f"缩略图: {thumb['error']}")
+        if thumb.get("error"): warnings.append(f"缩略图: {thumb['error']}")
     else:
         manifest["thumbnail_status"] = "success"
 
@@ -1167,8 +1666,15 @@ def download_one_video(
             },
             vtt_status=subtitle["vtt_status"], srt_status=subtitle["srt_status"],
         )
-        if subtitle.get("warning"): errors.append(str(subtitle["warning"]))
-        if subtitle.get("error") and subtitle["status"] != "missing": errors.append(f"字幕: {subtitle['error']}")
+        manifest["subtitle"] = {
+            "status": subtitle["status"],
+            "tracks": {
+                label: track["status"]
+                for label, track in subtitle.get("tracks", {}).items()
+            },
+        }
+        if subtitle.get("warning"): warnings.append(str(subtitle["warning"]))
+        if subtitle.get("error") and subtitle["status"] != "missing": warnings.append(f"字幕: {subtitle['error']}")
         english_track = subtitle.get("tracks", {}).get("en", {})
         if english_track.get("status") == "success":
             try:
@@ -1181,28 +1687,35 @@ def download_one_video(
                 manifest["subtitle_clean_stats"] = cleaning
             except (OSError, ValueError, RuntimeError) as exc:
                 manifest["subtitle_clean_status"] = "failed"
-                errors.append(f"字幕清洗: {exc}")
+                warnings.append(f"字幕清洗: {exc}")
         else:
             manifest["subtitle_clean_status"] = "missing"
 
     video_file = task_dir / "video" / "source.mp4"
     audio_file = task_dir / "audio" / "source_audio.wav"
     video_ok = video_file.is_file() and video_file.stat().st_size > 0
+    core_media_ready = False
     if not metadata_only and not subtitles_only:
         if not video_ok or force:
             use_archive = True
             if not video_ok and _archive_contains(paths["archive"], str(metadata.get("id", ""))):
                 warning = "WARNING: 归档中已有该视频 ID，但本地视频缺失；本次修复暂不使用 download archive。"
                 LOGGER.warning(warning); errors.append(warning); use_archive = False
-            media = download_video_media(url, task_dir, tools, config, paths, paths["archive"] if source_mode == "candidate" else None, use_archive)
+            media = download_video_media(url, task_dir, tools, config, paths, paths["archive"] if source_mode == "candidate" else None, use_archive, force=force)
             command_results = media.get("command_results") or [media["command_result"]]
             commands.extend(result["command"] for result in command_results)
             video_ok = media["success"]
-            manifest["video_status"] = media["status"]
-            if media.get("warning"): errors.append(str(media["warning"]))
-            if media.get("error"): errors.append(f"视频: {media['error']}")
+            manifest["video_status"] = media.get("video_status", media["status"])
+            manifest["probe_status"] = media.get("probe_status", "pending")
+            manifest["streams"] = media.get("streams", {})
+            manifest["mux"] = media.get("mux", {})
+            manifest["attempt_history"] = media.get("attempt_history", [])
+            warnings.extend(media.get("warnings", []))
+            if media.get("warning"): warnings.append(str(media["warning"]))
+            if media.get("error") and not media["success"]: errors.append(f"视频: {media['error']}")
         else:
             manifest["video_status"] = "success"
+            manifest["probe_status"] = "success"
         if video_ok:
             video_probe = probe_media(video_file, tools["ffprobe"], expected="video")
             if video_probe.get("command_result"): commands.append(video_probe["command_result"]["command"])
@@ -1226,7 +1739,12 @@ def download_one_video(
                     manifest["audio_status"] = "failed"; errors.append(f"音频校验: {audio_probe['error']}")
         elif require_audio:
             manifest["audio_status"] = "not_started"
+        core_media_ready = (
+            manifest.get("probe_status") == "success"
+            and (not require_audio or manifest.get("audio_status") == "success")
+        )
 
+    manifest["core_media_ready"] = core_media_ready
     required_success = manifest["metadata_status"] == "success"
     if metadata_only:
         overall = "success" if required_success else "failed"
@@ -1240,22 +1758,15 @@ def download_one_video(
         else:
             overall = "success" if manifest["subtitle_status"] in {"success", "missing"} else "partial_success"
     else:
-        if not required_success or manifest["video_status"] != "success":
-            overall = "failed"
-        elif manifest["probe_status"] != "success":
-            overall = "partial_success"
-        elif require_audio and manifest["audio_status"] != "success":
-            overall = "partial_success"
-        elif manifest["subtitle_clean_status"] == "failed":
-            overall = "partial_success"
-        elif manifest["srt_status"] == "failed" or any(track.get("srt_status") == "failed" for track in manifest.get("subtitle_tracks", {}).values()):
-            overall = "partial_success"
-        else:
-            overall = "success"
+        overall = "success" if (required_success and core_media_ready) else "failed"
     manifest["overall_status"] = overall
     manifest["finished_at"] = utc_now()
     manifest["commands_executed"] = commands
-    manifest["errors"] = list(dict.fromkeys(str(error) for error in errors if error))
+    manifest["warnings"] = list(dict.fromkeys(str(warning) for warning in warnings if warning))
+    if overall == "success":
+        manifest["errors"] = []
+    else:
+        manifest["errors"] = list(dict.fromkeys(str(error) for error in errors if error))
     manifest["output_files"] = sorted(str(path.relative_to(task_dir)) for path in task_dir.rglob("*") if path.is_file() and path.name != "download_manifest.json")
     manifest_path = write_manifest(task_dir, manifest)
     if overall == "success" and not metadata_only and not subtitles_only:

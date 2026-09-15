@@ -535,6 +535,7 @@ class WorkflowScanner:
             "dubbing_status": dubbing_status,
             "cover_status": cover_status,
             "cover_warnings": [str(item) for item in cover_manifest.get("warnings", [])][:8],
+            "download_warnings": [str(item) for item in download.get("warnings", [])][:8],
             "cover_mode": str(cover_manifest.get("mode") or "local"),
             "cover_original_available": cover_original_available,
             "cover_localized_available": cover_localized_available,

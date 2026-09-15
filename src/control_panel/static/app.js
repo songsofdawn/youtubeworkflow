@@ -771,6 +771,10 @@ function renderTasks(tasks) {
     const subtitleStatusLabel = task.chinese_auto_available
       ? `自动中文 · ${task.chinese_auto_name}`
       : "无自动中文字幕";
+    const downloadWarnings = Array.isArray(task.download_warnings) ? task.download_warnings : [];
+    const downloadWarning = downloadWarnings.length
+      ? `<span class="task-warning" title="${escapeHtml(downloadWarnings.join("；"))}" aria-label="下载警告">⚠️</span>`
+      : "";
     const rawStatusLabel = String(task.overall ?? "");
     const compactStatusLabels = {
       "翻译并检查中文字幕": "生成中文字幕",
@@ -845,6 +849,7 @@ function renderTasks(tasks) {
               <strong class="${automationSkipped ? "automation-skip-status" : ""}" title="${escapeHtml(task.overall)}">${escapeHtml(statusLabel)}</strong>
               <span class="status-separator" aria-hidden="true">·</span>
               <small class="${summaryClass}" title="${escapeHtml(reviewSummary || subtitle)}">${escapeHtml(subtitle)}</small>
+              ${downloadWarning}
               <span class="status-percent">${progressPercent}%</span>
             </div>
             <div class="status-progress">

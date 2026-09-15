@@ -149,136 +149,106 @@ class CoreTests(TestCase):
     def test_media_download_uses_resilient_network_options(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
-            task = root / "task"
-
-            def execute(command, cwd=None, **kwargs):
-                values = [str(item) for item in command]
-                (task / "video" / "source.mp4").write_bytes(b"video")
-                self.assertTrue(kwargs["stream_output"])
-                return {"success": True, "returncode": 0, "stdout": "", "stderr": "", "command": values}
-
-            with mock.patch("src.download_core.run_command", side_effect=execute) as runner:
-                result = download_video_media(
-                    "https://youtu.be/id",
-                    task,
-                    fake_tools(root),
-                    stage2_config(),
-                    get_project_paths(root),
-                )
-            command = [str(item) for item in runner.call_args.args[0]]
-            self.assertTrue(result["success"])
+            spec = download_core.StreamSpec(
+                role="video", format_id="399", ext="mp4", vcodec="av1", acodec="none",
+                width=1920, height=1080, abr=None, filesize=123, filesize_approx=None,
+                url="https://example.test/videoplayback", http_headers={},
+            )
+            command = download_core._ytdlp_stream_command(
+                "https://youtu.be/id", spec, root / "streams" / "video_399.mp4",
+                fake_tools(root), get_project_paths(root), stage2_config(), "399",
+            )
+            command = [str(item) for item in command]
             self.assertEqual(command[command.index("--http-chunk-size") + 1], "1M")
             self.assertEqual(command[command.index("--socket-timeout") + 1], "15")
             self.assertIn("--force-ipv4", command)
             self.assertIn("--newline", command)
 
-    def test_media_download_refreshes_url_after_transient_ssl_failure(self) -> None:
+    def test_stream_artifact_reuses_validated_file(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
-            task = root / "task"
-
-            def execute(command, cwd=None, **kwargs):
-                values = [str(item) for item in command]
-                return {
-                    "success": False,
-                    "returncode": 1,
-                    "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
-                    "stderr": "",
-                    "command": values,
-                }
-
-            def fallback(url, video_dir, tools, paths, config):
-                (task / "video" / "source.mp4").write_bytes(b"video")
-                return {"success": True, "error": "", "command_results": []}
-
-            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
-                "src.download_core._download_via_alternate_cdn", side_effect=fallback
-            ) as cdn_fallback:
-                result = download_video_media(
-                    "https://youtu.be/id",
-                    task,
-                    fake_tools(root),
-                    stage2_config(),
-                    get_project_paths(root),
+            streams = root / "streams"; streams.mkdir(parents=True)
+            target = streams / "video_399.mp4"; target.write_bytes(b"valid")
+            spec = download_core.StreamSpec(
+                role="video", format_id="399", ext="mp4", vcodec="av1", acodec="none",
+                width=1920, height=1080, abr=None, filesize=5, filesize_approx=None,
+                url="", http_headers={},
+            )
+            with mock.patch("src.download_core._probe_stream_file", return_value={"success": True, "status": "success", "error": "", "data": {}}) as probe, mock.patch("src.download_core._download_stream_ytdlp") as downloader:
+                artifact, *_ = download_core._ensure_stream_artifact(
+                    "https://youtu.be/id", spec, streams, fake_tools(root),
+                    get_project_paths(root), stage2_config(),
                 )
-            self.assertTrue(result["success"])
-            cdn_fallback.assert_called_once()
-            self.assertEqual(len(result["command_results"]), 1)
+            self.assertEqual(artifact.backend, "artifact_reuse")
+            self.assertTrue(artifact.reusable)
+            probe.assert_called_once()
+            downloader.assert_not_called()
 
     def test_media_download_retries_403_with_no_token_embedded_client(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
-            task = root / "task"
-            calls: list[list[str]] = []
+            streams = root / "streams"; streams.mkdir(parents=True)
+            target = streams / "audio_251.webm"
+            spec = download_core.StreamSpec(
+                role="audio", format_id="251", ext="webm", vcodec="none", acodec="opus",
+                width=None, height=None, abr=160, filesize=100, filesize_approx=None,
+                url="", http_headers={},
+            )
+            results = [
+                {"success": False, "returncode": 1, "stdout": "", "stderr": "HTTP Error 403: Forbidden", "command": []},
+                {"success": True, "returncode": 0, "stdout": "", "stderr": "", "command": []},
+            ]
 
-            def execute(command, cwd=None, **kwargs):
-                values = [str(item) for item in command]
-                calls.append(values)
-                if len(calls) == 1:
-                    return {
-                        "success": False,
-                        "returncode": 1,
-                        "stdout": "",
-                        "stderr": "HTTP Error 403: Forbidden",
-                        "command": values,
-                    }
-                (task / "video" / "source.mp4").write_bytes(b"video")
-                return {
-                    "success": True,
-                    "returncode": 0,
-                    "stdout": "",
-                    "stderr": "",
-                    "command": values,
-                }
+            def probe(path, role, tools, paths):
+                return {"success": path.is_file() and path.stat().st_size > 0, "status": "success" if path.exists() else "failed", "error": "", "data": {}}
 
-            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
-                "src.download_core._download_via_alternate_cdn"
-            ) as legacy_fallback:
-                result = download_video_media(
-                    "https://youtu.be/id",
-                    task,
-                    fake_tools(root),
-                    stage2_config(),
-                    get_project_paths(root),
+            def download(url, spec, target, tools, paths, config, selector, *, no_cookies=False, client=None, archive_path=None, use_archive=True):
+                result = results.pop(0)
+                if result["success"]:
+                    target.write_bytes(b"audio")
+                return result
+
+            with mock.patch("src.download_core._probe_stream_file", side_effect=probe), mock.patch("src.download_core._download_stream_ytdlp", side_effect=download) as downloader:
+                artifact, commands, warnings, errors, _ = download_core._ensure_stream_artifact(
+                    "https://youtu.be/id", spec, streams, fake_tools(root),
+                    get_project_paths(root), stage2_config(),
                 )
+            self.assertEqual(artifact.backend, "yt-dlp-web_embedded")
+            self.assertTrue(artifact.validated)
+            self.assertEqual(downloader.call_count, 2)
+            self.assertTrue(downloader.call_args_list[1].kwargs["no_cookies"])
+            self.assertEqual(downloader.call_args_list[1].kwargs["client"], "web_embedded")
 
-            self.assertTrue(result["success"])
-            self.assertEqual(len(calls), 2)
-            self.assertIn("youtube:player_client=web_embedded", calls[1])
-            self.assertIn("--no-cookies", calls[1])
-            self.assertNotIn("--cookies", calls[1])
-            legacy_fallback.assert_not_called()
-
-    def test_media_download_explains_persistent_tls_failure(self) -> None:
+    def test_stream_artifact_transient_failure_uses_backup_cdn(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
-            config = stage2_config()
+            streams = root / "streams"; streams.mkdir(parents=True)
+            target = streams / "audio_251.webm"
+            spec = download_core.StreamSpec(
+                role="audio", format_id="251", ext="webm", vcodec="none", acodec="opus",
+                width=None, height=None, abr=160, filesize=100, filesize_approx=None,
+                url="https://rr1---sn.googlevideo.com/videoplayback", http_headers={},
+            )
 
-            def execute(command, cwd=None, **kwargs):
-                return {
-                    "success": False,
-                    "returncode": 1,
-                    "stdout": "EOF occurred in violation of protocol (_ssl.c:1007)",
-                    "stderr": "",
-                    "command": [str(item) for item in command],
-                }
+            def probe(path, role, tools, paths):
+                return {"success": path.is_file() and path.stat().st_size > 0, "status": "success" if path.exists() else "failed", "error": "", "data": {}}
 
-            with mock.patch("src.download_core.run_command", side_effect=execute), mock.patch(
-                "src.download_core._download_via_alternate_cdn",
-                return_value={"success": False, "error": "alternate failed", "command_results": []},
-            ):
-                result = download_video_media(
-                    "https://youtu.be/id",
-                    root / "task",
-                    fake_tools(root),
-                    config,
-                    get_project_paths(root),
+            def fallback(spec, target, tools, paths, config):
+                target.write_bytes(b"audio")
+                return True, ""
+
+            failed = {"success": False, "returncode": 1, "stdout": "EOF occurred in violation of protocol", "stderr": "", "command": []}
+            with mock.patch("src.download_core._probe_stream_file", side_effect=probe), mock.patch("src.download_core._download_stream_ytdlp", return_value=failed) as downloader, mock.patch("src.download_core._resolve_role", return_value=None), mock.patch("src.download_core._fallback_http_stream", side_effect=fallback) as cdn:
+                artifact, commands, warnings, errors, _ = download_core._ensure_stream_artifact(
+                    "https://youtu.be/id", spec, streams, fake_tools(root),
+                    get_project_paths(root), stage2_config(),
                 )
-            self.assertFalse(result["success"])
-            self.assertEqual(len(result["command_results"]), 1)
-            self.assertIn("alternate failed", result["error"])
-            self.assertIn("Clash/VPN", result["error"])
-            self.assertIn("字幕、封面和元数据会被保留", result["error"])
+            self.assertEqual(artifact.backend, "backup_cdn")
+            self.assertTrue(artifact.fallback_used)
+            self.assertEqual(downloader.call_count, 1)
+            cdn.assert_called_once()
+            self.assertEqual(errors, [])
+            self.assertTrue(any("备用 CDN" in item for item in warnings))
 
     def test_alternate_googlevideo_urls_use_secondary_machine(self) -> None:
         source = (
