@@ -157,7 +157,7 @@ def make_handler(
                             if body.get("maximum_duration_minutes") is not None
                             else None
                         ),
-                        ranking_mode=str(body.get("ranking_mode") or "hot"),
+                        ranking_mode=str(body.get("ranking_mode") or "potential"),
                         discovery_scope=str(body.get("discovery_scope") or "auto"),
                         search_strength=str(body.get("search_strength") or "standard"),
                     )

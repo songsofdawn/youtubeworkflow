@@ -15,15 +15,27 @@ def build_strategy(profile, domains, history, shared_formats=None, *, config=Non
     search_budget = max(1, min(int(config.get("discovery_max_search_requests", 100)), int(strength_cfg["search_budget"])))
     allocation_result = DomainAllocator(config).allocate(profile, domains, history, manual_focus=manual_focus)
     allocation = allocation_result["domain_allocation"]
-    query_plan = (planner or QueryPlanner(config)).plan(profile, domains, allocation, history, search_budget, now=now)
-    source_weights = config.get("discovery_next", {}).get("recall_source_budget", {
+    base_source_weights = config.get("discovery_next", {}).get("recall_source_budget", {
         "exploitation": .22, "learned_concept": .18, "emerging": .14, "preferred_channel": .10,
         "ai_query": .20, "coverage": .07, "exploration": .06, "cross_domain": .03})
+    source_weights = dict(base_source_weights)
+    signals = allocation_result.get("signals", {})
+    source_weights["exploration"] = max(source_weights["exploration"], float(allocation_result.get("exploration_ratio", source_weights["exploration"])))
+    if float(signals.get("recent_domain_diversity", .5)) < .55:
+        source_weights["coverage"] += .04
+        source_weights["exploration"] = max(source_weights["exploration"], .10)
+    if float(signals.get("emerging_weight", 0)) > 0:
+        source_weights["emerging"] = min(.30, source_weights["emerging"] + .05)
+    if profile.get("channel_preferences"):
+        source_weights["preferred_channel"] = min(.24, source_weights["preferred_channel"] + .03)
+    query_plan = (planner or QueryPlanner(config)).plan(profile, domains, allocation, history, search_budget,
+                                                       now=now, recall_source_weights=source_weights)
     return {"version": 2, "schema_version": 2, "mode": mode, "strength": strength,
             "sample_size": profile.get("sample_size", 0), "search_budget": search_budget,
             "ai_candidate_budget": int(strength_cfg["ai_candidate_budget"]), **allocation_result,
             "domain_budget": allocate_counts({k: v for k, v in allocation.items() if k != "exploration"}, search_budget),
             "recall_budget": allocate_counts(source_weights, search_budget),
+            "recall_budget_weights": source_weights,
             "preselection_budget": config.get("discovery_next", {}).get("candidate_bucket_ratios", {}),
             "query_plan": query_plan,
             "priority_combinations": [{"domain": q["domain"], "entity": q.get("query", ""), "format": q.get("intent", ""),

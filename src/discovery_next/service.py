@@ -18,6 +18,7 @@ from .query_performance import QueryPerformance
 from .recall import RecallExecutor
 from .strategy_builder import build_strategy
 from .taxonomy import Taxonomy
+from .query_planner import normalize_query, query_similarity
 
 
 def contains(text, term):
@@ -74,9 +75,14 @@ class DiscoveryNextService:
                "youtube_url": f"https://www.youtube.com/watch?v={video_id}", "license": status.get("license", "unknown"),
                "rights_status": "PENDING", "embeddable": status.get("embeddable", True), "hot_protected": views >= hot_views or vph >= hot_vph,
                "llm_status": "not_scored", "ai_potential_score": 50.0, "opportunity_score": 50.0,
+               "story_strength": .5, "visual_payoff": .5, "knowledge_value": .5, "result_payoff": .5,
                "source_query_run_ids": [a["run_id"] for a in attrs], "matched_queries": list(dict.fromkeys(a["query"] for a in attrs)),
                "matched_domains": list(dict.fromkeys(a["domain"] for a in attrs)), "matched_recall_sources": list(dict.fromkeys(a["recall_source"] for a in attrs)),
-               "matched_intents": list(dict.fromkeys(a["intent"] for a in attrs)), "semantic_cluster": semantic_key(str(snippet.get("title", ""))),
+               "matched_intents": list(dict.fromkeys(a["intent"] for a in attrs)),
+               "matched_semantic_clusters": list(dict.fromkeys(normalize_query(a.get("query", "")) for a in attrs)),
+               "first_seen_at": min((a.get("run_at", "") for a in attrs), default=""),
+               "last_seen_at": max((a.get("run_at", "") for a in attrs), default=""),
+               "semantic_cluster": semantic_key(str(snippet.get("title", ""))),
                "query_relevance": .7 if attrs else .4, "exploration_fit": 1.0 if any(a["recall_source"] in {"exploration", "coverage", "cross_domain"} for a in attrs) else 0,
                "emerging_fit": 1.0 if any(a["recall_source"] == "emerging" for a in attrs) else 0,
                "selection_reason": "多路召回后等待本地 AI 内容评价"}
@@ -110,7 +116,8 @@ class DiscoveryNextService:
         seen = self.performance.seen_ids() | set(known_video_ids or ()); known = set(known_video_ids or ())
         known_titles = {str(value).casefold().strip() for value in known_titles or []}
         resources, records, warnings = RecallExecutor(youtube, self.performance, config).execute(
-            strategy["query_plan"], hours=hours, now=now, seen=seen, notify=notify)
+            strategy["query_plan"], hours=hours, now=now, seen=seen, notify=notify,
+            recall_budget=strategy.get("recall_budget", {}))
         minimum = minimum_duration_seconds or int(config.get("discovery_min_duration_seconds", 300))
         maximum = maximum_duration_seconds or int(config.get("discovery_max_duration_seconds", 10800))
         def threshold(name, fallback): return float(config.get(name + "_by_window", {}).get(str(hours), config.get(name, fallback)))
@@ -133,6 +140,18 @@ class DiscoveryNextService:
             rows.append(row)
         domain_counts = Counter(d for row in rows for d in row["matched_pack_ids"])
         for row in rows: row["domain_pool_count"] = min([domain_counts[d] for d in row["matched_pack_ids"]] or [len(rows)])
+        # Near-title duplicates are not always discarded outright; they receive a diversity
+        # penalty so exact-ID dedup remains authoritative while near-duplicate content is
+        # still demoted instead of consuming the full AI budget.
+        normalized_rows = {}
+        for row in rows:
+            key = normalize_query(row["title"])
+            normalized_rows.setdefault(key, []).append(row)
+        for group in normalized_rows.values():
+            if len(group) > 1:
+                for row in group[1:]:
+                    row["duplicate_penalty"] = row.get("duplicate_penalty", 0) + 18
+                    row["semantic_uniqueness"] = min(row.get("semantic_uniqueness", .7), .45)
         notify("Discovery Next：多样化分桶预选", 42)
         configured_ai = int(config.get("discovery_llm", {}).get("metadata_max_candidates", strategy["ai_candidate_budget"]))
         preselected, bucket_counts = CandidatePreselector(config).select(rows, min(len(rows), configured_ai, strategy["ai_candidate_budget"]))
@@ -149,7 +168,10 @@ class DiscoveryNextService:
                     weights = {key: 1 + float(preferred.get(key, 0)) for key in traits}
                     score = 100 * sum(value * weights[key] for key, value in traits.items()) / max(.001, sum(weights.values()))
                     row.update(ai_potential_score=round(score, 2), opportunity_score=round(score, 2), novelty=traits["novelty"],
-                               localization_value=traits["localization_value"], llm_status="scored",
+                               localization_value=traits["localization_value"],
+                               story_strength=traits["story_strength"], visual_payoff=traits["visual_payoff"],
+                               knowledge_value=traits["knowledge_value"], result_payoff=traits["result_payoff"],
+                               llm_status="scored",
                                selection_reason="；".join(analysis["positive_signals"]) or "结构化内容分析")
                     scored += 1
                 except Exception as exc:
@@ -171,8 +193,15 @@ class DiscoveryNextService:
         for record, hits in records:
             if record["status"] == "recalled": record["status"] = "complete"
             hit_set = set(hits); shown = {video for run, video in shown_by_run.items() if run == record["run_id"]}
+            resource_hits = {video for video in hit_set if video in resources}
             record.update(eligible_count=len(hit_set & eligible), ai_selected_count=len(hit_set & selected_ids_set),
                           ai_accept_count=len(hit_set & high_quality), ai_high_quality_count=len(hit_set & high_quality), shown_count=len(shown))
+            record["novel_candidate_count"] = len(resource_hits - seen - set(known_video_ids or ()))
+            record["unique_channel_count"] = len({
+                resources[video]["item"].get("snippet", {}).get("channelId", "")
+                for video in resource_hits
+                if resources[video]["item"].get("snippet", {}).get("channelId", "")
+            })
             self.performance.save(record, hits, shown); diagnostics.append(dict(record))
         by_domain = {d["id"]: [] for d in domains}
         for row in selected: by_domain.setdefault(row["pack_id"], []).append(row)
@@ -185,6 +214,8 @@ class DiscoveryNextService:
                 "summary": {"selection_policy_version": 8, "schema_version": 2, "recall_architecture": "discovery_next", "architecture_phase": 2, "ranking_mode": ranking_mode,
                     "discovery_scope": discovery_scope, "search_strength": search_strength, "sample_size": profile["sample_size"],
                     "domain_allocation": strategy["domain_allocation"], "domain_budget": strategy["domain_budget"], "exploration_ratio": strategy["exploration_ratio"],
+                    "domain_allocation_reasons": strategy.get("allocation_reasons", {}),
+                    "recall_budget": strategy.get("recall_budget", {}), "recall_budget_weights": strategy.get("recall_budget_weights", {}),
                     "query_plan": strategy["query_plan"], "query_diagnostics": diagnostics, "recall_source_distribution": dict(recall_sources),
                     "candidate_flow": {"raw": sum(r.get("returned_count", 0) for r, _ in records), "deduplicated": len(resources), "hard_filtered": len(rows),
                                        "preselected": len(preselected), "ai_analyzed": scored, "final_shown": len(selected)},

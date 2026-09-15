@@ -6,9 +6,9 @@ from datetime import datetime, timedelta, timezone
 from src.learning.storage import LearningStore, utc_now
 from .query_planner import normalize_query
 
-METRICS = ("returned_count", "new_unique_count", "duplicate_count", "eligible_count", "ai_selected_count",
-           "ai_accept_count", "ai_high_quality_count", "shown_count", "download_count",
-           "positive_feedback_count", "negative_feedback_count")
+METRICS = ("returned_count", "new_unique_count", "duplicate_count", "novel_candidate_count", "unique_channel_count",
+           "eligible_count", "ai_selected_count", "ai_accept_count", "ai_high_quality_count", "shown_count",
+           "download_count", "positive_feedback_count", "negative_feedback_count")
 
 
 def performance_score(record):
@@ -39,10 +39,22 @@ class QueryPerformance:
     def save(self, record, hits, shown=()):
         shown = set(shown)
         returned = max(1, record.get("returned_count", 0))
-        record.update(duplicate_rate=record.get("duplicate_count", 0) / returned,
-                      new_unique_rate=record.get("new_unique_count", 0) / returned,
-                      eligible_rate=record.get("eligible_count", 0) / returned,
-                      high_quality_rate=record.get("ai_high_quality_count", 0) / max(1, record.get("ai_selected_count", 0)))
+        selected = max(1, record.get("ai_selected_count", record.get("eligible_count", 0)))
+        downstream_total = max(1, record.get("shown_count", 0) + record.get("download_count", 0)
+                               + record.get("positive_feedback_count", 0) + record.get("negative_feedback_count", 0))
+        record.update(
+            duplicate_rate=record.get("duplicate_count", 0) / returned,
+            new_unique_rate=record.get("new_unique_count", 0) / returned,
+            novel_candidate_rate=record.get("novel_candidate_count", 0) / returned,
+            unique_channel_rate=record.get("unique_channel_count", 0) / returned,
+            eligible_rate=record.get("eligible_count", 0) / returned,
+            ai_accept_rate=record.get("ai_accept_count", 0) / selected,
+            high_quality_rate=record.get("ai_high_quality_count", 0) / max(1, record.get("ai_selected_count", 0)),
+            shown_rate=record.get("shown_count", 0) / max(1, record.get("eligible_count", 0)),
+            download_rate=record.get("download_count", 0) / downstream_total,
+            positive_rate=record.get("positive_feedback_count", 0) / downstream_total,
+            negative_rate=record.get("negative_feedback_count", 0) / downstream_total,
+        )
         record["performance_score"] = performance_score(record)
         if record.get("status") == "complete" and record["performance_score"] < self.bad_threshold and record.get("returned_count", 0):
             record["cooldown_until"] = (datetime.now(timezone.utc) + timedelta(hours=self.cooldown_hours)).isoformat()

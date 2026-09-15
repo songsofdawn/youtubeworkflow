@@ -69,6 +69,17 @@
     "exploration_max": 0.3,
     "domain_allocation_floor": 0.01,
     "domain_allocation_ceiling": 0.38,
+    "domain_allocation_weights": {
+      "historical_seed": 0.15,
+      "recent_behavior": 0.25,
+      "real_download": 0.15,
+      "explicit_interest": 0.22,
+      "strong_interest": 0.13,
+      "emerging": 0.12,
+      "performance": 0.08,
+      "coverage": 0.1,
+      "negative": 0.3
+    },
     "recall_source_budget": {
       "exploitation": 0.22,
       "learned_concept": 0.18,
@@ -89,6 +100,11 @@
       "low_pop_high_relevance": 0.12,
       "rare_domain": 0.04
     },
+    "preselection_channel_limit": 4,
+    "preselection_semantic_cluster_limit": 3,
+    "preselection_domain_limit": 18,
+    "preselection_query_limit": 12,
+    "preselection_format_limit": 12,
     "query_cooldown_hours": 72,
     "query_diversity_threshold": 0.72,
     "bad_query_suppression_threshold": 0.08,
@@ -101,7 +117,8 @@
       "emerging": 0.07,
       "localization": 0.06,
       "diversity": 0.05,
-      "heat": 0.02
+      "heat": 0.02,
+      "story": 0.08
     },
     "hot_ranking_weights": {
       "velocity": 0.36,
@@ -224,13 +241,13 @@
     ]
   },
   "rotating_queries_per_topic": {
-    "gardening_farming": 2,
+    "gardening_farming": 1,
     "gaming": 1,
-    "ai_model_testing": 2,
-    "tutorials": 1,
-    "political_commentary": 1,
+    "ai_model_testing": 0,
+    "tutorials": 0,
+    "political_commentary": 0,
     "experiments_challenges": 1,
-    "science_popularization": 2
+    "science_popularization": 1
   },
   "priority_games": [
     "Minecraft",

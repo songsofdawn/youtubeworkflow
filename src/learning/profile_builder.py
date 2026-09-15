@@ -12,6 +12,7 @@ def build_profile(root, events):
         by_video[event["video_id"]].append(event)
     counts = {k: Counter() for k in ("domain", "topic", "entity", "format", "negative", "channel")}
     traits, recent, recent_domains, negative_domains, combinations, suggestions = Counter(), Counter(), Counter(), Counter(), {}, {}
+    explicit_domains, strong_domains, download_domains = Counter(), Counter(), Counter()
     samples = 0
     total_weight = 0.0
     for video_id, history in by_video.items():
@@ -37,6 +38,12 @@ def build_profile(root, events):
         for domain in analysis["domains"]:
             counts["domain"][domain["name"]] += weight * domain["score"]
             recent_domains[domain["name"]] += weight * domain["score"] / (1 + age / 14)
+            if latest["kind"] == "download":
+                download_domains[domain["name"]] += weight * domain["score"] / (1 + age / 45)
+            elif latest["kind"] in {"interested", "strong_interest"}:
+                explicit_domains[domain["name"]] += weight * domain["score"] / (1 + age / 30)
+            if latest["kind"] == "strong_interest":
+                strong_domains[domain["name"]] += weight * domain["score"] / (1 + age / 30)
             joint = combinations.setdefault(domain["name"], {"entities": Counter(), "formats": Counter(), "search_concepts": Counter()})
             for dimension in ("entities", "formats", "search_concepts"):
                 for term in analysis[dimension]:
@@ -59,6 +66,9 @@ def build_profile(root, events):
                "preferred_content_traits": {key: round(value / max(total_weight, 0.001), 4) for key, value in traits.items()},
                "emerging_interests": [{"concept": key, "weight": round(value, 4)} for key, value in recent.most_common(20)],
                "recent_domain_preferences": {key: round(value, 4) for key, value in recent_domains.most_common()},
+               "download_domain_preferences": {key: round(value, 4) for key, value in download_domains.most_common()},
+               "explicit_domain_preferences": {key: round(value, 4) for key, value in explicit_domains.most_common()},
+               "strong_interest_domain_preferences": {key: round(value, 4) for key, value in strong_domains.most_common()},
                "negative_domain_preferences": {key: round(value, 4) for key, value in negative_domains.most_common()},
                "domain_dimensions": combinations}
     return profile, {"version": 1, "taxonomy_suggestions": list(suggestions.values())}

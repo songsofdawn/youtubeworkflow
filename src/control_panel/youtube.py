@@ -238,7 +238,7 @@ class TargetedYouTubeSearch:
         known_titles: list[str] | None = None,
         minimum_duration_seconds: int | None = None,
         maximum_duration_seconds: int | None = None,
-        ranking_mode: str = "hot",
+        ranking_mode: str = "potential",
         discovery_scope: str = "auto",
         search_strength: str = "standard",
         client: YouTubeClient | None = None,

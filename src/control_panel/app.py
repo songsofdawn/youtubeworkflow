@@ -409,7 +409,7 @@ class ControlPanelApp:
         per_pack: int,
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
-        ranking_mode: str = "hot",
+        ranking_mode: str = "potential",
         discovery_scope: str = "auto",
         search_strength: str = "standard",
     ) -> dict[str, Any]:
@@ -444,7 +444,7 @@ class ControlPanelApp:
         per_pack: int,
         minimum_duration_minutes: int = 5,
         maximum_duration_minutes: int | None = None,
-        ranking_mode: str = "hot",
+        ranking_mode: str = "potential",
         discovery_scope: str = "auto",
         search_strength: str = "standard",
     ) -> dict[str, Any]:
@@ -459,7 +459,7 @@ class ControlPanelApp:
             raise ValueError("发现时间范围只支持 24、72、168、336 或 720 小时")
         if not 1 <= int(per_pack) <= 100:
             raise ValueError("每个领域的结果数量必须在 1 到 100 之间")
-        ranking_mode = str(ranking_mode or "hot").strip().casefold()
+        ranking_mode = str(ranking_mode or "potential").strip().casefold()
         if ranking_mode not in {"hot", "potential"}:
             raise ValueError("筛选模式只支持“热门优先”或“内容潜力优先”")
         configured_maximum_duration_minutes = int(
@@ -531,7 +531,7 @@ class ControlPanelApp:
             ),
             progress=progress,
             cancelled=cancelled,
-            ranking_mode=str(payload.get("ranking_mode") or "hot"),
+            ranking_mode=str(payload.get("ranking_mode") or "potential"),
             discovery_scope=str(payload.get("discovery_scope") or "auto"),
             search_strength=str(payload.get("search_strength") or "standard"),
         )

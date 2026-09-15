@@ -8,12 +8,14 @@ class RecallExecutor:
     def __init__(self, youtube, performance, config):
         self.youtube, self.performance, self.config = youtube, performance, config
 
-    def execute(self, plan, *, hours, now, seen, notify=None):
+    def execute(self, plan, *, hours, now, seen, notify=None, recall_budget=None):
         resources, records, warnings = {}, [], []
+        recall_budget = recall_budget or {}
         for index, query in enumerate(plan):
             if notify:
                 notify(f"Discovery Next：多路召回 {index + 1}/{len(plan)}", 12 + int(25 * index / max(1, len(plan))))
             record = self.performance.start(query, hours)
+            record["recall_budget_allocated"] = int(recall_budget.get(query.get("recall_source", "exploitation"), 0))
             hits = []
             records.append((record, hits))
             try:
@@ -34,7 +36,8 @@ class RecallExecutor:
                 for video_id, value in details.items():
                     entry = resources.setdefault(video_id, {"item": value, "attributions": []})
                     entry["attributions"].append({"run_id": record["run_id"], "query": query.get("query", ""),
-                        "domain": query.get("domain", ""), "intent": query.get("intent", ""), "recall_source": query.get("recall_source", "")})
+                        "domain": query.get("domain", ""), "intent": query.get("intent", ""),
+                        "recall_source": query.get("recall_source", ""), "run_at": record.get("run_at", "")})
                 record["status"] = "recalled"
             except Exception as exc:
                 record["status"], record["error"] = "failed", type(exc).__name__
