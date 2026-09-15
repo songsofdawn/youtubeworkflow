@@ -680,7 +680,7 @@ class FakeYouTubeClient:
 
 
 class TargetedSearchTests(TestCase):
-    def test_discovery_catalog_loads_editable_keyword_file(self) -> None:
+    def test_legacy_catalog_reader_does_not_drive_next_catalog(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             project = Path(name)
             config_path = project / "config" / "discovery_keywords.json"
@@ -713,9 +713,9 @@ class TargetedSearchTests(TestCase):
             catalog = TargetedYouTubeSearch(project).discovery_catalog()
 
         self.assertEqual([pack["id"] for pack in packs], ["custom_topic"])
-        self.assertEqual(catalog[0]["label"], "自定义领域")
-        self.assertEqual(catalog[0]["examples"], ["first search", "second search"])
-        self.assertFalse(catalog[0]["default_selected"])
+        self.assertFalse(any(pack["id"] == "custom_topic" for pack in catalog))
+        self.assertTrue(all("entities" in pack and "formats" in pack for pack in catalog))
+        self.assertTrue(all("query" not in pack for pack in catalog))
 
     def test_search_returns_panel_ready_rows_in_search_order(self) -> None:
         with tempfile.TemporaryDirectory() as name:
@@ -747,7 +747,7 @@ class TargetedSearchTests(TestCase):
             def get(self, endpoint: str, params: dict) -> dict:
                 if endpoint == "search":
                     self.search_calls.append(params)
-                    unique = "minecrft001" if "Minecraft" in params["q"] else "aitech00001"
+                    unique = "minecrft001" if "minecraft" in params["q"].lower() else "aitech00001"
                     return {
                         "items": [
                             {"id": {"videoId": unique}},
@@ -849,23 +849,17 @@ class TargetedSearchTests(TestCase):
 
         self.assertEqual(len(public_discovery_catalog()), 14)
         self.assertEqual(len(client.search_calls), 4)
-        self.assertTrue(all(call["order"] == "viewCount" for call in client.search_calls))
+        self.assertTrue(all(call["order"] in {"viewCount", "relevance"} for call in client.search_calls))
         self.assertTrue(all("publishedAfter" in call for call in client.search_calls))
         self.assertTrue(all(call["maxResults"] == 50 for call in client.search_calls))
         self.assertEqual(payload["summary"]["excluded"]["known_video"], 1)
-        self.assertEqual([row["video_id"] for row in payload["results"]], ["minecrft001"])
-        self.assertEqual([group["label"] for group in payload["groups"]], ["AI 与新科技", "Minecraft"])
-        self.assertTrue(all(row["hot_score"] >= 0 for row in payload["results"]))
-        self.assertEqual(payload["summary"]["excluded"]["similar_candidate"], 1)
-        self.assertEqual(repeated["summary"]["history_repeat_count"], 1)
-        minecraft_repeat = next(
-            row for row in repeated["results"] if row["video_id"] == "minecrft001"
-        )
-        self.assertTrue(minecraft_repeat["seen_in_previous_search"])
-        self.assertEqual(minecraft_repeat["collision_status"], "曾展示，已轻微降权")
-        self.assertFalse(minecraft_repeat["similar_candidate"])
+        self.assertNotIn("knownvid001", [row["video_id"] for row in payload["results"]])
+        self.assertEqual([group["id"] for group in payload["groups"]], ["ai_technology", "minecraft"])
+        self.assertEqual(payload["summary"]["recall_architecture"], "discovery_next")
+        self.assertTrue(all(row["opportunity_score"] >= 0 for row in payload["results"]))
+        self.assertTrue(all(row["new_unique_count"] == 0 for row in repeated["summary"]["query_diagnostics"]))
 
-    def test_discovery_month_window_uses_larger_pool_and_adaptive_popularity(self) -> None:
+    def test_discovery_next_month_window_respects_global_budget(self) -> None:
         class MonthClient:
             def __init__(self) -> None:
                 self.search_params: dict = {}
@@ -937,8 +931,10 @@ class TargetedSearchTests(TestCase):
             )
 
         self.assertEqual(client.search_params["maxResults"], 50)
-        self.assertEqual(payload["summary"]["minimum_views_per_hour"], 1.5)
-        self.assertEqual([row["video_id"] for row in payload["results"]], ["monthvideo1"])
+        self.assertEqual(payload["summary"]["search_request_count"], 1)
+        self.assertEqual(payload["summary"]["recall_architecture"], "discovery_next")
+        self.assertEqual(payload["hours"], 720)
+        self.assertEqual(payload["summary"]["raw_candidate_count"], 1)
 
 
 class ScannerTests(TestCase):

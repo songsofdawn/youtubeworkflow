@@ -15,32 +15,24 @@ from tests.test_discovery import DeepPagedYouTubeClient, FakeYouTubeClient, PACK
 
 
 class QueryPoolTests(TestCase):
-    def test_catalog_round_trip_preserves_entire_pool_and_rejects_overflow(self):
+    def test_legacy_catalog_is_read_only(self):
         with tempfile.TemporaryDirectory() as name:
             path = Path(name) / "packs.json"
-            query = "primary|" + "|".join(f"topic {i}" for i in range(20))
-            packs = save_discovery_packs(path, [{**PACK, "query": query}])
-            self.assertEqual(packs[0]["query"], query)
-            catalog = public_discovery_catalog(packs, include_details=True)
-            save_discovery_packs(path, catalog)
-            self.assertEqual(load_discovery_packs(path)[0]["query"], query)
-            previous = path.read_bytes()
-            for invalid in (query + "|overflow", "a" * 121):
-                with self.assertRaises(ValueError):
-                    save_discovery_packs(path, [{**PACK, "query": invalid}])
-                self.assertEqual(path.read_bytes(), previous)
+            with self.assertRaisesRegex(ValueError, "read-only"):
+                save_discovery_packs(path, [PACK])
+            self.assertFalse(path.exists())
         self.assertEqual(normalize_queries(" AI |ai| local   LLM ||"), ["AI", "local LLM"])
 
-    def test_shipped_catalog_has_eight_distinct_defaults_and_bounded_pools(self):
-        packs = load_discovery_packs(Path(__file__).resolve().parents[1] / "config/discovery_keywords.json")
-        self.assertEqual(len(packs), 22)
+    def test_shipped_next_taxonomy_has_shared_formats_and_no_queries(self):
+        from src.discovery_next.taxonomy import Taxonomy
+        taxonomy = Taxonomy(Path(__file__).resolve().parents[1])
+        packs = taxonomy.load()
+        self.assertEqual(len(packs), 21)
         defaults = {pack["id"] for pack in packs if pack["default_selected"]}
-        self.assertEqual(defaults, {
-            "science", "challenges_experiments", "food_cooking", "engineering_manufacturing",
-            "restoration_crafts", "nature_animals", "cleaning_transformation", "everyday_science",
-        })
+        self.assertEqual(len(defaults), 8)
         for pack in packs:
-            self.assertEqual(len(normalize_queries(pack["query"])), 21, pack["id"])
+            self.assertNotIn("query", pack)
+            self.assertTrue(set(pack["formats"]) <= taxonomy.formats.keys())
 
     def test_rotation_persists_explores_and_uses_yield_only_to_break_ties(self):
         with tempfile.TemporaryDirectory() as name:

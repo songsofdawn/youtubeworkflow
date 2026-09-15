@@ -617,6 +617,9 @@ function renderDiscoverySettings(discovery) {
   $("#discoveryFeedbackSummary").textContent = feedback.total
     ? `已积累 ${feedback.total} 条偏好反馈；后续发现会自动用于排序。`
     : "尚无偏好反馈。模型只接收公开视频元数据和 YouTube 缩略图。";
+  if (discovery.architecture === "discovery_next") {
+    $("#discoveryFeedbackSummary").textContent = `已学习 ${discovery.learning_sample_size || 0} 个视频。下载计为中等正反馈；可在任务日志查看分析和画像更新。`;
+  }
   state.discoveryInitialized = true;
 }
 
@@ -835,6 +838,7 @@ function renderJobs(jobs) {
       : job.kind === "cover" ? "COVER"
       : job.kind === "publish" ? "PUBLISH"
         : job.kind === "discovery" ? "DISCOVERY"
+          : job.kind === "learning" ? "内容学习"
           : "PIPELINE";
     const resource = {
       network: "下载槽",
@@ -959,6 +963,13 @@ function summarizeDiscoveryWarnings(rawWarnings, searchQuotaExhausted = false) {
 
 function discoveryQueryDiagnosticsMarkup(diagnostics) {
   if (!Array.isArray(diagnostics) || !diagnostics.length) return "";
+  if (diagnostics[0].run_id) {
+    return `<details class="discovery-query-diagnostics"><summary>动态查询绩效 · ${diagnostics.length} 次执行</summary>
+      <p>来源仅用于归因，领域由视频内容判定。同一视频可能命中多个查询，各行不可相加。</p>
+      <div class="discovery-query-table-wrap"><table><thead><tr><th>查询 / 实体 / 形式</th><th>排序</th><th>返回</th><th>新增</th><th>合格</th><th>AI 高质量</th><th>展示</th><th>状态</th></tr></thead><tbody>
+      ${diagnostics.map((r) => `<tr><td>${escapeHtml(r.query)}<br><small>${escapeHtml(r.entity)} / ${escapeHtml(r.format)}</small></td><td>${escapeHtml(r.order)}</td>${[r.returned_count, r.new_unique_count, r.eligible_count, r.ai_high_quality_count, r.shown_count].map((n) => `<td>${Number(n || 0)}</td>`).join("")}<td>${escapeHtml(r.status)}</td></tr>`).join("")}
+      </tbody></table></div></details>`;
+  }
   const orderLabels = { relevance: "相关性", viewCount: "热门", date: "最新" };
   const count = (value) => Math.max(0, Number(value) || 0);
   return `<details class="discovery-query-diagnostics">
@@ -998,6 +1009,7 @@ function renderSearchResults() {
   }
   const summary = state.discoveryPayload.summary || {};
   const groups = Array.isArray(state.discoveryPayload.groups) ? state.discoveryPayload.groups : [];
+  const isNext = summary.recall_architecture === "discovery_next";
   const limitPerPack = Number(summary.result_limit_per_pack || summary.result_target_per_pack || state.discoveryPayload.per_pack || 0);
   const recalledByPack = summary.recalled_counts_by_pack || {};
   const recalledAssignmentCount = Object.values(recalledByPack)
@@ -1017,6 +1029,9 @@ function renderSearchResults() {
     + `各领域召回 ${recalledAssignmentCount}/${summary.recall_target || 0} 条、去重 ${summary.raw_candidate_count || 0} 条（搜索 ${summary.search_request_count || 0}/${summary.search_request_limit || 0} 次） → `
     + `规则保留 ${summary.eligible_count || 0} 条 → AI ${summary.llm_scored_count || 0}/${summary.llm_candidate_count || 0} 条 → 优选 ${qualityEligibleCount} 条 → `
     + `最终 ${assignmentCount} 个领域候选位${uniqueResultNote}（扩展优选 ${expandedResultCount} 条、补量备选 ${reserveResultCount} 条、同频道补位 ${diversityBackfillCount} 条）、当前显示 ${visible.length} 条 · 视觉复评 ${summary.visual_scored_count || 0} 条`;
+  if (isNext) {
+    $("#discoveryResultSummary").textContent = `Discovery Next · 学习样本 ${summary.sample_size || 0} · 搜索 ${summary.search_request_count}/${summary.search_request_limit} 次 · 去重召回 ${summary.raw_candidate_count} · 合格 ${summary.eligible_count} · AI 分析 ${summary.llm_scored_count} · 展示 ${assignmentCount} 条（当前可见 ${visible.length}）`;
+  }
 
   const resultCounts = summary.result_counts_by_pack || {};
   const rawWarnings = Array.isArray(summary.warnings) ? summary.warnings : [];
@@ -1032,7 +1047,7 @@ function renderSearchResults() {
     .filter((group) => Number(recalledByPack[group.id] || 0) === 0)
     .map((group) => group.label);
   if (zeroRecallLabels.length) {
-    warningItems.push(`以下领域在 YouTube 搜索阶段没有召回结果：${zeroRecallLabels.join("、")}。程序已记录每领域搜索产出，便于继续扩充关键词。`);
+    warningItems.push(`以下领域本轮没有匹配内容：${zeroRecallLabels.join("、")}。可调整领域描述、实体和内容形式，或扩大时间范围；搜索预算按动态策略分配。`);
   }
   const durationExcluded = Number(summary.excluded?.duration || 0);
   if (durationExcluded) {
@@ -1056,7 +1071,7 @@ function renderSearchResults() {
     const emptyMessage = actualCount
       ? "本领域已有候选，但都被当前的字幕、重复或最低分筛选隐藏。"
       : Number(recalledByPack[group.id] || 0) === 0
-        ? "本领域的搜索词没有召回视频；不是 AI 筛选后变成 0。"
+        ? "本轮没有内容匹配此领域的候选。"
         : `本领域没有通过硬性安全条件的候选；优选 ${eligibleCount} 条。`;
     return `
       <section class="result-group" data-pack-id="${escapeHtml(group.id)}">

@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "ContentTraits": {
+      "additionalProperties": false,
+      "properties": {
+        "novelty": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "visual_payoff": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Visual Payoff",
+          "type": "number"
+        },
+        "story_strength": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Story Strength",
+          "type": "number"
+        },
+        "knowledge_value": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Knowledge Value",
+          "type": "number"
+        },
+        "localization_value": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Localization Value",
+          "type": "number"
+        },
+        "result_payoff": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Result Payoff",
+          "type": "number"
+        }
+      },
+      "required": [
+        "novelty",
+        "visual_payoff",
+        "story_strength",
+        "knowledge_value",
+        "localization_value",
+        "result_payoff"
+      ],
+      "title": "ContentTraits",
+      "type": "object"
+    },
+    "DomainScore": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "score"
+      ],
+      "title": "DomainScore",
+      "type": "object"
+    },
+    "TaxonomySuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "suggested_entities": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Suggested Entities",
+          "type": "array"
+        },
+        "suggested_formats": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Suggested Formats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "confidence",
+        "suggested_entities",
+        "suggested_formats"
+      ],
+      "title": "TaxonomySuggestion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "video_id": {
+      "pattern": "^[A-Za-z0-9_-]{11}$",
+      "title": "Video Id",
+      "type": "string"
+    },
+    "domains": {
+      "items": {
+        "$ref": "#/$defs/DomainScore"
+      },
+      "maxItems": 12,
+      "title": "Domains",
+      "type": "array"
+    },
+    "topics": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Topics",
+      "type": "array"
+    },
+    "entities": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Entities",
+      "type": "array"
+    },
+    "formats": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Formats",
+      "type": "array"
+    },
+    "content_traits": {
+      "$ref": "#/$defs/ContentTraits"
+    },
+    "positive_signals": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Positive Signals",
+      "type": "array"
+    },
+    "negative_signals": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Negative Signals",
+      "type": "array"
+    },
+    "search_concepts": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Search Concepts",
+      "type": "array"
+    },
+    "taxonomy_suggestions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TaxonomySuggestion"
+      },
+      "maxItems": 8,
+      "title": "Taxonomy Suggestions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "video_id",
+    "domains",
+    "topics",
+    "entities",
+    "formats",
+    "content_traits",
+    "positive_signals",
+    "negative_signals",
+    "search_concepts"
+  ],
+  "title": "VideoAnalysis",
+  "type": "object"
+}

@@ -344,68 +344,62 @@ CUSTOM_LLM_API_KEY=
 无论使用哪一种方式，下载前都必须勾选“确认拥有下载和使用权”。默认下载最高 1080p
 的源视频、源音频、可用中英文字幕、封面、简介和元数据；翻译与成片不会覆盖这些文件。
 
-### 智能发现的当前行为
+### Discovery Next：从下载学习内容偏好
 
-控制面板的智能发现是异步任务，结果会保存在本地任务历史中，完成后可从任务卡重新打开。
-领域和查询词来自 `config\discovery_keywords.json`，当前包含 22 个可在面板中新增、删除和
-修改的领域，每个领域配置 20 个互补轮换词。默认选中反直觉实验与科普、脑洞发明与趣味实验、
-食物工艺与厨房科学、制造过程与机械原理、旧物修复与精细手艺、奇妙生物与微观世界、
-深度清洁与焕新、日常冷知识与万物原理，共 8 个领域。AI、游戏、Minecraft、地理、历史、
-艺术等保留为可选领域；原有领域 ID 不变，新增清洁与日常科学两个领域。
+控制面板已切换到 Discovery Next，使用独立领域 taxonomy、共享内容形式、下载事件和
+真实搜索绩效生成临时查询，不再使用主词、补充词池或按执行次数轮换。
 
-当前选题优先解压、新奇、有趣、知识性、科普，至少一项突出且有具体依据才值得优先推荐。
-例如地毯清洗看变化、玻璃吹制看工艺、动物解谜看行为、日常科普弄懂一个问题；不要求每条
-都有发明、反转或笑点。主查询也带内容角度，如 `manufacturing process explained`，减少
-泛科技、普通实况和旅行流水账。AI 推荐理由会点明主要观看价值、具体对象和回报，元数据
-不足时标为待确认，不会声称已经看过视频或验证真实性。
+领域配置为 config/discovery_taxonomy.json，共享形式为 config/discovery_formats.json。
+当前提供 21 个领域，默认选择 8 个。面板可新增、编辑或删除领域；只需填写说明、实体、
+形式、正向特征和负向意图，无需完整搜索句。Extreme Survival 示例已包含在配置中。
 
-面板规则不再仅因 `ASMR`、`no commentary` 扣分，配置项为
-`discovery_boring_penalty_exempt_phrases`，不影响传统日报规则。
-`discovery_exclude_llm_rejects=true` 时，未受热门保护的 AI 不推荐候选不再作为补量备选回流；
-热度稍低但没有被明确拒绝的候选仍可按原门槛补位。热门保护继续生效，并不等于内容质量背书。
-评审提示词升级和领域说明修改都会使相关评分缓存失效；重新发现才会应用新规则，旧任务结果
-不会自动重排。Ollama 不可用时仍退回规则评分，无法完成上述语义判断。
+成功下载（含已完整下载的幂等续跑）写入 download 事件并排入内容学习作业：
+公开元数据 → 本地 Qwen 结构化分析 → 单视频 JSON → 用户画像 → 搜索策略。
+学习使用现有 gpu_heavy 槽，下载进程不直接调用模型。download 是 0.35 的中等正反馈，
+interested 为 0.7、strong_interest 为 1.0；最新显式反馈替代旧偏好，重复下载不重复计权。
+模型不可用或输出不合法时保留事件待重试，不覆盖已有有效分析。学习任务日志显示各阶段。
 
-每个领域的第 1 个查询词是宽泛主查询，会分别用 `viewCount`、`date`、`relevance` 召回；
-后续是最多 20 个词的轮换池，每轮默认选 3 个，分别按 `relevance`、`relevance`、`viewCount`
-补充召回。先覆盖补充词，再翻主查询的下一页，避免重复页面挤占不同题材的搜索预算。
-轮换优先较少执行的词，同次数时按历史每次调用带来的新增合格视频数排序；空结果也计入轮换，
-未执行或配额失败的词不计入。统计保存在 `work\discovery\discovery.sqlite3`，重启后继续使用。
-旧的 1–4 项查询格式仍可用；`discovery_query_rotation_enabled=false` 可关闭轮换，
-`discovery_supplemental_search_orders=["viewCount"]` 可恢复补充词全按热门搜索。
-关键词只参与弱主题相关性评分，不负责召回，也不是硬过滤条件。
-时间范围支持 24 / 72 / 168 / 336 / 720 小时；面板默认 7 天、5–120
-分钟、每领域 20 个候选，最大允许时长由 `config\trending_config.json` 控制（当前为 180 分钟）。
-科学、工程可手动选 14 天，历史、修复、自然可选 30 天；程序不会擅自扩大所选时间范围。
+本地可检查数据（默认 Git 忽略）：
 
-“热门优先”会先执行独立热门召回通道，并对达到播放量或每小时播放量阈值的候选提供热度保护；
-“内容潜力优先”以本地 Qwen 元数据评审和本地化潜力为主，但真正达到热门阈值的候选仍受保护。
-两种模式都受 YouTube 搜索调用上限影响，当前配置的总上限为 96 次，默认基础召回目标为 1000
-条，每领域最多返回 100 条。系统通常为每领域使用 6 次搜索；合格候选不足时最多扩展到 8 次，
-并按本次结果目标准备至少 3 倍的规则合格池。最终分配先保持频道多样性，仍有缺口时才把单频道
-上限从 2 条放宽到 4 条。相关阈值和自适应补页参数见 `config\trending_config.json`。
+- data/learning/videos/<video_id>.json：公开元数据及严格校验后的分析。
+- data/learning/user_content_profile.json：领域、主题、实体、形式、特征、频道与近期兴趣。
+- data/learning/discovery_strategy.json：加权组合、探索目标、临时种子及候选频道。
+- data/learning/taxonomy_suggestions.json：建议及真实证据视频数，不自动修改正式目录。
+- data/learning/events.sqlite3：事件、查询执行、命中和展示归因，不依赖旧发现数据库。
 
-每个领域的结果区可展开“搜索词效果”，查看实际执行的词、排序、调用次数、去重召回、规则保留、
-新增合格视频、合格频道和入选数量。新增合格指通过规则且未出现在保留的历史结果或已处理任务中；
-同一视频可以命中多个搜索词，各行不可相加。旧任务没有这份统计时仍可正常打开。
-短英文排除标签按完整词匹配，例如 `ost` 仍会排除 OST 内容，但不会误伤包含 `most`、`cost`
-或 `almost` 的正常简介；补页预检和最终筛选使用同一规则。
+JSON 使用稳定排序，便于检查和文件间 diff。以下命令分别重建画像、重试待处理事件、
+重新分析某视频、打印完整 JSON Schema：
 
-智能发现完整功能默认使用 Ollama 的 `qwen3.5:9b` 和
-`qwen3-embedding:0.6b`：
+~~~powershell
+.venv\Scripts\python.exe -m src.learning --rebuild
+.venv\Scripts\python.exe -m src.learning --retry-pending
+.venv\Scripts\python.exe -m src.learning --reanalyze VIDEO_ID
+.venv\Scripts\python.exe -m src.learning --schema
+~~~
 
-```powershell
-ollama pull qwen3.5:9b
-ollama pull qwen3-embedding:0.6b
-```
+重试和重新分析命令只排队，执行时保持面板打开；面板启动会恢复待处理事件。
+旧下载不会被全盘扫描或自动补分析，下载续跑可以产生事件。
 
-模型可在“配置服务 → Ollama 本地智能发现”中更换或停用。Ollama 不可用时，任务会给出
-警告并退回规则评分。模型只接收 YouTube 公开元数据和缩略图，不会收到 API Key、Cookie、
-本地视频或字幕。当前配置默认关闭 AI 查询词规划，但保留该设置用于兼容旧配置；视觉复评
-和 Embedding 可单独开关。候选卡可记录感兴趣、无关、重复、不安全等反馈；反馈保存在
-`work\discovery\discovery.sqlite3`，用于后续排序。智能发现会消耗 YouTube Data API 配额，
-实际限制以 Google Cloud 为准。结果页还可以只看有字幕、隐藏明确重复/已处理视频，或按机会
-分再次筛选；这些只是展示层过滤，不会修改已保存的发现结果。
+搜索预算全局分配，受 discovery_max_search_requests 限制（当前 96），没有每领域固定次数。
+策略权重来自下载内容的实体/形式、近期概念及合格率、高质量分析、下载和显式反馈。
+每五个组合预留一次未尝试方向探索，不按 run_count 从少到多轮换；候选频道共享预算。
+内容决定归类，搜索来源只用于归因。下载归给最近实际展示的查询，重复下载不重复计数。
+“动态查询绩效”显示返回、新增、合格、高质量及展示数量；同一视频可命中多个查询，
+各行不可相加。QueryPerformance.history() 可读取包含后续下载和正负反馈的完整绩效。
+
+时间范围仍支持 24 / 72 / 168 / 336 / 720 小时，每领域结果上限 100。
+热门模式分配热门查询并按热度排序；潜力模式按结构化内容特征排序。两者保留按时间窗口设置的
+播放量/VPH 热门保护，同时遵守语言、时长、可用性、风险排除和下载权利闸门。同频道默认最多 2 条。
+Ollama 不可用时搜索回退到公开元数据分类并提示，不会假装完成分析。
+
+使用现有 Ollama qwen3.5:9b，不自动安装模型或调用收费 API。发送内容为公开元数据，
+支持上游提供的公开字幕摘要，不读取本地字幕正文。首期不使用旧 Embedding、视觉复评、
+AI 固定词池规划或自适应补页；相关旧界面选项已停用。
+
+src/discovery/ 旧管线和 config/discovery_keywords.json 仅为 legacy，面板不再执行。
+旧目录读取函数已移至 src/discovery/legacy_catalog.py，写入口禁用。旧作业结果仍可打开，
+旧数据库不删除、不迁入 Next。传统日报脚本保持独立。
+审计、Schema 与验证说明见 [Discovery Next 设计记录](docs/discovery_next.md)。
 
 ### 传统日报候选脚本（可选）
 
@@ -827,7 +821,7 @@ youtubeworkflow\
 | `config\stage4_config.json` | 双语样式、排版安全线、编码器与音频策略 |
 | `config\dubbing_config.json` | VoxCPM2 路径、Demucs、参考音频、时长和混音策略 |
 | `config\trending_config.json` | 搜索、智能发现和 Ollama 参数 |
-| `config\discovery_keywords.json` | 智能发现领域、查询词和归类关键词 |
+| `config\discovery_taxonomy.json`、`config\discovery_formats.json` | Discovery Next 领域维度与共享形式 |
 | `config\publish_config.json` | biliup、投稿间隔、标题前缀、日上限和冷却策略 |
 
 优先通过控制面板修改用户级设置。直接编辑 JSON 前先关闭面板并保留备份；错误类型、越界

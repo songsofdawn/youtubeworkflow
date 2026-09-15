@@ -1,4 +1,4 @@
-// Offline interaction tests for full-pool saves and safe diagnostics rendering.
+// Offline interaction tests for taxonomy saves and safe diagnostics rendering.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -20,7 +20,7 @@ function get(selector) {
   if (!elements.has(selector)) elements.set(selector, element());
   return elements.get(selector);
 }
-const query = ['primary', ...Array.from({ length: 20 }, (_, i) => `topic ${i}`)].join('|');
+const entities = ['civilization', 'AI agents'];
 let saved;
 let failSave = false;
 let reloads = 0;
@@ -40,11 +40,11 @@ const context = vm.createContext({ document,
   requestJson: async (url, options) => {
     if (options?.method === 'POST') {
       saved = JSON.parse(options.body);
-      if (failSave) throw new Error('too many queries');
+      if (failSave) throw new Error('unknown format');
       return saved;
     }
     return { packs: [{ id: 'custom', label: 'Custom', description: 'Description',
-      query, keywords: ['topic'], default_selected: true }] };
+      entities, formats: ['simulation'], positive_traits: ['visible_result'], negative_intents: [], default_selected: true }] };
   },
 });
 vm.runInContext(app.slice(app.indexOf('function escapeHtml('), app.indexOf('async function api(')), context);
@@ -56,9 +56,11 @@ vm.runInContext(upgrade.slice(upgrade.indexOf('  function updateDiscoveryQuotaEs
   await context.openEditor();
   const dialog = get('#discoveryPackEditorDialog');
   assert.equal(dialog.open, true);
-  assert.match(get('#discoveryPackEditorList').innerHTML, /topic 19/);
+  assert.match(get('#discoveryPackEditorList').innerHTML, /civilization/);
   await get('#discoveryPackEditorForm').events.submit({ preventDefault() {} });
-  assert.equal(saved.packs[0].query, query, 'all 20 pool entries must survive the actual submit handler');
+  assert.deepEqual(saved.packs[0].entities, entities);
+  assert.deepEqual(saved.packs[0].formats, ['simulation']);
+  assert.ok(!('query' in saved.packs[0]));
   assert.equal(dialog.open, false);
   assert.equal(get('#saveDiscoveryPacks').disabled, false);
   assert.equal(reloads, 1);
@@ -68,7 +70,7 @@ vm.runInContext(upgrade.slice(upgrade.indexOf('  function updateDiscoveryQuotaEs
   failSave = true;
   await get('#discoveryPackEditorForm').events.submit({ preventDefault() {} });
   assert.equal(dialog.open, true, 'validation errors must keep the editor open');
-  assert.match(alerts[0], /too many queries/);
+  assert.match(alerts[0], /unknown format/);
   assert.equal(get('#saveDiscoveryPacks').disabled, false);
 
   assert.equal(context.discoveryQueryDiagnosticsMarkup(undefined), '', 'old results need no diagnostics');
@@ -84,7 +86,10 @@ vm.runInContext(upgrade.slice(upgrade.indexOf('  function updateDiscoveryQuotaEs
   get('#discoveryMaxSearchRequests').value = '96';
   get('#discoveryQuotaEstimate');
   context.updateDiscoveryQuotaEstimate();
-  assert.match(get('#discoveryQuotaEstimate').textContent, /基础最多 96 次/);
+  assert.match(get('#discoveryQuotaEstimate').textContent, /全局最多 96 次/);
   assert.ok(!get('#discoveryQuotaEstimate').textContent.includes('120 次'));
-  console.log('Discovery UI: pool saves, validation errors, legacy results, escaping and budget estimate passed.');
+  const nextHtml = context.discoveryQueryDiagnosticsMarkup([{run_id: 'test', query: '<script>', entity: 'mods', format: 'simulation', order: 'date', status: 'complete'}]);
+  assert.ok(!nextHtml.includes('<script>'));
+  assert.match(nextHtml, /动态查询绩效/);
+  console.log('Discovery Next UI: taxonomy saves, validation, legacy results, escaping and global budget passed.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

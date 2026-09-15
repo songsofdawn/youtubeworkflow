@@ -38,8 +38,8 @@ ASS / 软字幕 MKV / 硬字幕 MP4
 |---|---|---|
 | 控制面板后端与队列 | `src/control_panel/app.py`、`server.py`、`jobs.py`、`tasks.py` | `work/control_panel/control_panel.sqlite3`、作业日志 |
 | 控制面板前端 | `src/control_panel/static/index.html`、`app.js`、`styles.css`、`discovery_upgrade.js`、`discovery_upgrade.css` | 无 |
-| YouTube 搜索/发现 | `src/control_panel/youtube.py`、`src/discovery/pipeline.py`、`src/discovery/ollama_client.py`、`src/discovery/store.py` | `work/discovery/discovery.sqlite3`、发现结果 JSON |
-| 发现配置 | `config/trending_config.json`、`config/discovery_keywords.json` | `work/discovery_history.json` |
+| YouTube 搜索/发现/学习 | `src/control_panel/youtube.py`、`src/discovery_next/`、`src/learning/` | `data/learning/`、发现结果 JSON |
+| 发现配置 | `config/trending_config.json`、`config/discovery_taxonomy.json`、`config/discovery_formats.json` | `data/learning/discovery_strategy.json` |
 | 下载 | `src/download_core.py`、`src/download_video.py`、`src/download_selected_candidates.py`、`src/repair_failed_downloads.py` | `downloads/.../download_manifest.json` |
 | 英文字幕、翻译、人工审核 | `src/stage3/pipeline.py`、`config/stage3_config.json`、`src/stage3/config_adapter.py`、`src/stage3/review_workflow.py` | `stage3_manifest.json`、`stage3/`、`subtitles/` |
 | 翻译供应商 | `src/stage3/llm_providers.py`、`src/stage3/translator_deepseek.py` | `stage3/translation/`、翻译检查点和使用量 |
@@ -66,30 +66,28 @@ ASS / 软字幕 MKV / 硬字幕 MP4
 - 面板接口会校验本地来源、JSON 大小和路径范围；健康接口只能返回是否配置/就绪等布尔或
   脱敏状态，不能回显密钥、Cookie 或账号内容。
 
-### 智能发现 V5
+### Discovery Next
 
-- 领域目录来自 `config/discovery_keywords.json`；当前有 22 个领域，默认选 8 个、最近 7 天。
-  查询以 `|` 分隔，第 1 项是宽泛主查询，后最多 20 项是轮换词池（每项最多 120 字符）。
-  每轮默认选 3 个补充词；优先较少执行的词，同次数按新增合格产出排序，状态保存在发现 SQLite。
-  空结果参与轮换，未执行的词不计入；保留旧 1–4 项格式，编辑器不得静默截断词池。
-  关键词只用于弱相关性评分，不参与 YouTube 召回，也不作为硬过滤条件。
-- 选题围绕解压、新奇、有趣、知识性、科普，至少一项有具体依据，不要求每条都有剧情或创新。
-  面板不因 ASMR / no commentary 统一扣分；领域说明参与 AI 输入和缓存键。
-  开启 `discovery_exclude_llm_rejects` 时，未受热门保护的 reject 不得通过补量备选回流。
-- 主查询按 `viewCount`、`date`、`relevance` 召回，补充词默认分别按相关性、相关性、热门召回；
-  先覆盖补充词再翻页。`query_diagnostics` 记录每词实际调用和筛选产出，各词命中数不可相加。
-  精确时长在 `videos.list` 元数据阶段过滤。自适应第 2 页只在候选不足时触发，并受每领域
-  最大调用数和总搜索上限约束。当前 `trending_config.json` 的总搜索上限为 96、基础召回目标
-  为 1000、每领域最多返回 100 条。
-- `hot` 是默认排序：独立 Hot Recall Lane 加热门保护；达到当前时间窗口的播放量或 VPH
-  阈值的视频不能被普通 Qwen reject/机会分门槛轻易淘汰。`potential` 以元数据内容质量和
-  本地化潜力为主，但真正热门候选仍受保护。不要把这两条通道合并成单一分数。
-- 默认本地模型是 Ollama `qwen3.5:9b` 和 Embedding `qwen3-embedding:0.6b`；当前配置默认
-  关闭 AI 查询词规划，视觉复评和 Embedding 可分别开关。Ollama 不可用时允许退回规则评分。
-  Ollama 只能收到 YouTube 公开元数据和缩略图，不得收到 API Key、Cookie、本地视频或字幕。
-- 反馈接口允许 `interested`、`selected`、`boring`、`irrelevant`、`duplicate`、
-  `wrong_language`、`unsafe`，最新反馈覆盖旧反馈，并用于后续排序。发现结果始终只是候选，
-  选中后仍必须经过下载权利闸门。
+- 面板使用 src/discovery_next/，学习使用 src/learning/；不得导入旧关键词调度器。
+  config/discovery_taxonomy.json 保存领域实体、共享形式、正向特征和负向意图；
+  config/discovery_formats.json 定义共享形式。查询是临时结果，不维护主词/补充词池。
+- 成功下载通过 download_core 写入幂等 download 事件，排入现有 gpu_heavy 学习作业。
+  不可在下载线程直接调用模型或绕过资源槽。download 权重 0.35，不能等同强烈喜欢。
+  学习失败保留事件，面板启动恢复；重复下载不重复计权，显式反馈按每视频最新值生效。
+- data/learning/videos/<video_id>.json 是可检查的分析事实源；Pydantic 严格校验 ID、
+  字段、类型、分数范围和非有限值，无效输出不得覆盖有效 JSON。画像/策略可重建。
+  事件、查询执行、命中及归因独立保存在 data/learning/events.sqlite3，不读写旧发现表。
+- 策略结合画像、近期概念、频道和真实查询产出，加权选择并保留探索，禁止按执行次数轮换。
+  每次执行记录窗口、返回、新增、合格、高质量、展示和后续反馈。搜索来源只能归因，
+  视频领域必须由内容决定。领域建议只记录，不自动修改正式 taxonomy。
+- 使用本地 Ollama Qwen，只发送公开元数据和上游提供的公开字幕摘要；
+  不传 Cookie、Key、本地视频或字幕正文，不隐式启用收费供应商。
+  搜索可回退元数据分类，学习不可把规则回退伪装为 AI 分析。
+- 保留热门/潜力排序、热门保护、语言/时长/风险过滤、频道限制和下载权利确认。
+  src/discovery/ 旧调度器和关键词配置为 legacy，旧目录写入口禁用，历史结果仍可读。
+- 修改后运行 tests.test_discovery_next、tests.test_control_panel、tests.test_download_stage2
+  及 node tests/test_discovery_queries_ui.cjs。维护命令见 docs/discovery_next.md。
+  不得自动扫描全部历史下载来触发模型分析。
 
 项目还保留 `src/fetch_daily_candidates.py` 的传统日报候选流程，以及
 `src/download_selected_candidates.py` / `src/repair_failed_downloads.py`。它们写入

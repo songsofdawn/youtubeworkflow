@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-from src.discovery import DiscoveryPipeline
-from src.discovery.query_plan import normalize_queries
+from src.discovery_next.service import DiscoveryNextService
+from src.discovery_next.taxonomy import Taxonomy
 from src.fetch_daily_candidates import (
     YouTubeAPIError,
     YouTubeClient,
@@ -24,262 +24,11 @@ VIDEO_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{11}$")
 DISCOVERY_PACK_ID_PATTERN = re.compile(r"^[a-z0-9_]{2,64}$")
 ALLOWED_SEARCH_ORDERS = {"relevance", "date", "viewCount"}
 DISCOVERY_WINDOWS = {24, 72, 168, 336, 720}
-DISCOVERY_PACKS: tuple[dict[str, Any], ...] = (
-    {
-        "id": "ai_technology",
-        "label": "AI 与新科技",
-        "description": "新模型、AI 工具、机器人和新硬件实测",
-        "query": "new AI model test|AI tool comparison|robotics experiment|new technology test",
-        "keywords": ["ai", "model", "chatgpt", "claude", "gemini", "robot", "technology"],
-    },
-    {
-        "id": "software_programming",
-        "label": "软件与编程",
-        "description": "编程项目、自动化、开发工具和软件工作流",
-        "query": "programming project|Python automation|coding challenge|new software workflow",
-        "keywords": ["programming", "python", "coding", "software", "developer", "automation"],
-    },
-    {
-        "id": "science",
-        "label": "科学",
-        "description": "科学发现、工程原理和可视化科普",
-        "query": "science experiment|new scientific discovery|engineering explained|physics experiment",
-        "keywords": ["science", "scientific", "physics", "engineering", "discovery", "experiment"],
-    },
-    {
-        "id": "gaming",
-        "label": "游戏",
-        "description": "新游戏、更新、玩法实验和高质量挑战",
-        "query": "new game gameplay|game update|gaming challenge|game experiment",
-        "keywords": ["game", "gameplay", "gaming", "update", "challenge"],
-    },
-    {
-        "id": "minecraft",
-        "label": "Minecraft",
-        "description": "Minecraft 生存、But、模组、建造与实验",
-        "query": "Minecraft but|Minecraft challenge|Minecraft experiment|Minecraft survival",
-        "keywords": ["minecraft", "hardcore", "survival", "mod", "build", "but"],
-    },
-    {
-        "id": "chemistry",
-        "label": "化学",
-        "description": "化学实验、材料反应和实验室演示",
-        "query": "chemistry experiment|chemical reaction|laboratory experiment|materials science test",
-        "keywords": ["chemistry", "chemical", "reaction", "laboratory", "material", "molecule"],
-    },
-    {
-        "id": "challenges_experiments",
-        "label": "挑战与实验",
-        "description": "30/100 天挑战、测试和意外结果",
-        "query": "I tried for 30 days|100 days challenge|I tested|what happens if",
-        "keywords": ["challenge", "experiment", "i tried", "i tested", "100 days", "30 days"],
-    },
-    {
-        "id": "entertainment",
-        "label": "娱乐",
-        "description": "高参与度娱乐内容、喜剧和有解说反应",
-        "query": "funny challenge|comedy experiment|entertainment reaction|unexpected moments",
-        "keywords": ["funny", "comedy", "entertainment", "reaction", "unexpected"],
-    },
-    {
-        "id": "agriculture_gardening",
-        "label": "农业与园艺",
-        "description": "种植、收获、农场技术和园艺实验",
-        "query": "garden harvest|growing experiment|farm technology|vegetable garden update",
-        "keywords": ["garden", "growing", "harvest", "farm", "plant", "vegetable"],
-    },
-    {
-        "id": "food_cooking",
-        "label": "美食与烹饪",
-        "description": "烹饪实验、食谱测试和特色美食",
-        "query": "food experiment|recipe test|cooking challenge|street food discovery",
-        "keywords": ["food", "recipe", "cooking", "chef", "kitchen", "street food"],
-    },
-    {
-        "id": "outdoor_travel",
-        "label": "户外与旅行",
-        "description": "露营、生存挑战、远途旅行和地点探索",
-        "query": "outdoor adventure|survival challenge|camping experiment|remote travel discovery",
-        "keywords": ["outdoor", "survival", "camping", "travel", "adventure", "remote"],
-    },
-    {
-        "id": "tutorials_skills",
-        "label": "教程与技能",
-        "description": "完整教程、技能学习和实用工作流",
-        "query": "complete tutorial|beginner guide|how to build|new skill challenge",
-        "keywords": ["tutorial", "guide", "how to", "beginner", "skill", "build"],
-    },
-    {
-        "id": "art_creativity",
-        "label": "艺术与创意",
-        "description": "绘画、动画、3D 制作和创意挑战",
-        "query": "art challenge|animation process|creative project|3D printing project",
-        "keywords": ["art", "animation", "creative", "drawing", "3d", "design"],
-    },
-    {
-        "id": "social_experiments",
-        "label": "娱乐与社会实验",
-        "description": "社会实验、真人挑战和有叙事的互动内容",
-        "query": "social experiment|public challenge|I asked strangers|human behavior experiment",
-        "keywords": ["social experiment", "public", "strangers", "human behavior", "challenge"],
-    },
-)
-def load_discovery_packs(path: Path | None = None) -> tuple[dict[str, Any], ...]:
-    """Load and validate user-editable discovery packs, with built-ins as fallback."""
-    if path is None or not path.is_file():
-        return DISCOVERY_PACKS
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8-sig"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"智能发现关键词文件无法读取：{path}（{exc}）") from exc
-    raw_packs = payload.get("packs") if isinstance(payload, dict) else None
-    if not isinstance(raw_packs, list):
-        raise ValueError(f"智能发现关键词文件格式错误：{path} 中缺少 packs 列表")
-
-    packs: list[dict[str, Any]] = []
-    seen_ids: set[str] = set()
-    for index, raw_pack in enumerate(raw_packs, 1):
-        if not isinstance(raw_pack, dict):
-            raise ValueError(f"智能发现关键词文件第 {index} 个领域必须是对象")
-        if not bool(raw_pack.get("enabled", True)):
-            continue
-        pack_id = str(raw_pack.get("id") or "").strip()
-        label = str(raw_pack.get("label") or "").strip()
-        description = str(raw_pack.get("description") or "").strip()
-        query = "|".join(normalize_queries(raw_pack.get("query")))
-        keywords_value = raw_pack.get("keywords")
-        keywords = (
-            [" ".join(str(value).casefold().split()) for value in keywords_value]
-            if isinstance(keywords_value, list)
-            else []
-        )
-        keywords = [value for value in keywords if value]
-        if not DISCOVERY_PACK_ID_PATTERN.fullmatch(pack_id):
-            raise ValueError(
-                f"智能发现关键词文件第 {index} 个领域 id 无效；只能使用小写字母、数字和下划线"
-            )
-        if pack_id in seen_ids:
-            raise ValueError(f"智能发现关键词文件存在重复领域 id：{pack_id}")
-        if not label or not description or not query or not keywords:
-            raise ValueError(
-                f"智能发现领域 {pack_id} 必须填写 label、description、query 和 keywords"
-            )
-        seen_ids.add(pack_id)
-        packs.append(
-            {
-                "id": pack_id,
-                "label": label,
-                "description": description,
-                "query": query,
-                "keywords": keywords,
-                "default_selected": bool(raw_pack.get("default_selected", True)),
-            }
-        )
-    if not packs:
-        raise ValueError("智能发现关键词文件没有任何已启用领域")
-    return tuple(packs)
-
-
-
-def save_discovery_packs(
-    path: Path,
-    raw_packs: list[dict[str, Any]],
-) -> tuple[dict[str, Any], ...]:
-    # Validate and atomically persist user-editable discovery packs.
-    if not isinstance(raw_packs, list) or not raw_packs:
-        raise ValueError("智能发现领域列表不能为空")
-    normalized: list[dict[str, Any]] = []
-    seen_ids: set[str] = set()
-    for index, raw_pack in enumerate(raw_packs, 1):
-        if not isinstance(raw_pack, dict):
-            raise ValueError(f"第 {index} 个领域格式无效")
-        pack_id = str(raw_pack.get("id") or "").strip().casefold()
-        label = str(raw_pack.get("label") or "").strip()
-        description = str(raw_pack.get("description") or "").strip()
-        query = str(raw_pack.get("query") or "").strip()
-        keywords_raw = raw_pack.get("keywords")
-        if isinstance(keywords_raw, str):
-            keywords = [
-                item.strip().casefold()
-                for item in re.split(r"[,，\n|]+", keywords_raw)
-                if item.strip()
-            ]
-        elif isinstance(keywords_raw, list):
-            keywords = [
-                str(item).strip().casefold()
-                for item in keywords_raw
-                if str(item).strip()
-            ]
-        else:
-            keywords = []
-        query = "|".join(normalize_queries(query))
-        keywords = list(dict.fromkeys(keywords))
-        if not DISCOVERY_PACK_ID_PATTERN.fullmatch(pack_id):
-            raise ValueError(
-                f"领域 id '{pack_id}' 无效：只允许 2-64 位小写字母、数字和下划线"
-            )
-        if pack_id in seen_ids:
-            raise ValueError(f"存在重复领域 id：{pack_id}")
-        if not label or not description or not query or not keywords:
-            raise ValueError(
-                f"领域 {pack_id or index} 必须填写名称、说明、至少一个搜索词和关键词"
-            )
-        seen_ids.add(pack_id)
-        normalized.append(
-            {
-                "id": pack_id,
-                "label": label,
-                "description": description,
-                "enabled": True,
-                "default_selected": bool(raw_pack.get("default_selected", True)),
-                "query": query,
-                "keywords": keywords,
-            }
-        )
-    payload = {
-        "schema_version": 3,
-        "description": "V5 可编辑领域词池：query 第1项为主查询，后续最多20项轮换，每轮选最多3项；keywords 只参与弱评分。",
-        "packs": normalized,
-    }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temp_path = path.with_suffix(path.suffix + ".tmp")
-    temp_path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    try:
-        validated = load_discovery_packs(temp_path)
-        temp_path.replace(path)
-    finally:
-        if temp_path.exists():
-            temp_path.unlink()
-    return validated
-
-
-def public_discovery_catalog(
-    packs: tuple[dict[str, Any], ...] | None = None,
-    *,
-    include_details: bool = False,
-) -> list[dict[str, Any]]:
-    output: list[dict[str, Any]] = []
-    for pack in (packs or DISCOVERY_PACKS):
-        item = {
-            "id": pack["id"],
-            "label": pack["label"],
-            "description": pack["description"],
-            "examples": str(pack["query"]).split("|")[:3],
-            "default_selected": bool(pack.get("default_selected", True)),
-        }
-        if include_details:
-            item.update(
-                {
-                    "query": str(pack["query"]),
-                    "keywords": [str(value) for value in pack["keywords"]],
-                    "enabled": True,
-                }
-            )
-        output.append(item)
-    return output
+def __getattr__(name):
+    if name in {"DISCOVERY_PACKS", "load_discovery_packs", "save_discovery_packs", "public_discovery_catalog"}:
+        from src.discovery import legacy_catalog
+        return getattr(legacy_catalog, name)
+    raise AttributeError(name)
 
 
 def load_env_values(path: Path) -> dict[str, str]:
@@ -351,29 +100,25 @@ class TargetedYouTubeSearch:
         self.project_root = project_root.resolve()
         self.config_path = self.project_root / "config" / "trending_config.json"
         self.discovery_config_path = (
-            self.project_root / "config" / "discovery_keywords.json"
+            self.project_root / "config" / "discovery_taxonomy.json"
         )
-        self.discovery_pipeline = DiscoveryPipeline(self.project_root)
+        self.discovery_pipeline = DiscoveryNextService(self.project_root)
 
     def discovery_packs(self) -> tuple[dict[str, Any], ...]:
-        return load_discovery_packs(self.discovery_config_path)
+        return tuple(d for d in Taxonomy(self.project_root).load() if d["enabled"])
 
     def discovery_catalog(
         self,
         *,
         include_details: bool = False,
     ) -> list[dict[str, Any]]:
-        return public_discovery_catalog(
-            self.discovery_packs(),
-            include_details=include_details,
-        )
+        return list(self.discovery_packs())
 
     def save_discovery_catalog(
         self,
         raw_packs: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
-        packs = save_discovery_packs(self.discovery_config_path, raw_packs)
-        return public_discovery_catalog(packs, include_details=True)
+        return Taxonomy(self.project_root).save(raw_packs)
 
     def _settings(self) -> tuple[dict[str, Any], str]:
         config = json.loads(self.config_path.read_text(encoding="utf-8-sig"))

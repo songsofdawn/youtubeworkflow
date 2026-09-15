@@ -818,7 +818,7 @@ class WorkflowWorker:
         gpu_threads = [
             threading.Thread(
                 target=self._run,
-                args=({"pipeline", "publish", "discovery", "cover"}, {"gpu_heavy"}),
+                args=({"pipeline", "publish", "discovery", "learning", "cover"}, {"gpu_heavy"}),
                 daemon=True,
                 name=f"gpu-heavy-worker-{index + 1}",
             )
@@ -899,7 +899,7 @@ class WorkflowWorker:
             return "gpu_heavy"
         if kind == "publish":
             return "gpu_heavy" if payload.get("prepare_hardsub") else "upload"
-        if kind == "discovery":
+        if kind in {"discovery", "learning"}:
             return "gpu_heavy"
         if kind == "cover":
             return "paid_api" if payload.get("cover_mode") == "cloud" else "gpu_heavy"
@@ -1231,6 +1231,19 @@ class WorkflowWorker:
                 stage_index = 0
             if job["kind"] == "discovery":
                 self._execute_discovery(job, log_path)
+                return
+            if job["kind"] == "learning":
+                from src.learning.learning_service import LearningService
+
+                def learning_progress(step: str, progress: int) -> None:
+                    self._raise_if_interrupted(job_id)
+                    self._append_log(log_path, step + "\n")
+                    self.store.update(job_id, step=step, progress=progress)
+
+                LearningService(self.project_root).process(job["payload"]["event_id"], learning_progress,
+                                                          force=bool(job["payload"].get("force")))
+                self.store.update(job_id, status="completed", step="内容学习完成", progress=100,
+                                  exit_code=0, error="", finished_at=utc_now())
                 return
             if job["kind"] == "download":
                 cookie_copy = self._create_cookie_copy(job_id)

@@ -67,6 +67,8 @@ class ControlPanelApp:
         )
 
     def start(self) -> None:
+        from src.learning.learning_service import LearningService
+        LearningService(self.project_root).queue_pending()
         self.worker.start()
 
     def close(self) -> None:

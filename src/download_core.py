@@ -1103,6 +1103,8 @@ def download_one_video(
     if config.get("download_chinese_subtitles", True):
         required_subtitle_labels.add("zh")
     if old_manifest and not force and not metadata_only and not subtitles_only and _manifest_is_complete(task_dir, old_manifest, require_audio, required_subtitle_labels):
+        from src.learning.learning_service import on_download_success
+        on_download_success(paths["project_root"], metadata, source_mode)
         return {"overall_status": "success", "already_complete": True, "task_dir": task_dir, "manifest": old_manifest, "manifest_path": task_dir / "download_manifest.json"}
 
     info_file = task_dir / "metadata" / "info.json"
@@ -1256,4 +1258,7 @@ def download_one_video(
     manifest["errors"] = list(dict.fromkeys(str(error) for error in errors if error))
     manifest["output_files"] = sorted(str(path.relative_to(task_dir)) for path in task_dir.rglob("*") if path.is_file() and path.name != "download_manifest.json")
     manifest_path = write_manifest(task_dir, manifest)
+    if overall == "success" and not metadata_only and not subtitles_only:
+        from src.learning.learning_service import on_download_success
+        on_download_success(paths["project_root"], metadata, source_mode)
     return {"overall_status": overall, "already_complete": False, "task_dir": task_dir, "manifest": manifest, "manifest_path": manifest_path}

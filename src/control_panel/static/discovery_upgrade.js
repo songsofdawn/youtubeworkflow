@@ -63,7 +63,7 @@
     if (hint) {
       hint.textContent =
         mode === "hot"
-          ? "热门优先：独立 Hot Recall Lane + 热度硬保护。达到播放量或 VPH 阈值的视频不会被 Qwen 一票否决。"
+          ? "热门优先：动态组合与频道探索，按热度排序。达到播放量或 VPH 阈值的视频保留热门保护。"
           : "内容潜力优先：仍以 Qwen 内容质量/本地化潜力为主排序，但真正达到热门阈值的视频仍会进入保护通道。";
     }
     try {
@@ -84,14 +84,7 @@
 
   let editorPacks = [];
 
-  function splitQueries(text) {
-    return String(text || "")
-      .split(/\n|\|/g)
-      .map((v) => v.trim())
-      .filter(Boolean);
-  }
-
-  function splitKeywords(text) {
+  function splitDimensions(text) {
     return String(text || "")
       .split(/\n|,|，|\|/g)
       .map((v) => v.trim().toLowerCase())
@@ -99,8 +92,7 @@
   }
 
   function packEditorMarkup(pack, index) {
-    const queries = String(pack.query || "").split("|").filter(Boolean).join("\n");
-    const keywords = Array.isArray(pack.keywords) ? pack.keywords.join("\n") : "";
+    const dimensions = [["entities", "主题实体"], ["formats", "共享内容形式 ID"], ["positive_traits", "正向内容特征"], ["negative_intents", "负向意图"]];
     return `
       <article class="discovery-pack-editor-card" data-pack-index="${index}">
         <div class="discovery-pack-editor-card-head">
@@ -121,15 +113,8 @@
             <span>领域说明</span>
             <input data-field="description" value="${escapeHtml(pack.description)}" maxlength="240" required>
           </label>
-          <label class="field discovery-pack-editor-wide">
-            <span>搜索词池（第 1 行主搜索词；后续最多 20 行轮换）</span>
-            <textarea data-field="query" rows="7" placeholder="Minecraft&#10;Minecraft hardcore&#10;Minecraft challenge&#10;Minecraft mod" required>${escapeHtml(queries)}</textarea>
-            <small>主搜索词覆盖热门、最新和相关性；每轮从词池优先选择较少用过的词，默认执行 3 个补充词（2 个相关性、1 个热门）。相同使用次数优先有效产出较高的词。每行最多 120 字符，保存时不会截断。</small>
-          </label>
-          <label class="field discovery-pack-editor-wide">
-            <span>主题关键词（弱评分，不参与召回/硬过滤）</span>
-            <textarea data-field="keywords" rows="6" placeholder="minecraft&#10;hardcore&#10;survival&#10;challenge" required>${escapeHtml(keywords)}</textarea>
-          </label>
+          ${dimensions.map(([field, label]) => `<label class="field discovery-pack-editor-wide"><span>${label}（每行一项）</span><textarea data-field="${field}" rows="4">${escapeHtml((pack[field] || []).join("\n"))}</textarea></label>`).join("")}
+          <small>共享形式：experiment、challenge、full_process、simulation、comparison、restoration、extreme_survival、build、transformation、investigation、documentary、mod_showcase、100_days。查询由下载偏好和搜索表现动态生成。</small>
           <label class="confirm-line discovery-pack-editor-wide">
             <input data-field="default_selected" type="checkbox" ${pack.default_selected !== false ? "checked" : ""}>
             <span>控制面板打开时默认选中此领域</span>
@@ -149,8 +134,8 @@
       <form method="dialog" class="discovery-pack-editor-shell" id="discoveryPackEditorForm">
         <div class="discovery-pack-editor-header">
           <div>
-            <h2>编辑智能发现领域与关键词</h2>
-            <p>默认领域会保留；你可以新增、删除或修改。保存后写入 config/discovery_keywords.json。</p>
+            <h2>编辑 Discovery Next 领域</h2>
+            <p>定义实体、形式与内容特征；保存后用于下一轮发现策略。</p>
           </div>
           <button class="button button-ghost" id="closeDiscoveryPackEditor" type="button">关闭</button>
         </div>
@@ -176,8 +161,10 @@
         id,
         label: "新领域",
         description: "自定义发现领域",
-        query: "",
-        keywords: [],
+        entities: [],
+        formats: ["experiment"],
+        positive_traits: [],
+        negative_intents: [],
         default_selected: true,
       });
       renderEditor();
@@ -217,10 +204,10 @@
           description: String(pack.description || "").trim(),
           enabled: true,
           default_selected: pack.default_selected !== false,
-          query: splitQueries(pack.query).join("|"),
-          keywords: splitKeywords(
-            Array.isArray(pack.keywords) ? pack.keywords.join("\n") : pack.keywords
-          ),
+          entities: pack.entities || [],
+          formats: pack.formats || [],
+          positive_traits: pack.positive_traits || [],
+          negative_intents: pack.negative_intents || [],
         }));
         const payload = await requestJson("/api/discovery/packs", {
           method: "POST",
@@ -258,8 +245,8 @@
         const field = input.dataset.field;
         if (field === "default_selected") {
           pack[field] = Boolean(input.checked);
-        } else if (field === "keywords") {
-          pack[field] = splitKeywords(input.value);
+        } else if (["entities", "formats", "positive_traits", "negative_intents"].includes(field)) {
+          pack[field] = splitDimensions(input.value);
         } else {
           pack[field] = input.value;
         }
@@ -283,7 +270,6 @@
       editorPacks = Array.isArray(payload.packs)
         ? payload.packs.map((pack) => ({
             ...pack,
-            keywords: Array.isArray(pack.keywords) ? [...pack.keywords] : [],
           }))
         : [];
       renderEditor();
@@ -300,13 +286,10 @@
 
   function updateDiscoveryQuotaEstimate() {
     const checked = document.querySelectorAll(
-      '#discoveryPackList input[type="checkbox"]:checked'
+      '#discoveryPacks input[type="checkbox"]:checked'
     ).length;
     const configuredMax = Number(qs("#discoveryMaxSearchRequests")?.value || 96);
     const globalMax = Math.max(1, Math.min(configuredMax, 100));
-    const baseCalls = Math.min(checked * 6, globalMax);
-    const theoreticalMax = checked * 8;
-    const maxCalls = Math.min(theoreticalMax, globalMax);
     let node = document.querySelector("#discoveryQuotaEstimate");
     if (!node) {
       node = document.createElement("small");
@@ -318,13 +301,12 @@
     }
     if (node) {
       node.textContent =
-        `按默认策略与当前设置估算：基础最多 ${baseCalls} 次搜索，候选不足补页后最多 ${maxCalls} 次（总上限 ${globalMax}）。` +
-        `建议每轮选 6–8 个不同领域；每领域默认轮换 3 个补充词，预算不足时未执行的词留待后续轮次。`;
+        `已选 ${checked} 个领域；全局最多 ${globalMax} 次搜索。预算按学习偏好、真实产出和探索方向动态分配，没有每领域固定调用数。`;
     }
   }
 
   function setupDiscoveryQuotaEstimate() {
-    const list = document.querySelector("#discoveryPackList");
+    const list = document.querySelector("#discoveryPacks");
     if (list) {
       list.addEventListener("change", updateDiscoveryQuotaEstimate);
     }
@@ -351,6 +333,15 @@
   }
 
   ensureCss();
+  // Keep historical DOM IDs for settings serialization; Next does not use these controls.
+  ["discoveryEmbeddingModel", "discoveryEmbeddingEnabled", "discoveryQueryPlanningEnabled",
+    "discoveryVisualEnabled", "discoveryVisualTopN", "discoveryRecallTarget", "discoveryMetadataBatchSize"].forEach((id) => {
+    const input = qs(`#${id}`);
+    if (input) {
+      input.disabled = true;
+      input.closest("label")?.classList.add("hidden");
+    }
+  });
   setupMode();
   setupEditor();
   setupDurationDefaults();

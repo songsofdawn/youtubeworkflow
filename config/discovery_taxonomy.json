@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "domains": [
+    {
+      "id": "ai_technology",
+      "label": "AI 模型测试",
+      "description": "AI 模型真实能力与技术进展",
+      "entities": [
+        "LLM",
+        "AI agents",
+        "Qwen",
+        "robotics"
+      ],
+      "formats": [
+        "comparison",
+        "experiment"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "science",
+      "label": "科学实验",
+      "description": "物理化学现象与可视化科普",
+      "entities": [
+        "physics",
+        "crystals",
+        "electrochemistry"
+      ],
+      "formats": [
+        "experiment",
+        "full_process"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "gaming",
+      "label": "游戏挑战",
+      "description": "新游戏体验和有明确目标的挑战",
+      "entities": [
+        "video games",
+        "boss",
+        "multiplayer"
+      ],
+      "formats": [
+        "challenge",
+        "comparison"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "minecraft",
+      "label": "Minecraft",
+      "description": "生存、模组、文明模拟与大型建造",
+      "entities": [
+        "Minecraft",
+        "mods",
+        "civilization",
+        "redstone",
+        "physics"
+      ],
+      "formats": [
+        "extreme_survival",
+        "simulation",
+        "mod_showcase",
+        "build",
+        "100_days"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "chemistry",
+      "label": "材料与化学",
+      "description": "材料性质、变化和制备过程",
+      "entities": [
+        "materials",
+        "polymers",
+        "metals"
+      ],
+      "formats": [
+        "experiment",
+        "transformation"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "challenges_experiments",
+      "label": "发明与实验",
+      "description": "有可见结果的创意发明和测试",
+      "entities": [
+        "inventions",
+        "machines",
+        "prototypes"
+      ],
+      "formats": [
+        "experiment",
+        "challenge",
+        "build"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "agriculture_gardening",
+      "label": "园艺与生长",
+      "description": "植物生长、收获和园艺改造",
+      "entities": [
+        "plants",
+        "garden",
+        "hydroponics"
+      ],
+      "formats": [
+        "full_process",
+        "transformation",
+        "experiment"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "food_cooking",
+      "label": "食物工艺",
+      "description": "食物制作与厨房科学",
+      "entities": [
+        "food",
+        "fermentation",
+        "cooking"
+      ],
+      "formats": [
+        "full_process",
+        "experiment"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": true
+    },
+    {
+      "id": "outdoor_travel",
+      "label": "地理探秘",
+      "description": "地理奇观和实地探索",
+      "entities": [
+        "geography",
+        "caves",
+        "mountains"
+      ],
+      "formats": [
+        "investigation",
+        "documentary"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "tutorials_skills",
+      "label": "创意制作",
+      "description": "动手制作和旧物改造",
+      "entities": [
+        "DIY",
+        "woodworking",
+        "recycled objects"
+      ],
+      "formats": [
+        "build",
+        "transformation"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "art_creativity",
+      "label": "视觉创作",
+      "description": "微缩世界与艺术制作",
+      "entities": [
+        "miniatures",
+        "sculpture",
+        "painting"
+      ],
+      "formats": [
+        "full_process",
+        "build"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "social_experiments",
+      "label": "社会与合作",
+      "description": "群体行为、合作和社会模拟",
+      "entities": [
+        "cooperation",
+        "civilization",
+        "AI agents"
+      ],
+      "formats": [
+        "simulation",
+        "experiment"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "engineering_manufacturing",
+      "label": "工程制造",
+      "description": "制造过程和机械原理",
+      "entities": [
+        "engineering",
+        "factory",
+        "machines"
+      ],
+      "formats": [
+        "full_process",
+        "build"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "restoration_crafts",
+      "label": "修复与手艺",
+      "description": "旧物修复过程和精细手工",
+      "entities": [
+        "antiques",
+        "tools",
+        "watches"
+      ],
+      "formats": [
+        "restoration",
+        "full_process"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "nature_animals",
+      "label": "自然与动物",
+      "description": "生物行为和微观自然",
+      "entities": [
+        "animals",
+        "insects",
+        "microscopy"
+      ],
+      "formats": [
+        "documentary",
+        "investigation"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "history_archaeology",
+      "label": "历史与考古",
+      "description": "古代技术和历史证据",
+      "entities": [
+        "archaeology",
+        "ancient technology",
+        "artifacts"
+      ],
+      "formats": [
+        "investigation",
+        "documentary"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "business_industry",
+      "label": "产业幕后",
+      "description": "产业运作和生产知识",
+      "entities": [
+        "industry",
+        "supply chain",
+        "factory"
+      ],
+      "formats": [
+        "documentary",
+        "investigation"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "space_astronomy",
+      "label": "宇宙航天",
+      "description": "天体现象和航天原理",
+      "entities": [
+        "space",
+        "rockets",
+        "astronomy"
+      ],
+      "formats": [
+        "simulation",
+        "documentary"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "cleaning_transformation",
+      "label": "清洁焕新",
+      "description": "明显前后对比的清洁过程",
+      "entities": [
+        "cleaning",
+        "carpet",
+        "pressure washing"
+      ],
+      "formats": [
+        "transformation",
+        "full_process"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "everyday_science",
+      "label": "日常科学",
+      "description": "日常现象背后的科学",
+      "entities": [
+        "everyday objects",
+        "fluid dynamics",
+        "optics"
+      ],
+      "formats": [
+        "experiment",
+        "investigation"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    },
+    {
+      "id": "extreme_survival",
+      "label": "Extreme Survival",
+      "description": "极端环境中的生存过程与挑战",
+      "entities": [
+        "wilderness",
+        "desert",
+        "arctic"
+      ],
+      "formats": [
+        "extreme_survival",
+        "challenge",
+        "documentary"
+      ],
+      "positive_traits": [
+        "visible_result",
+        "knowledge_value",
+        "unexpected_outcome"
+      ],
+      "negative_intents": [
+        "livestream",
+        "generic_lets_play"
+      ],
+      "enabled": true,
+      "default_selected": false
+    }
+  ]
+}
