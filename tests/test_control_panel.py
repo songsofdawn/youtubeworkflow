@@ -1416,6 +1416,26 @@ class QueueTests(TestCase):
         self.assertEqual(migrated["resource_class"], "gpu_heavy")
         self.assertEqual(migrated["payload"]["_stage_index"], 1)
 
+    def test_recover_interrupted_publish_is_not_auto_requeued(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            store = JobStore(root / "jobs.sqlite3", root / "logs")
+            queued = store.enqueue(
+                "publish",
+                "task",
+                {"title": "test"},
+                resource_class="upload",
+            )
+            running = store.claim_id(queued["id"])
+            self.assertEqual(running["status"], "running")
+
+            store.recover_interrupted_jobs()
+            recovered = store.get(queued["id"])
+
+        self.assertEqual(recovered["status"], "failed")
+        self.assertEqual(recovered["step"], "投稿中断，需确认后重试")
+        self.assertIn("避免重复投稿", recovered["error"])
+
     def test_job_lifecycle_and_retry(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
@@ -3483,6 +3503,62 @@ class PublishingTests(TestCase):
             )
         )
 
+    def test_unconfirmed_success_blocks_future_submission(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            task = make_task(project)
+            (task / "subtitles").mkdir()
+            (task / "subtitles" / "zh.clean.srt").write_text(
+                "中文", encoding="utf-8"
+            )
+            mark_deepseek_translation(task)
+            publishing = BiliupIntegration(project)
+            payload = publishing.validate_submission(
+                task,
+                publishing.defaults(task) | {"confirm_publish": True},
+            )
+            publishing.mark_unconfirmed_success(
+                task,
+                payload,
+                "BV1xreW6wEbR 投稿成功",
+                "测试：本地状态保存失败",
+            )
+            manifest = json.loads(
+                (task / "stage5" / "publish_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+            with self.assertRaisesRegex(ValueError, "已经记录为投稿成功"):
+                publishing.validate_submission(
+                    task,
+                    payload | {"confirm_publish": True},
+                )
+
+        self.assertTrue(manifest["submission_succeeded"])
+        self.assertEqual(manifest["status"], "FAILED")
+        self.assertEqual(manifest["bvid"], "BV1xreW6wEbR")
+
+    def test_automatic_retry_stops_after_upload_or_submission_progress(self) -> None:
+        self.assertTrue(
+            BiliupIntegration.automatic_upload_retry_is_safe(
+                "pre_upload: upload started\n"
+                "error sending request tls handshake eof"
+            )
+        )
+        self.assertFalse(
+            BiliupIntegration.automatic_upload_retry_is_safe(
+                "Upload completed: video.mp4 => cost 10.0s\n"
+                "tls handshake eof"
+            )
+        )
+        self.assertFalse(
+            BiliupIntegration.automatic_upload_retry_is_safe(
+                "BV1xreW6wEbR 投稿成功 then tls handshake eof"
+            )
+        )
+
     def test_rate_limit_rejection_is_safe_to_retry_after_cooldown(self) -> None:
         log = (
             'ResponseData { code: 137022, data: None, '
@@ -3617,6 +3693,7 @@ class PublishingTests(TestCase):
             def fake_run(_job_id: str, current: list[str], path: Path) -> int:
                 attempts.append(current)
                 if len(attempts) == 1:
+                    worker._append_log(path, "pre_upload: upload started\n")
                     worker._append_log(path, "tls handshake eof\n")
                     return 1
                 return 0
@@ -3638,6 +3715,47 @@ class PublishingTests(TestCase):
         self.assertEqual(len(attempts), 2)
         self.assertIn("--line", attempts[1])
         self.assertIn("bldsa", attempts[1])
+
+    def test_publish_worker_does_not_retry_after_upload_completed(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            project = Path(name)
+            make_publish_config(project)
+            store = JobStore(project / "jobs.sqlite3", project / "logs")
+            worker = WorkflowWorker(
+                project,
+                store,
+                WorkflowScanner(project),
+                BiliupIntegration(project),
+            )
+            queued = store.enqueue("publish", "task", {}, resource_class="upload")
+            running = store.claim_next({"publish"}, {"upload"})
+            self.assertEqual(running["id"], queued["id"])
+            log_path = Path(running["log_path"])
+            command = ["biliup.exe", "upload", "video.mp4"]
+            attempts: list[list[str]] = []
+
+            def fake_run(_job_id: str, current: list[str], path: Path) -> int:
+                attempts.append(current)
+                worker._append_log(path, "Upload completed: video.mp4 => cost 10s\n")
+                worker._append_log(path, "tls handshake eof\n")
+                return 1
+
+            with (
+                mock.patch.object(
+                    worker.publisher,
+                    "transient_retry_delays",
+                    return_value=[0],
+                ),
+                mock.patch.object(worker, "_run_command", side_effect=fake_run),
+            ):
+                result = worker._run_publish_upload_with_retries(
+                    queued["id"],
+                    command,
+                    log_path,
+                )
+
+        self.assertEqual(result, 1)
+        self.assertEqual(len(attempts), 1)
 
     def test_worker_decodes_windows_gbk_output(self) -> None:
         text = "简介字数过长，请缩减内容"

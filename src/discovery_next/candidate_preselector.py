@@ -38,9 +38,10 @@ class CandidatePreselector:
                   "rare_domain": 1 / max(1, row.get("domain_pool_count", 1))}
         return values.get(bucket, 0)
 
-    def select(self, rows, budget):
+    def select(self, rows, budget, *, domain_limit=None):
         if budget <= 0:
             return [], {}
+        effective_domain_limit = self.domain_limit if domain_limit is None else domain_limit
         chosen, chosen_ids = [], set()
         channels, clusters, domains, queries, formats = Counter(), Counter(), Counter(), Counter(), Counter()
         counts = {key: int(budget * ratio) for key, ratio in self.ratios.items()}
@@ -54,7 +55,7 @@ class CandidatePreselector:
             domain = (row.get("matched_pack_ids") or [""])[0]
             format_key = (row.get("matched_formats") or [""])[0]
             if (row["video_id"] in chosen_ids or channels[channel] >= self.channel_limit
-                    or clusters[cluster] >= self.semantic_limit or domains[domain] >= self.domain_limit
+                    or clusters[cluster] >= self.semantic_limit or domains[domain] >= effective_domain_limit
                     or queries[primary_query] >= self.query_limit or formats[format_key] >= self.format_limit):
                 return False
             chosen.append(row); chosen_ids.add(row["video_id"])

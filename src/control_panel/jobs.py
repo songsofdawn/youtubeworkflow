@@ -149,17 +149,29 @@ class JobStore:
         immediately failed to bind.  Worker startup happens after a successful
         bind, which is the first safe point to recover a previous process.
         """
+        recovered_at = utc_now()
         with self._connect() as connection:
+            publish_cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'failed',
+                    step = '投稿中断，需确认后重试',
+                    started_at = '', finished_at = ?, exit_code = 1,
+                    error = '控制面板上次异常中断；为避免重复投稿，请先到创作中心确认后再重试'
+                WHERE status = 'running' AND kind = 'publish'
+                """,
+                (recovered_at,),
+            )
             cursor = connection.execute(
                 """
                 UPDATE jobs
                 SET status = 'queued', step = '检测到上次中断，等待续跑',
                     started_at = '', finished_at = '', exit_code = NULL,
                     error = ''
-                WHERE status = 'running'
+                WHERE status = 'running' AND kind != 'publish'
                 """
             )
-        return int(cursor.rowcount)
+        return int(cursor.rowcount) + int(publish_cursor.rowcount)
 
     def reroute_queued(self, job_id: str, resource_class: str, step: str) -> bool:
         """Correct a queued job's resource without transiently claiming it."""
@@ -1637,24 +1649,50 @@ class WorkflowWorker:
 
             if job["kind"] == "publish":
                 assert publish_task is not None
+                upload_log = self.store.log_tail(job_id, max_chars=100000)
                 try:
                     self.publisher.mark_published(
                         publish_task,
                         job["payload"],
-                        self.store.log_tail(job_id, max_chars=100000),
+                        upload_log,
                     )
                 except Exception as exc:
+                    unconfirmed_error = (
+                        "投稿命令已成功，但本地投稿状态保存失败；"
+                        "为避免重复投稿，请先到创作中心确认，不要重试"
+                    )
                     self._append_log(
                         log_path,
                         f"\n[警告] 投稿命令已成功，但本地投稿状态保存失败：{exc}\n",
                     )
+                    try:
+                        self.publisher.mark_unconfirmed_success(
+                            publish_task,
+                            job["payload"],
+                            upload_log,
+                            unconfirmed_error,
+                        )
+                    except Exception as fallback_exc:
+                        self._append_log(
+                            log_path,
+                            "\n[警告] 无法写入投稿成功保护记录，"
+                            f"已保留为需人工确认的失败任务：{fallback_exc}\n",
+                        )
+                        try:
+                            self.publisher.mark_failed(
+                                publish_task,
+                                job["payload"],
+                                unconfirmed_error,
+                            )
+                        except Exception:
+                            pass
                     self.store.update(
                         job_id,
-                        status="completed",
-                        step="投稿成功，本地状态保存失败",
+                        status="failed",
+                        step="投稿成功，需确认后重试",
                         progress=100,
-                        exit_code=0,
-                        error=str(exc),
+                        exit_code=1,
+                        error=unconfirmed_error,
                         finished_at=utc_now(),
                     )
                     return
@@ -3340,7 +3378,7 @@ class WorkflowWorker:
             )[-1]
             if (
                 attempt_index >= len(delays)
-                or not self.publisher.is_transient_upload_failure(attempt_log)
+                or not self.publisher.automatic_upload_retry_is_safe(attempt_log)
             ):
                 return exit_code
             delay = delays[attempt_index]

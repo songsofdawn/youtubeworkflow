@@ -13,6 +13,7 @@ from src.learning.schemas import VideoAnalysis
 from src.learning.video_analyzer import VideoAnalyzer, public_metadata
 from .candidate_preselector import CandidatePreselector, semantic_key
 from .candidate_ranker import CandidateRanker
+from .metric_snapshots import MetricSnapshotStore
 from .query_generator import generate_queries
 from .query_performance import QueryPerformance
 from .recall import RecallExecutor
@@ -34,6 +35,7 @@ class DiscoveryNextService:
     def __init__(self, root, analyzer=None, query_client=None):
         self.root, self.analyzer, self.query_client = Path(root), analyzer, query_client
         self.performance = QueryPerformance(root)
+        self.metric_snapshots = MetricSnapshotStore(root)
 
     def public_settings(self, config):
         settings = OllamaSettings.from_config(config).public_dict()
@@ -65,12 +67,24 @@ class DiscoveryNextService:
             published = datetime.fromisoformat(snippet.get("publishedAt", "").replace("Z", "+00:00")); age = (now - published).total_seconds() / 3600
         except (ValueError, TypeError):
             age = hours + 1
-        views = int(stats.get("viewCount") or 0); vph = views / max(age, 1)
+        views = int(stats.get("viewCount") or 0)
+        likes = int(stats.get("likeCount") or 0)
+        comments = int(stats.get("commentCount") or 0)
+        self.metric_snapshots.record(video_id, views, likes, comments, observed_at=now)
+        rates = self.metric_snapshots.rates(
+            video_id,
+            fallback_views_per_hour=views / max(age, 1),
+            fallback_likes_per_hour=0.0,
+            fallback_comments_per_hour=0.0,
+        )
+        vph = rates["views_per_hour"]
         row = {"video_id": video_id, "title": str(snippet.get("title", video_id)), "description": str(snippet.get("description", "")),
                "channel_title": str(snippet.get("channelTitle", "")), "channel_id": str(snippet.get("channelId", "")), "tags": snippet.get("tags", []),
                "category": snippet.get("categoryId", ""), "published_at": snippet.get("publishedAt", ""), "duration_seconds": duration,
-               "duration": format_duration(duration), "view_count": views, "like_count": int(stats.get("likeCount") or 0),
-               "comment_count": int(stats.get("commentCount") or 0), "views_per_hour": vph, "age_hours": age,
+               "duration": format_duration(duration), "view_count": views, "like_count": likes,
+               "comment_count": comments, "views_per_hour": vph, "age_hours": age,
+               "likes_per_hour": rates["likes_per_hour"], "comments_per_hour": rates["comments_per_hour"],
+               "metric_rate_source": rates["source"],
                "has_caption": str(content.get("caption")) == "true", "thumbnail_url": best_thumbnail(snippet),
                "youtube_url": f"https://www.youtube.com/watch?v={video_id}", "license": status.get("license", "unknown"),
                "rights_status": "PENDING", "embeddable": status.get("embeddable", True), "hot_protected": views >= hot_views or vph >= hot_vph,
@@ -111,13 +125,13 @@ class DiscoveryNextService:
         planner = QueryPlanner(config, client=self.query_client) if self.query_client is not None else None
         strategy = build_strategy(profile, domains, history, Taxonomy(self.root).formats, config=config, mode=ranking_mode,
                                   strength=search_strength, manual_focus=manual_focus, planner=planner, now=now)
-        strategy["query_plan"] = generate_queries(strategy, domains, Taxonomy(self.root).formats, strategy["search_budget"], ranking_mode=ranking_mode)
+        strategy["query_plan"] = generate_queries(strategy, domains, Taxonomy(self.root).formats, strategy["query_budget"], ranking_mode=ranking_mode)
         atomic_json(self.root / "data/learning/discovery_strategy.json", strategy)
         seen = self.performance.seen_ids() | set(known_video_ids or ()); known = set(known_video_ids or ())
         known_titles = {str(value).casefold().strip() for value in known_titles or []}
         resources, records, warnings = RecallExecutor(youtube, self.performance, config).execute(
             strategy["query_plan"], hours=hours, now=now, seen=seen, notify=notify,
-            recall_budget=strategy.get("recall_budget", {}))
+            recall_budget=strategy.get("recall_budget", {}), search_budget=strategy["search_budget"])
         minimum = minimum_duration_seconds or int(config.get("discovery_min_duration_seconds", 300))
         maximum = maximum_duration_seconds or int(config.get("discovery_max_duration_seconds", 10800))
         def threshold(name, fallback): return float(config.get(name + "_by_window", {}).get(str(hours), config.get(name, fallback)))
@@ -154,7 +168,31 @@ class DiscoveryNextService:
                     row["semantic_uniqueness"] = min(row.get("semantic_uniqueness", .7), .45)
         notify("Discovery Next：多样化分桶预选", 42)
         configured_ai = int(config.get("discovery_llm", {}).get("metadata_max_candidates", strategy["ai_candidate_budget"]))
-        preselected, bucket_counts = CandidatePreselector(config).select(rows, min(len(rows), configured_ai, strategy["ai_candidate_budget"]))
+        preselection_budget = min(len(rows), configured_ai, strategy["ai_candidate_budget"])
+        fallback_domain = max((key for key in strategy["domain_allocation"] if key != "exploration"),
+                              key=lambda key: strategy["domain_allocation"].get(key, 0), default=None)
+        fallback_domain = fallback_domain or (domains[0]["id"] if domains else "")
+        def primary_domain(row):
+            matches = row.get("matched_pack_ids") or row.get("matched_domains")
+            return matches[0] if matches else fallback_domain
+        preselector = CandidatePreselector(config)
+        preselected, bucket_counts = preselector.select(rows, preselection_budget, domain_limit=max(per_pack, preselector.domain_limit))
+        preselected_ids = {row["video_id"] for row in preselected}
+        preselected_domain_counts = Counter(primary_domain(row) for row in preselected)
+        for domain in [d["id"] for d in domains]:
+            if preselected_domain_counts[domain] >= per_pack or len(preselected) >= preselection_budget:
+                continue
+            remaining = sorted(
+                (row for row in rows if row["video_id"] not in preselected_ids and primary_domain(row) == domain),
+                key=lambda row: row.get("views_per_hour", 0),
+                reverse=True,
+            )
+            for row in remaining:
+                if preselected_domain_counts[domain] >= per_pack or len(preselected) >= preselection_budget:
+                    break
+                preselected.append(row)
+                preselected_ids.add(row["video_id"])
+                preselected_domain_counts[domain] += 1
         analyzer = self.analyzer or VideoAnalyzer(config, domains); scored = 0
         if config.get("discovery_llm", {}).get("enabled", False):
             for index, row in enumerate(preselected):
@@ -177,11 +215,18 @@ class DiscoveryNextService:
                 except Exception as exc:
                     warnings.append(f"本地 AI 分析不可用：{type(exc).__name__}；其余候选使用公开元数据特征")
                     break
-        ranker = CandidateRanker(config); limit = max(1, per_pack * max(1, min(8, len(strategy["domain_budget"]))))
-        selected = ranker.rank_hot(preselected, limit) if ranking_mode == "hot" else ranker.rank_potential(preselected, limit)
+        ranker = CandidateRanker(config)
+        for row in preselected:
+            row["pack_id"] = primary_domain(row)
+            row["discovery_pack_id"] = row["pack_id"]
+        selected = ranker.rank_by_domain(
+            preselected,
+            per_pack,
+            ranking_mode,
+            backfill_channel_limit=int(config.get("discovery_backfill_max_per_channel", 4)),
+            domain_order=[d["id"] for d in domains],
+        )
         for row in selected:
-            matches = row["matched_pack_ids"] or row["matched_domains"]
-            row["pack_id"] = matches[0] if matches else max((k for k in strategy["domain_allocation"] if k != "exploration"), key=strategy["domain_allocation"].get)
             row["discovery_pack_id"] = row["pack_id"]; row["collision_status"] = "曾召回，尚未下载" if row["seen_in_previous_search"] else "未下载候选"
             row["selection_tier"] = "preferred"
             attrs = resources[row["video_id"]]["attributions"]
@@ -205,6 +250,15 @@ class DiscoveryNextService:
             self.performance.save(record, hits, shown); diagnostics.append(dict(record))
         by_domain = {d["id"]: [] for d in domains}
         for row in selected: by_domain.setdefault(row["pack_id"], []).append(row)
+        result_counts_by_pack = {key: len(value) for key, value in by_domain.items()}
+        result_shortfalls_by_pack = {d["id"]: max(0, per_pack - len(by_domain.get(d["id"], []))) for d in domains}
+        incomplete_labels = [d["label"] for d in domains if result_shortfalls_by_pack.get(d["id"], 0)]
+        if incomplete_labels:
+            warnings.append(
+                "以下领域在安全、语言、时长、质量与去重后仍未达到每领域目标候选数："
+                + "、".join(incomplete_labels)
+                + "；可扩大时间范围、调整领域实体/内容形式，或降低每领域目标候选数"
+            )
         recall_sources = Counter(source for row in rows for source in row["matched_recall_sources"])
         final_domains = Counter(row["pack_id"] for row in selected); final_channels = Counter(row["channel_id"] or row["channel_title"] for row in selected)
         final_intents = Counter(intent for row in selected for intent in row["matched_intents"])
@@ -221,9 +275,12 @@ class DiscoveryNextService:
                                        "preselected": len(preselected), "ai_analyzed": scored, "final_shown": len(selected)},
                     "ai_budget_distribution": bucket_counts, "final_distribution": {"domains": dict(final_domains), "channels": dict(final_channels),
                         "intents": dict(final_intents), "semantic_clusters": len({row["semantic_cluster"] for row in selected})},
-                    "warnings": warnings, "search_request_count": len(records), "search_request_limit": strategy["search_budget"],
+                    "warnings": warnings, "search_request_count": sum(int(record.get("calls", 1)) for record, _ in records),
+                    "search_request_limit": strategy["search_budget"],
                     "raw_candidate_count": len(resources), "eligible_count": len(rows), "llm_scored_count": scored,
                     "llm_candidate_count": len(preselected), "result_count": len(selected), "unique_result_count": len(selected),
                     "selected_pack_count": len(by_domain), "minimum_duration_seconds": minimum, "maximum_duration_seconds": maximum,
+                    "result_target_per_pack": per_pack, "result_limit_per_pack": per_pack,
+                    "result_shortfalls_by_pack": result_shortfalls_by_pack,
                     "excluded": dict(excluded), "result_counts_by_pack": {key: len(value) for key, value in by_domain.items()},
                     "recalled_counts_by_pack": dict(domain_counts)}}

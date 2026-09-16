@@ -529,7 +529,9 @@ class BiliupIntegration:
         if self.executable() is None:
             raise ValueError("未找到 biliup.exe")
         existing = read_json(task_dir / "stage5" / "publish_manifest.json")
-        if existing.get("status") == "PUBLISHED":
+        if existing.get("status") == "PUBLISHED" or existing.get(
+            "submission_succeeded"
+        ) is True:
             raise ValueError("这个任务已经记录为投稿成功，为避免重复投稿已停止")
 
         title = " ".join(str(values.get("title") or "").split())
@@ -860,6 +862,43 @@ class BiliupIntegration:
             )
         )
 
+    @staticmethod
+    def automatic_upload_retry_is_safe(log_text: str) -> bool:
+        """Return whether an in-flight upload may be retried automatically.
+
+        Automatic retry is deliberately stricter than the manual retry guard:
+        once biliup reports that the file upload finished, or once the log
+        contains a submission result/BV id, the outcome is no longer known to
+        be a pure pre-submit network failure.  Retrying the whole ``upload
+        --submit`` command in that state can create a second archive.
+        """
+        normalized = str(log_text).casefold()
+        if BiliupIntegration.is_publish_rate_limited(log_text):
+            return False
+        if not BiliupIntegration.is_transient_upload_failure(log_text):
+            return False
+        if BVID_PATTERN.search(log_text) or any(
+            marker in normalized
+            for marker in (
+                "投稿成功",
+                "submit success",
+                "archive created",
+                "稿件创建成功",
+                "upload completed",
+                "checkpoint saved",
+                "all files uploaded successfully",
+            )
+        ):
+            return False
+        return any(
+            marker in normalized
+            for marker in (
+                "passport-login/oauth2/info",
+                "/preupload?",
+                "pre_upload:",
+            )
+        )
+
     def transient_retry_delays(self) -> list[float]:
         raw = self.config.get("transient_retry_delays_seconds", [3, 8, 15])
         if not isinstance(raw, list):
@@ -1053,6 +1092,31 @@ class BiliupIntegration:
                 "finished_at": utc_now(),
                 "bvid": "",
                 "url": "",
+                "errors": [error],
+            },
+        )
+
+    def mark_unconfirmed_success(
+        self,
+        task_dir: Path,
+        payload: dict[str, Any],
+        log_text: str,
+        error: str,
+    ) -> None:
+        """Persist an ambiguous success so later flows never re-submit."""
+        previous = read_json(task_dir / "stage5" / "publish_manifest.json")
+        match = BVID_PATTERN.search(log_text)
+        bvid = match.group(1) if match else ""
+        atomic_write_json(
+            task_dir / "stage5" / "publish_manifest.json",
+            self._manifest_base(task_dir, payload)
+            | {
+                "status": "FAILED",
+                "submission_succeeded": True,
+                "started_at": str(previous.get("started_at") or utc_now()),
+                "finished_at": utc_now(),
+                "bvid": bvid,
+                "url": f"https://www.bilibili.com/video/{bvid}" if bvid else "",
                 "errors": [error],
             },
         )

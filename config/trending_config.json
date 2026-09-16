@@ -67,6 +67,7 @@
     },
     "exploration_min": 0.12,
     "exploration_max": 0.3,
+    "first_page_budget_ratio": 0.65,
     "domain_allocation_floor": 0.01,
     "domain_allocation_ceiling": 0.38,
     "domain_allocation_weights": {
@@ -109,6 +110,13 @@
     "query_diversity_threshold": 0.72,
     "bad_query_suppression_threshold": 0.08,
     "query_performance_decay_days": 45,
+    "adaptive_pagination": {
+      "enabled": true,
+      "page2_min_new_unique": 8,
+      "page2_max_duplicate_rate": 0.7,
+      "page3_min_new_unique": 6,
+      "page3_max_duplicate_rate": 0.7
+    },
     "potential_ranking_weights": {
       "ai": 0.42,
       "user": 0.16,

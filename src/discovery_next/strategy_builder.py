@@ -13,6 +13,10 @@ def build_strategy(profile, domains, history, shared_formats=None, *, config=Non
     strength_cfg = {**STRENGTHS.get(strength, STRENGTHS["standard"]),
                     **config.get("discovery_next", {}).get("strengths", {}).get(strength, {})}
     search_budget = max(1, min(int(config.get("discovery_max_search_requests", 100)), int(strength_cfg["search_budget"])))
+    pagination_enabled = bool(config.get("discovery_next", {}).get("adaptive_pagination", {}).get("enabled", False))
+    default_first_page_ratio = .65 if pagination_enabled else 1.0
+    first_page_ratio = max(.2, min(1.0, float(config.get("discovery_next", {}).get("first_page_budget_ratio", default_first_page_ratio))))
+    query_budget = max(1, int(search_budget * first_page_ratio))
     allocation_result = DomainAllocator(config).allocate(profile, domains, history, manual_focus=manual_focus)
     allocation = allocation_result["domain_allocation"]
     base_source_weights = config.get("discovery_next", {}).get("recall_source_budget", {
@@ -28,13 +32,14 @@ def build_strategy(profile, domains, history, shared_formats=None, *, config=Non
         source_weights["emerging"] = min(.30, source_weights["emerging"] + .05)
     if profile.get("channel_preferences"):
         source_weights["preferred_channel"] = min(.24, source_weights["preferred_channel"] + .03)
-    query_plan = (planner or QueryPlanner(config)).plan(profile, domains, allocation, history, search_budget,
+    query_plan = (planner or QueryPlanner(config)).plan(profile, domains, allocation, history, query_budget,
                                                        now=now, recall_source_weights=source_weights)
     return {"version": 2, "schema_version": 2, "mode": mode, "strength": strength,
             "sample_size": profile.get("sample_size", 0), "search_budget": search_budget,
+            "query_budget": query_budget,
             "ai_candidate_budget": int(strength_cfg["ai_candidate_budget"]), **allocation_result,
-            "domain_budget": allocate_counts({k: v for k, v in allocation.items() if k != "exploration"}, search_budget),
-            "recall_budget": allocate_counts(source_weights, search_budget),
+            "domain_budget": allocate_counts({k: v for k, v in allocation.items() if k != "exploration"}, query_budget),
+            "recall_budget": allocate_counts(source_weights, query_budget),
             "recall_budget_weights": source_weights,
             "preselection_budget": config.get("discovery_next", {}).get("candidate_bucket_ratios", {}),
             "query_plan": query_plan,
